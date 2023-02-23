@@ -1,0 +1,47 @@
+{% extends 'base.html'%}
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+{% scss "css/form.scss" %}
+  <link href="{{ ASSET_URL }}" rel="stylesheet">
+{% endassets %}
+
+{% block pre_form %}
+{% endblock %}
+
+<section class="section{% if self.pre_form() %} section-grey {% endif %}" id="questionnaire">
+    <div class="container">
+        {% if form.errors %}
+        <div class="notification error">
+        Vous avez fait des erreurs lorsque vous avez rempli le formulaire, veuillez les corriger
+        </div>
+        {% endif %}
+
+    {% block block_form %}
+    {% endblock %}
+
+    </div>
+</section>
+
+{% block post_form %}
+{% endblock post_form %}
+
+<section class="section" id="donnees-personnelles">
+      <div class="container">
+        <article class="article">
+            <h1>Données personnelles</h1>
+              <p>Dans le cadre de ces <strong>tests</strong>, nous pourrions vous contacter afin d'obtenir vos retours sur la newsletter Écosanté. 
+                  Ces échanges pourront prendre la forme d'appels téléphoniques avec un membre de l'équipe.</p>
+        
+            <p>
+                  Les données collectées ont exclusivement pour but de personnaliser les recommandations. 
+                  Elles ne sont utilisées pour aucun autre objectif. 
+                  Elles ne sont accessibles que par l'équipe Écosanté (projet porté par la <a href="https://beta.gouv.fr/">DINUM</a>, le Ministère de la Santé et le Ministère de la Transition Écologique)
+                  et les services que l'équipe utilise.
+            </p>
+            <p>Pour toute demande de rectification et suppression de données, vous pouvez écrire un email à l'équipe écosanté : <a href="mailto:contact@recosante.beta.gouv.fr">contact@recosante.beta.gouv.fr</a>. Nous y répondrons très rapidement. 
+                  Par ailleurs, les données que nous n'utilisons plus sont supprimées en moins d'un mois.</p>
+         </article>
+      </div>
+</section>
+{% endblock %}

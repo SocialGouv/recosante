@@ -1,0 +1,1020 @@
+---
+subject: Indicateurs quotidiens
+---
+
+<spacer size="20"></spacer>
+<container>
+  <row>
+    <columns>
+        <a href="https://recosante.beta.gouv.fr/">
+          <img src="assets/img/logos.jpg" alt="République Française et Recosanté" />
+        </a>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  <row>
+    <columns>
+      <p class="lead">
+        <strong>\{{contact.VILLE}}</strong>, le \{{ time_now|date:"02/01/2006" }}
+      </p>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% if contact.SHOW_QA %}
+  {% if contact.POLLUANT %}
+  <row>
+    <columns>
+      <callout class="alert">
+        <spacer size="8"></spacer>
+        <h3 class="text-center">
+          ⚠️ <br />Un épisode de pollution \{{contact.POLLUANT}} est prévu
+          aujourd'hui dans votre département.
+        </h3>
+        <spacer size="24"></spacer>
+          <p class="text-center">
+          \{{contact.RECOMMANDATION_EPISODE|safe}}
+        </p>
+
+        <spacer size="24"></spacer>
+        <center>
+          <button
+            class="radius"
+            href="\{{contact.LIEN_AASQA}}"
+          >
+            En savoir plus
+          </button>
+        </center>
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% endif %} 
+  {% endif %} 
+
+  {% if contact.SHOW_QA %}
+  <row>
+    <columns>
+      <callout class="warning">
+        <p class="no-margin text-center"><b>Indice ATMO de qualité de l'air</b></p>
+        <spacer size="16"></spacer>
+
+        {% if contact.QUALITE_AIR %}
+        <h2 class="text-center blue no-margin">\{{contact.QUALITE_AIR}}</h2>
+        <center>
+          {% if contact.QUALITE_AIR == "Bon" %}
+          <img src="assets/img/atmo-bon.png" alt="Bon" />
+          {% endif %} 
+          {% if contact.QUALITE_AIR == "Moyen" %}
+          <img src="assets/img/atmo-moyen.png" alt="Moyen" />
+          {% endif %} 
+          {% if contact.QUALITE_AIR == "Dégradé" %}
+          <img src="assets/img/atmo-degrade.png" alt="Dégradé" />
+          {% endif %} 
+          {% if contact.QUALITE_AIR == "Mauvais" %}
+          <img src="assets/img/atmo-mauvais.png" alt="Mauvais" />
+          {% endif %} 
+          {% if contact.QUALITE_AIR == "Très Mauvais" %}
+          <img src="assets/img/atmo-tres-mauvais.png" alt="Très Mauvais" />
+          {% endif %} 
+          {% if contact.QUALITE_AIR == "Extrêmement Mauvais" %}
+          <img src="assets/img/atmo-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+          {% endif %} 
+        </center>
+        <spacer size="16"></spacer>
+
+        {% if contact.SS_INDICE_PM25_LABEL %}
+        <row>
+          <columns small="4">
+            {% if contact.SS_INDICE_PM25_LABEL == "Bon" %}
+              <img class="float-right" src="assets/img/polluant-bon.png"  alt="Bon" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM25_LABEL == "Moyen" %}
+              <img class="float-right" src="assets/img/polluant-moyen.png" alt="Moyen" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM25_LABEL == "Dégradé" %}
+              <img class="float-right" src="assets/img/polluant-degrade.png" alt="Dégradé" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM25_LABEL == "Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-mauvais.png" alt="Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM25_LABEL == "Très Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-tres-mauvais.png" alt="Très Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM25_LABEL == "Extrêmement Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+            {% endif %}
+          </columns>
+          <columns small="8">
+            <p>&nbsp;&nbsp;&nbsp;<a href="https://recosante.beta.gouv.fr/polluants/pm25" class="small">Particules fines PM2,5 <sup>(?)</sup></p>
+          </columns>
+        </row>
+        <spacer size="16"></spacer>
+        {% endif %}
+          
+        {% if contact.SS_INDICE_PM10_LABEL %}
+        <row>
+          <columns small="4">
+            {% if contact.SS_INDICE_PM10_LABEL == "Bon" %}
+              <img class="float-right" src="assets/img/polluant-bon.png"  alt="Bon" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM10_LABEL == "Moyen" %}
+              <img class="float-right" src="assets/img/polluant-moyen.png" alt="Moyen" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM10_LABEL == "Dégradé" %}
+              <img class="float-right" src="assets/img/polluant-degrade.png" alt="Dégradé" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM10_LABEL == "Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-mauvais.png" alt="Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM10_LABEL == "Très Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-tres-mauvais.png" alt="Très Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_PM10_LABEL == "Extrêmement Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+            {% endif %}
+          </columns>
+          <columns small="8">
+            <p>&nbsp;&nbsp;&nbsp;<a href="https://recosante.beta.gouv.fr/polluants/pm10" class=" small">Particules fines PM10 <sup>(?)</sup></p>
+          </columns>
+        </row>
+        <spacer size="16"></spacer>
+        {% endif %}
+
+        {% if contact.SS_INDICE_NO2_LABEL %}
+        <row>
+          <columns small="4">
+            {% if contact.SS_INDICE_NO2_LABEL == "Bon" %}
+              <img class="float-right" src="assets/img/polluant-bon.png"  alt="Bon" />
+            {% endif %}
+            {% if contact.SS_INDICE_NO2_LABEL == "Moyen" %}
+              <img class="float-right" src="assets/img/polluant-moyen.png" alt="Moyen" />
+            {% endif %}
+            {% if contact.SS_INDICE_NO2_LABEL == "Dégradé" %}
+              <img class="float-right" src="assets/img/polluant-degrade.png" alt="Dégradé" />
+            {% endif %}
+            {% if contact.SS_INDICE_NO2_LABEL == "Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-mauvais.png" alt="Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_NO2_LABEL == "Très Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-tres-mauvais.png" alt="Très Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_NO2_LABEL == "Extrêmement Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+            {% endif %}
+          </columns>
+          <columns small="8">
+            <p>&nbsp;&nbsp;&nbsp;<a href="https://recosante.beta.gouv.fr/polluants/no2" class="small">Dioxyde d’azote NO2 <sup>(?)</sup></p>
+          </columns>
+        </row>
+        <spacer size="16"></spacer>
+        {% endif %}
+
+        {% if contact.SS_INDICE_O3_LABEL %}
+        <row>
+          <columns small="4">
+            {% if contact.SS_INDICE_O3_LABEL == "Bon" %}
+              <img class="float-right" src="assets/img/polluant-bon.png"  alt="Bon" />
+            {% endif %}
+            {% if contact.SS_INDICE_O3_LABEL == "Moyen" %}
+              <img class="float-right" src="assets/img/polluant-moyen.png" alt="Moyen" />
+            {% endif %}
+            {% if contact.SS_INDICE_O3_LABEL == "Dégradé" %}
+              <img class="float-right" src="assets/img/polluant-degrade.png" alt="Dégradé" />
+            {% endif %}
+            {% if contact.SS_INDICE_O3_LABEL == "Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-mauvais.png" alt="Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_O3_LABEL == "Très Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-tres-mauvais.png" alt="Très Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_O3_LABEL == "Extrêmement Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+            {% endif %}
+          </columns>
+          <columns small="8">
+            <p>&nbsp;&nbsp;&nbsp;<a href="https://recosante.beta.gouv.fr/polluants/o3" class="small">Ozone O3 <sup>(?)</sup></p>
+          </columns>
+        </row>
+        <spacer size="16"></spacer>
+        {% endif %}
+
+        {% if contact.SS_INDICE_SO2_LABEL %}
+        <row>
+          <columns small="4">
+            {% if contact.SS_INDICE_SO2_LABEL == "Bon" %}
+              <img class="float-right" src="assets/img/polluant-bon.png"  alt="Bon" />
+            {% endif %}
+            {% if contact.SS_INDICE_SO2_LABEL == "Moyen" %}
+              <img class="float-right" src="assets/img/polluant-moyen.png" alt="Moyen" />
+            {% endif %}
+            {% if contact.SS_INDICE_SO2_LABEL == "Dégradé" %}
+              <img class="float-right" src="assets/img/polluant-degrade.png" alt="Dégradé" />
+            {% endif %}
+            {% if contact.SS_INDICE_SO2_LABEL == "Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-mauvais.png" alt="Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_SO2_LABEL == "Très Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-tres-mauvais.png" alt="Très Mauvais" />
+            {% endif %}
+            {% if contact.SS_INDICE_SO2_LABEL == "Extrêmement Mauvais" %}
+              <img class="float-right" src="assets/img/polluant-extremement-mauvais.png" alt="Extrêmement Mauvais" />
+            {% endif %}
+          </columns>
+          <columns small="8">
+            <p>&nbsp;&nbsp;&nbsp;<a href="https://recosante.beta.gouv.fr/polluants/so2" class="small">Dioxyde de soufre SO2 <sup>(?)</sup></p>
+          </columns>
+        </row>
+        <spacer size="16">
+        {% endif %}
+
+        <spacer size="24"></spacer>
+
+        <p class="text-center">
+          \{{contact.RECOMMANDATION_QA|safe}}
+        </p>
+
+        <spacer size="24"></spacer>
+
+        <p class="text-center tiny">
+          Prévision pour le \{{contact.QUALITE_AIR_VALIDITE}}<br />à \{{contact.VILLE}}
+        </p>
+        <p class="text-center tiny">
+          L’indice peut être mis à jour à 14h,<br/><a href="https://recosante.beta.gouv.fr/place/\{{contact.VILLE_CODE}}/\{{contact.VILLE_SLUG}}">retrouvez-le ici.</a>
+        </p>
+        {% else %}
+        <p class="text-center">
+          L'indice de qualité de l'air à \{{contact.VILLE}} n'est pas disponible au moment de l'envoi de cet email.<br/><a href="https://recosante.beta.gouv.fr/place/\{{contact.VILLE_CODE}}/\{{contact.VILLE_SLUG}}">Retrouvez-le ici.</a>
+        {% endif %} 
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% endif %} 
+  {% if contact.SHOW_RAEP %}
+  <row>
+    <columns>
+      <callout class="warning">
+        <p class="no-margin text-center"><b>Risque d'allergie aux pollens</b></p>
+        <spacer size="16"></spacer>
+        <h2 class="text-center blue">\{{contact.RAEP}}</h2>
+        <spacer size="16"></spacer>
+       
+        <row><columns>
+        <table >
+          {% if contact.ALLERGENE_CYPRES %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/cupressacees">Cupressacées <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_CYPRES == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CYPRES == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CYPRES == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_CYPRES == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_CYPRES == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_NOISETIER %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/noisetier">Noisetier <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_NOISETIER == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_NOISETIER == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_NOISETIER == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_NOISETIER == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_NOISETIER == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_AULNE %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/aulne">Aulne <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_AULNE == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_AULNE == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_AULNE == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_AULNE == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_AULNE == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_PEUPLIER %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/peuplier">Peuplier <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_PEUPLIER == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PEUPLIER == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PEUPLIER == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_PEUPLIER == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_PEUPLIER == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_SAULE %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/saule">Saule <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_SAULE == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_SAULE == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_SAULE == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_SAULE == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_SAULE == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_FRENE %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/frene">Frêne <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_FRENE == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_FRENE == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_FRENE == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_FRENE == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_FRENE == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_CHARME %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/charme">Charme <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_CHARME == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHARME == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHARME == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHARME == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHARME == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_BOULEAU %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/bouleau">Bouleau <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_BOULEAU == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_BOULEAU == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_BOULEAU == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_BOULEAU == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_BOULEAU == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_PLATANE %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/platane">Platane <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_PLATANE == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLATANE == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLATANE == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLATANE == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLATANE == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_CHENE %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/chene">Chêne <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_CHENE == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHENE == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHENE == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHENE == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHENE == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_OLIVIER %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/olivier">Olivier <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_OLIVIER == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_OLIVIER == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_OLIVIER == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_OLIVIER == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_OLIVIER == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_TILLEUL %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/tilleul">Tilleul <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_TILLEUL == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_TILLEUL == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_TILLEUL == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_TILLEUL == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_TILLEUL == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_CHATAIGNER %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/chataignier">Châtaignier <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_CHATAIGNER == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHATAIGNER == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHATAIGNER == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHATAIGNER == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_CHATAIGNER == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_RUMEX %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/rumex">Rumex <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_RUMEX == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_RUMEX == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_RUMEX == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_RUMEX == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_RUMEX == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_GRAMINEES %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/graminees">Graminées <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_GRAMINEES == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_GRAMINEES == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_GRAMINEES == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_GRAMINEES == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_GRAMINEES == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_PLANTAIN %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/plantain">Plantain <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_PLANTAIN == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLANTAIN == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLANTAIN == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLANTAIN == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_PLANTAIN == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_URTICACEES %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/urticacees">Urticacées <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_URTICACEES == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_URTICACEES == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_URTICACEES == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_URTICACEES == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_URTICACEES == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_ARMOISES %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/armoises">Armoises <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_ARMOISES == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_ARMOISES == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_ARMOISES == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_ARMOISES == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_ARMOISES == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+          {% if contact.ALLERGENE_AMBROISIES %}
+          <tr>
+            <td><p class="text-right small black"><a href="https://recosante.beta.gouv.fr/pollens/ambroisies">Ambroisies <sup>(?)</sup></a>&nbsp;&nbsp;&nbsp;</p></td>
+            <td><spacer size="2"></spacer>
+              {% if contact.ALLERGENE_AMBROISIES == 1 %}
+                <img src="assets/img/tres-faible.png" alt="Très faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_AMBROISIES == 2 %}
+                <img src="assets/img/faible.png" alt="Faible" />
+              {% endif %}
+              {% if contact.ALLERGENE_AMBROISIES == 3 %}
+                <img src="assets/img/moyen.png" alt="Moyen" />
+              {% endif %}
+              {% if contact.ALLERGENE_AMBROISIES == 4 %}
+                <img src="assets/img/eleve.png" alt="Élevé" />
+              {% endif %}
+              {% if contact.ALLERGENE_AMBROISIES == 5 %}
+                <img src="assets/img/tres-eleve.png" alt="Très Élevé" />
+              {% endif %}
+            <spacer size="16"></td>
+          </tr>
+          {% endif %}
+        </table></columns></row>
+
+        <spacer size="24"></spacer>
+
+        <p class="text-center">
+          \{{contact.RECOMMANDATION_RAEP|safe}}
+        </p>
+
+        <spacer size="24"></spacer>
+        <p class="text-center tiny">
+          Prévision du \{{contact.RAEP_DEBUT_VALIDITE}} au \{{contact.RAEP_FIN_VALIDITE}}<br /> dans le département \{{contact.DEPARTEMENT}}
+        </p>
+     
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% endif %}
+  {% if contact.SHOW_VIGILANCE %}
+  <row>
+    <columns>
+      <callout class="warning">
+        <p class="no-margin text-center"><b>Vigilance météo</b></p>
+        <spacer size="16"></spacer>
+        <h2 class="text-center blue">\{{contact.VIGILANCE_LABEL}}</h2>
+        <spacer size="16"></spacer>
+        {% if contact.VIGILANCE_VENT_COULEUR == "Rouge" or contact.VIGILANCE_VENT_COULEUR == "Orange" or contact.VIGILANCE_VENT_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_VENT_COULEUR == "Rouge" %}
+            <img src="assets/img/vent_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_VENT_COULEUR == "Orange" %}
+            <img src="assets/img/vent_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_VENT_COULEUR == "Jaune" %}
+            <img src="assets/img/vent_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Vent violent</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_VENT_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_PLUIE_COULEUR == "Rouge" or contact.VIGILANCE_PLUIE_COULEUR == "Orange" or contact.VIGILANCE_PLUIE_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_PLUIE_COULEUR == "Rouge" %}
+            <img src="assets/img/pluie_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_PLUIE_COULEUR == "Orange" %}
+            <img src="assets/img/pluie_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_PLUIE_COULEUR == "Jaune" %}
+            <img src="assets/img/pluie_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Pluie-inondation</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_PLUIE_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_ORAGES_COULEUR == "Rouge" or contact.VIGILANCE_ORAGES_COULEUR == "Orange" or contact.VIGILANCE_ORAGES_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_ORAGES_COULEUR == "Rouge" %}
+            <img src="assets/img/orages_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_ORAGES_COULEUR == "Orange" %}
+            <img src="assets/img/orages_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_ORAGES_COULEUR == "Jaune" %}
+            <img src="assets/img/orages_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Orages</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_ORAGES_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_CRUES_COULEUR == "Rouge" or contact.VIGILANCE_CRUES_COULEUR == "Orange" or contact.VIGILANCE_CRUES_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_CRUES_COULEUR == "Rouge" %}
+            <img src="assets/img/crues_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_CRUES_COULEUR == "Orange" %}
+            <img src="assets/img/crues_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_CRUES_COULEUR == "Jaune" %}
+            <img src="assets/img/crues_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Crues</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_CRUES_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_NEIGE_COULEUR == "Rouge" or contact.VIGILANCE_NEIGE_COULEUR == "Orange" or contact.VIGILANCE_NEIGE_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_NEIGE_COULEUR == "Rouge" %}
+            <img src="assets/img/neige_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_NEIGE_COULEUR == "Orange" %}
+            <img src="assets/img/neige_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_NEIGE_COULEUR == "Jaune" %}
+            <img src="assets/img/neige_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Neige-verglas</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_NEIGE_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_CANICULE_COULEUR == "Rouge" or contact.VIGILANCE_CANICULE_COULEUR == "Orange" or contact.VIGILANCE_CANICULE_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_CANICULE_COULEUR == "Rouge" %}
+            <img src="assets/img/canicule_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_CANICULE_COULEUR == "Orange" %}
+            <img src="assets/img/canicule_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_CANICULE_COULEUR == "Jaune" %}
+            <img src="assets/img/canicule_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Canicules</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_CANICULE_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_FROID_COULEUR == "Rouge" or contact.VIGILANCE_FROID_COULEUR == "Orange" or contact.VIGILANCE_FROID_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_FROID_COULEUR == "Rouge" %}
+            <img src="assets/img/froid_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_FROID_COULEUR == "Orange" %}
+            <img src="assets/img/froid_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_FROID_COULEUR == "Jaune" %}
+            <img src="assets/img/froid_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Grand froid</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_FROID_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_AVALANCHES_COULEUR == "Rouge" or contact.VIGILANCE_AVALANCHES_COULEUR == "Orange" or contact.VIGILANCE_AVALANCHES_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_AVALANCHES_COULEUR == "Rouge" %}
+            <img src="assets/img/avalanche_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_AVALANCHES_COULEUR == "Orange" %}
+            <img src="assets/img/avalanche_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_AVALANCHES_COULEUR == "Jaune" %}
+            <img src="assets/img/avalanche_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Avalanches</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_AVALANCHES_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        {% if contact.VIGILANCE_VAGUES_COULEUR == "Rouge" or contact.VIGILANCE_VAGUES_COULEUR == "Orange" or contact.VIGILANCE_VAGUES_COULEUR == "Jaune" %}
+        <row>
+          <columns small="1">
+            {% if contact.VIGILANCE_VAGUES_COULEUR == "Rouge" %}
+            <img src="assets/img/vagues_rouge.png" alt="Rouge" />
+            {% endif %}
+            {% if contact.VIGILANCE_VAGUES_COULEUR == "Orange" %}
+            <img src="assets/img/vagues_orange.png" alt="Orange" />
+            {% endif %}
+            {% if contact.VIGILANCE_VAGUES_COULEUR == "Jaune" %}
+            <img src="assets/img/vagues_jaune.png" alt="Jaune" />
+            {% endif %}
+          </columns>
+          <columns small="11">
+            <p><strong>Vagues-submersion</strong></p>
+          </columns>
+        </row>
+        <p>
+          \{{contact.VIGILANCE_VAGUES_RECOMMANDATION|safe}}
+        </p>
+        {% endif %}
+
+        <spacer size="16"></spacer>
+
+        <p class="text-center">
+          \{{contact.VIGILANCE_GLOBALE_RECOMMANDATION|safe}}
+        </p>
+
+        <spacer size="24"></spacer>
+
+        <p class="text-center tiny">
+          Prévision du \{{contact.VIGILANCE_VALIDITE_DEBUT}} au \{{contact.VIGILANCE_VALIDITE_FIN}}<br />à \{{contact.VILLE}}
+        </p>
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% endif %}
+  {% if contact.SHOW_INDICE_UV %}
+  <row>
+    <columns>
+      <callout class="warning">
+        <p class="no-margin text-center"><b>Indice UV</b></p>
+        <spacer size="16"></spacer>
+        {% if contact.INDICE_UV_LABEL %}
+        <h2 class="text-center blue">\{{contact.INDICE_UV_LABEL}}</h2>
+        <spacer size="16"></spacer>
+        <p class="text-center">
+          \{{contact.RECOMMANDATION_INDICE_UV|safe}}
+        </p>
+        <spacer size="24"></spacer>
+        <p class="text-center tiny">
+          Prévision pour le \{{contact.INDICE_UV_VALIDITE}}<br />à \{{contact.VILLE}}
+        </p>
+        {% else %}
+        <p class="text-center">
+          L'indice UV à \{{contact.VILLE}} n'est pas disponible aujourd'hui.
+        </p>
+        {% endif %}
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  {% endif %}
+  <row>
+    <columns>
+      <callout class="warning">
+        <h3>Vous déménagez ou vous partez en vacances ?</h3>
+        <p>
+          Vous pouvez modifier à tout moment votre commune directement sur votre compte, ainsi que vos préférences d’envoi (choix des indicateurs environnementaux, fréquence, etc.). Vous pouvez aussi consulter les indicateurs de votre nouvelle commune sur le tableau de bord Recosanté.
+        </p>
+        <center>
+          <button
+            class="radius"
+            href="https://recosante.beta.gouv.fr/profil/?user=\{{contact.USER_UID}}&token=\{{contact.AUTH_TOKEN}}"
+          >
+            Modifier ma commune
+          </button>
+        </center>
+      </callout>
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+  <row>
+    <columns>
+      <h6 class="text-center blue">Partager Recosanté</h6>
+    </columns>
+  </row>
+  <spacer size="8"></spacer>
+  <row>
+    <columns small="5" large="5">
+      <a
+        href="mailto:?subject=Conna%C3%AEtre%20la%20qualit%C3%A9%20de%20l%E2%80%99environnement%20autour%20de%20toi%2C%20%C3%A7a%20t%E2%80%99int%C3%A9resse%20%3F&body=Gr%C3%A2ce%20%C3%A0%20Recosant%C3%A9%2C%20c'est%20possible%20et%20c'est%20tr%C3%A8s%20facile%20%3A%20tu%20peux%20d%C3%A9couvrir%20en%20un%20clic%20la%20qualit%C3%A9%20de%20l'air%2C%20le%20risque%20d'allergie%20aux%20pollens%2C%20les%20vigilances%20m%C3%A9t%C3%A9o%2C%20l'indice%20UV%2C%20etc.%2C%20dans%20ta%20commune%20!%0ASi%20tu%20le%20souhaites%2C%20tu%20peux%20m%C3%AAme%20t'abonner%20pour%20recevoir%20ces%20informations%20directement%20par%20mail%20ou%20par%20notification.%0AEn%20plus%20de%20%C3%A7a%2C%20Recosant%C3%A9%20te%20propose%20une%20newsletter%20hebdomadaire%20pour%20mieux%20comprendre%20le%20lien%20entre%20ton%20environnement%20et%20ta%20sant%C3%A9.%0APour%20t'inscrire%2C%20c'est%20gratuit%20et%20c'est%20ici%20%3A%20https%3A%2F%2Frecosante.beta.gouv.fr%2F%3Fmtm_source%3Dreferral"
+        ><img class="float-right" src="assets/img/mail.png"
+      /></a>
+    </columns>
+    <columns small="2"> </columns>
+    <columns small="5" large="5">
+      <a
+        href="https://wa.me/?text=Tu%20connais%20Recosant%C3%A9%20%3F%20C%E2%80%99est%20un%20service%20gratuit%20pour%20conna%C3%AEtre%20la%20qualit%C3%A9%20de%20l%E2%80%99environnement%20dans%20ta%20commune%20%3A%20qualit%C3%A9%20de%20l%E2%80%99air%2C%20risque%20d%E2%80%99allergie%20aux%20pollens%2C%20vigilances%20m%C3%A9t%C3%A9o%2C%20indice%20UV%2C%20etc.%20Tu%20peux%20consulter%20ces%20indicateurs%20environnementaux%20en%20ligne%20ou%20t%E2%80%99abonner%20pour%20les%20recevoir%20directement%20par%20mail%20ou%20par%20notification.%20En%20plus%20de%20%C3%A7a%2C%20tu%20peux%20choisir%20de%20recevoir%20tous%20les%20jeudis%20une%20newsletter%20sp%C3%A9ciale%20pour%20mieux%20comprendre%20les%20liens%20entre%20ta%20sant%C3%A9%20et%20ton%20environnement.%20Pour%20d%C3%A9couvrir%20Recosant%C3%A9%2C%20c%E2%80%99est%20ici%20%3A%20https%3A%2F%2Frecosante.beta.gouv.fr%2F%3Fmtm_source%3Dreferral"
+        ><img class="float-left" src="assets/img/whatsapp.png" / ></a
+      >
+    </columns>
+  </row>
+  <spacer size="40"></spacer>
+
+  <row>
+    <columns>
+      <img src="assets/img/logos.jpg" alt="République Française et Recosanté" />
+    </columns> 
+    <columns>
+      <p class="text-right tiny">
+        Les données sont fournies par
+        <br/>
+        <a class="black" href="\{{contact.LIEN_AASQA}}">\{{contact.NOM_AASQA}}</a>
+        <br />
+        {% if contact.POLLINARIUM_SENTINELLE %}
+          <a class="black" href="https://www.alertepollens.org/">Pollinariums sentinelles</a>
+          <br />
+        {% endif %}
+        <a  class="black" href="https://www.pollens.fr/">Le Réseau national de surveillance aérobiologique</a>
+        <br />
+        <a  class="black" href="https://meteofrance.com/">Météo-France</a>
+      </p>
+    </columns>
+  </row>
+  <row>
+    <p class="text-center tiny">
+      <a href="https://recosante.beta.gouv.fr/place/\{{contact.VILLE_CODE}}/\{{contact.VILLE_SLUG}}">Voir dans le navigateur</a>
+      <br/>
+      <a href="https://recosante.beta.gouv.fr/profil/?user=\{{contact.USER_UID}}&token=\{{contact.AUTH_TOKEN}}">Modifier mes préférences</a>
+      <br/>
+      <a href="https://recosante.beta.gouv.fr/donnees-personnelles">Gestion des données personnelles</a>
+    </p>
+  </row>
+</container>
+<spacer size="40"></spacer>

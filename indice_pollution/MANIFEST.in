@@ -1,0 +1,4 @@
+include alembic.ini
+include migrations/*.py
+include migrations/data/*
+include migrations/versions/*

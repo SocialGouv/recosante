@@ -1,0 +1,45 @@
+{% extends 'base_admin_form.html'%}
+
+{% block block_form %}
+{% scss "recommandations/css/list.scss" %}
+  <link href="{{ ASSET_URL }}" rel="stylesheet">
+{% endassets %}
+
+<div class="section">
+    <div class="container">
+        <a href="{{ url_for("recommandations.add")}}">Ajouter une recommandation</a>
+        <form class="search">
+        {{ render_field(form.search) }}
+        {{ render_field(form.categories)}}
+        {{ render_field(form.status)}}
+        {{ render_field(form.type)}}
+        <div class="input__group">
+            <input type="submit" value="Rechercher">
+            <a href="{{ url_for("recommandations.csv", **request.args.to_dict(flat=False)) }}" class="button">Export CSV</a>
+        </div>
+        </form>
+        <ul>
+            <h3>Résultat de la recherche</h3>
+            <p>{{ count }} recommandations</p>
+            {% for recommandation in recommandations %}
+            <li>
+                <details>
+                    <summary> {{ recommandation.recommandation }}</summary>
+                    <p> {{ recommandation.precisions}} </p>
+                </details>
+                <p>
+                {% for f in recommandation.filtres %}
+                <abbr title="{{ f[2] }}">{{ f[1] }}</span>
+                {% endfor %}
+                </p>
+                <a href="{{ url_for("recommandations.edit", id=recommandation.id, **request.args.to_dict(flat=False)) }}">Éditer</a>
+                <a href="{{ url_for("recommandations.remove", id=recommandation.id, **request.args.to_dict(flat=False)) }}">Supprimer</a>
+                <a href="{{ url_for("recommandations.details", id=recommandation.id, **request.args.to_dict(flat=False)) }}">Avis</a>
+            </li>
+        {% endfor %}
+
+        </ul>
+    </div>
+</div>
+
+{% endblock block_form %}

@@ -1,0 +1,27 @@
+{% extends 'base_form.html'%}
+{% block pre_form %}
+
+<div class="hero">
+      <div class="hero__container" role="banner">
+        <h1>Devenir testeur·se</h1>
+        <p>Pour recevoir des alertes personnalisées, nous vous invitons à répondre à un questionnaire sur votre vos habitudes, vos modes de déplacement, et votre santé.</p>
+      </div>
+</div>
+{% endblock pre_form %}
+
+{% block block_form %}
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    {{ render_field(form.mail, autofocus=form.mail.data == None) }}
+    {{ render_field(form.ville_entree, autofocus=form.mail.data != None, class_="ville-autocomplete" )}}
+    {{ render_field(form.ville_choices) }}
+    {{ render_field(form.rgpd) }}
+    <div class="form__group">
+        <button class="button" type="submit" id="submit">S'inscrire et personnaliser son profil</button>
+    </div>
+</form>
+
+{% rollupjs "inscription/js/autocomplete-ville.js" %}
+<script src="{{ ASSET_URL}}" type="application/javascript"></script>
+{% endassets %}
+{% endblock block_form %}

@@ -1,0 +1,3 @@
+# **Vous souffrez de problèmes de peau ou êtes sensible aux rayons du soleil ?**<br/>Recevez des recommandations pour vous protéger de ses impacts sur votre santé
+
+Grâce à Recosanté, recevez **chaque matin** ou seulement **en cas de vigilance**, et ce **gratuitement**, l’**indice UV** dans votre commune et des **recommandations** sur les gestes simples à adopter pour mieux vous protéger des rayons dangereux du soleil.

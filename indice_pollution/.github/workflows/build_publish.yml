@@ -1,0 +1,36 @@
+
+name: Publish Python 🐍 distributions 📦 to PyPi and TestPyPI 
+
+on: [push]
+
+jobs:
+  build-n-publish-test:
+    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@master
+      - run: git fetch --prune --unshallow --tags
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install setuptools-scm
+        run: pip install setuptools_scm
+      - name: Build package
+        run: python setup.py sdist
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - name: Publish distribution 📦 to Test PyPI
+        if: ${{ steps.extract_branch.outputs.branch  == 'master' }} || (github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags'))
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+      - name: Publish distribution 📦 to PyPI
+        if: github.ref == 'refs/heads/master'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          verbose: true

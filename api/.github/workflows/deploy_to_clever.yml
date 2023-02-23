@@ -1,0 +1,19 @@
+name: Deploy to clever cloud
+
+on:
+    push:
+        branches:
+            - main
+jobs:
+    deploy:
+        name: deploy-to-clever
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - run: git fetch --prune --unshallow
+            - uses: 47ng/actions-clever-cloud@v1
+              with:
+                  appID: ${{ secrets.CLEVER_APPID }}
+              env:
+                  CLEVER_TOKEN: ${{ secrets.CLEVER_TOKEN }}
+                  CLEVER_SECRET: ${{ secrets.CLEVER_SECRET }}

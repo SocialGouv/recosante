@@ -1,0 +1,118 @@
+{% extends "base_admin_form.html" %}
+
+{% block pre_form %}
+
+{% scss "recommandations/css/edit.scss" %}
+  <link href="{{ ASSET_URL }}" rel="stylesheet">
+{% endassets %}
+
+{% endblock pre_form %}
+
+{% block block_form %}
+{% if form.qa.errors %}
+<div class="notification error">
+    {{ form.qa.errors[0] }}
+</div>
+{% endif %}
+<div class="row centered_row">
+    <form method="POST" name="editForm">
+        {{ form.hidden_tag() }}
+        <div class="panel">
+            <h4 class="subtitle">Recommandation</h4>
+            {{ render_field(form.status) }}
+            {{ render_field(form.recommandation) }}
+            <div class="apercu">
+                <button class="button small button-apercu" data-id="recommandation">Apercu</button>
+                <div class="rendu modal"></div>
+            </div>
+            {{ render_field(form.precisions) }}
+            <div class="apercu">
+                <button class="button small button-apercu" data-id="precisions">Apercu</button>
+                <div class="rendu modal"></div>
+            </div>
+            {{ render_field(form.type_) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="pollens">
+            <h4 class="subtitle">Pollens</h4>
+            {{ render_field(form.min_raep) }}
+            {{ render_field(form.qa) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="episode_pollution">
+            <h4 class="subtitle">Polluants</h4>
+            {{ render_field(form.polluants) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="indice_atmo">
+            <h4 class="subtitle">Précisions pour l’indice ATMO</h4>
+            {{ render_field(form.saison) }}
+            {{ render_field(form.qa) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="radon">
+            <h4 class="subtitle">Précisions pour le potentiel radon</h4>
+            {{ render_field(form.potentiel_radon) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="vigilance_meteo">
+            <h4 class="subtitle">Précisions pour la vigilance météo</h4>
+            {{ render_field(form.vigilance_couleur_ids) }}
+            {{ render_field(form.vigilance_phenomene_ids) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="indice_uv">
+            <h4 class="subtitle">Indice UV</h4>
+            {{ render_field(form.min_indice_uv) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel" id="inscription">
+            <h4 class="subtitle">Inscription</h4>
+            {{ render_field(form.population) }}
+            {{ render_field(form.activites) }}
+            {{ render_field(form.deplacement) }}
+            {{ render_field(form.chauffage) }}
+            {{ render_field(form.animal_de_compagnie) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+        <div class="panel">
+            <h4 class="subtitle">Misc</h4>
+            {{ render_field(form.ordre) }}
+            {{ render_field(form.sources) }}
+            {{ render_field(form.categorie) }}
+            <div class="form__group">
+                <button class="button" type="submit" id="submit">{{ action }}</button>
+                <button class="button-outline primary raz">RàZ du panel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% rollupjs "recommandations/js/edit.js" %}
+<script src="{{ ASSET_URL}}"></script>
+{% endassets %}
+{% endblock block_form %}
