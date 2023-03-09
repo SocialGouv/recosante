@@ -1,0 +1,7 @@
+api: 
+  ~needs: [build-api, create-db]
+
+jobs:
+  runs:
+    create-db:
+      use: create-db
