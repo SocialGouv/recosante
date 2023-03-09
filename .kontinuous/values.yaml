@@ -1,0 +1,41 @@
+api: 
+  ~chart: app
+  ~needs: [build-api]
+  imagePackage: api
+  host: "api-{{ .Values.global.host }}"
+  probesPath: /healthz
+  containerPort: 3000
+  resources:
+    requests:
+      cpu: 0.2
+      memory: 256Mi
+    limits:
+      cpu: 1.5
+      memory: 2Gi
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgSecretName }}"
+    - secretRef:
+        name: api-sealed-secret
+  env:
+    - name: FLASK_APP
+      value: ecosante
+    - name: FLASK_DEBUG
+      value: "false"
+    - name: FLASK_ENV
+      value: dev
+    - name: DEBUG
+      value: "true"
+    - name: NODE_SASS_BIN
+      value: "./yarn-scss"
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
+
+jobs:
+  ~chart: jobs
+  runs:
+    build-api:
+      use: build
+      with:
+        imagePackage: api
+        context: api
