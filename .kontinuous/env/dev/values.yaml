@@ -5,3 +5,5 @@ jobs:
   runs:
     create-db:
       use: create-db
+      with:
+        useAzureFlex: 'true'
