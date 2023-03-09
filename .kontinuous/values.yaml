@@ -25,7 +25,7 @@ api:
     - name: FLASK_ENV
       value: dev
     - name: DEBUG
-      value: "false"
+      value: "true"
     - name: NODE_SASS_BIN
       value: "./yarn-scss"
     - name: SQLALCHEMY_DATABASE_URI
