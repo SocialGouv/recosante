@@ -12,17 +12,24 @@ api:
     limits:
       cpu: 1.5
       memory: 2Gi
-  # envFrom:
-  #   - secretRef:
-  #       name: "{{ .Values.global.pgSecretName }}"
-  #   - secretRef:
-  #       name: backend-sealed-secret
-  #   - configMapRef:
-  #       name: backend-configmap
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgSecretName }}"
+    - secretRef:
+        name: api-sealed-secret
   env:
-    - name: TZ
-      value: Europe/Paris
-
+    - name: FLASK_APP
+      value: ecosante
+    - name: FLASK_DEBUG
+      value: "false"
+    - name: FLASK_ENV
+      value: dev
+    - name: DEBUG
+      value: "false"
+    - name: NODE_SASS_BIN
+      value: "./yarn-scss"
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
 
 jobs:
   ~chart: jobs
@@ -31,4 +38,4 @@ jobs:
       use: build
       with:
         imagePackage: api
-        dockerfile: api/Dockerfile
+        context: api
