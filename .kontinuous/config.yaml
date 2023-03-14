@@ -1,4 +1,5 @@
 projectName: recosante
+ciNamespace: ci-reconsante
 dependencies:
   fabrique:
     import: socialgouv/kontinuous/plugins/fabrique
