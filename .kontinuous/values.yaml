@@ -33,7 +33,7 @@ api:
 
 frontend:
   ~chart: app
-  ~needs: [build-frontend, api]
+  ~needs: [build-frontend]
   imagePackage: frontend
   host: "{{ .Values.global.host }}"
   containerPort: 8080
