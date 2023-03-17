@@ -1,8 +1,8 @@
 api:
   ~needs: [build-api, create-db]
 
-indice_pollution:
-  ~needs: [build-indice_pollution, create-db]
+indice:
+  ~needs: [build-indice, create-db]
 
 jobs:
   runs:

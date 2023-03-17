@@ -1,6 +1,6 @@
 api:
   ~chart: app
-  ~needs: [build-api, indice_pollution]
+  ~needs: [build-api, indice]
   imagePackage: api
   host: "api-{{ .Values.global.host }}"
   probesPath: /healthz
@@ -45,9 +45,9 @@ frontend:
       cpu: 0.5
       memory: 256Mi
 
-indice_pollution:
+indice:
   ~chart: app
-  ~needs: [build-indice_pollution, redis]
+  ~needs: [build-indice, redis]
   ingress:
     enabled: false
   envFrom:
@@ -72,10 +72,10 @@ jobs:
       with:
         imagePackage: api
         context: api
-    build-indice_pollution:
+    build-indice:
       use: build
       with:
-        imagePackage: indice_pollution
+        imagePackage: indice
         context: indice_pollution
     build-frontend:
       use: build
