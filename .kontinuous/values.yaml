@@ -49,6 +49,7 @@ indice:
   ~chart: app
   ~needs: [build-indice, redis]
   imagePackage: indice
+  probesPath: /healthz
   ingress:
     enabled: false
   envFrom:
