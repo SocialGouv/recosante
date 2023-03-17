@@ -51,6 +51,10 @@ indice:
   imagePackage: indice
   probesPath: /healthz
   containerPort: 8080
+  startupProbe: # necessary for initial data migration
+    initialDelaySeconds: 60
+    failureThreshold: 30
+    periodSeconds: 20
   ingress:
     enabled: false
   envFrom:
