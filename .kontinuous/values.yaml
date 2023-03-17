@@ -48,6 +48,7 @@ frontend:
 indice:
   ~chart: app
   ~needs: [build-indice, redis]
+  imagePackage: indice
   ingress:
     enabled: false
   envFrom:
