@@ -54,7 +54,7 @@ indice_pollution:
     - secretRef:
         name: "{{ .Values.global.pgSecretName }}"
     - secretRef:
-        name: indice_pollution-sealed-secret
+        name: indice-sealed-secret
   env:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
