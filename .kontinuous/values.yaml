@@ -50,6 +50,7 @@ indice:
   ~needs: [build-indice, redis]
   imagePackage: indice
   probesPath: /healthz
+  containerPort: 8080
   ingress:
     enabled: false
   envFrom:
