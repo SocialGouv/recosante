@@ -9,5 +9,5 @@ dependencies:
           importSecrets:
             options:
               secrets:
-                pg-admin-user:
+                azure-pg-admin:
                   from: azure-pg-admin
