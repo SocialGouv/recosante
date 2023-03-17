@@ -37,7 +37,6 @@ exports.sourceNodes = async ({
     });
 
 exports.createPages = ({ graphql, actions: { createPage } }) => {
-  console.error("GATSBY_API_BASE_URL", process.env.GATSBY_API_BASE_URL);
   const articles = graphql(
     `
       {
