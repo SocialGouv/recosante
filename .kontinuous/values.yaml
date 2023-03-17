@@ -4,7 +4,7 @@ api:
   imagePackage: api
   host: "api-{{ .Values.global.host }}"
   probesPath: /healthz
-  containerPort: 3000
+  containerPort: 5000
   resources:
     requests:
       cpu: 0.1
