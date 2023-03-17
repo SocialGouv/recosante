@@ -10,3 +10,4 @@ jobs:
       use: create-db
       with:
         useAzureFlex: "true"
+        pgAdminUserSecretRefName: azure-pg-admin
