@@ -7,8 +7,8 @@ api:
   containerPort: 3000
   resources:
     requests:
-      cpu: 0.2
-      memory: 256Mi
+      cpu: 0.1
+      memory: 128Mi
     limits:
       cpu: 1.5
       memory: 2Gi
@@ -37,6 +37,33 @@ frontend:
   imagePackage: frontend
   host: "{{ .Values.global.host }}"
   containerPort: 8080
+  resources:
+    requests:
+      cpu: 0.05
+      memory: 64Mi
+    limits:
+      cpu: 0.5
+      memory: 256Mi
+
+indice_pollution:
+  ~chart: app
+  ~needs: [build-indice_pollution]
+  ingress:
+    enabled: false
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgSecretName }}"
+    - secretRef:
+        name: indice_pollution-sealed-secret
+  env:
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
+
+redis:
+  ~chart: redis
+  enabled: true
+  ingress:
+    enabled: false
 
 jobs:
   runs:
@@ -45,6 +72,11 @@ jobs:
       with:
         imagePackage: api
         context: api
+    build-indice_pollution:
+      use: build
+      with:
+        imagePackage: indice_pollution
+        context: indice_pollution
     build-frontend:
       use: build
       with:

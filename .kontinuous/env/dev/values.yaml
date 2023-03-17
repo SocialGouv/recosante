@@ -1,9 +1,12 @@
-api: 
+api:
   ~needs: [build-api, create-db]
+
+indice_pollution:
+  ~needs: [build-indice_pollution, create-db]
 
 jobs:
   runs:
     create-db:
       use: create-db
       with:
-        useAzureFlex: 'true'
+        useAzureFlex: "true"
