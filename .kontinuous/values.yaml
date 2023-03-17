@@ -52,7 +52,7 @@ indice:
   probesPath: /healthz
   containerPort: 8080
   startupProbe: # necessary for initial data migration
-    initialDelaySeconds: 600
+    initialDelaySeconds: 900
     failureThreshold: 30
     periodSeconds: 20
     httpGet: # tmp until https://github.com/SocialGouv/kontinuous/pull/249
