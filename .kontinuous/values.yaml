@@ -1,3 +1,6 @@
+global:
+  rancherProjectId: c-gjtkk:p-tw9xg
+
 api:
   ~chart: app
   ~needs: [build-api]
