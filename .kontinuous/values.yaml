@@ -1,9 +1,6 @@
-global:
-  rancherProjectId: c-gjtkk:p-tw9xg
-
 api:
   ~chart: app
-  ~needs: [build-api]
+  ~needs: [build-api, indice_pollution]
   imagePackage: api
   host: "api-{{ .Values.global.host }}"
   probesPath: /healthz
@@ -36,7 +33,7 @@ api:
 
 frontend:
   ~chart: app
-  ~needs: [build-frontend]
+  ~needs: [build-frontend, api]
   imagePackage: frontend
   host: "{{ .Values.global.host }}"
   containerPort: 8080
@@ -50,7 +47,7 @@ frontend:
 
 indice_pollution:
   ~chart: app
-  ~needs: [build-indice_pollution]
+  ~needs: [build-indice_pollution, redis]
   ingress:
     enabled: false
   envFrom:
