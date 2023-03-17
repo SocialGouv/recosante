@@ -1,4 +1,4 @@
-api: 
+api:
   ~chart: app
   ~needs: [build-api]
   imagePackage: api
@@ -31,11 +31,27 @@ api:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
 
+frontend:
+  ~chart: app
+  ~needs: [build-frontend]
+  imagePackage: frontend
+  host: "{{ .Values.global.host }}"
+  containerPort: 8080
+
 jobs:
-  ~chart: jobs
   runs:
     build-api:
       use: build
       with:
         imagePackage: api
         context: api
+    build-frontend:
+      use: build
+      with:
+        imagePackage: frontend
+        context: frontend
+        buildArgs:
+          GATSBY_API_BASE_URL: "api-{{ .Values.global.host }}"
+          GATSBY_IFRAME_ID: some-id
+          GATSBY_URL: "{{ .Values.global.host }}"
+          GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante
