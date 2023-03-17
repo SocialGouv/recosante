@@ -1,4 +1,4 @@
-const axios = require(`axios`)
+const axios = require(`axios`);
 
 exports.sourceNodes = async ({
   actions: { createNode },
@@ -6,8 +6,8 @@ exports.sourceNodes = async ({
 }) =>
   axios
     .get(
-      `${process.env.GATSBY_API_BASE_URL ||
-      'https://api.recosante.beta.gouv.fr'
+      `${
+        process.env.GATSBY_API_BASE_URL || "https://api.recosante.beta.gouv.fr"
       }/_application_server_key`
     )
     .then((res) => res.data)
@@ -31,12 +31,13 @@ exports.sourceNodes = async ({
         children: [],
         internal: {
           type: `ApplicationServerKey`,
-          contentDigest: createContentDigest('12'),
+          contentDigest: createContentDigest("12"),
         },
-      })
-    })
+      });
+    });
 
 exports.createPages = ({ graphql, actions: { createPage } }) => {
+  console.error("GATSBY_API_BASE_URL", process.env.GATSBY_API_BASE_URL);
   const articles = graphql(
     `
       {
@@ -51,18 +52,19 @@ exports.createPages = ({ graphql, actions: { createPage } }) => {
     `
   ).then((result) => {
     if (result.errors) {
-      Promise.reject(result.errors)
+      Promise.reject(result.errors);
     }
     result.data.allMdx.edges.forEach((article) => {
       createPage({
         path: `articles/${article.node.slug}`,
-        component: require.resolve('./src/templates/article.js'),
+        component: require.resolve("./src/templates/article.js"),
         context: {
           slug: article.node.slug,
         },
-      })
-    })
-  })
+      });
+    });
+  });
+
   const pages = graphql(
     `
       {
@@ -77,22 +79,22 @@ exports.createPages = ({ graphql, actions: { createPage } }) => {
     `
   ).then((result) => {
     if (result.errors) {
-      Promise.reject(result.errors)
+      Promise.reject(result.errors);
     }
     result.data.allMdx.edges.forEach((post) => {
       createPage({
         path: `${post.node.slug}`,
-        component: require.resolve('./src/templates/page.js'),
+        component: require.resolve("./src/templates/page.js"),
         context: {
           slug: post.node.slug,
         },
-      })
-    })
-  })
-  const { formatPlaceUrl } = require('./src/utils/formatPlaceUrl')
+      });
+    });
+  });
+  const { formatPlaceUrl } = require("./src/utils/formatPlaceUrl");
   const places = axios
     .get(
-      'https://geo.api.gouv.fr/communes/?fields=departement,codesPostaux,population'
+      "https://geo.api.gouv.fr/communes/?fields=departement,codesPostaux,population"
     )
     .then((res) => res.data)
     .then((res) =>
@@ -100,26 +102,26 @@ exports.createPages = ({ graphql, actions: { createPage } }) => {
         place.departement &&
           createPage({
             path: formatPlaceUrl(place),
-            component: require.resolve('./src/templates/place.js'),
+            component: require.resolve("./src/templates/place.js"),
             context: { place },
             defer: place.population < 20000,
-          })
+          });
       })
-    )
+    );
   const recommandations = axios
     .get(
-      `${process.env.GATSBY_API_BASE_URL ||
-      'https://api.recosante.beta.gouv.fr'
+      `${
+        process.env.GATSBY_API_BASE_URL || "https://api.recosante.beta.gouv.fr"
       }/v1/recommandations`
     )
     .then((res) => res.data)
     .then((res) => {
       createPage({
         path: `/recommandations`,
-        component: require.resolve('./src/templates/recommandations.js'),
-        context: { recommandations: res},
-      })
-    })
+        component: require.resolve("./src/templates/recommandations.js"),
+        context: { recommandations: res },
+      });
+    });
 
-  return Promise.all([articles, pages, places, recommandations])
-}
+  return Promise.all([articles, pages, places, recommandations]);
+};
