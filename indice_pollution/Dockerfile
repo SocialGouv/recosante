@@ -10,9 +10,10 @@ RUN pip install -r requirements.txt
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN chown -R guest:nogroup /code
+RUN adduser -DH -u 1000 app
+RUN chown -R app:app /code
 RUN chmod +x startup.sh
 
-USER 405 # guest
+USER 1000
 
 CMD ["./startup.sh"]
