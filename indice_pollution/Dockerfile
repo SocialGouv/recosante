@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN chown -R guest:guest /code
+RUN chown -R guest:nogroup /code
 RUN chmod +x startup.sh
 
 USER 405 # guest
