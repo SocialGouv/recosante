@@ -6,7 +6,8 @@ WORKDIR /code/
 RUN apk add cargo
 RUN pip install --upgrade pip
 
-RUN pip install -r requirements.txt
+RUN pip install python-dotenv
+RUN pip install -e .
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
