@@ -11,3 +11,5 @@ dependencies:
               secrets:
                 azure-pg-admin:
                   from: azure-pg-admin
+                  env: dev
+                  required: true
