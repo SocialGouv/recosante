@@ -6,38 +6,46 @@ from .autocomplete import autocomplete as autocomplete_
 import pytz
 from dateutil import parser
 
-@current_app.route('/forecast')
+
+@current_app.route("/forecast")
 def forecast():
-    insee = request.args.get('insee')
-    zone = pytz.timezone('Europe/Paris')
-    date_ = request.args.get('date')
+    insee = request.args.get("insee")
+    zone = pytz.timezone("Europe/Paris")
+    date_ = request.args.get("date")
 
     try:
         result = forecast_(insee, date_)
     except KeyError as e:
-        current_app.logger.error(f'INSEE {insee} not found')
+        current_app.logger.error(f"INSEE {insee} not found")
         current_app.logger.error(e)
         abort(404)
 
     return jsonify(result)
 
-@current_app.route('/episodes')
+
+@current_app.route("/episodes")
 def episodes():
-    insee = request.args.get('insee')
-    zone = pytz.timezone('Europe/Paris')
-    date_ = request.args.get('date') or str(datetime.now(tz=zone).date().isoformat())
+    insee = request.args.get("insee")
+    zone = pytz.timezone("Europe/Paris")
+    date_ = request.args.get("date") or str(datetime.now(tz=zone).date().isoformat())
 
     try:
         result = episodes_(insee, date_)
     except KeyError as e:
-        current_app.logger.error(f'INSEE {insee} not found')
+        current_app.logger.error(f"INSEE {insee} not found")
         current_app.logger.error(e)
         abort(404)
 
     return jsonify(result)
 
-@current_app.route('/autocomplete')
+
+@current_app.route("/autocomplete")
 def autocomplete():
-    q = request.args.get('q')
+    q = request.args.get("q")
 
     return jsonify(autocomplete_(q))
+
+
+@current_app.route("/healthz")
+def healthz():
+    return jsonify({"ready": True})
