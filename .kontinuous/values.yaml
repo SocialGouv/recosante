@@ -84,7 +84,7 @@ jobs:
         imagePackage: frontend
         context: frontend
         buildArgs:
-          GATSBY_API_BASE_URL: "api-{{ .Values.global.host }}"
+          GATSBY_API_BASE_URL: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
           GATSBY_IFRAME_ID: some-id
           GATSBY_URL: "{{ .Values.global.host }}"
           GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante
