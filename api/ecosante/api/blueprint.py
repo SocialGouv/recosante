@@ -236,3 +236,10 @@ def batch():
             first = False
         yield ']'
     return Response(stream_with_context(iter()))
+
+@registry.handles(
+    rule='/healthz',
+    method='GET',
+)
+def healthz():
+    return { "ready": True }

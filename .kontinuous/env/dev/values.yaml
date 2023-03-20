@@ -1,9 +1,12 @@
-api: 
+api:
   ~needs: [build-api, create-db]
+
+indice:
+  ~needs: [build-indice, create-db]
 
 jobs:
   runs:
     create-db:
       use: create-db
       with:
-        useAzureFlex: 'true'
+        useAzureFlex: "true"

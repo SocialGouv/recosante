@@ -1,5 +1,3 @@
-
-
 name: 👓 Review Auto
 on:
   push:
@@ -15,5 +13,5 @@ concurrency:
 jobs:
   kontinuous:
     name: "Deploy on Kubernetes 🐳"
-    uses: socialgouv/workflows/.github/workflows/use-ks-gh-review-auto.yaml@master
+    uses: socialgouv/workflows/.github/workflows/use-ks-gh-review-auto.yaml@v1
     secrets: inherit

@@ -1,5 +1,5 @@
-projectName: recosante
-ciNamespace: ci-reconsante
+ciNamespace: ci-recosante
+
 dependencies:
   fabrique:
     import: socialgouv/kontinuous/plugins/fabrique
@@ -11,3 +11,5 @@ dependencies:
               secrets:
                 pg-admin-user:
                   from: azure-pg-admin
+                  env: dev
+                  required: true
