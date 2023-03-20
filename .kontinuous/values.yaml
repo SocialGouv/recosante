@@ -55,9 +55,6 @@ indice:
     initialDelaySeconds: 900
     failureThreshold: 30
     periodSeconds: 20
-    httpGet: # tmp until https://github.com/SocialGouv/kontinuous/pull/249
-      path: /healthz
-      port: http
   ingress:
     enabled: false
   envFrom:
