@@ -9,7 +9,7 @@ dependencies:
           importSecrets:
             options:
               secrets:
-                azure-pg-admin:
+                pg-admin-user:
                   from: azure-pg-admin
                   env: dev
                   required: true
