@@ -36,7 +36,8 @@ DEPENDENCIES = [
     'cryptography',
     'python-jose[cryptography]',
     'Werkzeug',
-    'sqlalchemy<2'
+    'sqlalchemy<2',
+    'uwsgi==2.0.21'
 ]
 
 class CustomPsycopg2Install(install):
