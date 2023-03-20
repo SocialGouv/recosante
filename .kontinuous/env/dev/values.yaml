@@ -9,6 +9,7 @@ flower:
   ~chart: app
   image: mher/flower:1.2
   containerPort: 5555
+  probesPath: /dashboard
   envFrom:
     - secretRef:
         name: flower-sealed-secret
@@ -19,6 +20,8 @@ flower:
       value: redis://redis:80
     - name: CELERY_TIMEZONE
       value: Europe/Paris
+    - name: FLOWER_PORT
+      value: "5555"
 
 jobs:
   runs:
