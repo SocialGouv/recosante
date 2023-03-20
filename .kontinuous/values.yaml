@@ -49,7 +49,7 @@ indice:
   ~chart: app
   ~needs: [build-indice, redis]
   imagePackage: indice
-  probesPath: /healthz
+  probesPath: /
   containerPort: 8080
   startupProbe: # necessary for initial data migration
     initialDelaySeconds: 900

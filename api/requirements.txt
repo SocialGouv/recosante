@@ -1,3 +1,4 @@
 .
 celery
+uwsgi==2.0.21
 git+https://github.com/jeancochrane/pytest-flask-sqlalchemy@master#egg=pytest-flask-sqlalchemy
