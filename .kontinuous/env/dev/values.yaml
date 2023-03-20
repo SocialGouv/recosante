@@ -11,7 +11,7 @@ flower:
   containerPort: 8080
   envFrom:
     - secretRef:
-        name: flower-sealed-seacret
+        name: flower-sealed-secret
   env:
     - name: CELERY_BROKER_URL
       value: http://redis:80
