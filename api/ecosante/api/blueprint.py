@@ -237,9 +237,6 @@ def batch():
         yield ']'
     return Response(stream_with_context(iter()))
 
-@registry.handles(
-    rule='/healthz',
-    method='GET',
-)
+@current_app.route('/healthz')
 def healthz():
     return { "ready": True }
