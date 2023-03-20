@@ -8,19 +8,17 @@ flower:
   ~needs: [redis]
   ~chart: app
   image: mher/flower:1.2
-  containerPort: 8080
+  containerPort: 5555
   envFrom:
     - secretRef:
         name: flower-sealed-secret
   env:
     - name: CELERY_BROKER_URL
-      value: http://redis:80
+      value: redis://redis:80
     - name: CELERY_RESULT_BACKEND
-      value: http://redis:80
+      value: redis://redis:80
     - name: CELERY_TIMEZONE
       value: Europe/Paris
-    - name: PORT
-      value: "8080"
 
 jobs:
   runs:
