@@ -1,4 +1,4 @@
-FROM python:3.10-alpine3.16
+FROM python:3.8-alpine3.16
 
 ADD . /code/
 WORKDIR /code/
