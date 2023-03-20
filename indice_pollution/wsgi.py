@@ -1,6 +1,3 @@
-from indice_pollution import create_app
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [b"Hello World"]
