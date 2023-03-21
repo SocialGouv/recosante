@@ -1,18 +1,13 @@
-FROM python:3.8-alpine3.16
+FROM python:3.8
 
-ADD . /code/
-WORKDIR /code/
+RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
 
-RUN apk add cargo
-RUN pip install --upgrade pip
+WORKDIR /code
 
-RUN pip install python-dotenv
+ADD requirements.txt setup.cfg setup.py .
 RUN pip install -e .
 
-ENV PIP_ROOT_USER_ACTION=ignore
-
-RUN adduser -DH -u 1000 app
-RUN chown -R app:app /code
+ADD . .
 RUN chmod +x startup.sh
 
 USER 1000
