@@ -1,4 +1,5 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs19
+FROM nikolaik/python-nodejs:python3.8-nodejs18
+
 RUN apt update \
     && apt install -y --no-install-recommends locales \
     && rm -rf /var/lib/apt/lists/* \
@@ -10,13 +11,15 @@ WORKDIR /code
 ADD package.json yarn.lock .
 RUN yarn install
 ADD requirements.txt setup.cfg setup.py .
-RUN pip install -e .[test]
+RUN pip install -e .[test] 
 
 ADD . .
 RUN chmod +x startup.sh
 RUN chmod +x startup_tests.sh
 
-ENV PIP_ROOT_USER_ACTION=ignore
-EXPOSE 8080
+USER 1000
 
 CMD ["./startup.sh"]
+
+
+# TODO: optimize docker image size using python virtualenv with docker multistage image like in https://www.nannyml.com/blog/three-things-i-learned-whilst-containerizing-a-python-api
