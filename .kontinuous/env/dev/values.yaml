@@ -9,7 +9,7 @@ flower:
   ~chart: app
   image: mher/flower:1.2
   containerPort: 5555
-  probesPath: /dashboard
+  probesPath: /healthcheck
   envFrom:
     - secretRef:
         name: flower-sealed-secret
