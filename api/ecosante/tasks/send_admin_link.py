@@ -1,7 +1,7 @@
 import sib_api_v3_sdk
 from ecosante.extensions import celery, sib, admin_authenticator
 from sib_api_v3_sdk.rest import ApiException
-from flask import url_for, current_app
+from flask import url_for
 from celery.utils.log import get_task_logger
 
 logger = get_task_logger(__name__)
@@ -15,7 +15,7 @@ def send_admin_link(email):
 
     token = admin_authenticator.make_token(email)
     email_api = sib_api_v3_sdk.TransactionalEmailsApi(sib)
-    authentication_link = current_app.config["ROOT_URL"] + "/" + url_for("pages.authenticate", token=token)
+    authentication_link = url_for("pages.authenticate", _external=True, token=token)
     logger.info(f"Admin link: {authentication_link}")
     try:
         email_api.send_transac_email(
