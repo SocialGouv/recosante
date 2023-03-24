@@ -13,6 +13,6 @@ jobs:
         useAzureFlex: "true"
     seed-db:
       use: seed-db
-      needs: [create-db]
+      needs: [indice]
       with:
         seedPath: ./api/seed-public_recommandations.sql
