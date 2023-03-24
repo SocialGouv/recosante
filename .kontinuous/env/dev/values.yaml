@@ -1,5 +1,5 @@
 api:
-  ~needs: [build-api, create-db]
+  ~needs: [build-api, create-db, seed-db]
 
 indice:
   ~needs: [build-indice, create-db]
@@ -29,3 +29,8 @@ jobs:
       use: create-db
       with:
         useAzureFlex: "true"
+    seed-db:
+      use: seed-db
+      needs: [create-db]
+      with:
+        seedPath: ./api/seed-public_recommandations.sql
