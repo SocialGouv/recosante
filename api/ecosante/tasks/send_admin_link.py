@@ -15,7 +15,7 @@ def send_admin_link(email):
 
     token = admin_authenticator.make_token(email)
     email_api = sib_api_v3_sdk.TransactionalEmailsApi(sib)
-    authentication_link = current_app.config["ROOT_URL"] + "/" + url_for("pages.authenticate", token=token, _external=False)
+    authentication_link = current_app.config["ROOT_URL"] + "/" + url_for("pages.authenticate", token=token)
     logger.info(f"Admin link: {authentication_link}")
     try:
         email_api.send_transac_email(

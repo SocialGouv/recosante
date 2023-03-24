@@ -422,11 +422,11 @@ class Newsletter:
         if not self.polluants:
             return
         population = "vulnerable" if self.inscription.personne_sensible else "generale"
-        return current_app.config["ROOT_URL"] + "/" + url_for(
+        return url_for(
             "pages.recommandation_episode_pollution",
             population=population,
             polluants=self.polluants_symbols,
-            _external=False,
+            _external=True
         )
 
     @staticmethod
