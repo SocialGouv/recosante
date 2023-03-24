@@ -30,7 +30,9 @@ api:
       value: "./yarn-scss"
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
-
+    - name: SERVER_NAME
+      value: "api-{{ .Values.global.host }}"
+      
 frontend:
   ~chart: app
   ~needs: [build-frontend]
