@@ -51,10 +51,6 @@ indice:
   imagePackage: indice
   probesPath: /
   containerPort: 8080
-  startupProbe: # necessary for initial data migration
-    initialDelaySeconds: 900
-    failureThreshold: 30
-    periodSeconds: 20
   ingress:
     enabled: false
   envFrom:

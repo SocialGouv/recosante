@@ -8,8 +8,7 @@ ADD requirements.txt setup.cfg setup.py .
 RUN pip install -e .
 
 ADD . .
-RUN chmod +x startup.sh
 
 USER 1000
 
-CMD ["./startup.sh"]
+CMD ["./start_all.sh"]
