@@ -50,6 +50,7 @@ class AdminForm(BaseForm):
 
 @bp.route('/admin_login/', methods=['GET', 'POST'], strict_slashes=False)
 def admin_login():
+    app.logger.info('Headers: %s', request.headers)
     form = AdminForm()
     if request.method == 'GET':
         return render_template("admin_login.html", form=form)
