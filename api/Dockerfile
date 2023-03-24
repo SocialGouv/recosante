@@ -14,8 +14,6 @@ ADD requirements.txt setup.cfg setup.py .
 RUN pip install -e .[test] 
 
 ADD . .
-RUN chmod +x startup.sh
-RUN chmod +x startup_tests.sh
 RUN chown -R 1000:1000 /code 
 
 USER 1000
