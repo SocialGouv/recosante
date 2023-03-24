@@ -74,6 +74,27 @@ redis:
   ingress:
     enabled: false
 
+flower:
+  ~needs: [redis]
+  ~chart: app
+  image: mher/flower:1.2
+  containerPort: 5555
+  probesPath: /healthcheck
+  ingress:
+    enabled: false
+  envFrom:
+    - secretRef:
+        name: flower-sealed-secret
+  env:
+    - name: CELERY_BROKER_URL
+      value: redis://redis:80
+    - name: CELERY_RESULT_BACKEND
+      value: redis://redis:80
+    - name: CELERY_TIMEZONE
+      value: Europe/Paris
+    - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
+      value: "5555"
+
 jobs:
   runs:
     build-api:
