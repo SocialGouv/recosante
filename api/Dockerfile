@@ -21,7 +21,7 @@ RUN chown -R 1000:1000 /code
 USER 1000
 
 
-CMD ["./startup.sh"]
+CMD ["./start_all.sh"]
 
 
 # TODO: optimize docker image size using python virtualenv with docker multistage image like in https://www.nannyml.com/blog/three-things-i-learned-whilst-containerizing-a-python-api
