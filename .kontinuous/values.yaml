@@ -22,8 +22,8 @@ api:
       value: ecosante
     - name: FLASK_DEBUG
       value: "false"
-    - name: FLASK_ENV
-      value: dev
+    # - name: FLASK_ENV
+    #   value: dev
     - name: DEBUG
       value: "true"
     - name: NODE_SASS_BIN
