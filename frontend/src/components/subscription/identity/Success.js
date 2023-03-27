@@ -29,7 +29,7 @@ const Wrapper = styled.div`
     padding: 1rem 1rem 0;
   }
 `
-const Title = styled.h3`
+const Title = styled.h1`
   max-width: 31.5rem;
   margin: 0 auto;
   font-size: 2.5rem;

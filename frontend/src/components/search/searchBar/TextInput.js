@@ -19,7 +19,7 @@ const Input = styled.input`
 
   &::placeholder {
     color: ${(props) => props.theme.colors.text};
-    opacity: 0.4;
+    opacity: 0.8;
   }
   &:focus {
     outline: none;
@@ -64,6 +64,7 @@ export default React.forwardRef(function TextInput(props, ref) {
       <Input
         ref={ref}
         type='text'
+        title={props.placeholder || 'Entrez votre ville'}
         placeholder={props.placeholder || 'Entrez votre ville'}
         value={props.search}
         onChange={(e) => props.setSearch(e.target.value)}
@@ -80,6 +81,7 @@ export default React.forwardRef(function TextInput(props, ref) {
       <Submit
         visible={props.suggestion && props.suggestionVisible && props.search}
         setFocus={props.setFocus}
+        aria-label={'Valider cette ville'}
       />
       <Geoloc
         visible={!(props.suggestion && props.suggestionVisible && props.search)}

@@ -7,7 +7,7 @@ import Section from 'components/base/Section'
 
 export default function Page(props) {
   return (
-    <Web>
+    <Web title={props.data.mdx.frontmatter.title}>
       <Section first medium>
         <h1
           dangerouslySetInnerHTML={{

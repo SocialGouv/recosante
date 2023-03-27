@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
+import { useLocation } from '@reach/router'
 
 import EpisodePollution from './header/EpisodePollution'
 import Select from 'components/base/FancySelect'
@@ -72,7 +73,13 @@ const ButtonWrapper = styled.div`
 `
 
 export default function Header(props) {
-  const today = new Date()
+  const location = useLocation()
+  const params = new URLSearchParams(location.search);
+  const dateParam = params.get('date')
+  let today = new Date()
+  if (dateParam) {
+    today = new Date(dateParam)
+  }
   const tomorrow = new Date(today)
   tomorrow.setDate(tomorrow.getDate() + 1)
   const formatDateLabel = (date) => {
@@ -97,6 +104,9 @@ export default function Header(props) {
     { value: tomorrowValue, label: formatDateLabel(tomorrow) }
   ]
   const date = (props.date === tomorrowValue) ? tomorrowValue : todayValue
+  useEffect(() => {
+    dateParam && props.setDate(date)
+  }, [dateParam, props, date])
   const changeDate = (date) => {
     props.setDate(date)
     window?._paq?.push(['trackEvent', 'Search', 'DateChange'])
@@ -112,9 +122,10 @@ export default function Header(props) {
               fancy
               value={date}
               onChange={(value) => {
-                changeDate(value !== todayValue && value)
+                changeDate((dateParam || value !== todayValue) && value)
               }}
               options={options}
+              title='Changer la date'
             />
           </DateWrapper>
         </Title>
@@ -130,7 +141,7 @@ export default function Header(props) {
           <Button
             hollow={date !== todayValue}
             onClick={() => {
-              changeDate(false)
+              changeDate(dateParam && todayValue)
             }}>
             Aujourd’hui
           </Button>

@@ -24,7 +24,7 @@ const Wrapper = styled.div``
 const Fullscreen = styled.div`
   min-height: ${(props) => (props.iframe ? 'auto' : '100vh')};
 `
-const Content = styled.div`
+const Content = styled.main`
   flex: 1;
   padding: 0 1rem;
 `
@@ -46,7 +46,7 @@ export default function Web(props) {
                 <GlobalStyle />
                 <Fullscreen iframe={iframe}>
                   <Header />
-                  <Content>{props.children}</Content>
+                  <Content role="main">{props.children}</Content>
                 </Fullscreen>
                 {!iframe && <Footer />}
                 <EmbedWrapper place={props.place} />

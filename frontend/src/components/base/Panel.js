@@ -31,7 +31,8 @@ const Content = styled.div`
   overflow-y: auto;
   overflow-x: visible;
   transform: translateX(${(props) => (props.open ? 0 : '100%')});
-  transition: transform 400ms ease-out;
+  visibility: ${(props) => (props.open ? 'visible' : 'hidden')};
+  transition: transform 400ms ease-out, visibility 400ms ease-out;
 
   ${(props) => props.theme.mq.smallish} {
     position: relative;

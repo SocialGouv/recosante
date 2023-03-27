@@ -34,7 +34,7 @@ const Check = styled.svg`
     stroke-width: 600;
     stroke-dasharray: 4322.794921875;
     stroke-dashoffset: ${(props) => (props.checked ? 0 : 4322.794921875)};
-    transition: stroke-dashoffset ${(props) => (props.checked ? '200ms' : '0')}
+    transition: stroke-dashoffset ${(props) => (props.checked ? 200 : 0)}ms
       ease-out;
   }
 `
@@ -64,7 +64,6 @@ export default function Checkbox(props) {
         viewBox='0 0 3213 2768'
       >
         <path
-          id='check'
           d='M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224'
         />
       </Check>

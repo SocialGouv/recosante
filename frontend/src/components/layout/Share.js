@@ -5,7 +5,6 @@ import { useLocation } from '@reach/router'
 import UXContext from 'utils/UXContext'
 import Select from 'components/base/FancySelect'
 import Panel from 'components/base/Panel'
-import Integration from './share/Integration'
 import Link from './share/Link'
 import Mail from './share/Mail'
 import Facebook from './share/Facebook'
@@ -14,10 +13,16 @@ import Linkedin from './share/Linkedin'
 import Whatsapp from './share/Whatsapp'
 import Messenger from './share/Messenger'
 
-const ShareButtons = styled.div`
+const ShareButtons = styled.ul`
   display: flex;
   justify-content: space-between;
+  margin: 0;
   margin-bottom: 2rem;
+  padding: 0;
+
+  li {
+    list-style: none;
+  }
 
   svg {
     display: block;
@@ -39,7 +44,6 @@ export default function Share(props) {
     toggleShareOpen,
     typeShare,
     setTypeShare,
-    toggleEmbedOpen,
   } = useContext(UXContext)
 
   let location = useLocation()
@@ -51,7 +55,14 @@ export default function Share(props) {
       }`
     )
   }, [location.search, location.pathname, typeShare])
-
+  const [title, setTitle] = useState()
+  useEffect(() => {
+    setTitle(
+      `URL du site web Recosanté${
+        typeShare === 'result' && props.place ? ' - ' + props.place.nom : ''
+      }`
+    )
+  }, [props.place, typeShare])
   return (
     <Panel
       small={props.small}
@@ -74,22 +85,34 @@ export default function Share(props) {
               disabled: !props.place,
             },
           ]}
+          title='Choisissez de partager l’accueil de Recosanté ou le tableau de bord d’une ville'
         />
       </h2>
       <ShareButtons>
-        <Integration onClick={() => toggleEmbedOpen()} />
-        <Mail
-          subject={props.messages.mail[typeShare].subject}
-          body={props.messages.mail[typeShare].body}
-          url={url}
-        />
-        <Facebook quote={props.messages.facebook[typeShare].quote} url={url} />
-        <Twitter title={props.messages.twitter[typeShare].title} url={url} />
-        <Linkedin url={url} />
-        <Whatsapp title={props.messages.whatsapp[typeShare].title} url={url} />
-        <Messenger url={url} />
+        <li>
+          <Mail
+            subject={props.messages.mail[typeShare].subject}
+            body={props.messages.mail[typeShare].body}
+            url={url}
+          />
+        </li>
+        <li>
+          <Facebook quote={props.messages.facebook[typeShare].quote} url={url} />
+        </li>
+        <li>
+          <Twitter title={props.messages.twitter[typeShare].title} url={url} />
+        </li>
+        <li>
+          <Linkedin url={url} />
+        </li>
+        <li>
+          <Whatsapp title={props.messages.whatsapp[typeShare].title} url={url} />
+        </li>
+        <li>
+          <Messenger url={url} />
+        </li>
       </ShareButtons>
-      <Link url={url} />
+      <Link title={title} url={url} />
     </Panel>
   )
 }

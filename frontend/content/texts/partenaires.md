@@ -1,34 +1,34 @@
 ---
 data:
-  - title: ATMO France
+  - title: ATMO France - Fédération des associations de surveillance de la qualité de l’air
     image: ../assets/logos/atmo-france.png
     link: https://atmo-france.org/
-  - title: RNSA
+  - title: RNSA - Réseau National de Surveillance Aérobiologique
     image: ../assets/logos/logo-rnsa.png
     link: https://www.pollens.fr/
-  - title: APSF
+  - title: APSF - Pollinarium sentinelle
     image: ../assets/logos/pollinariums.png
     link: https://www.alertepollens.org/
-  - title: IRSN
+  - title: IRSN - Institut de Radioprotection et de Sûreté Nucléaire
     image: ../assets/logos/IRSNlogoRVB.JPG
     link: https://www.irsn.fr/FR/Pages/Home.aspx
   - title: Météo-France
     image: ../assets/logos/logo-meteo-france.png
     link: https://meteofrance.com/
 partners:
-  - title: ATMO France
+  - title: ATMO France - Fédération des associations de surveillance de la qualité de l’air
     image: ../assets/logos/atmo-france.png
     link: https://atmo-france.org/
-  - title: RNSA
+  - title: RNSA - Réseau National de Surveillance Aérobiologique
     image: ../assets/logos/logo-rnsa.png
     link: https://www.pollens.fr/
-  - title: APSF
+  - title: APSF - Pollinarium sentinelle
     image: ../assets/logos/pollinariums.png
     link: https://www.alertepollens.org/
   - title: Santé Respiratoire France
     image: ../assets/logos/logo-srf.jpg
     link: https://sante-respiratoire.com/
-  - title: IRSN
+  - title: IRSN - Institut de Radioprotection et de Sûreté Nucléaire
     image: ../assets/logos/IRSNlogoRVB.JPG
     link: https://www.irsn.fr/FR/Pages/Home.aspx
   - title: Météo-France

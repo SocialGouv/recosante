@@ -63,7 +63,14 @@ export default function Address() {
           />
         </SearchBarWrapper>
       ) : (
-        <Email onClick={() => setActive(true)}>
+        <Email
+          tabIndex={0}
+          onClick={() => setActive(true)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.currentTarget.click()
+            }
+          }}>
           {data.commune && data.commune.nom} (
           {data.commune && data.commune.departement.nom})
         </Email>

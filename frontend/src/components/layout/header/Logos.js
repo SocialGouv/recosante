@@ -11,7 +11,7 @@ const Wrapper = styled(MagicLink)`
 `
 export default function Logos() {
   return (
-    <Wrapper to='/' aria-label='Accueil'>
+    <Wrapper to='/' aria-label='Aller à l’accueil - Recosanté - République Française, Liberté Égalité Fraternité'>
       <Marianne />
       <Logo link />
     </Wrapper>

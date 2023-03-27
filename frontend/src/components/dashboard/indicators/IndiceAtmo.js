@@ -34,10 +34,10 @@ export default function IndiceAtmo(props) {
             <Card.Recommandation
               dangerouslySetInnerHTML={{
                 __html: isError
-                  ? `Nous ne sommes malheureusement pas en mesure d'afficher l'indice de qualité de l'air pour l'instant. Veuillez réessayer dans quelques instants.`
+                  ? `<p>Nous ne sommes malheureusement pas en mesure d'afficher l'indice de qualité de l'air pour l'instant. Veuillez réessayer dans quelques instants.</p>`
                   : data &&
                     (data.indice_atmo.error
-                      ? `Les données ne sont pas disponibles pour cette commune`
+                      ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
                       : data.indice_atmo.advice &&
                         data.indice_atmo.advice.main),
               }}
@@ -49,23 +49,26 @@ export default function IndiceAtmo(props) {
         </Card.Content>
         {data && !data.indice_atmo.error && data.indice_atmo.validity && (
           <Card.Source>
-            Prévision pour le{' '}
-            {new Date(data.indice_atmo.validity.start).toLocaleDateString(
-              'fr',
-              {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              }
-            )}{' '}
-            dans {data.indice_atmo.validity.area}
-            <br />
-            Données fournies par{' '}
-            {data.indice_atmo.sources && (
-              <MagicLink to={data.indice_atmo.sources[0].url}>
-                {data.indice_atmo.sources[0].label}
-              </MagicLink>
-            )}
+            <p>
+              Prévision pour le{' '}
+              {new Date(data.indice_atmo.validity.start).toLocaleDateString(
+                'fr',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              )}{' '}
+              dans {data.indice_atmo.validity.area}
+            </p>
+            <p>
+              Données fournies par{' '}
+              {data.indice_atmo.sources && (
+                <MagicLink to={data.indice_atmo.sources[0].url}>
+                  {data.indice_atmo.sources[0].label}
+                </MagicLink>
+              )}
+            </p>
           </Card.Source>
         )}
       </Card>

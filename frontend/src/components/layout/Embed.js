@@ -32,6 +32,7 @@ export default function Embed(props) {
               disabled: !props.place,
             },
           ]}
+          title='Choisissez d’intégrer l’accueil de Recosanté ou le tableau de bord d’une ville'
         />
       </h2>
       <Code id={props.id} typeShare={typeShare} />

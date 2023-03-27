@@ -22,7 +22,7 @@ const Options = styled.div`
   }
 `
 const NoIcon = styled.svg`
-  width: auto;
+  width: 48px;
   height: 0rem;
 `
 const Type = styled.h2`
@@ -87,7 +87,7 @@ export default function Recommandations(props) {
     "qa_mauvaise": recommandationsQa("qa_mauvaise"),
     "qa_evenement": recommandationsQa("qa_evenement"),
   }
-  const recommandationsMinRaep= (min_raep) => recommandationsByType["pollens"]?.filter(r => r.min_raep === min_raep);
+  const recommandationsMinRaep = (min_raep) => recommandationsByType["pollens"]?.filter(r => r.min_raep === min_raep);
   recommandations["pollens"] = {
     "raep_0": recommandationsMinRaep(0),
     "raep_1-3": recommandationsMinRaep(1),
@@ -101,7 +101,7 @@ export default function Recommandations(props) {
     "vigilance_orange": recommandationsVigilanceCouleur(3),
     "vigilance_rouge": recommandationsVigilanceCouleur(4)
   }
-  const recommandationsMinIndiceUV= (min_indice_uv) => recommandationsByType["indice_uv"]?.filter(r => r.min_indice_uv === min_indice_uv);
+  const recommandationsMinIndiceUV = (min_indice_uv) => recommandationsByType["indice_uv"]?.filter(r => r.min_indice_uv === min_indice_uv);
   recommandations["indice_uv"] = {
     "indice_uv_0": recommandationsMinIndiceUV(0),
     "indice_uv_1-2": recommandationsMinIndiceUV(1),
@@ -144,7 +144,7 @@ export default function Recommandations(props) {
     "indice_uv_1-2": "Faible (de UV 1 à UV 2)",
     "indice_uv_3-5": "Modéré (de UV 3 à UV 5)",
     "indice_uv_6-7": "Fort (de UV 6 à UV 7)",
-    "indice_uv_8-10":  "Très fort (de UV 8 à UV 10)",
+    "indice_uv_8-10": "Très fort (de UV 8 à UV 10)",
     "indice_uv_11+": "Extrême (UV 11 et plus)"
   }
   let uniqueCategories = {
@@ -187,13 +187,13 @@ export default function Recommandations(props) {
                 <Type>{types[t]}</Type>
                 {Object.keys(recommandations[t]).map((c) => (
                   <section id={t + '-' + c} key={t + '-' + c}>
-                    <Critere>{criteres[c]}</Critere>
+                    {criteres[c] && <Critere>{criteres[c]}</Critere>}
                     {recommandations[t][c]?.map((r, i) => (
                       <React.Fragment key={t + '-' + c + '-' + i}>
                         {t === "indice_atmo" &&
                           (r.categorie || (r.categorie = "Toute catégorie")) && uniqueCategories[c] && !uniqueCategories[c].includes(r.categorie) && uniqueCategories[c].push(r.categorie) &&
                           <SousCritere>{r.categorie}</SousCritere>}
-                        {t === "vigilance_meteo" && <SousCritere>{phenomenes[r.vigilance_phenomene_ids]}</SousCritere>}
+                        {t === "vigilance_meteo" && phenomenes[r.vigilance_phenomene_ids] && <SousCritere>{phenomenes[r.vigilance_phenomene_ids]}</SousCritere>}
                         <Recommandation
                           dangerouslySetInnerHTML={{
                             __html: r.recommandation

@@ -31,10 +31,10 @@ export default function IndiceUv(props) {
           <Card.Recommandation
             dangerouslySetInnerHTML={{
               __html: isError
-                ? `Nous ne sommes malheureusement pas en mesure d'afficher l'indice UV pour l'instant. Veuillez réessayer dans quelques instants.`
+                ? `<p>Nous ne sommes malheureusement pas en mesure d'afficher l'indice UV pour l'instant. Veuillez réessayer dans quelques instants.</p>`
                 : data &&
                   (data.indice_uv?.error
-                    ? `Les données ne sont pas disponibles pour cette commune`
+                    ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
                     : data.indice_uv?.advice &&
                       data.indice_uv?.advice.main),
             }}
@@ -46,23 +46,26 @@ export default function IndiceUv(props) {
       </Card.Content>
       {data && data.indice_uv?.validity && (
           <Card.Source>
-            Prévision pour le{' '}
-            {new Date(data.indice_uv.validity.start).toLocaleDateString(
-              'fr',
-              {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              }
-            )}{' '}
-            dans {data.indice_uv.validity.area}
-            <br />
-            Données fournies par{' '}
-            {data.indice_uv.sources && (
-              <MagicLink to={data.indice_uv.sources[0].url}>
-                {data.indice_uv.sources[0].label}
-              </MagicLink>
-            )}
+            <p>
+              Prévision pour le{' '}
+              {new Date(data.indice_uv.validity.start).toLocaleDateString(
+                'fr',
+                {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                }
+              )}{' '}
+              dans {data.indice_uv.validity.area}
+            </p>
+            <p>
+              Données fournies par{' '}
+              {data.indice_uv.sources && (
+                <MagicLink to={data.indice_uv.sources[0].url}>
+                  {data.indice_uv.sources[0].label}
+                </MagicLink>
+              )}
+            </p>
           </Card.Source>
         )}
     </Card>

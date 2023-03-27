@@ -16,7 +16,7 @@ const Excerpt = styled.p`
 
 export default function Articles(props) {
     return (
-      <Web>
+      <Web title={'Nos articles'}>
         <Section first medium>
           <h1>Nos articles</h1>
           {props.data.allMdx.edges.map(({ node }) => (

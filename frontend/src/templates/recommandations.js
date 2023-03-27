@@ -14,6 +14,11 @@ const Title = styled.h1`
   color: ${(props) => props.theme.colors.main};
   font-size: 3.25rem;
   margin: 2rem 0;
+
+  ${(props) => props.theme.mq.small} {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+  }
 `
 const Introduction = styled.div`
   background-color: #eef1f7;

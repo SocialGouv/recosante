@@ -13,15 +13,19 @@ const Wrapper = styled.div`
   ${(props) => props.theme.mq.smallish} {
     top: calc(100% - 8rem);
   }
+
+  p {
+    margin: 0;
+  }
 `
-const Title = styled.div`
+const Title = styled.p`
   font-size: 0.875rem;
 
   strong {
     font-weight: 700;
   }
 `
-const Text = styled.div`
+const Text = styled.p`
   font-size: 0.75rem;
   font-weight: 300;
 `

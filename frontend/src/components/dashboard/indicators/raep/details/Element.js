@@ -15,10 +15,6 @@ const Wrapper = styled.div`
     padding-right: 7rem;
   }
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-
   &:before {
     content: '';
     position: absolute;

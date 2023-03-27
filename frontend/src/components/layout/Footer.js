@@ -35,7 +35,7 @@ const Description = styled.p`
 
 export default function Footer() {
   return (
-    <Wrapper>
+    <Wrapper role='contentinfo'>
       <Content>
         <MobileButtons iframe={false} />
         <Logos />

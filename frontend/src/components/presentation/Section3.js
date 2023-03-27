@@ -22,7 +22,7 @@ export default function Why() {
         <MDXRenderer>{data.content.body}</MDXRenderer>
       </Wrapper.Content>
       <Wrapper.Image width='35.5rem'>
-        <StaticImage src={'./images/section3.jpg'} alt='Pourquoi' />
+        <StaticImage src={'./images/section3.jpg'} alt='' />
       </Wrapper.Image>
     </Wrapper>
   )

@@ -45,37 +45,17 @@ export default function Mockup(props) {
     <>
       <Wrapper className={props.className}>
         <Background isOnScreen={props.isOnScreen}>
-          <StaticImage
-            src={'./mockup/background.jpg'}
-            alt='Ombre'
-            placeholder='none'
-          />
+          <StaticImage src={'./mockup/background.jpg'} alt='' placeholder='none' />
         </Background>
         <Tablet isOnScreen={props.isOnScreen}>
           {props.type === 'baignades' ? (
-            <StaticImage
-              src='./mockup/tablet-baignades.png'
-              alt='Tablette'
-              placeholder='none'
-            />
+            <StaticImage src='./mockup/tablet-baignades.png' alt='' placeholder='none' />
           ) : (props.type === 'uv' ? (
-            <StaticImage
-              src='./mockup/tablet-uv.png'
-              alt='Tablette'
-              placeholder='none'
-            />
+            <StaticImage src='./mockup/tablet-uv.png' alt='' placeholder='none' />
           ) : (props.type === 'qa' ? (
-              <StaticImage
-                src='./mockup/tablet-qa.png'
-                alt='Tablette'
-                placeholder='none'
-              />
+            <StaticImage src='./mockup/tablet-qa.png' alt='' placeholder='none' />
           ) : (
-            <StaticImage
-              src='./mockup/tablet.png'
-              alt='Tablette'
-              placeholder='none'
-            />
+            <StaticImage src='./mockup/tablet.png' alt='' placeholder='none' />
           )))}
         </Tablet>
       </Wrapper>

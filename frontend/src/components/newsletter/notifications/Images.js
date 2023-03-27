@@ -48,10 +48,10 @@ export default function Images(props) {
   return (
     <Wrapper className={props.className}>
       <Ios isOnScreen={props.isOnScreen}>
-        <StaticImage src={'./images/ios.png'} alt='Notification iOS' />
+        <StaticImage src={'./images/ios.png'} alt='' />
       </Ios>
       <Macos isOnScreen={props.isOnScreen}>
-        <StaticImage src={'./images/macos.png'} alt='Notification macOS' />
+        <StaticImage src={'./images/macos.png'} alt='' />
       </Macos>
     </Wrapper>
   )

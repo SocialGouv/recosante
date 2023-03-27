@@ -49,7 +49,7 @@ export default function Partners(props) {
     `
   )
   return (
-    <Web title={'Ils parlent de nous'}>
+    <Web title={'Partenaires'}>
       <Section first small>
         <MDXRenderer>{data.mdx.body}</MDXRenderer>
         <Wrapper>

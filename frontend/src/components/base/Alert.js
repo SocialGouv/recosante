@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 `
 export default function Alert(props) {
   return (
-    <Wrapper className={props.className} error={props.error}>
+    <Wrapper className={props.className} error={props.error} role='alert'>
       {props.children}
     </Wrapper>
   )

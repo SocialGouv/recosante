@@ -3,10 +3,12 @@ import styled from 'styled-components'
 
 import useProgressionPercent from 'hooks/useProgressionPercent'
 
-const Wrapper = styled.div`
+const Wrapper = styled.ol`
   position: ${(props) => (props.small ? 'absolute' : 'relative')};
   display: flex;
   width: ${(props) => (props.small ? 80 : 100)}%;
+  margin: 0;
+  padding: 0;
 
   &:before {
     content: '';
@@ -36,13 +38,17 @@ const Wrapper = styled.div`
     display: none;
   }
 `
-const Step = styled.div`
+const Step = styled.li.attrs(props => ({
+  'aria-current': props.current ? (props.small ? 'true' : 'step') : null,
+}))`
   flex: 1;
   padding: 0.5rem 0.25rem 0.25rem;
   font-size: 0.875rem;
   color: ${(props) => props.theme.colors.main};
   text-align: center;
-  opacity: ${(props) => (props.current ? 1 : 0.2)};
+  opacity: ${(props) => (props.current ? 1 : 0.6)};
+  font-weight: ${(props) => (props.current ? 500 : 300)};
+  list-style: none;
 `
 export default function Progress(props) {
   const percent = useProgressionPercent(props)
@@ -60,6 +66,7 @@ export default function Progress(props) {
             index === props.currentStep ||
             (step.name === 'recommandations' && props.currentStep === 4)
           }
+          small={props.small}
         >
           {step.title}
         </Step>

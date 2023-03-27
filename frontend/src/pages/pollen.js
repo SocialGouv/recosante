@@ -18,7 +18,7 @@ export default function Asthme() {
   )
 
   return (
-    <Web title={`Allerte pollen`}>
+    <Web title={`Alerte pollen`}>
       <Newsletter first data={data} seo />
       <Data />
       <About />

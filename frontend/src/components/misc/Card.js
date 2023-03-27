@@ -76,6 +76,11 @@ Card.Source = styled.div`
   font-weight: 300;
   text-align: right;
   color: ${(props) => props.theme.colors.title};
+
+  p {
+    margin: 0;
+    font-size: inherit;
+  }
 `
 
 export default Card

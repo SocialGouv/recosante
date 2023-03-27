@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import FocusTrap from 'focus-trap-react'
 
 import ModalContext from 'utils/ModalContext'
 import Modal from 'components/base/Modal'
@@ -220,17 +221,19 @@ export default function WrapperModal() {
   const { modal, setModal } = useContext(ModalContext)
 
   return (
-    <Modal open={modal} setOpen={setModal}>
-      {modal && data[modal.replaceAll('.', '')] && (
-        <>
-          <h3
-            dangerouslySetInnerHTML={{
-              __html: data[modal.replaceAll('.', '')].frontmatter.title,
-            }}
-          />
-          <MDXRenderer>{data[modal.replaceAll('.', '')].body}</MDXRenderer>
-        </>
-      )}
-    </Modal>
+    <FocusTrap active={!!modal} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+      <Modal open={modal} setOpen={setModal}>
+        {modal && data[modal.replaceAll('.', '')] && (
+          <>
+            <h3
+              dangerouslySetInnerHTML={{
+                __html: data[modal.replaceAll('.', '')].frontmatter.title,
+              }}
+            />
+            <MDXRenderer>{data[modal.replaceAll('.', '')].body}</MDXRenderer>
+          </>
+        )}
+      </Modal>
+    </FocusTrap>
   )
 }

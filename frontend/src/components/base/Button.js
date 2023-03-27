@@ -56,7 +56,7 @@ const Wrapper = styled(MagicLink)`
         : props.theme.colors.background};
     opacity: ${(props) => (props.hollow ? 0.1 : 0.2)};
   }
-  &:hover {
+  &:hover, &:focus {
     &:before {
       transform: translateX(100%) rotate(-45deg);
       transition: transform 500ms ease-out;
@@ -73,7 +73,7 @@ const Wrapper = styled(MagicLink)`
     background-color: ${(props) =>
       props.hollow ? props.theme.colors.main : props.theme.colors.background};
     opacity: ${(props) => (props.fetching ? '0.4' : '0')};
-    animation: ${fetching} ${(props) => (props.fetching ? '600ms' : '0')}
+    animation: ${fetching} ${(props) => (props.fetching ? 600 : 0)}ms
       infinite;
   }
 

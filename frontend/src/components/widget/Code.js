@@ -15,7 +15,7 @@ const Label = styled.label`
   margin-bottom: 1em;
   font-size: 1.125rem;
 
-  ${(props) => props.theme.mq.small}  {
+  ${(props) => props.theme.mq.small} {
     font-size: 1rem;
   }
 `
@@ -32,7 +32,6 @@ const Text = styled.textarea`
   border: none;
   border-radius: 0.25rem 0.25rem 0 0;
   box-shadow: inset 0 -2px 0 0 ${(props) => props.theme.colors.main};
-  cursor: pointer;
   overflow: hidden;
   resize: none;
   white-space: pre-wrap;
@@ -47,10 +46,6 @@ const Copy = styled.button`
   background-color: ${(props) => props.theme.colors.main};
   border: none;
   cursor: copy;
-
-  &:focus {
-    outline: none;
-  }
 `
 const Check = styled.svg`
   width: 1rem;
@@ -87,11 +82,12 @@ export default function Code(props) {
 
   return (
     <Wrapper>
-      <Label>
+      <Label htmlFor='widget-script'>
         Copiez ce code puis ajoutez-le où vous souhaitez qu'il s'affiche sur
         votre site web
       </Label>
       <Text
+        id='widget-script'
         readOnly={true}
         value={script}
         onClick={() => {
@@ -99,11 +95,21 @@ export default function Code(props) {
             setCopied(true)
           }
         }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.currentTarget.click()
+          }
+        }}
       />
       <Copy
         onClick={() => {
           if (copy(script)) {
             setCopied(true)
+          }
+        }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.currentTarget.click()
           }
         }}
       >

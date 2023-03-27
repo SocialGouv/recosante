@@ -13,12 +13,13 @@ import VaguesSubmersion from './images/VaguesSubmersion.png'
 import Vent from './images/Vent.png'
 
 const Wrapper = styled.div``
-const Title = styled.h4`
+const Title = styled.h3`
   display: flex;
   align-items: center;
   font-weight: normal;
   line-height: 1.7;
   color: ${(props) => props.theme.colors.text};
+  font-size: inherit;
 `
 const Icon = styled.div`
   position: relative;
@@ -58,7 +59,7 @@ export default function Element(props) {
     <Wrapper>
       <Title>
         <Icon value={value}>
-          <img src={images[props.indice.label]} alt={props.indice.label} />
+          <img src={images[props.indice.label]} alt='' />
         </Icon>
         {props.indice.label}{' '}
         {props.validity.map((v, i) => (

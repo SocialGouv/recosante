@@ -44,9 +44,14 @@ export default function SearchBar(props) {
   useEffect(() => {
     if (!focus) {
       setCurrent(0)
-      input.current && input.current.blur()
     }
   }, [focus])
+  const selectPlace = (place) => {
+    window?._paq?.push(['trackEvent', 'Search', 'PlaceInput', place.nom])
+    setSearch(place.nom)
+    props.handlePlaceSelection(place)
+    setFocus(false)
+  }
 
   return (
     <Wrapper
@@ -55,10 +60,8 @@ export default function SearchBar(props) {
       onSubmit={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        if (current > -1) {
-          setSearch(data[current].nom)
-          props.handlePlaceSelection(data[current])
-          setFocus(false)
+        if (current > -1 && data[current]) {
+          selectPlace(data[current])
         }
       }}
     >
@@ -72,9 +75,7 @@ export default function SearchBar(props) {
         setFocus={setFocus}
         placeholder={props.placeholder}
         handlePlaceSelection={(place) => {
-          setSearch(place.nom)
-          props.handlePlaceSelection(place)
-          setFocus(false)
+          selectPlace(place)
         }}
       />
       {data && focus && (
@@ -86,10 +87,7 @@ export default function SearchBar(props) {
           isFetching={isFetching}
           setCurrent={setCurrent}
           handleSuggestionClick={(place) => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceInput', place.nom])
-            setSearch(place.nom)
-            props.handlePlaceSelection(place)
-            setFocus(false)
+            selectPlace(place)
           }}
         />
       )}

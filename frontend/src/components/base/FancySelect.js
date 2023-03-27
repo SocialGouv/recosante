@@ -42,7 +42,6 @@ const Input = styled.select`
   cursor: pointer;
 
   &:focus {
-    outline: none;
     box-shadow: 0px 0.25rem 0px 0px ${(props) => props.theme.colors.main};
   }
 
@@ -68,6 +67,7 @@ export default function FancySelect(props) {
         onChange={(e) => {
           props.onChange(e.currentTarget.value)
         }}
+        title={props.title}
       >
         {props.options.map((option, index) => (
           <option

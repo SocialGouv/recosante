@@ -1,4 +1,4 @@
-## **Recosanté**,<br/>qu’est-ce que c’est&#8239;?
+## **Recosanté**,<br />qu’est-ce que c’est&#8239;?
 
 Recosanté agrège des données environnementales telles que l’**indice national de qualité de l’air**, le **risque d’allergie aux pollens**, le **potentiel radon** ou encore l’**indice UV** (à venir).
 

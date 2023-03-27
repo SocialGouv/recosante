@@ -22,6 +22,7 @@ export default function TextInput(props) {
       list={props.list}
       value={props.value}
       error={props.error}
+      title={props.title}
       placeholder={props.placeholder}
       required={props.required}
       onChange={(e) => {

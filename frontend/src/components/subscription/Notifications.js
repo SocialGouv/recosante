@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import FocusTrap from 'focus-trap-react'
 
 import Button from 'components/base/Button'
 import Images from 'components/newsletter/notifications/Images'
@@ -20,6 +21,7 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
   pointer-events: ${(props) => (props.visible ? 'inherit' : 'none')};
   transition: opacity 300ms;
 
@@ -44,7 +46,7 @@ const StyledButton = styled(Button)`
     right: 1rem;
   }
 `
-export default function Notifications(props) {
+export default React.forwardRef(function Notifications(props, ref) {
   const data = useStaticQuery(
     graphql`
       query {
@@ -54,15 +56,21 @@ export default function Notifications(props) {
       }
     `
   )
+  const visible = props.modal === 'notifications';
+  useEffect(() => {
+    visible && window?._paq?.push(['trackEvent', 'Subscription', 'NotificationDetail'])
+  })
   return (
-    <Wrapper visible={props.modal === 'notifications'}>
-      <ImagesWrapper>
-        <Images isOnScreen={true} />
-      </ImagesWrapper>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      <StyledButton onClick={() => props.setModal(false)} noExpand>
-        J'ai compris
-      </StyledButton>
-    </Wrapper>
+    <FocusTrap active={visible} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+      <Wrapper visible={visible}>
+        <ImagesWrapper>
+          <Images isOnScreen={true} />
+        </ImagesWrapper>
+        <MDXRenderer ref={ref}>{data.mdx.body}</MDXRenderer>
+        <StyledButton onClick={() => props.setModal(false)} noExpand>
+          J'ai compris
+        </StyledButton>
+      </Wrapper>
+    </FocusTrap>
   )
-}
+})

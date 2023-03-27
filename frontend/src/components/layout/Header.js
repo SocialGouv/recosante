@@ -44,7 +44,7 @@ export default function Header() {
   const { pathname } = useLocation()
 
   return (
-    <Wrapper>
+    <Wrapper role='banner'>
       <Content>
         <Logos />
         {pathname !== '/' && (

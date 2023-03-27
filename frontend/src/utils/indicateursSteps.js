@@ -48,7 +48,7 @@ const steps = [
     options: [
       {
         value: 'alerte',
-        label: `En cas<br/>de vigilance`,
+        label: `En cas<br />de vigilance`,
         icon: <Alerte />,
         detail: {
           label: `Uniquement les jours où la situation nécessite d'adapter votre comportement.`,
@@ -56,7 +56,7 @@ const steps = [
       },
       {
         value: 'quotidien',
-        label: `Tous les<br/>jours`,
+        label: `Tous les<br />jours`,
         icon: <Quotidien />,
         detail: {
           label:
@@ -104,7 +104,7 @@ const steps = [
       },
       {
         value: 'non',
-        label: `Peut être<br/>plus tard`,
+        label: `Peut être<br />plus tard`,
         icon: <NoNewsletter />,
       },
     ],

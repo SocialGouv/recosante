@@ -10,27 +10,16 @@ const Text = styled.input`
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.3rem 0;
+  padding: 0.5em 0.75em;
   color: ${(props) => props.theme.colors.text};
   font-family: 'Courier New', Courier, monospace;
   line-height: inherit;
   white-space: nowrap;
-  background: transparent;
+  background: ${(props) => props.theme.colors.input};
   border: none;
   border-bottom: 1px solid ${(props) => props.theme.colors.main};
-  cursor: pointer;
+  cursor: copy;
   overflow: hidden;
-
-  &:before {
-    content: 'Copié !';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    font-size: 0.875em;
-    color: ${(props) => props.theme.colors.main};
-    opacity: ${(props) => (props.copied ? 1 : 0)};
-    transition: opacity 300ms ease-out;
-  }
 `
 const Copy = styled.button`
   position: absolute;
@@ -41,12 +30,8 @@ const Copy = styled.button`
   color: ${(props) => props.theme.colors.background};
   background-color: ${(props) => props.theme.colors.main};
   border: none;
-  border-radius: 0.5rem 0.5rem 0 0;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
+  border-radius: 0;
+  cursor: copy;
 `
 const Check = styled.svg`
   width: 1rem;
@@ -70,6 +55,7 @@ export default function Code(props) {
   return (
     <Wrapper>
       <Text
+        title={props.title}
         readOnly={true}
         value={props.url}
         onClick={() => {
@@ -77,11 +63,21 @@ export default function Code(props) {
             setCopied(true)
           }
         }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.currentTarget.click()
+          }
+        }}
       />
       <Copy
         onClick={() => {
           if (copy(props.url)) {
             setCopied(true)
+          }
+        }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            e.currentTarget.click()
           }
         }}
       >

@@ -80,6 +80,7 @@ export default function Cloud() {
 
   return (
     <Wrapper
+      aria-hidden={true}
       onClick={() => {
         window._paq?.push(['trackEvent', 'Misc', 'Nuage'])
         if (!animated) {
@@ -157,7 +158,7 @@ export default function Cloud() {
       />
       <mask
         id='rainbow'
-        mask-type='alpha'
+        style={{ maskType: "alpha" }}
         maskUnits='userSpaceOnUse'
         x='22'
         y='-11'

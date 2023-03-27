@@ -155,17 +155,30 @@ const Letter = styled.span`
   animation: ${simple} 30000ms
     ${(props) => props.index * 5000 + props.position * 25}ms infinite;
 `
+
+const VisuallyHidden = styled.span`
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0,0,0,0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+`
 export default function Title() {
   const sentences = [
-    `pollution de l'air`,
-    `risque d'allergie aux pollens`,
+    `pollution de l’air`,
+    `risque d’allergie aux pollens`,
     `vigilance météo`,
     `rayonnement UV`,
     `qualité des eaux de baignade`,
     `niveau de risque radon`,
   ]
   return (
-    <Wrapper aria-label='Découvrez la qualité de votre environnement'>
+    <Wrapper>
+      <VisuallyHidden>Découvrez la pollution de l’air, le risque d’allergie aux pollens, la vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le niveau de risque radon près de chez vous</VisuallyHidden>
       <Words aria-hidden='true'>Découvrez </Words>
       <Pronouns aria-hidden='true'>
         <Pronoun>la </Pronoun>

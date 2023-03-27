@@ -66,7 +66,16 @@ export default function Mail() {
           </Button>
         </Form>
       ) : (
-        <Email onClick={() => setActive(true)}>{data.mail}</Email>
+        <Email
+          tabIndex={0}
+          onClick={() => setActive(true)}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.currentTarget.click()
+            }
+          }}>
+          {data.mail}
+        </Email>
       )}
     </Wrapper>
   ) : null

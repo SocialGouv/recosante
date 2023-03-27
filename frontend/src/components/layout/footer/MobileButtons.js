@@ -2,15 +2,14 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import UXContext from 'utils/UXContext'
-import Section from 'components/base/Section'
 import MagicLink from 'components/base/MagicLink'
 import ShareWrapper from 'components/wrappers/ShareWrapper'
 import EmbedWrapper from 'components/wrappers/EmbedWrapper'
 
-const StyledSection = styled(Section)`
+const StyledSection = styled.div`
   display: none;
-  margin-bottom: ${(props) => (props.iframe ? 1 : 2)}rem;
-
+  margin: 0 auto;
+  width: 100%;
   ${(props) => props.theme.mq.smallish} {
     display: block;
   }
@@ -38,7 +37,8 @@ const StyledLink = styled(MagicLink)`
   color: ${(props) => props.theme.colors.second};
   text-decoration: none;
 `
-const Icon = styled.div`
+const Icon = styled.span`
+  display: inline-block;
   position: relative;
   width: 3rem;
   height: 3rem;
@@ -68,7 +68,7 @@ const Eye = styled.svg`
   width: 1.5rem;
 `
 const Install = styled.svg``
-const Label = styled.div`
+const Label = styled.span`
   font-size: 0.75rem;
   font-weight: bold;
   text-align: center;
@@ -77,7 +77,7 @@ export default function MobileButtons(props) {
   const { toggleEmbedOpen, toggleShareOpen, installPrompt } =
     useContext(UXContext)
   return (
-    <StyledSection small>
+    <StyledSection>
       <ButtonWrapper iframe={props.iframe}>
         <Button onClick={toggleEmbedOpen}>
           <Icon>

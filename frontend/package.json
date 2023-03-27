@@ -9,6 +9,7 @@
     "axios": "^0.24.0",
     "babel-plugin-styled-components": "^1.13.3",
     "copy-to-clipboard": "^3.3.3",
+    "focus-trap-react": "^10.0.1",
     "gatsby": "^4.25.1",
     "gatsby-plugin-gatsby-cloud": "^4.25.0",
     "gatsby-plugin-image": "^2.25.0",

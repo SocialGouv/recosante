@@ -56,7 +56,7 @@ const steps = [
       },
       {
         value: 'non',
-        label: `Pas<br/>d’enfant`,
+        label: `Pas<br />d’enfant`,
         icon: <NoEnfant />,
       },
     ],

@@ -32,7 +32,7 @@ const Suggestion = styled.div`
 `
 const Name = styled.span``
 const PostalCode = styled.span`
-  opacity: 0.5;
+  opacity: 1;
 `
 export default function Suggestions(props) {
   const maxSuggestions = 7

@@ -20,11 +20,12 @@ const Wrapper = styled.div`
     margin-bottom: 0;
   }
 `
-const Title = styled.h4`
+const Title = styled.h3`
   font-weight: normal;
   line-height: 0.75;
   margin-bottom: 1rem;
   color: ${(props) => props.theme.colors.text};
+  font-size: inherit;
 `
 const StyledMagicLink = styled(MagicLink)`
   text-decoration: none;

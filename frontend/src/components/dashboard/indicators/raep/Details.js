@@ -8,7 +8,19 @@ const Wrapper = styled.div`
   justify-content: center;
   overflow: hidden;
 `
-const Elements = styled.div``
+const Elements = styled.ul`
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+
+  li {
+    list-style: none;
+
+    &:last-child > * {
+      margin-bottom: 0;
+    }
+  }
+`
 export default function Details(props) {
   return props.data ? (
     <Wrapper>
@@ -17,12 +29,13 @@ export default function Details(props) {
           .filter((allergen) => allergen.indice.value)
           .sort((a, b) => (a.indice.value > b.indice.value ? 1 : -1))
           .map((allergen, index) => (
-            <Element
-              key={allergen.label}
-              index={index}
-              label={allergen.label}
-              value={allergen.indice.value}
-            />
+            <li key={allergen.label}>
+              <Element
+                index={index}
+                label={allergen.label}
+                value={allergen.indice.value}
+              />
+            </li>
           ))}
       </Elements>
     </Wrapper>

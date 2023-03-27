@@ -30,7 +30,7 @@ const Button = styled.button`
   background-color: ${(props) =>
     props.theme.colors[props.active ? 'main' : 'background']};
   opacity: ${(props) => (props.disabled ? 0.3 : 1)};
-  cursor: ${(props) => (props.disabled ? 'normal' : 'pointer')};
+  cursor: ${(props) => (props.disabled ? 'default' : 'pointer')};
   transition: all 200ms ease-out;
 
   &:hover {
@@ -91,13 +91,18 @@ const Detail = styled.div`
   text-align: center;
   color: ${(props) => props.theme.colors[props.modal ? 'main' : 'text']};
   text-decoration: ${(props) => (props.modal ? 'underline' : 'none')};
-  cursor: ${(props) => (props.modal ? 'pointer' : 'normal')};
+  cursor: ${(props) => (props.modal ? 'pointer' : 'default')};
 
   ${(props) => props.theme.mq.small} {
     position: relative;
     top: 0.125rem;
     left: 0;
     right: 0;
+  }
+
+  p {
+    margin: 0;
+    font-size: inherit;
   }
 `
 export default function Option(props) {
@@ -119,14 +124,19 @@ export default function Option(props) {
       </Button>
       {props.option.detail && (
         <Detail
+          tabIndex={props.option.detail.modal ? 0 : -1}
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Subscription', 'NotificationDetail'])
             props.option.detail.modal &&
             props.setModal(props.option.detail.modal)
           }}
           modal={props.option.detail.modal}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              e.currentTarget.click()
+            }
+          }}
         >
-          {props.option.detail.label}
+          <p>{props.option.detail.label}</p>
         </Detail>
       )}
     </Wrapper>

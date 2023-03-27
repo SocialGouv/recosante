@@ -32,10 +32,10 @@ export default function Raep(props) {
           <Card.Recommandation
             dangerouslySetInnerHTML={{
               __html: isError
-                ? `Nous ne sommes malheureusement pas en mesure d'afficher le risque d'allergie aux pollens pour l'instant. Veuillez réessayer dans quelques instants.`
+                ? `<p>Nous ne sommes malheureusement pas en mesure d'afficher le risque d'allergie aux pollens pour l'instant. Veuillez réessayer dans quelques instants.</p>`
                 : data &&
                   (data.raep.error
-                    ? `Les données ne sont pas disponibles pour cette commune`
+                    ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
                     : data.raep.advice && data.raep.advice.main),
             }}
           />
@@ -46,24 +46,27 @@ export default function Raep(props) {
       </Card.Content>
       {data && data.raep && data.raep.validity && data.raep.sources && (
         <Card.Source>
-          Prévision du{' '}
-          {new Date(data.raep.validity.start).toLocaleDateString('fr', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}{' '}
-          au{' '}
-          {new Date(data.raep.validity.end).toLocaleDateString('fr', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}{' '}
-          dans {data.raep.validity.area}
-          <br />
-          Données fournies par{' '}
-          <MagicLink to={data.raep.sources[0].url}>
-            {data.raep.sources[0].label}
-          </MagicLink>
+          <p>
+            Prévision du{' '}
+            {new Date(data.raep.validity.start).toLocaleDateString('fr', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}{' '}
+            au{' '}
+            {new Date(data.raep.validity.end).toLocaleDateString('fr', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}{' '}
+            dans {data.raep.validity.area}
+          </p>
+          <p>
+            Données fournies par{' '}
+            <MagicLink to={data.raep.sources[0].url}>
+              {data.raep.sources[0].label}
+            </MagicLink>
+          </p>
         </Card.Source>
       )}
     </Card>

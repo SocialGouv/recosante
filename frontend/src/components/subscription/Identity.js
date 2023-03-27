@@ -18,11 +18,12 @@ const Wrapper = styled.div`
     padding-top: 1.5rem;
   }
 `
-const Label = styled.label`
+const Label = styled.h1`
   display: block;
   margin-bottom: 3rem;
   font-weight: 300;
   text-align: center;
+  font-size: inherit;
 
   ${(props) => props.theme.mq.smallish} {
     margin-bottom: 6rem;
@@ -66,6 +67,11 @@ const MailInput = styled(TextInput)`
   ${(props) => props.theme.mq.small} {
     width: 100%;
   }
+
+  &::placeholder {
+    color: ${(props) => props.theme.colors.text};
+    opacity: 0.8;
+  }
 `
 const DataDisclaimer = styled.div`
   position: absolute;
@@ -76,6 +82,11 @@ const DataDisclaimer = styled.div`
   font-size: 0.75rem;
   font-weight: lighter;
   color: ${(props) => props.theme.colors.footer};
+
+  p {
+    margin: 0;
+    font-size: inherit;
+  }
 `
 
 export default function Identity(props) {
@@ -120,12 +131,14 @@ export default function Identity(props) {
         <MailInput
           type='email'
           name='email'
-          placeholder='Entrez votre email'
+          title='Entrez votre email (obligatoire)'
+          placeholder='Entrez votre email (obligatoire)'
           value={user.mail}
           onChange={({ value }) => mutateUser({ mail: value })}
           required
+          autoComplete='email'
         />
-        <DataDisclaimer>Les <MagicLink to='https://recosante.beta.gouv.fr/donnees-personnelles'>données collectées</MagicLink> lors de votre inscription sont utilisées dans le cadre d’une mission de service public dont les responsables de traitement sont la DGS et la DGPR. Recosanté suit l’ouverture et les interactions avec les emails reçus. Vous pouvez à tout moment vous opposer à ces traitements en vous désinscrivant.</DataDisclaimer>
+        <DataDisclaimer><p>Les <MagicLink to='https://recosante.beta.gouv.fr/donnees-personnelles'>données collectées</MagicLink> lors de votre inscription sont utilisées dans le cadre d’une mission de service public dont les responsables de traitement sont la DGS et la DGPR. Recosanté suit l’ouverture et les interactions avec les emails reçus. Vous pouvez à tout moment vous opposer à ces traitements en vous désinscrivant.</p></DataDisclaimer>
         <NavigationIdentity
           setPreviousStep={props.setPreviousStep}
           fetching={mutation.isLoading}

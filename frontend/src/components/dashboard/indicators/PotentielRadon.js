@@ -26,7 +26,7 @@ export default function PotentielRadon(props) {
           <Card.Recommandation
             dangerouslySetInnerHTML={{
               __html: isError
-                ? `Nous ne sommes malheureusement pas en mesure d'afficher le potentiel radon pour l'instant. Veuillez réessayer dans quelques instants.`
+                ? `<p>Nous ne sommes malheureusement pas en mesure d'afficher le potentiel radon pour l'instant. Veuillez réessayer dans quelques instants.</p>`
                 : data &&
                   data.potentiel_radon.advice &&
                   data.potentiel_radon.advice.main,
@@ -46,12 +46,15 @@ export default function PotentielRadon(props) {
         data.potentiel_radon.validity &&
         data.potentiel_radon.sources && (
           <Card.Source>
-            Données statiques valides pour {data.potentiel_radon.validity.area}
-            <br />
-            Données fournies par l'
-            <MagicLink to={data.potentiel_radon.sources[0].url}>
-              {data.potentiel_radon.sources[0].label}
-            </MagicLink>
+            <p>
+              Données statiques valides pour {data.potentiel_radon.validity.area}
+            </p>
+            <p>
+              Données fournies par l'
+              <MagicLink to={data.potentiel_radon.sources[0].url}>
+                {data.potentiel_radon.sources[0].label}
+              </MagicLink>
+            </p>
           </Card.Source>
         )}
     </Card>

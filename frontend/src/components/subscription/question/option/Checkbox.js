@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   position: relative;
   display: flex;
   align-items: center;
@@ -32,8 +32,8 @@ const Check = styled.svg`
     stroke: ${(props) => props.theme.colors.main};
     stroke-width: 600;
     stroke-dasharray: 4322.794921875;
-    stroke-dashoffset: ${(props) => (props.checked ? 0 : 4322.794921875)};
-    transition: stroke-dashoffset ${(props) => (props.checked ? '200ms' : '0')}
+    stroke-dashoffset: ${(props) => (props['data-checked'] ? 0 : 4322.794921875)};
+    transition: stroke-dashoffset ${(props) => (props['data-checked'] ? 200 : 0)}ms
       ease-out;
   }
 `
@@ -41,13 +41,12 @@ export default function Checkbox(props) {
   return (
     <Wrapper checkbox={props.checkbox} active={props.active} className={'box'}>
       <Check
-        checked={props.active}
+        data-checked={props.active}
         width='3213'
         height='2768'
         viewBox='0 0 3213 2768'
       >
         <path
-          id='check'
           d='M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224'
         />
       </Check>

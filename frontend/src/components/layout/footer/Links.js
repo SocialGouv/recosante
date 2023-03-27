@@ -6,22 +6,18 @@ import MagicLink from 'components/base/MagicLink'
 const Wrapper = styled.div`
   border-top: 1px solid ${(props) => props.theme.colors.footer};
 `
-const ItemWrapper = styled.div`
+const ItemWrapper = styled.ul`
   display: flex;
   flex-wrap: wrap;
   max-width: 75em;
   margin: 0 auto;
   padding: 1rem 0.5rem;
+  list-style-type: none;
 `
-const Item = styled(MagicLink)`
-  display: block;
+const Item = styled.li`
   margin-right: 1rem;
   padding-right: 1rem;
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.colors.footer};
-  text-decoration: none;
   border-right: 1px solid ${(props) => props.theme.colors.input};
-
   &:last-child {
     margin: 0;
     padding: 0;
@@ -29,22 +25,28 @@ const Item = styled(MagicLink)`
   }
 
   ${(props) => props.theme.mq.small} {
-    margin: 0 0 1rem;
+    margin: 0 0 1rem !important;
     border: none;
   }
+`
+const StyledMagicLink = styled(MagicLink)`
+  display: block;
+  font-size: 0.75rem;
+  color: ${(props) => props.theme.colors.footer};
+  text-decoration: none;
 `
 export default function Links() {
   return (
     <Wrapper>
       <ItemWrapper>
-        <Item to='/mentions-legales'>accessibilité : non conforme</Item>
-        <Item to='/mentions-legales'>mentions légales</Item>
-        <Item to='/donnees-personnelles'>données personnelles</Item>
-        <Item to='/cookies'>gestion des cookies</Item>
-        <Item to='/partenaires'>partenaires</Item>
-        <Item to='/stats'>statistiques</Item>
-        <Item to='/articles'>articles</Item>
-        <Item to='/recommandations'>recommandations</Item>
+        <Item><StyledMagicLink to='/mentions-legales'>accessibilité : non conforme</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/mentions-legales'>mentions légales</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/donnees-personnelles'>données personnelles</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/cookies'>gestion des cookies</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/partenaires'>partenaires</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/stats'>statistiques</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/articles'>articles</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/recommandations'>recommandations</StyledMagicLink></Item>
       </ItemWrapper>
     </Wrapper>
   )

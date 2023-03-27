@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   padding: 0 1rem;
   opacity: ${(props) => (props.open ? 1 : 0)};
   pointer-events: ${(props) => (props.open ? 'inherit' : 'none')};
+  visibility: ${(props) => (props.open ? 'visible' : 'hidden')};
   transition: opacity 600ms;
 `
 const Close = styled.button`

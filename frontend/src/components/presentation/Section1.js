@@ -22,7 +22,7 @@ export default function Section1() {
         <MDXRenderer>{data.content.body}</MDXRenderer>
       </Wrapper.Content>
       <Wrapper.Image width='35.5rem'>
-        <StaticImage src={'./images/section1.jpg'} alt='Comment' />
+        <StaticImage src={'./images/section1.jpg'} alt='' />
       </Wrapper.Image>
     </Wrapper>
   )

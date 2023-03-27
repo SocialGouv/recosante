@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
+import FocusTrap from 'focus-trap-react'
 
 import Button from 'components/base/Button'
 
@@ -20,6 +21,7 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
+  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
   pointer-events: ${(props) => (props.visible ? 'inherit' : 'none')};
   transition: opacity 300ms;
 
@@ -49,7 +51,7 @@ const StyledButton = styled(Button)`
     right: 1rem;
   }
 `
-export default function Notifications(props) {
+export default React.forwardRef(function Newsletter(props, ref) {
   const data = useStaticQuery(
     graphql`
       query {
@@ -59,21 +61,20 @@ export default function Notifications(props) {
       }
     `
   )
+  const visible = props.modal === 'newsletter';
   return (
-    <Wrapper visible={props.modal === 'newsletter'}>
-      <Image>
-        <StaticImage
-          src={'./newsletter/newsletter-preview.png'}
-          alt='Newsletter'
-          height={400}
-        />
-      </Image>
-      <Content>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
-      </Content>
-      <StyledButton onClick={() => props.setModal(false)} noExpand>
-        J'ai compris
-      </StyledButton>
-    </Wrapper>
+    <FocusTrap active={visible} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+      <Wrapper visible={visible}>
+        <Image>
+          <StaticImage src={'./newsletter/newsletter-preview.png'} alt='' height={400} />
+        </Image>
+        <Content ref={ref}>
+          <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        </Content>
+        <StyledButton onClick={() => props.setModal(false)} noExpand>
+          J'ai compris
+        </StyledButton>
+      </Wrapper>
+    </FocusTrap>
   )
-}
+})
