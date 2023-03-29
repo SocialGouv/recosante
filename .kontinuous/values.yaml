@@ -107,6 +107,8 @@ flower:
       value: redis://redis:80
     - name: CELERY_TIMEZONE
       value: Europe/Paris
+    - name: TZ
+      value: Europe/Paris
     - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
       value: "5555"
 
