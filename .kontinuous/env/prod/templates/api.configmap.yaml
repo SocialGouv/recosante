@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-configmap
+  namespace: recosante
+spec:
+  data:
+    FLASK_APP: ecosante
+    FLASK_DEBUG: "false"
+    FLASK_ENV: production
+    DEBUG: "true"
+    NODE_SASS_BIN: "./yarn-scss"
