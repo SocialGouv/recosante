@@ -126,6 +126,7 @@ jobs:
         context: indice_pollution
     build-frontend:
       use: build
+      ~needs: [api]
       with:
         imagePackage: frontend
         context: frontend
