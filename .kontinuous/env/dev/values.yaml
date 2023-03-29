@@ -4,7 +4,6 @@ api:
 indice:
   ~needs: [build-indice, create-db]
 
-
 jobs:
   runs:
     create-db:

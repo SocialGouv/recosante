@@ -32,7 +32,13 @@ api:
       value: "$(DATABASE_URL)"
     - name: ROOT_URL
       value: "https://api-{{ .Values.global.host }}"
-      
+    - name: CELERY_BROKER_URL
+      value: "redis://redis:80"
+    - name: CELERY_RESULT_BACKEND
+      value: "redis://redis:80"
+    - name: CELERY_TIMEZONE
+      value: "Europe/Paris"
+
 frontend:
   ~chart: app
   ~needs: [build-frontend]
@@ -54,9 +60,9 @@ indice:
   probesPath: /
   containerPort: 8080
   startupProbe: # necessary for initial data migration
-    initialDelaySeconds: 900
-    failureThreshold: 30
-    periodSeconds: 20
+    initialDelaySeconds: 60
+    failureThreshold: 60
+    periodSeconds: 30
   ingress:
     enabled: false
   envFrom:
@@ -67,6 +73,12 @@ indice:
   env:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
+    - name: CELERY_BROKER_URL
+      value: "redis://redis:80"
+    - name: CELERY_RESULT_BACKEND
+      value: "redis://redis:80"
+    - name: CELERY_TIMEZONE
+      value: "Europe/Paris"
 
 redis:
   ~chart: redis
