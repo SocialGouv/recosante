@@ -1,3 +1,6 @@
+global:
+  apiUrl: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
+
 api:
   ~chart: app
   ~needs: [build-api, indice]
@@ -125,7 +128,6 @@ jobs:
         imagePackage: frontend
         context: frontend
         buildArgs:
-          GATSBY_API_BASE_URL: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
-          GATSBY_IFRAME_ID: some-id
-          GATSBY_URL: "{{ .Values.global.host }}"
+          GATSBY_API_BASE_URL: "{{ tpl .Values.global.apiUrl . }}" # TODO for some reason, without tpl the value inside apiUrl is not evaluated
+          GATSBY_URL: "https://{{ .Values.global.host }}"
           GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante
