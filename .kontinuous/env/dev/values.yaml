@@ -1,8 +1,8 @@
 api:
-  ~needs: [build-api, create-db]
+  ~needs: [build-api, seed-db]
 
 indice:
-  ~needs: [build-indice, create-db]
+  ~needs: [build-indice, seed-db]
 
 jobs:
   runs:
@@ -10,3 +10,8 @@ jobs:
       use: create-db
       with:
         useAzureFlex: "true"
+    seed-db:
+      use: seed-db
+      ~needs: [create-db]
+      with:
+        seedPath: ./seeds.sql
