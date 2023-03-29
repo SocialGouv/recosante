@@ -1,4 +1,5 @@
 global:
+  # use PROD API by default to build the frontend
   apiUrl: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
 
 api:
