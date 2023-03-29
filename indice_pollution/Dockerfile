@@ -1,10 +1,14 @@
-FROM python:3
+FROM python:3.8
 
-ADD . /code/
-WORKDIR /code/
+RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
 
-RUN chmod +x startup.sh
+WORKDIR /code
 
-ENV PIP_ROOT_USER_ACTION=ignore
+ADD requirements.txt setup.cfg setup.py .
+RUN pip install -e .
 
-CMD ["./startup.sh"]
+ADD . .
+
+USER 1000
+
+CMD ["./start_all.sh"]

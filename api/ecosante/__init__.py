@@ -84,6 +84,7 @@ def create_app(testing=False):
     app.config['CELERY_BROKER_URL'] = os.getenv('CELERY_BROKER_URL') or f"sqla+{app.config['SQLALCHEMY_DATABASE_URI']}"
     app.config['TESTING'] = testing
     app.config['SERVER_NAME'] = os.getenv("SERVER_NAME")
+    app.config['ROOT_URL'] = os.getenv("ROOT_URL")
     app.config['APPLICATION_SERVER_KEY'] = os.getenv('APPLICATION_SERVER_KEY')
     app.config['VAPID_PRIVATE_KEY'] = os.getenv('VAPID_PRIVATE_KEY')
     app.config['TEMP_AUTHENTICATOR_EXP_TIME'] = os.getenv('TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 30

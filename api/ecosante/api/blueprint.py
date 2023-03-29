@@ -236,3 +236,7 @@ def batch():
             first = False
         yield ']'
     return Response(stream_with_context(iter()))
+
+@current_app.route('/healthz')
+def healthz():
+    return { "ready": True }

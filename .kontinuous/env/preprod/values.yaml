@@ -1,0 +1,2 @@
+global:
+  apiUrl: "https://api-{{ .Values.global.host }}"

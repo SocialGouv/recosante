@@ -1,0 +1,135 @@
+global:
+  apiUrl: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
+
+api:
+  ~chart: app
+  ~needs: [build-api, indice]
+  imagePackage: api
+  host: "api-{{ .Values.global.host }}"
+  probesPath: /healthz
+  containerPort: 8080
+  resources:
+    requests:
+      cpu: 0.1
+      memory: 128Mi
+    limits:
+      cpu: 1.5
+      memory: 2Gi
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgSecretName }}"
+    - secretRef:
+        name: api-sealed-secret
+  env:
+    - name: FLASK_APP
+      value: ecosante
+    - name: FLASK_DEBUG
+      value: "false"
+    - name: FLASK_ENV
+      value: dev
+    - name: DEBUG
+      value: "true"
+    - name: NODE_SASS_BIN
+      value: "./yarn-scss"
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
+    - name: ROOT_URL
+      value: "https://api-{{ .Values.global.host }}"
+    - name: CELERY_BROKER_URL
+      value: "redis://redis:80"
+    - name: CELERY_RESULT_BACKEND
+      value: "redis://redis:80"
+    - name: CELERY_TIMEZONE
+      value: "Europe/Paris"
+
+frontend:
+  ~chart: app
+  ~needs: [build-frontend]
+  imagePackage: frontend
+  host: "{{ .Values.global.host }}"
+  containerPort: 8080
+  resources:
+    requests:
+      cpu: 0.05
+      memory: 64Mi
+    limits:
+      cpu: 0.5
+      memory: 256Mi
+
+indice:
+  ~chart: app
+  ~needs: [build-indice, redis]
+  imagePackage: indice
+  probesPath: /
+  containerPort: 8080
+  startupProbe: # necessary for initial data migration
+    initialDelaySeconds: 60
+    failureThreshold: 60
+    periodSeconds: 30
+  ingress:
+    enabled: false
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgSecretName }}"
+    - secretRef:
+        name: indice-sealed-secret
+  env:
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
+    - name: CELERY_BROKER_URL
+      value: "redis://redis:80"
+    - name: CELERY_RESULT_BACKEND
+      value: "redis://redis:80"
+    - name: CELERY_TIMEZONE
+      value: "Europe/Paris"
+
+redis:
+  ~chart: redis
+  enabled: true
+  ingress:
+    enabled: false
+
+flower:
+  ~needs: [redis]
+  ~chart: app
+  image: mher/flower:1.2
+  containerPort: 5555
+  probesPath: /healthcheck
+  ingress:
+    enabled: false
+  envFrom:
+    - secretRef:
+        name: flower-sealed-secret
+  env:
+    - name: CELERY_BROKER_URL
+      value: redis://redis:80
+    - name: CELERY_RESULT_BACKEND
+      value: redis://redis:80
+    - name: CELERY_TIMEZONE
+      value: Europe/Paris
+    - name: TZ
+      value: Europe/Paris
+    - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
+      value: "5555"
+
+jobs:
+  runs:
+    build-api:
+      use: build
+      with:
+        imagePackage: api
+        context: api
+    build-indice:
+      use: build
+      with:
+        imagePackage: indice
+        context: indice_pollution
+    build-frontend:
+      use: build
+      with:
+        imagePackage: frontend
+        context: frontend
+        buildArgs:
+          GATSBY_API_BASE_URL: "{{ tpl .Values.global.apiUrl . }}" # TODO for some reason, without tpl the value inside apiUrl is not evaluated
+          GATSBY_URL: "https://{{ .Values.global.host }}"
+          GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante
