@@ -14,4 +14,4 @@ jobs:
       use: seed-db
       ~needs: [create-db]
       with:
-        seedPath: ./seed-schemas.sql
+        seedPath: ./seeds.sql
