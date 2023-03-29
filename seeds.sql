@@ -3801,5 +3801,5 @@ Si vous êtes une personne sensible ou vulnérable :
   * éviter les activités physiques et sportives intenses (dont les compétitions) en plein air ; celles peu intenses à l’intérieur peuvent être maintenues.', '', 'published', false, 'episode_pollution', false, '{}', '{}', false);
 
 
-insert into "public"."alembic_version" ("version_num") values ("7739c55cf576");
-insert into "indice_schema"."alembic_version" ("version_num") values ("64254d2cc72b");
+insert into "public"."alembic_version" ("version_num") values ('7739c55cf576');
+insert into "indice_schema"."alembic_version" ("version_num") values ('64254d2cc72b');
