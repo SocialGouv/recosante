@@ -96,7 +96,7 @@ flower:
   containerPort: 5555
   probesPath: /healthcheck
   ingress:
-    enabled: false
+    enabled: true
   envFrom:
     - secretRef:
         name: flower-sealed-secret
