@@ -1,4 +1,5 @@
 global:
+  # use PROD API by default to build the frontend
   apiUrl: "https://api.recosante.beta.gouv.fr" # https://api-{{ .Values.global.host }}"
 
 api:
@@ -20,27 +21,15 @@ api:
         name: "{{ .Values.global.pgSecretName }}"
     - secretRef:
         name: api-sealed-secret
+    - configMapRef:
+        name: api-configmap
+    - configMapRef:
+        name: celery-configmap
   env:
-    - name: FLASK_APP
-      value: ecosante
-    - name: FLASK_DEBUG
-      value: "false"
-    - name: FLASK_ENV
-      value: dev
-    - name: DEBUG
-      value: "true"
-    - name: NODE_SASS_BIN
-      value: "./yarn-scss"
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
     - name: ROOT_URL
       value: "https://api-{{ .Values.global.host }}"
-    - name: CELERY_BROKER_URL
-      value: "redis://redis:80"
-    - name: CELERY_RESULT_BACKEND
-      value: "redis://redis:80"
-    - name: CELERY_TIMEZONE
-      value: "Europe/Paris"
 
 frontend:
   ~chart: app
@@ -62,10 +51,10 @@ indice:
   imagePackage: indice
   probesPath: /
   containerPort: 8080
-  startupProbe: # necessary for initial data migration
-    initialDelaySeconds: 60
-    failureThreshold: 60
-    periodSeconds: 30
+  startupProbe:
+    initialDelaySeconds: 30
+    failureThreshold: 50
+    periodSeconds: 10
   ingress:
     enabled: false
   envFrom:
@@ -73,15 +62,11 @@ indice:
         name: "{{ .Values.global.pgSecretName }}"
     - secretRef:
         name: indice-sealed-secret
+    - configMapRef:
+        name: celery-configmap
   env:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
-    - name: CELERY_BROKER_URL
-      value: "redis://redis:80"
-    - name: CELERY_RESULT_BACKEND
-      value: "redis://redis:80"
-    - name: CELERY_TIMEZONE
-      value: "Europe/Paris"
 
 redis:
   ~chart: redis
@@ -100,15 +85,9 @@ flower:
   envFrom:
     - secretRef:
         name: flower-sealed-secret
+    - configMapRef:
+        name: celery-configmap
   env:
-    - name: CELERY_BROKER_URL
-      value: redis://redis:80
-    - name: CELERY_RESULT_BACKEND
-      value: redis://redis:80
-    - name: CELERY_TIMEZONE
-      value: Europe/Paris
-    - name: TZ
-      value: Europe/Paris
     - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
       value: "5555"
 
@@ -126,7 +105,7 @@ jobs:
         context: indice_pollution
     build-frontend:
       use: build
-      ~needs: [api]
+      ~needs: [api] # yes, the frontend build needs some running API
       with:
         imagePackage: frontend
         context: frontend

@@ -1,2 +1,5 @@
 global:
   apiUrl: "https://api-recosante.fabrique.social.gouv.fr"
+#
+#frontend:
+#  host: "https://recosante.beta.gouv.fr"
