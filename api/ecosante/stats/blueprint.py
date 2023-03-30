@@ -97,7 +97,7 @@ def stats_web():
     try:
         r = requests.get(f"{matomo_api_url}&method=VisitsSummary.getVisits&period=month&date={start_date},today")
         r.raise_for_status()
-        with different_locale('fr_FR'):
+        with different_locale('fr_FR.utf8'):
             monthly_visits = {datetime.strptime(m, '%Y-%m').strftime('%B %Y'): v for m, v in r.json().items()}
     except Exception as e:
         current_app.logger.error(f"Error relative to Matomo API: {e}")
@@ -106,7 +106,7 @@ def stats_web():
     try:
         r = requests.get(f"{matomo_api_url}&method=Actions.getPageUrls&period=month&date={start_date},today&filter_column=label&filter_pattern=^place$")
         r.raise_for_status()
-        with different_locale('fr_FR'):
+        with different_locale('fr_FR.utf8'):
             place_monthly_visits = {datetime.strptime(m, '%Y-%m').strftime('%B %Y'): (next(iter(v), {})).get('nb_visits', 0) for m, v in r.json().items()}
     except Exception as e:
         current_app.logger.error(f"Error relative to Matomo API: {e}")
@@ -166,7 +166,7 @@ def stats_email():
     month_trunc = func.date_trunc('month', Inscription.date_inscription)
     count_id = func.count(Inscription.id)
     inscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None)).group_by(month_trunc).order_by(month_trunc)
-    dict_format = lambda v: (f"{get_month_name(v[0].month, 'fr_FR')} {v[0].year}", int(v[1]))
+    dict_format = lambda v: (f"{get_month_name(v[0].month, 'fr_FR.utf8')} {v[0].year}", int(v[1]))
     inscriptions = dict(map(dict_format, db.session.execute(inscriptions_month_query).all()))
     # Nombre cumulé d'inscriptions par mois
     acc_add = lambda acc, i: (i[0], acc[1] + i[1])
