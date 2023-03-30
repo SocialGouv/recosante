@@ -8,6 +8,7 @@ from flask import (
     request,
     session,
     url_for,
+    current_app,
 )
 from ecosante.utils import Blueprint
 from ecosante.extensions import admin_authenticator, celery
@@ -27,7 +28,7 @@ bp = Blueprint("pages", __name__, url_prefix='/')
 
 @bp.route('/')
 def redirection_index():
-    return redirect("https://recosante.beta.gouv.fr/", code=301)
+    return redirect(current_app.config["FRONTEND_URL"], code=301)
 
 
 @bp.route('/admin', strict_slashes=False)

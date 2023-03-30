@@ -30,6 +30,9 @@ api:
       value: "$(DATABASE_URL)"
     - name: ROOT_URL
       value: "https://api-{{ .Values.global.host }}"
+    - name: FRONTEND_URL
+      value: "https://{{ .Values.global.host }}"
+
 
 frontend:
   ~chart: app
