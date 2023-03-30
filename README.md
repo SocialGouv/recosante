@@ -10,3 +10,4 @@ Les sous-dossiers ont été repris du travail effectué par l'équipe dédiée d
 - https://github.com/betagouv/recosante-api : data, envoi des emails
 - https://github.com/betagouv/recosante-mail : templates email
 - https://github.com/betagouv/indice_pollution : import des indices et utilisation via l’API
+
