@@ -124,7 +124,7 @@ def setup_periodic_tasks(sender, **kwargs):
         "Réunion",
         "Sud"
     ]
-    scheduled_datetime = datetime.now()
+    scheduled_datetime = datetime.now().isoformat()
     for region in regions:
         add_periodic_task(sig=save_all_indices.s(f"indice_pollution.regions.{region}", "Forecast", scheduled_datetime))
         add_periodic_task(sig=save_all_indices.s(f"indice_pollution.regions.{region}", "Episode", scheduled_datetime))
