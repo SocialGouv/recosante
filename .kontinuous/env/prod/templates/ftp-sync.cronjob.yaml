@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  annotations:
+  labels:
+    application: recosante
+    component: recosante
+  name: recosante-ftp-meteofrance
+  namespace: recosante
+spec:
+  schedule: 0 11 * * *
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            application: recosante
+            component: recosante
+          name: recosante-ftp-meteofrance
+        spec:
+          volumes:
+            - name: meteofrance
+              persistentVolumeClaim:
+                claimName: meteofrance
+          restartPolicy: OnFailure
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            runAsNonRoot: true
+          containers:
+            - image: toolhouse/lftp:v0.4.4
+              imagePullPolicy: IfNotPresent
+              name: recosante-ftp-meteofrance
+              volumeMounts:
+                - name: meteofrance
+                  mountPath: "/files"
+              command:
+                - /download
+              securityContext:
+                allowPrivilegeEscalation: false
+              envFrom:
+                - secretRef:
+                    name: ftp-clever-sealed-secret
+              env:
+                - name: REMOTE_PATH
+                  value: "."
+                - name: DEBUG
+                  value: "true"
+                - name: DELETE_FILES
+                  value: "false"
