@@ -4,7 +4,7 @@ global:
 #frontend:
 #  host: "https://recosante.beta.gouv.fr"
 
-api:
+indice:
   addVolumes:
     - meteofrance
   volumeMounts:
