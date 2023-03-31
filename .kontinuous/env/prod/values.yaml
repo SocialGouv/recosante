@@ -10,3 +10,21 @@ indice:
   volumeMounts:
     - mountPath: /meteofrance
       name: meteofrance
+  env:
+    - name: SQLALCHEMY_DATABASE_URI
+      value: "$(DATABASE_URL)"
+    - name: FS_BUCKET_URL
+      valueFrom:
+        secretKeyRef:
+          name: ftp-clever-sealed-secret
+          key: REMOTE_SERVER
+    - name: FS_BUCKET_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: ftp-clever-sealed-secret
+          key: USERNAME
+    - name: FS_BUCKET_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: ftp-clever-sealed-secret
+          key: PASSWORD
