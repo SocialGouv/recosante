@@ -3,3 +3,10 @@ global:
 #
 #frontend:
 #  host: "https://recosante.beta.gouv.fr"
+
+api:
+  addVolumes:
+    - meteofrance
+  volumeMounts:
+    - mountPath: /meteofrance
+      name: meteofrance
