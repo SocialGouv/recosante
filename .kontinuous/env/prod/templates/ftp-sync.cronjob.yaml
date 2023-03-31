@@ -37,7 +37,7 @@ spec:
                 - name: meteofrance
                   mountPath: "/files"
               command:
-                - /download
+                - "/download"
               securityContext:
                 allowPrivilegeEscalation: false
               envFrom:
@@ -47,6 +47,6 @@ spec:
                 - name: REMOTE_PATH
                   value: "."
                 - name: DEBUG
-                  value: "true"
+                  value: "false"
                 - name: DELETE_FILES
                   value: "false"
