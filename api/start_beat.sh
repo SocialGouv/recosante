@@ -1,2 +1,2 @@
 #!/bin/sh
-celery beat -scheduler=redbeat.RedBeatScheduler --loglevel=INFO
+celery beat --scheduler=redbeat.RedBeatScheduler --loglevel=INFO
