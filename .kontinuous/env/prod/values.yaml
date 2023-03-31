@@ -14,7 +14,11 @@ redis:
     - name: redis
       mountPath: /data
 
+api:
+  replicas: 1
+
 indice:
+  replicas: 1
   addVolumes:
     - meteofrance
   env:

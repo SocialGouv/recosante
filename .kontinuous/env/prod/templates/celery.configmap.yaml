@@ -5,6 +5,7 @@ metadata:
   namespace: recosante
 data:
   CELERY_BROKER_URL: "redis://redis:80"
+  CELERY_REDBEAT_REDIS_URL: "redis://redis:80"
   CELERY_RESULT_BACKEND: "redis://redis:80"
   CELERY_TIMEZONE: "Europe/Paris"
   TZ: "Europe/Paris"
