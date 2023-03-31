@@ -4,6 +4,9 @@ global:
 #frontend:
 #  host: "https://recosante.beta.gouv.fr"
 
+flower:
+  replicas: 1
+
 indice:
   addVolumes:
     - meteofrance
