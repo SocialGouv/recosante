@@ -7,9 +7,6 @@ global:
 indice:
   addVolumes:
     - meteofrance
-  volumeMounts:
-    - mountPath: /meteofrance
-      name: meteofrance
   env:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
