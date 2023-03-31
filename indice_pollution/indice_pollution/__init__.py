@@ -151,6 +151,7 @@ def create_app(test_config=None):
     )
     app.config['CELERY_RESULT_BACKEND'] = os.getenv('CELERY_RESULT_BACKEND') or f"db+{app.config['SQLALCHEMY_DATABASE_URI']}"
     app.config['CELERY_BROKER_URL'] = os.getenv('CELERY_BROKER_URL') or f"sqla+{app.config['SQLALCHEMY_DATABASE_URI']}"
+    app.config['CELERY_REDBEAT_REDIS_URL'] = os.getenv('CELERY_REDBEAT_REDIS_URL')
 
     init_app(app)
 
