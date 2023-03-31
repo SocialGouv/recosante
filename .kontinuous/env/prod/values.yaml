@@ -7,6 +7,13 @@ global:
 flower:
   replicas: 1
 
+redis:
+  addVolumes:
+    - redis
+  volumeMounts:
+    - name: redis
+      mountPath: /data
+
 api:
   replicas: 1
 
