@@ -46,5 +46,6 @@ RUN yarn build
 # Production image, copy all the files and run next
 FROM ghcr.io/socialgouv/docker/nginx:7.3.0 AS runner
 
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/public /usr/share/nginx/html
 
