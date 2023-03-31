@@ -8,6 +8,7 @@ DEPENDENCIES = [
     'amqp',
     'celery',
     'celery[redis]',
+    'celery-redbeat',
     'email_validator',
     'Faker',
     'Flask>=2',
