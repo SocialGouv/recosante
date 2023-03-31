@@ -26,7 +26,7 @@ spec:
             fsGroup: 1000
             runAsNonRoot: true
           containers:
-            - image: ghcr.io/socialgouv/recosante/api:{{ .Values.global.imageTag }}
+            - image: "{{ .Values.global.registry }}/recosante/api:{{ .Values.global.imageTag }}"
               imagePullPolicy: IfNotPresent
               name: recosante-check-newsletter
               command:
