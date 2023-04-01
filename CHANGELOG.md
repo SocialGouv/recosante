@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/SocialGouv/recosante/compare/v1.2.0...v1.2.1) (2023-04-01)
+
+
+### Bug Fixes
+
+* disable vapid ([2b33a20](https://github.com/SocialGouv/recosante/commit/2b33a20e3389c06505f100683e5d68b9b524c080))
+
 # [1.2.0](https://github.com/SocialGouv/recosante/compare/v1.1.12...v1.2.0) (2023-03-31)
 
 
