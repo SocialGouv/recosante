@@ -43,9 +43,19 @@ COPY . .
 RUN yarn build
 
 
-# Production image, copy all the files and run next
-FROM ghcr.io/socialgouv/docker/nginx:7.3.0 AS runner
+# -----------
+# FROM node:$NODE_VERSION as runner
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder /app/public /usr/share/nginx/html
+# WORKDIR /app
+# RUN chown node:node /app
+
+# ENV NODE_ENV production
+
+#USER 1001
+
+CMD ["yarn", "gatsby", "serve", "--port", "8080"]
+
+# COPY --from=builder /app/package.json .
+# COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+# COPY --from=builder --chown=node:node /app/public ./public
 
