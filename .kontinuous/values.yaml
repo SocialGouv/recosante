@@ -39,6 +39,7 @@ frontend:
   imagePackage: frontend
   host: "{{ .Values.global.host }}"
   containerPort: 8080
+  probesPath: /healthz/
   resources:
     requests:
       cpu: 0.1
