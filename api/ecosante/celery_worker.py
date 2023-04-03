@@ -10,6 +10,7 @@ if os.getenv('SENTRY_DSN'):
         integrations=[CeleryIntegration(), RedisIntegration()],
         traces_sample_rate=1.0,
         environment=os.getenv('ENVIRONMENT'),
+        attach_stacktrace=True,
     )
 app = create_app()
 
