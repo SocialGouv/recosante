@@ -9,3 +9,4 @@ data:
   CELERY_RESULT_BACKEND: "redis://redis:80"
   CELERY_TIMEZONE: "Europe/Paris"
   TZ: "Europe/Paris"
+  ENVIRONMENT: production
