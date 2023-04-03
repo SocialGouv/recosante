@@ -1,3 +1,10 @@
+## [1.2.9](https://github.com/SocialGouv/recosante/compare/v1.2.8...v1.2.9) (2023-04-03)
+
+
+### Bug Fixes
+
+* Fix requests/limits for node frontend ([91ed0de](https://github.com/SocialGouv/recosante/commit/91ed0de3cfb3ba301c62c0b07eb2ac03d6e9474e))
+
 ## [1.2.8](https://github.com/SocialGouv/recosante/compare/v1.2.7...v1.2.8) (2023-04-03)
 
 
