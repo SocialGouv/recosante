@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/SocialGouv/recosante/compare/v1.2.5...v1.2.6) (2023-04-03)
+
+
+### Bug Fixes
+
+* remove beta.gouv ([c982e97](https://github.com/SocialGouv/recosante/commit/c982e97aba929a1fa133212e8fbc3b9c03cb5c01))
+
 ## [1.2.5](https://github.com/SocialGouv/recosante/compare/v1.2.4...v1.2.5) (2023-04-03)
 
 
