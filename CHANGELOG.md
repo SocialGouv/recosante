@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/SocialGouv/recosante/compare/v1.2.1...v1.2.2) (2023-04-03)
+
+
+### Bug Fixes
+
+* add environment for sentry and remove purge celery ([5bcedcf](https://github.com/SocialGouv/recosante/commit/5bcedcfd40d13ca2e98477a8aabab582a89085d3))
+
 ## [1.2.1](https://github.com/SocialGouv/recosante/compare/v1.2.0...v1.2.1) (2023-04-01)
 
 
