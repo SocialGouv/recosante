@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/SocialGouv/recosante/compare/v1.2.4...v1.2.5) (2023-04-03)
+
+
+### Bug Fixes
+
+* remove ftp prefix in FS_BUCKET_URL ([f0b1fb9](https://github.com/SocialGouv/recosante/commit/f0b1fb9ab3433010cd7087362c38af5d12f35f4d))
+
 ## [1.2.4](https://github.com/SocialGouv/recosante/compare/v1.2.3...v1.2.4) (2023-04-03)
 
 
