@@ -93,6 +93,8 @@ flower:
   env:
     - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
       value: "5555"
+    - name: FLOWER_PERSISTENT
+      value: "True"
 
 jobs:
   runs:
