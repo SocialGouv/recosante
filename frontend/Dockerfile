@@ -53,7 +53,7 @@ RUN yarn build
 
 #USER 1001
 
-CMD ["yarn", "gatsby", "serve", "--port", "8080"]
+CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080"]
 
 # COPY --from=builder /app/package.json .
 # COPY --from=builder --chown=node:node /app/node_modules ./node_modules
