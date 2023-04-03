@@ -1,3 +1,10 @@
+## [1.2.11](https://github.com/SocialGouv/recosante/compare/v1.2.10...v1.2.11) (2023-04-03)
+
+
+### Bug Fixes
+
+* add host ([661f4f8](https://github.com/SocialGouv/recosante/commit/661f4f80c36270477f3c1edac7e3c25d819e99ea))
+
 ## [1.2.10](https://github.com/SocialGouv/recosante/compare/v1.2.9...v1.2.10) (2023-04-03)
 
 
