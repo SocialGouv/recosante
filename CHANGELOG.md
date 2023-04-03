@@ -1,3 +1,10 @@
+## [1.2.7](https://github.com/SocialGouv/recosante/compare/v1.2.6...v1.2.7) (2023-04-03)
+
+
+### Bug Fixes
+
+* use nodejs server for frontend ([be61d17](https://github.com/SocialGouv/recosante/commit/be61d17ab4677cc6157f2be995da74cb9df9d7f6))
+
 ## [1.2.6](https://github.com/SocialGouv/recosante/compare/v1.2.5...v1.2.6) (2023-04-03)
 
 
