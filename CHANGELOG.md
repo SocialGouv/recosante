@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/SocialGouv/recosante/compare/v1.2.3...v1.2.4) (2023-04-03)
+
+
+### Bug Fixes
+
+* attach traceback on error logs ([26bf8fe](https://github.com/SocialGouv/recosante/commit/26bf8fe6a6eedc3550daf13e9e15a3152a59f3ed))
+
 ## [1.2.3](https://github.com/SocialGouv/recosante/compare/v1.2.2...v1.2.3) (2023-04-03)
 
 
