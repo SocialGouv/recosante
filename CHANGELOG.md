@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/SocialGouv/recosante/compare/v1.2.7...v1.2.8) (2023-04-03)
+
+
+### Bug Fixes
+
+* remove yarn ([f7e46d2](https://github.com/SocialGouv/recosante/commit/f7e46d20044be211be297880a846656291032f55))
+
 ## [1.2.7](https://github.com/SocialGouv/recosante/compare/v1.2.6...v1.2.7) (2023-04-03)
 
 
