@@ -41,11 +41,11 @@ frontend:
   containerPort: 8080
   resources:
     requests:
-      cpu: 0.05
-      memory: 64Mi
+      cpu: 0.1
+      memory: 128Mi
     limits:
-      cpu: 0.5
-      memory: 256Mi
+      cpu: 1
+      memory: 1Gi
 
 indice:
   ~chart: app
