@@ -1,3 +1,10 @@
+## [1.2.10](https://github.com/SocialGouv/recosante/compare/v1.2.9...v1.2.10) (2023-04-03)
+
+
+### Bug Fixes
+
+* add healthz page to frontend ([52645ae](https://github.com/SocialGouv/recosante/commit/52645aecc7dc270183eb2957ff339e97096bfe48))
+
 ## [1.2.9](https://github.com/SocialGouv/recosante/compare/v1.2.8...v1.2.9) (2023-04-03)
 
 
