@@ -15,6 +15,7 @@ from sib_api_v3_sdk.rest import ApiException
 from itertools import accumulate, groupby
 import requests
 import os
+import logging
 
 def get_month_name(month_no, locale):
     with different_locale(locale):
