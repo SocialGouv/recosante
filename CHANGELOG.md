@@ -1,3 +1,10 @@
+## [1.2.17](https://github.com/SocialGouv/recosante/compare/v1.2.16...v1.2.17) (2023-04-04)
+
+
+### Bug Fixes
+
+* add log in stats/email ([f0856f3](https://github.com/SocialGouv/recosante/commit/f0856f3488b6d5f4cc7af7717e03ee7c72709359))
+
 ## [1.2.16](https://github.com/SocialGouv/recosante/compare/v1.2.15...v1.2.16) (2023-04-04)
 
 
