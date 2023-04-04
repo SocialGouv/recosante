@@ -1,3 +1,10 @@
+## [1.2.13](https://github.com/SocialGouv/recosante/compare/v1.2.12...v1.2.13) (2023-04-04)
+
+
+### Bug Fixes
+
+* move timeout annotaiton to api ingress ([cf73377](https://github.com/SocialGouv/recosante/commit/cf733777be9438ed3fd75d42e85ba2bc4aac429b))
+
 ## [1.2.12](https://github.com/SocialGouv/recosante/compare/v1.2.11...v1.2.12) (2023-04-04)
 
 
