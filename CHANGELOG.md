@@ -1,3 +1,10 @@
+## [1.2.16](https://github.com/SocialGouv/recosante/compare/v1.2.15...v1.2.16) (2023-04-04)
+
+
+### Bug Fixes
+
+* add uwsgi http-timeout ([82971d7](https://github.com/SocialGouv/recosante/commit/82971d7f91c170aa0e0f73ea91f2cefc80051d39))
+
 ## [1.2.15](https://github.com/SocialGouv/recosante/compare/v1.2.14...v1.2.15) (2023-04-04)
 
 
