@@ -1,3 +1,10 @@
+## [1.2.12](https://github.com/SocialGouv/recosante/compare/v1.2.11...v1.2.12) (2023-04-04)
+
+
+### Bug Fixes
+
+* increase frontend ingress timeout for stats route ([4a57007](https://github.com/SocialGouv/recosante/commit/4a57007c02519b91d282e3bb8d81472912bcc4bd))
+
 ## [1.2.11](https://github.com/SocialGouv/recosante/compare/v1.2.10...v1.2.11) (2023-04-03)
 
 
