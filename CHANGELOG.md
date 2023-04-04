@@ -1,3 +1,11 @@
+## [1.2.15](https://github.com/SocialGouv/recosante/compare/v1.2.14...v1.2.15) (2023-04-04)
+
+
+### Bug Fixes
+
+* add forceRestart on redis ([6c1b122](https://github.com/SocialGouv/recosante/commit/6c1b122ebb5eccc514fa1d74aad5e820708e6301))
+* try proxy-body-size ([b8ba295](https://github.com/SocialGouv/recosante/commit/b8ba295c807a3f2d8db0c5031e12b4342fca0940))
+
 ## [1.2.14](https://github.com/SocialGouv/recosante/compare/v1.2.13...v1.2.14) (2023-04-04)
 
 
