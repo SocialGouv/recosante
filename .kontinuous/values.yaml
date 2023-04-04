@@ -81,6 +81,7 @@ redis:
   enabled: true
   ingress:
     enabled: false
+  ~forceRestart: false
 
 flower:
   ~needs: [redis]
