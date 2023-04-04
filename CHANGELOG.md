@@ -1,3 +1,10 @@
+## [1.2.14](https://github.com/SocialGouv/recosante/compare/v1.2.13...v1.2.14) (2023-04-04)
+
+
+### Bug Fixes
+
+* increase api limits and uwsgi processes for healthcheck ([21ec9d2](https://github.com/SocialGouv/recosante/commit/21ec9d2006d5552d854396052f5eb7612b263a34))
+
 ## [1.2.13](https://github.com/SocialGouv/recosante/compare/v1.2.12...v1.2.13) (2023-04-04)
 
 
