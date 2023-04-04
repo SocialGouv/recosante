@@ -1,3 +1,10 @@
+## [1.2.18](https://github.com/SocialGouv/recosante/compare/v1.2.17...v1.2.18) (2023-04-04)
+
+
+### Bug Fixes
+
+* add misisn gimport ([7e42825](https://github.com/SocialGouv/recosante/commit/7e42825f0933f478a6b11ff3ac1c3223a4987f52))
+
 ## [1.2.17](https://github.com/SocialGouv/recosante/compare/v1.2.16...v1.2.17) (2023-04-04)
 
 
