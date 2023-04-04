@@ -160,52 +160,70 @@ def stats_web():
 
 @bp.route('/email/')
 def stats_email():
+    logging.info("/stats/email 1")
     # Nombre d'utilisateurs actuellement abonnés
     total_actifs = Inscription.active_query().count()
+    logging.info("/stats/email 2")
     # Nombre d'inscriptions par mois
     month_trunc = func.date_trunc('month', Inscription.date_inscription)
     count_id = func.count(Inscription.id)
     inscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None)).group_by(month_trunc).order_by(month_trunc)
+    logging.info("/stats/email 3")
     dict_format = lambda v: (f"{get_month_name(v[0].month, 'fr_FR.utf8')} {v[0].year}", int(v[1]))
+    logging.info("/stats/email 4")
     inscriptions = dict(map(dict_format, db.session.execute(inscriptions_month_query).all()))
     # Nombre cumulé d'inscriptions par mois
+    logging.info("/stats/email 5")
     acc_add = lambda acc, i: (i[0], acc[1] + i[1])
     acc_inscriptions = dict(accumulate([
         (v[0], v[1])
         for v in inscriptions.items()
     ], acc_add))
+    logging.info("/stats/email 6")
     # Nombre de désinscriptions par mois
     month_trunc = func.date_trunc('month', Inscription.deactivation_date)
     count_id = func.count(Inscription.id)
     desinscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.deactivation_date.isnot(None)).group_by(month_trunc).order_by(month_trunc)
+    logging.info("/stats/email 7")
     desinscriptions = dict(map(dict_format, db.session.execute(desinscriptions_month_query).all()))
+    logging.info("/stats/email 8")
     # Nombre cumulé de désinscriptions par mois
     acc_desinscriptions = dict(accumulate([
         (v[0], v[1])
         for v in desinscriptions.items()
     ], acc_add))
     # Nombre cumulé d'abonnés par mois
+    logging.info("/stats/email 9")
     active_users = {k: acc_inscriptions.get(k, 0) - acc_desinscriptions.get(k, 0) for k in acc_inscriptions.keys()}
+    logging.info("/stats/email 10")
     grouped_query = Inscription.active_query().group_by(text('1')).order_by(text('1'))
+    logging.info("/stats/email 11")
     make_dict = lambda attribute: dict(grouped_query.with_entities(func.unnest(getattr(Inscription, attribute)), count_id).all())
+    logging.info("/stats/email 12")
     # Nombre d'abonnés par type d'indicateur
     indicateurs = make_dict('indicateurs')
+    logging.info("/stats/email 13")
     # Nombre d'abonnés par fréquence
     indicateurs_frequence = make_dict('indicateurs_frequence')
+    logging.info("/stats/email 14")
     # Nombre d'abonnés par média
     indicateurs_media = make_dict('indicateurs_media')
+    logging.info("/stats/email 15")
     # Nombre d'abonnés à la lettre d'information hebdomadaire
     recommandations_actives = make_dict('recommandations_actives')
+    logging.info("/stats/email 16")
     # Nombre total d'abonnés ayant répondu à l'enquête de satisfaction en bas de chaque infolettre
     total_utile = NewsletterDB.query\
         .filter(NewsletterDB.appliquee.isnot(None))\
         .count()
     # Nombre d'abonnés ayant répondu oui à l'enquête de satisfaction en bas de chaque infolettre
+    logging.info("/stats/email 17")
     utile_oui = NewsletterDB.query\
         .filter(NewsletterDB.appliquee.is_(True))\
         .count()
     # Durée moyenne d'inscription
     # (pour les abonnés actuels, le temps considéré est la différence entre aujourd'hui et la date d'inscription)
+    logging.info("/stats/email 18")
     temps_moyen_inscription = db.session.query(
         func.sum(
             func.coalesce(
@@ -216,6 +234,7 @@ def stats_email():
     ).filter(
         Inscription.date_inscription != None
     ).one_or_none()
+    logging.info("/stats/email 19")
     to_return = {
         "active_users": json.dumps(active_users),
         "total_actifs": total_actifs,
