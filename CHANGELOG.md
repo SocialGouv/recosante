@@ -1,3 +1,10 @@
+## [1.2.19](https://github.com/SocialGouv/recosante/compare/v1.2.18...v1.2.19) (2023-04-04)
+
+
+### Bug Fixes
+
+* cleanup ([ac968d7](https://github.com/SocialGouv/recosante/commit/ac968d77c296154636a1dbe96124b2054d483f70))
+
 ## [1.2.18](https://github.com/SocialGouv/recosante/compare/v1.2.17...v1.2.18) (2023-04-04)
 
 
