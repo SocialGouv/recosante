@@ -13,6 +13,10 @@
   - faire un mono repo python-compatible, qui link le code d'indice_pollution dans l'api recosante sans publier le paquet python
 - docker-compose fonctionnel qui permet de tout lancer en local
 
+## Lint/autoformat/etc.
+
+- à setuper pour back et front
+
 ## Tests
 
 - intégrer les tests dans la CI
