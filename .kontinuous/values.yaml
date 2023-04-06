@@ -1,5 +1,5 @@
 global:
-  apiUrl: "https://api-{{ .Values.global.host }}"
+  apiUrl: "https://api.{{ .Values.global.host }}"
 
 api:
   ingress:
@@ -11,7 +11,7 @@ api:
   ~chart: app
   ~needs: [build-api, indice]
   imagePackage: api
-  host: "api-{{ .Values.global.host }}"
+  host: "api.{{ .Values.global.host }}"
   probesPath: /healthz
   containerPort: 8080
   resources:
@@ -34,7 +34,7 @@ api:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
     - name: ROOT_URL
-      value: "https://api-{{ .Values.global.host }}"
+      value: "https://api.{{ .Values.global.host }}"
     - name: FRONTEND_URL
       value: "https://{{ .Values.global.host }}"
 
