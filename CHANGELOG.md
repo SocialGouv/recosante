@@ -1,3 +1,10 @@
+## [1.2.20](https://github.com/SocialGouv/recosante/compare/v1.2.19...v1.2.20) (2023-04-06)
+
+
+### Bug Fixes
+
+* remove hardcoded api url ([7a544dd](https://github.com/SocialGouv/recosante/commit/7a544ddbd28ffdd4e388306e856647bfadda0f33))
+
 ## [1.2.19](https://github.com/SocialGouv/recosante/compare/v1.2.18...v1.2.19) (2023-04-04)
 
 
