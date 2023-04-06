@@ -1,6 +1,5 @@
-#
-#frontend:
-#  host: "https://recosante.beta.gouv.fr"
+frontend:
+  host: "https://recosante.beta.gouv.fr"
 
 flower:
   replicas: 1
