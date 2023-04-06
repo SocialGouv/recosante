@@ -1,5 +1,6 @@
 global:
   host: recosante.beta.gouv.fr
+  apiUrl: "https://api-recosante.fabrique.social.gouv.fr"
 
 flower:
   replicas: 1
