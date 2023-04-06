@@ -38,7 +38,6 @@ api:
     - name: FRONTEND_URL
       value: "https://{{ .Values.global.host }}"
 
-
 frontend:
   ~chart: app
   ~needs: [build-frontend]
