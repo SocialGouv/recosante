@@ -11,7 +11,7 @@ api:
   ~chart: app
   ~needs: [build-api, indice]
   imagePackage: api
-  host: "{{ .Values.global.apiHost }}"
+  host: "{{ tpl .Values.global.apiHost . }}"
   probesPath: /healthz
   containerPort: 8080
   resources:
@@ -34,7 +34,7 @@ api:
     - name: SQLALCHEMY_DATABASE_URI
       value: "$(DATABASE_URL)"
     - name: ROOT_URL
-      value: "https://{{ .Values.global.apiHost }}"
+      value: "https://{{ tpl .Values.global.apiHost . }}"
     - name: FRONTEND_URL
       value: "https://{{ .Values.global.host }}"
 
@@ -52,6 +52,13 @@ frontend:
     limits:
       cpu: 1
       memory: 1Gi
+  env:
+    - name: GATSBY_API_BASE_URL
+      value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
+    - name: GATSBY_URL
+      value: "https://{{ .Values.global.host }}"
+    - name: GATSBY_REPOSITORY_URL
+      value: https://github.com/socialgouv/recosante
 
 indice:
   ~chart: app
