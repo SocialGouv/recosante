@@ -35,3 +35,7 @@
 
 - utiliser un compte healthchecks.io (gratuit opensource) pour monitorer les crons ?
 - script python check_newsletter.py à refaire marcher
+
+## Data
+
+- supprimer l'historique ancien des grosses tables (notamment dans indice_schema.indiceATMO de plus de 70M de lignes)
