@@ -1,3 +1,10 @@
+## [1.2.21](https://github.com/SocialGouv/recosante/compare/v1.2.20...v1.2.21) (2023-04-06)
+
+
+### Bug Fixes
+
+* add production secrets ([#33](https://github.com/SocialGouv/recosante/issues/33)) ([6eac9d0](https://github.com/SocialGouv/recosante/commit/6eac9d00f74f3912387f4d9fba1a9662c24db7b1))
+
 ## [1.2.20](https://github.com/SocialGouv/recosante/compare/v1.2.19...v1.2.20) (2023-04-06)
 
 
