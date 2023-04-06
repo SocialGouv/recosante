@@ -1,3 +1,10 @@
+## [1.2.23](https://github.com/SocialGouv/recosante/compare/v1.2.22...v1.2.23) (2023-04-06)
+
+
+### Bug Fixes
+
+* apiUrl ([181f682](https://github.com/SocialGouv/recosante/commit/181f682595278bf157a5b9059c454c911b3238a5))
+
 ## [1.2.22](https://github.com/SocialGouv/recosante/compare/v1.2.21...v1.2.22) (2023-04-06)
 
 
