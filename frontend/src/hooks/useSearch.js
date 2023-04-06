@@ -2,6 +2,7 @@
 
 import { useQuery } from 'react-query'
 import axios from 'axios'
+import apiUrl from "utils/apiUrl"
 
 export function useSearch(search) {
   return useQuery(
@@ -58,9 +59,7 @@ export function useAvailability(code) {
     ['code', code],
     () =>
       axios
-        .get(
-          `https://api.recosante.beta.gouv.fr/city-availability?insee=${code}`
-        )
+        .get(`${apiUrl}/city-availability?insee=${code}`)
         .then((res) => res.data),
     {
       enabled: code ? true : false,
