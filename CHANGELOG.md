@@ -1,3 +1,10 @@
+## [1.2.24](https://github.com/SocialGouv/recosante/compare/v1.2.23...v1.2.24) (2023-04-06)
+
+
+### Bug Fixes
+
+* gatsby env ([220120d](https://github.com/SocialGouv/recosante/commit/220120d758418a6daea9ea54f2d7a499efecfca9))
+
 ## [1.2.23](https://github.com/SocialGouv/recosante/compare/v1.2.22...v1.2.23) (2023-04-06)
 
 
