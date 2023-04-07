@@ -1,3 +1,10 @@
+## [1.2.26](https://github.com/SocialGouv/recosante/compare/v1.2.25...v1.2.26) (2023-04-07)
+
+
+### Bug Fixes
+
+* redeploy on fabrique without SIB and VAPID ([dde4084](https://github.com/SocialGouv/recosante/commit/dde4084248be8b42c8e2228253cc24c3bf03f2d9))
+
 ## [1.2.25](https://github.com/SocialGouv/recosante/compare/v1.2.24...v1.2.25) (2023-04-07)
 
 
