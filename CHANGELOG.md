@@ -1,3 +1,10 @@
+## [1.2.25](https://github.com/SocialGouv/recosante/compare/v1.2.24...v1.2.25) (2023-04-07)
+
+
+### Bug Fixes
+
+* certSecretName ([84f7f61](https://github.com/SocialGouv/recosante/commit/84f7f615c9993a4a476623bf28b9716c6ab39944))
+
 ## [1.2.24](https://github.com/SocialGouv/recosante/compare/v1.2.23...v1.2.24) (2023-04-06)
 
 
