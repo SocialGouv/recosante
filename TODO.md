@@ -5,6 +5,7 @@
 - doc rapide de l'architecture (api et workers, front, SIB, etc.)
 - doc du modèle de données
 - doc de prise en main et dev en local (start /tests)
+- schema d'architecture et flux réseau
 
 ## Dev
 
