@@ -15,6 +15,9 @@ redis:
 api:
   replicas: 1
 
+frontend:
+  certSecretName: frontend-beta
+
 indice:
   replicas: 1
   addVolumes:
