@@ -1,3 +1,10 @@
+## [1.2.27](https://github.com/SocialGouv/recosante/compare/v1.2.26...v1.2.27) (2023-04-10)
+
+
+### Bug Fixes
+
+* use legacy beta.gouv urls ([#34](https://github.com/SocialGouv/recosante/issues/34)) ([229d710](https://github.com/SocialGouv/recosante/commit/229d71096cb48dde711bfaed12849ad8220a5c23))
+
 ## [1.2.26](https://github.com/SocialGouv/recosante/compare/v1.2.25...v1.2.26) (2023-04-07)
 
 
