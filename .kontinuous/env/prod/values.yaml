@@ -4,6 +4,7 @@ global:
 
 flower:
   replicas: 1
+  host: "flower-recosante.fabrique.social.gouv.fr"
 
 redis:
   addVolumes:
