@@ -1,3 +1,10 @@
+## [1.2.28](https://github.com/SocialGouv/recosante/compare/v1.2.27...v1.2.28) (2023-04-10)
+
+
+### Bug Fixes
+
+* fix flower prod url ([#35](https://github.com/SocialGouv/recosante/issues/35)) ([f6183e9](https://github.com/SocialGouv/recosante/commit/f6183e933393be520ecf45b53f63f1d3f82e1c82))
+
 ## [1.2.27](https://github.com/SocialGouv/recosante/compare/v1.2.26...v1.2.27) (2023-04-10)
 
 
