@@ -1,6 +1,6 @@
 global:
-  host: "recosante.fabrique.social.gouv.fr" # recosante.beta.gouv.fr
-  apiHost: "api-recosante.fabrique.social.gouv.fr"
+  host: "recosante.beta.gouv.fr" # recosante.beta.gouv.fr
+  apiHost: "api.recosante.beta.gouv.fr"
 
 flower:
   replicas: 1
