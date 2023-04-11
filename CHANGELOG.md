@@ -1,3 +1,10 @@
+## [1.2.29](https://github.com/SocialGouv/recosante/compare/v1.2.28...v1.2.29) (2023-04-11)
+
+
+### Bug Fixes
+
+* fix import using SIB api ([0ea8abf](https://github.com/SocialGouv/recosante/commit/0ea8abff7e2dbba66f904877db93e3ce7bcc01df))
+
 ## [1.2.28](https://github.com/SocialGouv/recosante/compare/v1.2.27...v1.2.28) (2023-04-10)
 
 
