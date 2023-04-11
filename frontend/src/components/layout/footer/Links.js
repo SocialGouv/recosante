@@ -39,7 +39,7 @@ export default function Links() {
   return (
     <Wrapper>
       <ItemWrapper>
-        <Item><StyledMagicLink to='/mentions-legales'>accessibilité : non conforme</StyledMagicLink></Item>
+        <Item><StyledMagicLink to='/accessibilite'>accessibilité : partiellement conforme</StyledMagicLink></Item>
         <Item><StyledMagicLink to='/mentions-legales'>mentions légales</StyledMagicLink></Item>
         <Item><StyledMagicLink to='/donnees-personnelles'>données personnelles</StyledMagicLink></Item>
         <Item><StyledMagicLink to='/cookies'>gestion des cookies</StyledMagicLink></Item>
