@@ -5,6 +5,7 @@ from uuid import uuid4
 import os
 import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
+from sib_api_v3_sdk.api.lists_api import ListsApi 
 from ecosante.newsletter.models import Newsletter, NewsletterDB
 from ecosante.inscription.models import Inscription
 from ecosante.extensions import db, sib, celery
@@ -97,7 +98,7 @@ def send(task, campaign_id, type_, test=False):
         current_app.logger.info(f"Envoi terminé de la campagne: {campaign_id}")
 
 def create_mail_list(now, test):
-    lists_api = sib_api_v3_sdk.ListsApi(sib)
+    lists_api = ListsApi(sib)
     r = lists_api.create_list(
         sib_api_v3_sdk.CreateList(
             name=f'{now} - mail',
