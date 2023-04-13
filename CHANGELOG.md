@@ -1,3 +1,10 @@
+## [1.2.30](https://github.com/SocialGouv/recosante/compare/v1.2.29...v1.2.30) (2023-04-13)
+
+
+### Bug Fixes
+
+* reduce sentry errors (use warn instead of errors for very common errors) ([de924d8](https://github.com/SocialGouv/recosante/commit/de924d82546ec946b772aab1bbe8c4651f03a3a1))
+
 ## [1.2.29](https://github.com/SocialGouv/recosante/compare/v1.2.28...v1.2.29) (2023-04-11)
 
 
