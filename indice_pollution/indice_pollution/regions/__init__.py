@@ -49,7 +49,7 @@ class ServiceMixin(object):
             return None
         try:
             if 'error' in r.json():
-                logging.error(f'Erreur dans la réponse à la requête: {url} {params}: {r.json()}')
+                logging.warn(f'Erreur dans la réponse à la requête: {url} {params}: {r.json()}')
                 return None
         except ValueError:
             pass

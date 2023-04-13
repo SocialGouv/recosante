@@ -75,9 +75,9 @@ class Newsletter:
         if self.type_ != "quotidien":
             return
         if not 'label' in self.today_forecast:
-            current_app.logger.error(f'No label for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
+            current_app.logger.warn(f'No label for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
         if not 'couleur' in self.today_forecast:
-            current_app.logger.error(f'No couleur for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
+            current_app.logger.warn(f'No couleur for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
         if self.episodes:
             if 'data' in self.episodes:
                 self.episodes = self.episodes['data']
