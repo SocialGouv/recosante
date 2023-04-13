@@ -40,3 +40,28 @@
 ## Data
 
 - supprimer l'historique ancien des grosses tables (notamment dans indice_schema.indiceATMO de plus de 70M de lignes)
+
+## Schema simplifié
+
+```mermaid
+flowchart TD
+    Internet-->Frontend
+    Internet-->API
+    Internet-->|auth|Flower
+    subgraph Azure
+        subgraph kubernetes
+            Frontend-->API
+            Flower-->Redis
+            Celery-->Redis
+            Indice-->Redis
+            API-->Redis
+        end
+        API--->PostgreSQL
+        Indice--->PostgreSQL
+    end
+    Indice---->AirParif[API AirParif]
+    Indice---->ATMO[API ATMOdata]
+    API---->SendInBlue
+    Indice---->FTP[FTP clever cloud]
+```    
+
