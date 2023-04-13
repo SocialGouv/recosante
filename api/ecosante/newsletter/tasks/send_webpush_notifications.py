@@ -35,8 +35,7 @@ def send_webpush_notification(nldb: NewsletterDB, vapid_claims, retry=0):
                 current_app.logger.error(f"Unable to retry after: {retry_after}")
                 return None
         else:
-            current_app.logger.error(f"Error sending notification to {nldb.inscription.mail}")
-            current_app.logger.error(ex)
+            current_app.logger.warn(f"Error sending push notification to {nldb.inscription.mail}. Exception: {ex}")
             return None
 
 @celery.task(bind=True)
