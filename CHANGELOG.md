@@ -1,3 +1,11 @@
+## [1.2.31](https://github.com/SocialGouv/recosante/compare/v1.2.30...v1.2.31) (2023-04-14)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#31](https://github.com/SocialGouv/recosante/issues/31)) ([1232fa2](https://github.com/SocialGouv/recosante/commit/1232fa2f48f5d476f2bf43d0ff46a8452cd55b75))
+* ajout declaration a11y ([#36](https://github.com/SocialGouv/recosante/issues/36)) ([6f1e82d](https://github.com/SocialGouv/recosante/commit/6f1e82d3aa5b0b5ea81996a21cb66dda38d50f0b))
+
 ## [1.2.30](https://github.com/SocialGouv/recosante/compare/v1.2.29...v1.2.30) (2023-04-13)
 
 
