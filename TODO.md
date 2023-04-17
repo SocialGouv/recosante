@@ -13,6 +13,7 @@
   - locker tout ça en passant à poetry et supprimer les setup.py / setup.cfg (utiliser les fichiers requirements dumpés d'une prod fonctionnelle via pip freeze)
   - faire un mono repo python-compatible, qui link le code d'indice_pollution dans l'api recosante sans publier le paquet python
 - docker-compose fonctionnel qui permet de tout lancer en local
+- les web push notifications ne semblent plus opérationnelles
 
 ## Lint/autoformat/etc.
 
