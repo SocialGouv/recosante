@@ -1,4 +1,4 @@
-ARG NODE_VERSION=16-alpine3.16
+ARG NODE_VERSION=16-alpine3.16@sha256:27f56734cabb1bf0ed5176730091b67fb59b0c7249193e350f175c8b4ab12f8d
 
 # Install dependencies only when needed
 FROM node:$NODE_VERSION AS prepare
@@ -40,22 +40,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn build
+RUN yarn build && yarn --production && yarn cache clean
 
-
-# -----------
-# FROM node:$NODE_VERSION as runner
-
-# WORKDIR /app
-# RUN chown node:node /app
-
-# ENV NODE_ENV production
-
-#USER 1001
+#USER 1000
 
 CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
-
-# COPY --from=builder /app/package.json .
-# COPY --from=builder --chown=node:node /app/node_modules ./node_modules
-# COPY --from=builder --chown=node:node /app/public ./public
 

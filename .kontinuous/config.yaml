@@ -4,12 +4,11 @@ dependencies:
   fabrique:
     import: socialgouv/kontinuous/plugins/fabrique
     dependencies:
-      contrib:
-        preDeploy:
-          importSecrets:
-            options:
-              secrets:
-                pg-admin-user:
-                  from: azure-pg-admin
-                  env: dev
-                  required: true
+      preDeploy:
+        importSecrets:
+          options:
+            secrets:
+              pg-admin-user:
+                from: azure-pg-admin
+                env: dev
+                required: true
