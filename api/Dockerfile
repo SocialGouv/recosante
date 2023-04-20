@@ -11,9 +11,6 @@ RUN apt update \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - &&\
     apt-get install -y nodejs && npm install --global yarn
 
-
-
-
 WORKDIR /code
 
 ADD package.json yarn.lock ./
@@ -21,7 +18,7 @@ RUN yarn install
 ADD requirements.txt setup.cfg setup.py ./
 RUN pip install -e .[test] 
 
-RUN apt-get purge curl libpq-dev gcc libc6-dev && apt-get autoremove
+RUN apt-get purge -y curl libpq-dev gcc libc6-dev && apt-get autoremove -y
 
 ADD . .
 RUN chown -R 1000:1000 /code 
