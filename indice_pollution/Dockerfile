@@ -7,7 +7,7 @@ RUN apt update && apt install -y --no-install-recommends locales gcc libc6-dev \
 
 WORKDIR /code
 
-ADD requirements.txt setup.cfg setup.py .
+ADD requirements.txt setup.cfg setup.py ./
 RUN pip install -e .
 
 ADD . .
