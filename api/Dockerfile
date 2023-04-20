@@ -18,7 +18,7 @@ RUN yarn install
 ADD requirements.txt setup.cfg setup.py ./
 RUN pip install -e .[test] 
 
-RUN apt-get purge -y curl libpq-dev gcc libc6-dev && apt-get autoremove -y
+RUN apt-get purge -y curl gcc libc6-dev && apt-get autoremove -y
 
 ADD . .
 RUN chown -R 1000:1000 /code 

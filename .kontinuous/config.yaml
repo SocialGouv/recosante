@@ -5,6 +5,9 @@ dependencies:
     import: socialgouv/kontinuous/plugins/fabrique
     dependencies:
       contrib:
+        patches:
+          rancherProjectId:
+            enabled: false
         preDeploy:
           importSecrets:
             options:
