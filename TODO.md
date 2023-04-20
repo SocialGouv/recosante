@@ -14,6 +14,7 @@
   - faire un mono repo python-compatible, qui link le code d'indice_pollution dans l'api recosante sans publier le paquet python
 - docker-compose fonctionnel qui permet de tout lancer en local
 - les web push notifications ne semblent plus opérationnelles
+- Pb sur API : `sqlalchemy.exc.PendingRollbackError: Can't reconnect until invalid transaction is rolled back. (Background on this error at: https://sqlalche.me/e/14/8s2b)`. ajuster les sondes pour que le pod redemarre dans ce genre de cas
 
 ## Lint/autoformat/etc.
 
