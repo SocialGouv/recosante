@@ -42,9 +42,7 @@ COPY . .
 
 RUN yarn build && yarn --production && yarn cache clean
 
-USER 1000
-
-ENV PARCEL_WORKERS=1
+#USER 1000
 
 CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
 
