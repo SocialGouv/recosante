@@ -1,3 +1,10 @@
+## [1.2.32](https://github.com/SocialGouv/recosante/compare/v1.2.31...v1.2.32) (2023-04-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency gatsby-plugin-sharp to v4.25.1 [security] ([db317bb](https://github.com/SocialGouv/recosante/commit/db317bb19fd37b9eef91bda0e833f65e4c56e2a6))
+
 ## [1.2.31](https://github.com/SocialGouv/recosante/compare/v1.2.30...v1.2.31) (2023-04-14)
 
 
