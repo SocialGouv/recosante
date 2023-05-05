@@ -76,6 +76,7 @@ def create_app(testing=False):
         static_url_path='/assets/'
     )
 
+    app.config['ENV'] = os.getenv('FLASK_ENV')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI') or os.getenv('POSTGRESQL_ADDON_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -122,11 +123,9 @@ def create_app(testing=False):
         app.add_template_filter(oxford_comma)
         app.add_template_filter(display_check)
 
-    rebar.init_app(app)
-
-    @app.before_first_request
-    def before_first_request():
         log_level = logging.DEBUG
         app.logger.setLevel(log_level)
+
+    rebar.init_app(app)
 
     return app
