@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  db:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: recosante
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  flower:
+    environment:
+      CELERY_BROKER_URL: "redis://redis:6379"
+      CELERY_REDBEAT_REDIS_URL: "redis://redis:6379"
+      CELERY_RESULT_BACKEND: "redis://redis:6379"
+      CELERY_TIMEZONE: "Europe/Paris"
+      ENVIRONMENT: dev
+      FLOWER_BASIC_AUTH: admin:admin
+      TZ: "Europe/Paris"
+    image: mher/flower:1.2
+    ports:
+      - 5555:5555
+    restart: always
+
+  pgadmin:
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    image: dpage/pgadmin4
+    ports:
+      - 5050:80
+    restart: always
+
+  redis:
+    image: redis:6.2.6-alpine3.14
+    ports:
+      - 6379:6379
+    restart: always
+
+volumes:
+  pgdata:
