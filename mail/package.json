@@ -1,6 +1,9 @@
 {
-  "name": "recosante",
+  "name": "recosante-mail",
   "version": "1.0.0",
+  "license": "SEE LICENSE in ../LICENSE",
+  "private": true,
+  "author": "Fabrique des ministères sociaux",
   "main": "gulpfile.babel.js",
   "scripts": {
     "start": "gulp",

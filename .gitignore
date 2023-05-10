@@ -1,1 +1,14 @@
+.awspublish*
+.cache
+.eggs
 .env
+.env.*
+.sass-cache
+!.env.example
+__pycache__
+celerybeat-schedule
+config.json
+dist
+ecosante.egg-info
+node_modules
+public

@@ -1,10 +1,13 @@
 {
+  "name": "recosante",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "author": "Fabrique des ministères sociaux",
+  "repository": "git@github.com:SocialGouv/recosante.git",
   "scripts": {
     "up": "docker-compose up -d --remove-orphans",
     "stop": "docker-compose stop",
     "down": "docker-compose down"
-  },
-  "name": "recosante",
-  "version": "0.0.0",
-  "private": true
+  }
 }
