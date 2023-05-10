@@ -1,8 +1,18 @@
 {
-  "name": "recosante-site",
-  "private": true,
+  "name": "recosante-frontend",
   "version": "1.0.0",
-  "author": "Recosante",
+  "license": "SEE LICENSE in ../LICENSE",
+  "private": true,
+  "author": "Fabrique des ministères sociaux",
+  "scripts": {
+    "build": " yarn iframe && gatsby build",
+    "iframe": "webpack",
+    "develop": "gatsby develop",
+    "format": "prettier --write src/**/*.{js,jsx}",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+  },
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -51,14 +61,5 @@
     "gatsby-plugin-root-import": "^2.0.9",
     "prettier": "^2.8.1",
     "webpack-cli": "^4.10.0"
-  },
-  "scripts": {
-    "build": " yarn iframe && gatsby build",
-    "iframe": "webpack",
-    "develop": "gatsby develop",
-    "format": "prettier --write src/**/*.{js,jsx}",
-    "start": "npm run develop",
-    "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   }
 }
