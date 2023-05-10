@@ -6,12 +6,24 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: recosante
-    image: postgres
+    image: postgres:15.2
     ports:
       - 5432:5432
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  dbtest:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: recosante_test
+    image: postgres:15.2
+    ports:
+      - 5433:5432
+    restart: always
+    volumes:
+      - pgdatatest:/var/lib/postgresql/data
 
   flower:
     environment:
@@ -37,10 +49,11 @@ services:
     restart: always
 
   redis:
-    image: redis:6.2.6-alpine3.14
+    image: redis:7.0.11
     ports:
       - 6379:6379
     restart: always
 
 volumes:
   pgdata:
+  pgdatatest:

@@ -5,9 +5,14 @@
   "private": true,
   "author": "Fabrique des ministères sociaux",
   "repository": "git@github.com:SocialGouv/recosante.git",
+  "workspaces": [
+    "api",
+    "frontend"
+  ],
   "scripts": {
     "up": "docker-compose up -d --remove-orphans",
     "stop": "docker-compose stop",
-    "down": "docker-compose down"
+    "down": "docker-compose down",
+    "test": "yarn workspaces run test"
   }
 }

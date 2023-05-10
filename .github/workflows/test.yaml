@@ -1,0 +1,81 @@
+name: ✅ Test
+
+on:
+  push:
+    branches: ["**"]
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.ref }}
+
+env:
+  ADMINS_LIST: test-email@example.com
+  AUTHENTICATOR_SECRET: test-authenticator-dummy-secret
+  HEALTCHECKSIO_API_KEY: test-healthchecksio-dummy-api-key
+  SECRET_KEY: test-key-dummy-secret
+  SERVER_NAME: localhost:5000
+  SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres@localhost:5432/recosante
+  TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5433/recosante_test
+  VAPID_PRIVATE_KEY: MHcCAQEEIMo8C2KJ8FiR26MSaTlRRtUXmKto60DEedkShCUkyD74oAoGCCqGSM49AwEHoUQDQgAEWlEpZJ49k/GKiLPN6LSlXS4BPrbjRPqiSV+4o4ROhbv2yvr+WXwFJMxVf7X7Bd0w6t2ooh0Jv5RTGZ+zVI8v9A==
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:15.2
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recosante
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      dbtest:
+        image: postgres:15.2
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: recosante_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Reconfigure Locales
+        run: |
+          sudo locale-gen fr_FR.UTF-8
+          export LC_ALL="fr_FR.UTF-8"
+          export LC_CTYPE="fr_FR.UTF-8"
+          sudo dpkg-reconfigure locales
+
+      - name: Install Dependencies
+        run: |
+          cd api
+          yarn install --frozen-lockfile
+          pip install -e .[test]
+
+      - name: Test
+        run: yarn test
