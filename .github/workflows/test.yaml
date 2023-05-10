@@ -24,7 +24,7 @@ jobs:
 
     services:
       db:
-        image: postgres
+        image: postgres:15.2
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -37,7 +37,7 @@ jobs:
         ports:
           - 5432:5432
       dbtest:
-        image: postgres
+        image: postgres:15.2
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
