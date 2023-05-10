@@ -13,6 +13,18 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  dbtest:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: recosante_test
+    image: postgres
+    ports:
+      - 5433:5432
+    restart: always
+    volumes:
+      - pgdatatest:/var/lib/postgresql/data
+
   flower:
     environment:
       CELERY_BROKER_URL: "redis://redis:6379"
@@ -37,10 +49,11 @@ services:
     restart: always
 
   redis:
-    image: redis:6.2.6-alpine3.14
+    image: redis
     ports:
       - 6379:6379
     restart: always
 
 volumes:
   pgdata:
+  pgdatatest:

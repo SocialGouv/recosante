@@ -5,8 +5,9 @@
   "private": true,
   "author": "Fabrique des ministères sociaux",
   "scripts": {
+    "node-scss": "node-sass",
     "rollup": "rollup",
-    "node-scss": "node-sass"
+    "test": "pytest ."
   },
   "dependencies": {
     "@trevoreyre/autocomplete": "^2.3.0",

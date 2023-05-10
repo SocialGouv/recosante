@@ -3,8 +3,9 @@
 .eggs
 .env
 .env.*
-.sass-cache
 !.env.example
+.sass-cache
+.webassets-cache
 __pycache__
 celerybeat-schedule
 config.json
