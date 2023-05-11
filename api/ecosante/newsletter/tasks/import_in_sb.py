@@ -195,13 +195,13 @@ def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
             except ApiException as e:
                 current_app.logger.error("Exception when calling ContactsApi->import_contacts: %s\n" % e)
                 ping(make_nom_ping(type_), "fail")
-                # task.update_state(
-                #     state='FAILURE',
-                #     meta={
-                #         "progress": 100,
-                #         "details": "Exception when calling ContactsApi->import_contacts: %s\n" % e,
-                #     }
-                # )
+                task.update_state(
+                    state='FAILURE',
+                    meta={
+                        "progress": 100,
+                        "details": "Exception when calling ContactsApi->import_contacts: %s\n" % e,
+                    }
+                )
                 # continue processing contacts
                 # raise e 
 
