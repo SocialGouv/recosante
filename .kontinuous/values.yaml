@@ -120,7 +120,7 @@ jobs:
       use: build
       with:
         imagePackage: indice
-        context: indice_pollution
+        context: libs/indice_pollution
     build-frontend:
       use: build
       ~needs: [api] # yes, the frontend build needs some running API
