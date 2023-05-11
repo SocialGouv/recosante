@@ -166,41 +166,44 @@ def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
     send_in_blue_mails = {c['email'] for c in send_in_blue_contacts}
     while True:
         start,stop = window_size*window_idx, window_size*(window_idx+1)
-        attributes = [
+        newsletters = [
             nl.attributes()
             for nl in NewsletterDB.query.filter_by(mail_list_id=mail_list_id).slice(start, stop).all()
             if nl.inscription.mail in send_in_blue_mails
         ]
-        if attributes is None or len(attributes) == 0:
+        if newsletters is None or len(newsletters) == 0:
             break
         window_idx += 1
-        update_batch_contacts = sib_api_v3_sdk.UpdateBatchContacts(
-            [
-                sib_api_v3_sdk.UpdateBatchContactsContacts(
-                    email=a['EMAIL'],
-                    list_ids=[mail_list_id],
-                    attributes=a,
-                    email_blacklisted=False,
-                    sms_blacklisted=False
-                )
-                for a in attributes
-            ]
-        )
-        current_app.logger.info("About to update contacts with params")
-        try:
-            update_response = contact_api.update_batch_contacts(update_batch_contacts)
-            current_app.logger.info("contacts updated")
-        except ApiException as e:
-            current_app.logger.error("Exception when calling ContactsApi->import_contacts: %s\n" % e)
-            ping(make_nom_ping(type_), "fail")
-            task.update_state(
-                state='FAILURE',
-                meta={
-                    "progress": 100,
-                    "details": "Exception when calling ContactsApi->import_contacts: %s\n" % e,
-                }
+        for entry in newsletters:
+            email = entry['EMAIL']
+            current_app.logger.info("Update contact : %s\n" % email)
+            update_batch_contacts = sib_api_v3_sdk.UpdateBatchContacts(
+                [
+                    sib_api_v3_sdk.UpdateBatchContactsContacts(
+                        email=email,
+                        list_ids=[mail_list_id],
+                        attributes=entry,
+                        email_blacklisted=False,
+                        sms_blacklisted=False
+                    )
+                ]
             )
-            raise e
+            current_app.logger.info("About to update contacts with params")
+            try:
+                update_response = contact_api.update_batch_contacts(update_batch_contacts)
+                current_app.logger.info("Contact updated : %s\n" % email)
+            except ApiException as e:
+                current_app.logger.error("Exception when calling ContactsApi->import_contacts: %s\n" % e)
+                ping(make_nom_ping(type_), "fail")
+                # task.update_state(
+                #     state='FAILURE',
+                #     meta={
+                #         "progress": 100,
+                #         "details": "Exception when calling ContactsApi->import_contacts: %s\n" % e,
+                #     }
+                # )
+                # continue processing contacts
+                # raise e 
 
 
 def import_contacts_in_sb_all(task, template_id_mail_list_id, now, type_, test, activate_webhook, send_in_blue_contacts):
