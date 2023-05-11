@@ -4,6 +4,7 @@
 .env
 .env.*
 !.env.example
+*.egg-info
 .sass-cache
 .webassets-cache
 __pycache__

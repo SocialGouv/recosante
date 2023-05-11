@@ -1,0 +1,5 @@
+.dockerignore
+.env.example
+Dockerfile
+MANIFEST.in
+README.md

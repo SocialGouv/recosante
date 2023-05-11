@@ -35,6 +35,22 @@ from indice_pollution import forecast
 forecast(75101)
 ```
 
+## Development
+
+This project uses poetry. Be sure to install it using
+
+```
+pip install poetry
+```
+
+Then install the dependencies
+
+```
+poetry install
+```
+
+
+
 ## Usage
 
 ### Forecast
@@ -89,8 +105,3 @@ Currently, it only has a `region` property. This property is an object with:
 - `nom` France Région name
 - `website` corresponding AASQUA website
 
-## Test
-
-A test instanced is deployed at https://app-ed2e0e03-0bd3-4eb4-8326-000288aeb6a0.cleverapps.io/
-
-Query example: https://app-ed2e0e03-0bd3-4eb4-8326-000288aeb6a0.cleverapps.io/forecast?insee=76717
