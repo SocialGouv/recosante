@@ -37,19 +37,33 @@ forecast(75101)
 
 ## Development
 
-This project uses poetry. Be sure to install it using
+### Installation
 
-```
+This project uses [poetry](https://python-poetry.org/). Be sure to install it using
+
+```bash
 pip install poetry
 ```
 
 Then install the dependencies
 
-```
+```bash
 poetry install
 ```
 
+These command will generate a virtual environment in the `.venv` folder with all you need to run the `celery` worker.
 
+### Run
+
+Once the installation done, be sure to have the required services up and running. You can have a look at [the repository Dockerfile Compose file](../../docker-compose.yml).
+
+Then set your env in you terminal. You can source / adapt the [`.env.example`](./.env.example) file or even create your `.env` file. Keep in mind that it won't be automatically sourced and some secrets are kept empty, but you should have the minimum requirements with the example file. If you need secrets for your local env, you can have a look at the secrets storage on rancher.
+
+Once everything is ready, you can start the worker locally with the `start_*.sh` files in the project. Beware of the `alembic` migration.
+
+### Test
+
+There is currently no test in this project. PRs are welcome !
 
 ## Usage
 
@@ -104,4 +118,3 @@ Currently, it only has a `region` property. This property is an object with:
 
 - `nom` France Région name
 - `website` corresponding AASQUA website
-
