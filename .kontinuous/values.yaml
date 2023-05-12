@@ -115,7 +115,7 @@ jobs:
       use: build
       with:
         imagePackage: api
-        context: api
+        dockerfile: api/Dockerfile
     build-indice:
       use: build
       with:

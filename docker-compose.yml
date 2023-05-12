@@ -12,6 +12,12 @@ services:
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "recosante"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
 
   dbtest:
     environment:
@@ -53,6 +59,58 @@ services:
     ports:
       - 6379:6379
     restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+
+  # Uncomment if you want to run the services in docker
+  # api:
+  #   image: recosante-api
+  #   build:
+  #     context: .
+  #     dockerfile: api/Dockerfile
+  #   environment:
+  #     ENVIRONMENT: development
+  #     ADMINS_LIST: paul.souche@beta.gouv.fr
+  #     AUTHENTICATOR_SECRET: /aJVd2MR+4Gl4QPPT3ZeAlud7ok2esWEpdkeZK+Ue207bP4U9REC7u5oLN5UDYaJ
+  #     CAPABILITY_ADMIN_TOKEN: 4dQDPXbMRuy1Wtbple6hg4oD865xA0cBN0jHc7Vf/7RISYHbodUWaQ0Hi7nDLfHL
+  #     CELERY_BROKER_URL: redis://redis:6379
+  #     CELERY_REDBEAT_REDIS_URL: redis://redis:6379
+  #     CELERY_RESULT_BACKEND: redis://redis:6379
+  #     CELERY_TIMEZONE: Europe/Paris
+  #     DEBUG: true
+  #     FLASK_APP: ecosante
+  #     FLASK_ENV: development
+  #     HEALTCHECKSIO_API_KEY: t+3swnctw2F2CTCPMwjkgTzAUicyR8xQxxQmFqR0/d2ynd7EcFga5SDOX2TqvAKQ
+  #     REDIS_URL: redis://redis:6379
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #     SECRET_KEY: yuTFBVFLKotAO1yIN5Ua9WEVCG+YNmiKi8XFFryXAknEjki3fYc1MfB9xOchBZk7
+  #     SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres@db:5432/recosante
+  #     TZ: Europe/Paris
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+
+  # indice_pollution:
+  #   image: recosante-indice_pollution
+  #   build:
+  #     context: libs/indice_pollution
+  #   environment:
+  #     ENVIRONMENT: development
+  #     CELERY_BROKER_URL: redis://redis:6379
+  #     CELERY_REDBEAT_REDIS_URL: redis://redis:6379
+  #     CELERY_RESULT_BACKEND: redis://redis:6379
+  #     CELERY_TIMEZONE: Europe/Paris
+  #     SQLALCHEMY_DATABASE_URI: postgresql://postgres:postgres@db:5432/recosante
+  #     VAPID_PRIVATE_KEY: MHcCAQEEIIxyfyljcYmJsVcjGgytDp4Vbek/D3s1WQE42QZGgLgJoAoGCCqGSM49AwEHoUQDQgAENaCK91yWERKGiacC3EiyjrjVus4P+nTZqHIpd4xVnRXRfWgx/4+M/Si2A7DxbnKJqynoSzYHL6aBTk6S/YiQiA==
+  #     TZ: Europe/Paris
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
 
 volumes:
   pgdata:

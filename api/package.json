@@ -7,7 +7,7 @@
   "scripts": {
     "node-scss": "node-sass",
     "rollup": "rollup",
-    "test": "pytest ."
+    "test": "./start_tests.sh"
   },
   "dependencies": {
     "@trevoreyre/autocomplete": "^2.3.0",

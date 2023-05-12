@@ -74,8 +74,9 @@ jobs:
       - name: Install Dependencies
         run: |
           cd api
+          pip install poetry
           yarn install --frozen-lockfile
-          pip install -e .[test]
+          poetry install
 
       - name: Test
         run: yarn test

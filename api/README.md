@@ -23,7 +23,7 @@ Les données sont stockées dans une base de données postgresql, dans le schém
 
 Vous pouvez copier/coller le fichier .env.example vers un fichier .env ou bien .env.docker si vous souhaitez utiliser docker
 
-Changez les variables `SECRET_KEY`, `AUTHENTICATOR_SECRET`, `JWT_SECRET_KEY`, `CAPABILITY_ADMIN_TOKEN` et `CAPABILITY_ADMIN_TOKEN` par une chaine de caractères générée de manière aléatoire. Pour `VAPID_PRIVATE_KEY` utilisez la commande `openssl ecparam -name prime256v1 -genkey -noout`.
+Changez les variables `SECRET_KEY`, `AUTHENTICATOR_SECRET` `CAPABILITY_ADMIN_TOKEN` et `CAPABILITY_ADMIN_TOKEN` par une chaine de caractères générée de manière aléatoire. Pour `VAPID_PRIVATE_KEY` utilisez la commande `openssl ecparam -name prime256v1 -genkey -noout`.
 
 Il faut aller chercher une clé d’API send in blue ici https://account.sendinblue.com/advanced/api, et la mettre dans la variable `SIB_APIKEY`
 
