@@ -1,3 +1,24 @@
+# [1.3.0](https://github.com/SocialGouv/recosante/compare/v1.2.29...v1.3.0) (2023-05-16)
+
+
+### Bug Fixes
+
+* **ci:** db admin secret ([#47](https://github.com/SocialGouv/recosante/issues/47)) ([6857602](https://github.com/SocialGouv/recosante/commit/6857602d94801de04188f22c5bca5868505d0f19))
+* **deps:** update all non-major dependencies ([#31](https://github.com/SocialGouv/recosante/issues/31)) ([71413fb](https://github.com/SocialGouv/recosante/commit/71413fb7279aa82206e18e5e15689a0704dc300b))
+* **github:** deactivate auto release ([3a04a4d](https://github.com/SocialGouv/recosante/commit/3a04a4d3e0127b01cdde6df5d9a180235cffb92d))
+* **project:** Make .gitignore common and add LICENSE ([#48](https://github.com/SocialGouv/recosante/issues/48)) ([1c1acf4](https://github.com/SocialGouv/recosante/commit/1c1acf43f18fe0eb6bd7b8bad784875b2bf1b08e))
+* **project:** make it run locallly and remotely ([#46](https://github.com/SocialGouv/recosante/issues/46)) ([ef85776](https://github.com/SocialGouv/recosante/commit/ef8577699feba4002c035d8a01ff244f0cbc3130))
+* ajout declaration a11y ([#36](https://github.com/SocialGouv/recosante/issues/36)) ([0768ef3](https://github.com/SocialGouv/recosante/commit/0768ef3d62fe07800a36f19047d701a20d1fc936))
+* docker-images [#40](https://github.com/SocialGouv/recosante/issues/40) ([883a798](https://github.com/SocialGouv/recosante/commit/883a798c0691e7222ddc441f283ca2028256c933))
+* reduce sentry errors (use warn instead of errors for very common errors) ([de924d8](https://github.com/SocialGouv/recosante/commit/de924d82546ec946b772aab1bbe8c4651f03a3a1))
+
+
+### Features
+
+* **api:** Move to poetry ([#55](https://github.com/SocialGouv/recosante/issues/55)) ([f812e73](https://github.com/SocialGouv/recosante/commit/f812e73a8b28d176c374ca83e695ef51a24b82de))
+* **poetry:** indice pollution library ([#53](https://github.com/SocialGouv/recosante/issues/53)) ([ac1f070](https://github.com/SocialGouv/recosante/commit/ac1f0701ceccdd54120071db89d66b3a3d01e6bb))
+* **test:** play them on ci ([#50](https://github.com/SocialGouv/recosante/issues/50)) ([63154b3](https://github.com/SocialGouv/recosante/commit/63154b3580127ac9d7d90cd7d1b0d8348759620e))
+
 ## [1.2.31](https://github.com/SocialGouv/recosante/compare/v1.2.30...v1.2.31) (2023-04-14)
 
 
