@@ -2,5 +2,5 @@
 .env.example
 .venv
 Dockerfile
-MANIFEST.in
+node_modules
 README.md

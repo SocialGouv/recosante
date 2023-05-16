@@ -1,0 +1,5 @@
+.dockerignore
+.venv
+LICENSE
+node_modules
+README.md

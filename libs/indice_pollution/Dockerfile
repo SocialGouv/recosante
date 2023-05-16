@@ -9,7 +9,7 @@ WORKDIR /code
 
 RUN pip install poetry
 ADD pyproject.toml poetry.toml poetry.lock ./
-RUN poetry install
+RUN poetry install --without dev
 
 ADD . .
 

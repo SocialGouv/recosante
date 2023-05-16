@@ -58,12 +58,18 @@ def app(request):
 
 @pytest.fixture(scope='function')
 def _db(app):
-    db = app.extensions['sqlalchemy'].db
-    db.session.execute('TRUNCATE {} RESTART IDENTITY;'.format(
-        ','.join(table.name 
-                 for table in reversed(db.metadata.sorted_tables))))
-    db.session.commit()
-    return db
+    return app.extensions['sqlalchemy'].db
+
+@pytest.fixture(scope='function')
+def db_session(_db):
+    session = _db.session
+    api_tables = [table.name for table in reversed(_db.metadata.sorted_tables)]
+    indice_pollution_tables = ['{}."{}"'.format(table.schema, table.name) for table in reversed(db_indice_pollution.metadata.sorted_tables)]
+    command = 'TRUNCATE {} RESTART IDENTITY;'.format(','.join(api_tables + indice_pollution_tables))
+    session.execute(command)
+    session.commit()
+    yield session
+    session.close()
 
 @pytest.fixture(scope='function')
 def commune(db_session) -> Commune:
@@ -101,7 +107,7 @@ def inscription_notifications(db_session, inscription: Inscription) -> Inscripti
         inscription_id=inscription.id,
         data={
             "keys": {
-                "auth": "Cbx6kg7FdlZHKZjaCUc_QQ", 
+                "auth": "Cbx6kg7FdlZHKZjaCUc_QQ",
                 "p256dh": "BNSBF5mKSirivNxvBtgzqviOcuFGvSHh21JGLr5m8G0Gb4lrW0jb0Uu5mk6pjTjk5ak2fMkgAOZs1_UfLXmv3K0"
             },
             "endpoint": "https://updates.push.services.mozilla.com/wpush/v2/pouet"

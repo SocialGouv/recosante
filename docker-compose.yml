@@ -53,6 +53,23 @@ services:
     ports:
       - 6379:6379
     restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+
+  api:
+    image: recosante-api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    env_file:
+      - api/.env.docker
+
+  indice_pollution:
+    image: recosante-indice_pollution
+    build:
+      context: libs/indice_pollution
+    env_file:
+      - libs/indice_pollution/.env.docker
 
 volumes:
   pgdata:

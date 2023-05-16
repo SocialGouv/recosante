@@ -1,0 +1,4 @@
+[virtualenvs]
+in-project = true
+[installer]
+no-binary = ["psycopg2-binary"]

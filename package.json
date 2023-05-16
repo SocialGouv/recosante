@@ -10,9 +10,10 @@
     "frontend"
   ],
   "scripts": {
-    "up": "docker-compose up -d --remove-orphans",
-    "stop": "docker-compose stop",
     "down": "docker-compose down",
-    "test": "yarn workspaces run test"
+    "start": "docker-compose up -d --remove-orphans",
+    "stop": "docker-compose stop",
+    "test": "yarn workspaces run test",
+    "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis"
   }
 }
