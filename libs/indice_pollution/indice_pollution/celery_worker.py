@@ -15,3 +15,6 @@ if os.getenv('SENTRY_DSN'):
         attach_stacktrace=True,
     )
 app = create_app()
+
+# pylint: disable-next=wrong-import-position,unused-import
+from .extensions import celery  # noqa
