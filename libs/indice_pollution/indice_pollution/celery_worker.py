@@ -1,8 +1,10 @@
-from . import create_app
+import os
+
 import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-import os
+
+from . import create_app
 
 if os.getenv('SENTRY_DSN'):
     sentry_sdk.init(
@@ -13,5 +15,3 @@ if os.getenv('SENTRY_DSN'):
         attach_stacktrace=True,
     )
 app = create_app()
-
-from .extensions import celery #noqa

@@ -1,8 +1,10 @@
+import requests
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+
 from indice_pollution import db
-import requests
 from indice_pollution.history.models.tncc import TNCC
+
 
 class Region(db.Base, TNCC):
     __tablename__ = 'region'
@@ -22,12 +24,13 @@ class Region(db.Base, TNCC):
     @classmethod
     def get_and_init_from_api(cls, code):
         res_api = cls.get_from_api(code)
-        r = cls(**res_api)
-        db.session.add(r)
-        return r
+        request = cls(**res_api)
+        db.session.add(request)
+        return request
 
     @classmethod
     def get_from_api(cls, code):
-        r = requests.get(f'https://geo.api.gouv.fr/regions/{code}?fields=nom,code')
-        r.raise_for_status()
-        return r.json()
+        request = requests.get(
+            f'https://geo.api.gouv.fr/regions/{code}?fields=nom,code', timeout=10)
+        request.raise_for_status()
+        return request.json()

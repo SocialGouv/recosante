@@ -1,17 +1,19 @@
-from typing import List
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func, select
-from indice_pollution.history.models.commune import Commune
-from indice_pollution import db
 from datetime import datetime
+
+from sqlalchemy import (Column, Date, DateTime, ForeignKey, Integer, String,
+                        func, select, text)
+from sqlalchemy.orm import relationship
+
+from indice_pollution import db
 from indice_pollution.helpers import today
-from sqlalchemy import  Date, text
+from indice_pollution.history.models.commune import Commune
 
 
 class EpisodePollution(db.Base):
     __tablename__ = "episode_pollution"
 
-    zone_id: int = Column(Integer, ForeignKey('indice_schema.zone.id'), primary_key=True, nullable=False)
+    zone_id: int = Column(Integer, ForeignKey(
+        'indice_schema.zone.id'), primary_key=True, nullable=False)
     zone = relationship("indice_pollution.history.models.zone.Zone")
     date_ech: datetime = Column(DateTime, primary_key=True, nullable=False)
     date_dif: datetime = Column(DateTime, primary_key=True, nullable=False)
@@ -22,6 +24,7 @@ class EpisodePollution(db.Base):
 
     @classmethod
     def get_query(cls, insee=None, code_epci=None, date_=None):
+        _ = code_epci
         table_ = cls.__table__
         commune_table = Commune.__table__
         date_ = date_ or today()
@@ -36,15 +39,17 @@ class EpisodePollution(db.Base):
         return statement.filter(
             table_.c.date_ech.cast(Date) == date_
         ).order_by(table_.c.date_dif.desc()
-        ).fetch(1, with_ties=True)
+                   ).fetch(1, with_ties=True)
 
     @classmethod
     def get(cls, insee=None, code_epci=None, date_=None):
-        orms_obj = select(cls).from_statement(cls.get_query(insee, code_epci, date_))
+        orms_obj = select(cls).from_statement(
+            cls.get_query(insee, code_epci, date_))
         return list(db.session.execute(orms_obj).scalars())
 
     @classmethod
     def bulk_query(cls, insees=None, codes_epci=None, date_=None):
+        _ = codes_epci
         return text(
             """
             SELECT
@@ -59,29 +64,29 @@ class EpisodePollution(db.Base):
             date_ech=date_,
             insees=insees
         )
-    
+
     @classmethod
     def bulk(cls, insees=None, codes_epcis=None, date_=None):
+        _ = codes_epcis
         return db.session.execute(cls.bulk_query(insees=insees, date_=date_))
 
     @classmethod
     def get_all_query(cls, date_):
         return db.session.query(
-                cls.zone_id, cls
-            ).filter(
-                func.date(cls.date_ech) == date_
-            ).order_by(
-                cls.zone_id, cls.code_pol, cls.date_ech, cls.date_dif
-            ).distinct(cls.zone_id, cls.date_ech, cls.code_pol)
+            cls.zone_id, cls
+        ).filter(
+            func.date(cls.date_ech) == date_
+        ).order_by(
+            cls.zone_id, cls.code_pol, cls.date_ech, cls.date_dif
+        ).distinct(cls.zone_id, cls.date_ech, cls.code_pol)
 
     @classmethod
     def get_all(cls, date_):
-        to_return = dict()
-        for zone_id, e in cls.get_all_query(date_).all():
+        to_return = {}
+        for zone_id, episode in cls.get_all_query(date_).all():
             to_return.setdefault(zone_id, [])
-            to_return[zone_id].append(e)
+            to_return[zone_id].append(episode)
         return to_return
-
 
     @property
     def lib_pol_abbr(self):
@@ -144,12 +149,11 @@ class EpisodePollution(db.Base):
         etat = etat.lower()
         if "ssement" in etat:
             return 0
-        elif "information" in etat:
+        if "information" in etat:
             return 1
-        elif "alerte" in etat:
+        if "alerte" in etat:
             return 2
-        else:
-            return None
+        return None
 
     @property
     def lib_etat(self):
@@ -175,7 +179,8 @@ class EpisodePollution(db.Base):
 
     @classmethod
     def filter_etat_haut(cls, episodes):
-        valid_etats = [e.code_etat for e in episodes if e.code_etat != None]
+        valid_etats = [
+            e.code_etat for e in episodes if e.code_etat is not None]
         if len(valid_etats) == 0:
             return []
         max_etat = max(valid_etats)

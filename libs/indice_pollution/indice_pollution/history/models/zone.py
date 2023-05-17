@@ -1,7 +1,10 @@
-from sqlalchemy import Column, Integer, String, select
-from indice_pollution import db
-from importlib import import_module
 from functools import cached_property
+from importlib import import_module
+
+from sqlalchemy import Column, Integer, String, select
+
+from indice_pollution import db
+
 
 class Zone(db.Base):
     __tablename__ = "zone"
@@ -11,11 +14,36 @@ class Zone(db.Base):
     code = Column(String)
 
     libtypes = {
-        "region": {"article": "la ", "preposition": "région", "module": "region", "clsname": "Region"},
-        "epci": {"article": "l’", "preposition": "EPCI" , "module": "epci", "clsname": "EPCI"},
-        "departement": {"article": "le ", "preposition": "département", "module": "departement", "clsname": "Departement"},
-        "bassin_dair": {"article": "le ", "preposition": "bassin d’air", "module": "bassin_dair", "clsname": "BassinDAir"},
-        "commune": {"article": "la ", "preposition": "commune", "module": "commune", "clsname": "Commune"},
+        "region": {
+            "article": "la ",
+            "preposition": "région",
+            "module": "region",
+            "clsname": "Region"
+        },
+        "epci": {
+            "article": "l’",
+            "preposition": "EPCI",
+            "module": "epci",
+            "clsname": "EPCI"
+        },
+        "departement": {
+            "article": "le ",
+            "preposition": "département",
+            "module": "departement",
+            "clsname": "Departement"
+        },
+        "bassin_dair": {
+            "article": "le ",
+            "preposition": "bassin d’air",
+            "module": "bassin_dair",
+            "clsname": "BassinDAir"
+        },
+        "commune": {
+            "article": "la ",
+            "preposition": "commune",
+            "module": "commune",
+            "clsname": "Commune"
+        },
     }
 
     @classmethod
@@ -24,31 +52,34 @@ class Zone(db.Base):
 
     @cached_property
     def lib(self, with_preposition=True, with_article=True, nom_charniere=True):
-        t = self.libtypes.get(self.type)
-        if not t:
+        self_type = self.libtypes.get(self.type)
+        if not self_type:
             return ""
-        o = self.attached_obj
-        if not o:
+        self_obj = self.attached_obj
+        if not self_obj:
             return ""
-        r = ""
+        fullname = ""
         if with_preposition:
             if with_article:
-                r = t["article"]
-            r += t["preposition"] + " "
-        if nom_charniere and hasattr(o, 'nom_charniere'):
-            return r + o.nom_charniere
-        if hasattr(o, "preposition"):
-            r += (o.preposition or "") + " "
-        r += o.nom or ""
-        return r
+                fullname = self_type["article"]
+            fullname += self_type["preposition"] + " "
+        if nom_charniere and hasattr(self_obj, 'nom_charniere'):
+            return fullname + self_obj.nom_charniere
+        if hasattr(self_obj, "preposition"):
+            fullname += (self_obj.preposition or "") + " "
+        fullname += self_obj.nom or ""
+        return fullname
 
     @cached_property
     def attached_obj(self, with_preposition=True, with_article=True):
-        t = self.libtypes.get(self.type)
-        if not t:
+        _ = (with_preposition, with_article)
+        self_type = self.libtypes.get(self.type)
+        if not self_type:
             return None
-        m = import_module(f"indice_pollution.history.models.{t['module']}")
-        c = getattr(m, t["clsname"])
-        stmt = select(c).where(c.zone_id == self.id)
-        if r := db.session.execute(stmt).first():
-            return r[0]
+        self_module = import_module(
+            f"indice_pollution.history.models.{self_type['module']}")
+        command = getattr(self_module, self_type["clsname"])
+        stmt = select(command).where(command.zone_id == self.id)
+        if request := db.session.execute(stmt).first():
+            return request[0]
+        return None

@@ -1,5 +1,6 @@
 import requests
 
+
 def autocomplete(query_string):
     headers = {
         'Accept': 'application/json'
@@ -10,12 +11,13 @@ def autocomplete(query_string):
         'format': 'json',
         'boost': 'population'
     }
-    r = requests.get(
+    request = requests.get(
         "https://geo.api.gouv.fr/communes",
         params=params,
-        headers=headers
+        headers=headers,
+        timeout=10,
     )
 
-    r.raise_for_status()
+    request.raise_for_status()
 
-    return r.json()
+    return request.json()

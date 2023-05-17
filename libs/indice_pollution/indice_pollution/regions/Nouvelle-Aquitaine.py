@@ -1,11 +1,15 @@
-from datetime import date
-from . import ForecastMixin, EpisodeMixin
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
+import logging
+from datetime import date, datetime
+
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, date
-import logging
 
-class Service(object):
+from . import EpisodeMixin, ForecastMixin
+
+
+class Service:
     is_active = True
     website = 'https://www.atmo-nouvelleaquitaine.org/'
     nom_aasqa = 'ATMO Nouvelle-Aquitaine'
@@ -21,9 +25,10 @@ class Service(object):
     def get_close_insee(self, insee):
         return insee
 
+
 class Episode(Service, EpisodeMixin):
     url = 'https://opendata.atmo-na.org/api/v1/alerte/data/'
-    url_fetch_all = 'https://opendata.atmo-na.org/geoserver/alrt3j_nouvelle_aquitaine/wfs'
+    url_all = 'https://opendata.atmo-na.org/geoserver/alrt3j_nouvelle_aquitaine/wfs'
 
     params_fetch_all = {
         'service': 'wfs',
@@ -33,14 +38,14 @@ class Episode(Service, EpisodeMixin):
         'PropertyName': 'code_zone,lib_zone,date_ech,date_dif,code_pol,lib_pol,etat,couleur,com_court,com_long',
     }
 
-    def params(cls, date_, insee):
+    def params(self, date_, insee):
         return {
             "date_deb": f"{date_}",
             "type": "json"
         }
 
-    def features(self, r):
-        return r.json().get('features', [])
+    def features(self, request):
+        return request.json().get('features', [])
 
     def attributes_getter(self, feature):
         return feature['properties']
@@ -53,17 +58,20 @@ class Episode(Service, EpisodeMixin):
             "Particules PM10": "5"
         }
         if not 'code_pol' in attributes and 'lib_pol' in attributes:
-            attributes['code_pol'] = polluant_code_pol.get(attributes['lib_pol'])
+            attributes['code_pol'] = polluant_code_pol.get(
+                attributes['lib_pol'])
         return super().getter(attributes)
 
 
 class Forecast(Service, ForecastMixin):
     url = 'https://opendata.atmo-na.org/geoserver/ind_nouvelle_aquitaine_agglo/wfs'
-    url_fetch_all = 'https://opendata.atmo-na.org/geoserver/ind_nouvelle_aquitaine/wfs'
+    url_all = 'https://opendata.atmo-na.org/geoserver/ind_nouvelle_aquitaine/wfs'
 
     @classmethod
     def params(cls, date_, insee):
+        # pylint: disable-next=line-too-long
         filter_zone = f'<PropertyIsEqualTo><PropertyName>code_zone</PropertyName><Literal>{insee}</Literal></PropertyIsEqualTo>'
+        # pylint: disable-next=line-too-long
         filter_date = f'<PropertyIsGreaterThanOrEqualTo><PropertyName>date_ech</PropertyName><Literal>{date_}T00:00:00Z</Literal></PropertyIsGreaterThanOrEqualTo>'
         return {
             'service': 'wfs',
@@ -75,6 +83,7 @@ class Forecast(Service, ForecastMixin):
 
     @classmethod
     def params_fetch_all(cls):
+        # pylint: disable-next=line-too-long
         filter_date_ech = f'<PropertyIsGreaterThanOrEqualTo><PropertyName>date_ech</PropertyName><Literal>{date.today()}T00:00:00Z</Literal></PropertyIsGreaterThanOrEqualTo>'
         return {
             'service': 'wfs',
@@ -86,19 +95,20 @@ class Forecast(Service, ForecastMixin):
 
     @classmethod
     def get_from_scraping(cls, previous_results, date_, insee):
+        _ = (previous_results, date_)
         url = f'https://www.atmo-nouvelleaquitaine.org/monair/commune/{insee}'
         try:
-            r = requests.get(url)
-        except requests.exceptions.ConnectionError as e:
-            logging.error(f'Impossible de se connecter à {url}')
-            logging.error(e)
+            request = requests.get(url, timeout=10)
+        except requests.exceptions.SSLError as exception:
+            logging.error('Erreur ssl %s', url)
+            logging.error(exception)
             return []
-        except requests.exceptions.SSLError as e:
-            logging.error(f'Erreur ssl {url}')
-            logging.error(e)
+        except requests.exceptions.ConnectionError as exception:
+            logging.error('Impossible de se connecter à %s', url)
+            logging.error(exception)
             return []
-        r.raise_for_status()
-        soup = BeautifulSoup(r.text, 'html.parser')
+        request.raise_for_status()
+        soup = BeautifulSoup(request.text, 'html.parser')
 
         controls = soup.find_all('div', class_='day-controls')
         days = controls[0].find_all('a', class_='raster-control-link')

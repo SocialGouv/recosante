@@ -1,10 +1,14 @@
-from indice_pollution.history.models.commune import Commune
-from indice_pollution.regions import ForecastMixin, EpisodeMixin
-from datetime import timedelta, date
-from .pays_de_la_loire_epcis import dict_commune_ecpi
-from indice_pollution.helpers import today
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
+from datetime import date, timedelta
 
-class Service(object):
+from indice_pollution.helpers import today
+from indice_pollution.history.models.commune import Commune
+from indice_pollution.regions import EpisodeMixin, ForecastMixin
+from indice_pollution.regions.pays_de_la_loire_epcis import dict_commune_ecpi
+
+
+class Service:
     is_active = True
     website = 'http://www.airpl.org/'
     nom_aasqa = 'Air Pays de la Loire'
@@ -13,6 +17,7 @@ class Service(object):
 
     def get_close_insee(self, insee):
         return insee
+
 
 class Episode(Service, EpisodeMixin):
     url = 'https://data.airpl.org/geoserver/alrt3j_pays_de_la_loire/wfs'
@@ -40,9 +45,10 @@ class Episode(Service, EpisodeMixin):
             "CQL_FILTER": f"date_ech >= {today()}T00:00:00Z"
         }
 
+
 class Forecast(Service, ForecastMixin):
     url = 'https://data.airpl.org/api/v1/indice/epci/'
-    url_fetch_all = 'https://data.airpl.org/geoserver/ind_pays_de_la_loire/wfs'
+    url_all = 'https://data.airpl.org/geoserver/ind_pays_de_la_loire/wfs'
 
     @classmethod
     def params(cls, date_, insee):
@@ -73,8 +79,8 @@ class Forecast(Service, ForecastMixin):
         return feature
 
     @classmethod
-    def getter(cls, feature):
+    def getter(cls, attributes):
         return super().getter({
-            "sous_indices": feature.get('sous_indice'),
-            **feature
+            "sous_indices": attributes.get('sous_indice'),
+            **attributes
         })

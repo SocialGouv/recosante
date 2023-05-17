@@ -1,13 +1,18 @@
-from . import ForecastMixin, EpisodeMixin
-from datetime import timedelta, datetime, date
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
+from datetime import date, datetime, timedelta
 
-class Service(object):
+from . import EpisodeMixin, ForecastMixin
+
+
+class Service:
     is_active = True
     website = 'https://www.atmosud.org/'
     nom_aasqa = 'AtmoSud'
     attributes_key = 'properties'
     use_dateutil_parser = True
     fr_date_format = '%Y-%m-%dT00:00:00Z'
+
 
 class Episode(Service, EpisodeMixin):
     url = 'https://geoservices.atmosud.org/geoserver/alrt_sudpaca_dep/ows'
@@ -43,6 +48,7 @@ class Episode(Service, EpisodeMixin):
             'outputFormat': 'json'
         }
 
+
 class Forecast(Service, ForecastMixin):
     url = 'https://geoservices.atmosud.org/geoserver/ind_sudpaca/ows'
 
@@ -54,7 +60,8 @@ class Forecast(Service, ForecastMixin):
         fr_tomorrow = tomorrow_date.strftime(cls.fr_date_format)
 
         insee = {
-            "13055": "13201" # Seuls les arrondissement de Marseilles sont pris en compte, on prend le premier
+            # Seuls les arrondissement de Marseilles sont pris en compte, on prend le premier
+            "13055": "13201"
         }.get(insee, insee)
 
         return {
@@ -82,7 +89,6 @@ class Forecast(Service, ForecastMixin):
             'CQL_FILTER': f"(date_ech='{fr_date}' OR date_ech='{fr_tomorrow}')",
             'outputFormat': 'json'
         }
-
 
     def date_getter(self, attributes):
         return datetime.strptime(attributes['date_ech'], self.fr_date_format)

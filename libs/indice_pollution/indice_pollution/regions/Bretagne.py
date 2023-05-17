@@ -1,25 +1,30 @@
-from indice_pollution.history.models.commune import Commune
-from indice_pollution.history.models.epci import EPCI
-from . import EpisodeMixin, ForecastMixin
-from requests import adapters
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
 import ssl
-from urllib3 import poolmanager
 from datetime import date
+
+from requests import adapters
+from urllib3 import poolmanager
+
+from indice_pollution.history.models.commune import Commune
+from indice_pollution.regions import EpisodeMixin, ForecastMixin
+
 
 class TLSAdapter(adapters.HTTPAdapter):
 
-    def init_poolmanager(self, connections, maxsize, block=False):
+    def init_poolmanager(self, connections, maxsize, block=False, **pool_kwargs):
         """Create and initialize the urllib3 PoolManager."""
         ctx = ssl.create_default_context()
         ctx.set_ciphers('DEFAULT@SECLEVEL=1')
         self.poolmanager = poolmanager.PoolManager(
-                num_pools=connections,
-                maxsize=maxsize,
-                block=block,
-                ssl_version=ssl.PROTOCOL_TLS,
-                ssl_context=ctx)
+            num_pools=connections,
+            maxsize=maxsize,
+            block=block,
+            ssl_version=ssl.PROTOCOL_TLS,
+            ssl_context=ctx)
 
-class Service(object):
+
+class Service:
     is_active = True
     website = 'https://www.airbreizh.asso.fr/'
     nom_aasqa = 'Airbreizh'
@@ -207,6 +212,7 @@ class Service(object):
     attributes_key = 'properties'
     use_dateutil_parser = True
 
+
 class Forecast(Service, ForecastMixin):
     url = 'https://data.airbreizh.asso.fr/geoserver/ind_bretagne/ows'
 
@@ -217,7 +223,7 @@ class Forecast(Service, ForecastMixin):
             'service': 'WFS',
             'version': '1.0.0',
             'request': 'GetFeature',
-            'typeName': f'ind_bretagne:ind_bretagne',
+            'typeName': 'ind_bretagne:ind_bretagne',
             'outputFormat': 'application/json',
             'CQL_FILTER': f"code_zone = {epci} AND date_ech>='{date_}'"
         }
@@ -226,16 +232,18 @@ class Forecast(Service, ForecastMixin):
         'service': 'WFS',
         'version': '1.0.0',
         'request': 'GetFeature',
-        'typeName': f'ind_bretagne:ind_bretagne',
+        'typeName': 'ind_bretagne:ind_bretagne',
         'outputFormat': 'application/json',
         'CQL_FILTER': f"date_ech>='{date.today()}'"
     }
+
 
 class Episode(Service, EpisodeMixin):
     url = 'https://data.airbreizh.asso.fr/geoserver/alrt3j_bretagne/ows'
 
     def params(self, date_, insee):
         commune = Commune.get(insee)
+        # pylint: disable-next=line-too-long
         filter_zone = f"<PropertyIsEqualTo><PropertyName>code_zone</PropertyName><Literal>{commune.departement.code}</Literal></PropertyIsEqualTo>"
 
         return {

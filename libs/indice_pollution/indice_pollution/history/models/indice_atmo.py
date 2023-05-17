@@ -1,29 +1,35 @@
-from sqlalchemy.orm import aliased, relationship, Mapped
-from sqlalchemy.sql import and_
-from sqlalchemy.sql.functions import coalesce
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, func, select
-from indice_pollution.history.models.zone import Zone
-from requests.models import codes
-from indice_pollution import db
-from indice_pollution.helpers import today
-from indice_pollution.history.models import Commune, EPCI
-from sqlalchemy import Date, text
 from dataclasses import dataclass
 from datetime import datetime
 from operator import attrgetter, itemgetter
+
+from sqlalchemy import (Column, Date, DateTime, ForeignKey, Integer, func,
+                        select, text)
+from sqlalchemy.orm import Mapped, aliased, relationship
+from sqlalchemy.sql import and_
+from sqlalchemy.sql.functions import coalesce
+
+from indice_pollution import db
+from indice_pollution.helpers import today
+from indice_pollution.history.models.commune import Commune
+from indice_pollution.history.models.epci import EPCI
+from indice_pollution.history.models.zone import Zone
 
 
 @dataclass
 class IndiceATMO(db.Base):
     __tablename__ = "indiceATMO"
 
-    zone_id: int = Column(Integer, ForeignKey('indice_schema.zone.id'), primary_key=True, nullable=False)
-    zone: Mapped["Zone"] = relationship("indice_pollution.history.models.zone.Zone")
+    zone_id: int = Column(Integer, ForeignKey(
+        'indice_schema.zone.id'), primary_key=True, nullable=False)
+    zone: Mapped["Zone"] = relationship(
+        "indice_pollution.history.models.zone.Zone")
     date_ech: datetime = Column(DateTime, primary_key=True, nullable=False)
     date_dif: datetime = Column(DateTime, primary_key=True, nullable=False)
     no2: int = Column(Integer)
     so2: int = Column(Integer)
-    o3:int = Column(Integer)
+    # This is the database field
+    # pylint: disable-next=invalid-name
+    o3: int = Column(Integer)
     pm10: int = Column(Integer)
     pm25: int = Column(Integer)
     valeur: int = Column(Integer)
@@ -36,27 +42,31 @@ class IndiceATMO(db.Base):
         date_ = date_ or today()
         stmt = select(cls)\
             .where(
-                IndiceATMO.date_ech.cast(Date)==date_,
-               IndiceATMO.zone_id.in_([zones_subquery.c.zone_id])
-            )\
+                IndiceATMO.date_ech.cast(Date) == date_,
+            IndiceATMO.zone_id.in_([zones_subquery.c.zone_id])
+        )\
             .order_by(IndiceATMO.date_dif.desc())
-        if r := db.session.execute(stmt).first():
-            return r[0]
+        if request := db.session.execute(stmt).first():
+            return request[0]
+        return None
 
     @classmethod
     def bulk_query(cls, insees=None, date_=None):
         date_ = date_ or today()
         return text(
             """
-            SELECT 
-                DISTINCT ON (i.date_ech, coalesce(c.insee, c2.insee)) i.*, i.date_ech date, coalesce(c.insee, c2.insee) insee
+            SELECT
+                DISTINCT ON (
+                    i.date_ech, coalesce(c.insee, c2.insee)
+                ) i.*, i.date_ech date, coalesce(c.insee, c2.insee) insee
             FROM
                 indice_schema."indiceATMO" i
             JOIN indice_schema.zone z ON i.zone_id = z.id
             LEFT JOIN indice_schema.commune c ON z.type = 'commune' AND z.id = c.zone_id
             LEFT JOIN indice_schema.epci e ON z.type = 'epci' AND z.id = e.zone_id
             LEFT JOIN indice_schema.commune c2 ON c2.epci_id = e.id
-            WHERE date(date_ech) = :date_ech AND ((c.insee = ANY(:insees)) OR (c2.insee = ANY(:insees)))
+            WHERE date(date_ech) = :date_ech
+            AND ((c.insee = ANY(:insees)) OR (c2.insee = ANY(:insees)))
             ORDER BY i.date_ech, coalesce(c.insee, c2.insee), i.date_dif DESC;
             """
         ).bindparams(
@@ -66,6 +76,7 @@ class IndiceATMO(db.Base):
 
     @classmethod
     def bulk(cls, insees=None, codes_epci=None, date_=None):
+        _ = codes_epci
         return db.session.execute(IndiceATMO.bulk_query(insees=insees, date_=date_))
 
     @classmethod
@@ -73,24 +84,24 @@ class IndiceATMO(db.Base):
         commune_alias = aliased(Commune)
         commune_id = coalesce(Commune.id, commune_alias.id)
         return db.session.query(
-                commune_id, IndiceATMO
-            ).select_from(
-                IndiceATMO
-            ).join(
-                Zone
-            ).join(
-                Commune, and_(Zone.type == 'commune', Zone.id == Commune.zone_id), isouter=True
-            ).join(
-                EPCI, and_(Zone.type == 'epci', Zone.id == EPCI.zone_id), isouter=True
-            ).join(
-                commune_alias, commune_alias.epci_id == EPCI.id, isouter=True
-            ).filter(
-                func.date(IndiceATMO.date_ech) == date_
-            ).order_by(
-                commune_id, IndiceATMO.date_dif.desc()
-            ).distinct(
-                commune_id
-            )
+            commune_id, IndiceATMO
+        ).select_from(
+            IndiceATMO
+        ).join(
+            Zone
+        ).join(
+            Commune, and_(Zone.type == 'commune', Zone.id == Commune.zone_id), isouter=True
+        ).join(
+            EPCI, and_(Zone.type == 'epci', Zone.id == EPCI.zone_id), isouter=True
+        ).join(
+            commune_alias, commune_alias.epci_id == EPCI.id, isouter=True
+        ).filter(
+            func.date(IndiceATMO.date_ech) == date_
+        ).order_by(
+            commune_id, IndiceATMO.date_dif.desc()
+        ).distinct(
+            commune_id
+        )
 
     @classmethod
     def get_all(cls, date_):
@@ -100,15 +111,17 @@ class IndiceATMO(db.Base):
     def zone_subquery(cls, insee=None, code_epci=None):
         if insee:
             return Commune.select(select([Commune.zone_id]), insee=insee)
-        elif code_epci:
+        if code_epci:
             return EPCI.select(select([EPCI.zone_id]), code=code_epci)
+        return None
 
     @classmethod
     def zone_subquery_or(cls, insee=None, code_epci=None):
         if insee:
             return EPCI.select(select([EPCI.zone_id]), insee=insee)
-        elif code_epci:
+        if code_epci:
             return Commune.select(select([Commune.zone_id]), code=code_epci)
+        return None
 
     @classmethod
     def couleur_from_valeur(cls, valeur):
@@ -116,12 +129,13 @@ class IndiceATMO(db.Base):
             "indisponible": "#DDDDDD",
             "bon": "#50F0E6",
             "moyen": "#50CCAA",
-            "degrade" :"#F0E641",
+            "degrade": "#F0E641",
             "mauvais": "#FF5050",
             "tres_mauvais": "#960032",
             "extrement_mauvais": "#960032",
             "evenement": "#888888"
         }.get(cls.indice_from_valeur(valeur))
+
     @property
     def couleur(self):
         return self.couleur_from_valeur(self.valeur)
@@ -138,6 +152,7 @@ class IndiceATMO(db.Base):
             "extrement_mauvais": "Extrêment mauvais",
             "evenement": "Événement"
         }.get(cls.indice_from_valeur(valeur))
+
     @property
     def label(self):
         return self.label_from_valeur(self.valeur)
@@ -154,6 +169,7 @@ class IndiceATMO(db.Base):
             "extrement_mauvais",
             "evenement"
         ][valeur]
+
     @property
     def indice(self):
         return self.indice_from_valeur(self.valeur)
@@ -175,6 +191,7 @@ class IndiceATMO(db.Base):
             **{'polluant_name': code.upper()},
             **cls.indice_dict(valeur)
         }
+
     @property
     def sous_indices(self):
         return [self.make_sous_indice_dict(k, getattr(self, k)) for k in ['pm25', 'pm10', 'no2', 'o3', 'so2']]
@@ -184,10 +201,12 @@ class IndiceATMO(db.Base):
 
     @classmethod
     def make_dict(cls, indice):
-        getter = itemgetter if type(indice) == dict else attrgetter
+        getter = itemgetter if isinstance(indice, dict) else attrgetter
         return {
             **{
-                'sous_indices': [cls.make_sous_indice_dict(k, getter(k)(indice)) for k in ['pm25', 'pm10', 'no2', 'o3', 'so2']],
+                'sous_indices': [
+                    cls.make_sous_indice_dict(k, getter(k)(indice)) for k in ['pm25', 'pm10', 'no2', 'o3', 'so2']
+                ],
                 'date': getter('date_ech')(indice).date().isoformat(),
                 'valeur': getter('valeur')(indice)
             },
@@ -200,17 +219,14 @@ class IndiceATMO(db.Base):
         if zone.type == 'commune':
             return zone.code
         if zone.type == 'epci':
-            r = db.session.query(
+            request = db.session.query(
                 EPCI, Commune
             ).filter(
                 EPCI.zone_id == self.zone_id
             ).limit(1).first()
-            return r.Commune.insee
+            return request.Commune.insee
+        return None
 
     @property
     def details(self):
         return [self.make_sous_indice_dict(k, getattr(self, k)) for k in ['no2', 'so2', 'o3', 'pm10', 'pm25']]
-
-    @property
-    def indice(self):
-        return self.indice_from_valeur(self.valeur)

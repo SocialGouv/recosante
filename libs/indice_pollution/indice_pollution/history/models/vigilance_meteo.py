@@ -1,17 +1,20 @@
-from psycopg2.extras import DateTimeTZRange
-from sqlalchemy import Column, DateTime, ForeignKey, Index, Integer, UniqueConstraint
-from sqlalchemy.dialects.postgresql import TSTZRANGE
-from sqlalchemy.sql.expression import case, select, text
-from sqlalchemy.sql import func
-import requests
 import zipfile
+from datetime import date, datetime, time, timedelta
 from io import BytesIO
 from xml.dom.minidom import parseString
-from datetime import date, datetime, time, timedelta
+
+import requests
+from psycopg2.extras import DateTimeTZRange
+from sqlalchemy import (Column, DateTime, ForeignKey, Index, Integer,
+                        UniqueConstraint)
+from sqlalchemy.dialects.postgresql import TSTZRANGE
+from sqlalchemy.sql import func
+from sqlalchemy.sql.expression import case, select, text
 
 from indice_pollution import db, logger
-from indice_pollution.history.models.departement import Departement
 from indice_pollution.history.models.commune import Commune
+from indice_pollution.history.models.departement import Departement
+
 
 class VigilanceMeteo(db.Base):
     __tablename__ = "vigilance_meteo"
@@ -26,7 +29,8 @@ class VigilanceMeteo(db.Base):
     validity = Column(TSTZRANGE(), nullable=False)
 
     __table_args__ = (
-        Index('vigilance_zone_phenomene_date_export_idx', zone_id, phenomene_id, date_export),
+        Index('vigilance_zone_phenomene_date_export_idx',
+              zone_id, phenomene_id, date_export),
         UniqueConstraint(zone_id, phenomene_id, date_export, validity),
         {"schema": "indice_schema"},
     )
@@ -65,51 +69,59 @@ class VigilanceMeteo(db.Base):
     def get_departement_codes(code):
         if code == "20":
             return ["2A"]
-        elif code == "120":
+        if code == "120":
             return ["2B"]
-        elif code == "175":
+        if code == "175":
             return ["75", "92", "93", "94"]
-        elif code == "99":
+        if code == "99":
             return [None]
         return [code]
 
     @classmethod
     def save_all(cls):
-        def convert_datetime(a):
-            return datetime.strptime(a.value, "%Y%m%d%H%M%S")
-        r = requests.get("http://vigilance2019.meteofrance.com/data/vigilance.zip")
-        with zipfile.ZipFile(BytesIO(r.content)) as z:
+        def convert_datetime(date_export_tu):
+            return datetime.strptime(date_export_tu.value, "%Y%m%d%H%M%S")
+        request = requests.get(
+            "http://vigilance2019.meteofrance.com/data/vigilance.zip", timeout=10)
+        with zipfile.ZipFile(BytesIO(request.content)) as zip_file:
             fname = "NXFR49_LFPW_.xml"
-            if not fname in z.namelist():
+            if not fname in zip_file.namelist():
                 return
-            with z.open(fname) as f:
-                x = parseString(f.read())
-                date_export = convert_datetime(x.getElementsByTagName('SIV_MENHIR')[0].attributes['dateExportTU'])
+            with zip_file.open(fname) as raw_file:
+                raw_content = parseString(raw_file.read())
+                date_export = convert_datetime(raw_content.getElementsByTagName(
+                    'SIV_MENHIR')[0].attributes['dateExportTU'])
                 if db.session.query(func.max(cls.date_export)).first() == (date_export,):
                     logger.warn("Import déjà fait aujourd’hui")
                     return
 
-                for phenomene in x.getElementsByTagName("PHENOMENE"):
+                for phenomene in raw_content.getElementsByTagName("PHENOMENE"):
                     for departement_code in cls.get_departement_codes(phenomene.attributes['departement'].value):
                         if not departement_code:
                             continue
                         departement = Departement.get(departement_code)
                         if not departement:
-                            logger.error(f"Pas de département pour : {departement_code}")
+                            logger.error(
+                                "Pas de département pour : %s", departement_code)
                             continue
-                        debut = convert_datetime(phenomene.attributes['dateDebutEvtTU'])
-                        fin = convert_datetime(phenomene.attributes['dateFinEvtTU'])
+                        debut = convert_datetime(
+                            phenomene.attributes['dateDebutEvtTU'])
+                        fin = convert_datetime(
+                            phenomene.attributes['dateFinEvtTU'])
                         if debut < fin:
                             obj = cls(
                                 zone_id=departement.zone_id,
-                                phenomene_id=int(phenomene.attributes['phenomene'].value),
+                                phenomene_id=int(
+                                    phenomene.attributes['phenomene'].value),
                                 date_export=date_export,
-                                couleur_id=int(phenomene.attributes['couleur'].value),
+                                couleur_id=int(
+                                    phenomene.attributes['couleur'].value),
                                 validity=DateTimeTZRange(debut, fin),
                             )
                             db.session.add(obj)
                         else:
-                            logger.error(f"Impossible d’enregistrer le phénomène: {phenomene}")
+                            logger.error(
+                                "Impossible d’enregistrer le phénomène: %s", phenomene)
                 db.session.commit()
 
     # Cette requête selectionne les vigilances météo du dernier export fait avant date_ & time_
@@ -144,8 +156,10 @@ class VigilanceMeteo(db.Base):
             # Permet de ne pas selectionner des vigilances publiées il y a trop longtemps
             # ça donne des données parcelaires dont on ne veut pas.
             func.date_trunc('day', vigilance_t.c.date_export) + case(
-                ((func.date_part('hour', vigilance_t.c.date_export) < 6), text(f"'{cls.hours_to_add_before_6}h'::interval")),
-                ((func.date_part('hour', vigilance_t.c.date_export) < 16), text(f"'{cls.hours_to_add_before_16}h'::interval")),
+                ((func.date_part('hour', vigilance_t.c.date_export) < 6),
+                 text(f"'{cls.hours_to_add_before_6}h'::interval")),
+                ((func.date_part('hour', vigilance_t.c.date_export) < 16),
+                 text(f"'{cls.hours_to_add_before_16}h'::interval")),
                 else_=text(f"'{cls.hours_to_add_after_16}h'::interval")
             ) > datetime_
         ).order_by(
@@ -158,18 +172,22 @@ class VigilanceMeteo(db.Base):
                 commune_t, departement_t.c.id == commune_t.c.departement_id
             ).filter(commune_t.c.insee == insee)
         elif departement_code:
-            statement = statement.filter(departement_t.c.code == departement_code)
+            statement = statement.filter(
+                departement_t.c.code == departement_code)
 
-        return statement.fetch(1, with_ties=True) # Renvoie toutes les vigilances avec le même date export, voir FECTH LAST 1 ROW WITH TIES
+        # Renvoie toutes les vigilances avec le même date export, voir FECTH LAST 1 ROW WITH TIES
+        return statement.fetch(1, with_ties=True)
 
     @classmethod
     def get(cls, departement_code=None, insee=None, date_=None, time_=None):
-        orms_obj = select(cls).from_statement(cls.get_query(departement_code, insee, date_, time_))
+        orms_obj = select(cls).from_statement(
+            cls.get_query(departement_code, insee, date_, time_))
         return list(db.session.execute(orms_obj).scalars())
 
     @classmethod
     def get_all(cls, date_=None, time_=None):
-        orms_obj = select(cls).from_statement(cls.get_query(None, None, date_, time_))
+        orms_obj = select(cls).from_statement(
+            cls.get_query(None, None, date_, time_))
         return list(db.session.execute(orms_obj).scalars())
 
     @property
@@ -181,6 +199,7 @@ class VigilanceMeteo(db.Base):
         return self.phenomenes.get(self.phenomene_id)
 
     def __repr__(self) -> str:
+        # pylint: disable-next=line-too-long
         return f"<VigilanceMeteo zone_id={self.zone_id} phenomene_id={self.phenomene_id} date_export={self.date_export} couleur_id={self.couleur_id} validity={self.validity}>"
 
     @classmethod
