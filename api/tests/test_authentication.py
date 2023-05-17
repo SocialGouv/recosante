@@ -1,21 +1,26 @@
-from ecosante.utils.authenticator import APIAuthenticator, AdminAuthenticator
-from time import time
-from jose import jwt
 import os
+from time import time
+
 import pytest
 from flask import session
+from jose import jwt
 from werkzeug.exceptions import HTTPException
+
 from ecosante.extensions import admin_authenticator
+from ecosante.utils.authenticator import AdminAuthenticator, APIAuthenticator
+
 
 def test_no_token(client):
     response = client.get('/users/uid1')
     assert response.status_code == 401
     assert response.json['message'] == 'Required field missing: token'
 
+
 def test_bad_token(client):
     response = client.get('/users/uid1?token=pouet')
     assert response.status_code == 401
     assert response.json['message'] == 'Invalid authentication.'
+
 
 def test_expired_token(client):
     authenticator = APIAuthenticator()
@@ -24,12 +29,14 @@ def test_expired_token(client):
     assert response.status_code == 401
     assert response.json['message'] == 'Invalid authentication.'
 
+
 def test_no_expired_token(client):
     authenticator = APIAuthenticator()
     token = jwt.encode({'uid': 'monuid'}, authenticator.secret, 'HS256')
     response = client.get(f'/users/uid1?token={token}')
     assert response.status_code == 401
     assert response.json['message'] == 'Invalid authentication.'
+
 
 def test_mauvais_uid(client):
     authenticator = APIAuthenticator()
@@ -52,8 +59,9 @@ def test_no_admins_list_env():
     os.environ.pop('ADMINS_LIST')
     with pytest.raises(Exception) as exc_info:
         admin_authenticator_test = AdminAuthenticator()
+
         @admin_authenticator_test.route
-        def f():
+        def route():
             pass
     assert str(exc_info.value) == "ADMINS_LIST var env is required"
 
@@ -61,66 +69,77 @@ def test_no_admins_list_env():
 def test_empty_admins_list_env():
     os.environ['ADMINS_LIST'] = ""
     with pytest.raises(Exception) as exc_info:
+        # pylint: disable-next=protected-access
         admin_authenticator._set_admin_list()
+
         @admin_authenticator.route
-        def f():
+        def route():
             pass
     assert str(exc_info.value) == "ADMINS_LIST can not be empty"
 
 
 def test_one_email_in_admins_list_env():
     os.environ['ADMINS_LIST'] = "test@test.com"
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     assert admin_authenticator.admin_emails == ["test@test.com"]
 
 
 def test_two_emails_in_admins_list_env():
     os.environ['ADMINS_LIST'] = "test@test.com test2@pouet.com"
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
-    assert admin_authenticator.admin_emails == ["test@test.com", "test2@pouet.com"]
+    assert admin_authenticator.admin_emails == [
+        "test@test.com", "test2@pouet.com"]
 
 
 def test_no_admin_email_in_session(app):
     os.environ['ADMINS_LIST'] = 'test@test.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     with app.test_request_context('/'):
         @admin_authenticator.route
-        def f():
+        def route():
             pass
-        
-        response = f()
+
+        response = route()
     assert response.location == '/admin_login/'
 
 
 def test_unknown_email_in_session(app):
     os.environ['ADMINS_LIST'] = 'test@test.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     with app.test_request_context('/'):
         session['admin_email'] = 'unknown@email.com'
+
         @admin_authenticator.route
-        def f():
+        def route():
             pass
         with pytest.raises(HTTPException) as exc_info:
-            f()
+            route()
     assert exc_info.value.code == 401
 
 
 def test_authorized_email_in_session(app):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     with app.test_request_context('/'):
         session['admin_email'] = 'test@test.com'
+
         @admin_authenticator.route
-        def f():
+        def route():
             return session.get('admin_email')
-        assert f() == 'test@test.com'
+        assert route() == 'test@test.com'
 
         session['admin_email'] = 'second@autredomaine.com'
-        assert f() == 'second@autredomaine.com'
+        assert route() == 'second@autredomaine.com'
 
 
 def test_authenticate_no_token(client):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     response = client.get('/authenticate')
     assert response.status_code == 401
@@ -128,6 +147,7 @@ def test_authenticate_no_token(client):
 
 def test_authenticate_bad_token(client):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     response = client.get('/authenticate?token=bad_token')
     assert response.status_code == 401
@@ -135,6 +155,7 @@ def test_authenticate_bad_token(client):
 
 def test_authenticate_bad_email(client):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     token = admin_authenticator.make_token('bad@email.com')
     response = client.get(f'/authenticate?token={token}')
@@ -143,16 +164,19 @@ def test_authenticate_bad_email(client):
 
 def test_expired_admin_link(client):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     token = admin_authenticator.make_token('test@test.com', time() - 86400)
     response = client.get(f'/authenticate?token={token}')
     assert response.status_code == 401
 
-def test_good_authentication(app):
+
+def test_good_authentication(client):
     os.environ['ADMINS_LIST'] = 'test@test.com second@autredomaine.com'
+    # pylint: disable-next=protected-access
     admin_authenticator._set_admin_list()
     token = admin_authenticator.make_token('test@test.com')
-    with app.test_client() as c:
-        rv = c.get(f'/authenticate?token={token}')
+    with client as local_client:
+        local_client.get(f'/authenticate?token={token}')
         assert 'admin_email' in session
         assert session['admin_email'] == 'test@test.com'

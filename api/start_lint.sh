@@ -1,0 +1,1 @@
+.venv/bin/pylint --rcfile='../.pylintrc' --reports=no --output-format=colorized 'tests';

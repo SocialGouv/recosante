@@ -1,10 +1,12 @@
-import py
+from datetime import date, datetime, timedelta
+
+import pytest
+from indice_pollution.history.models import (Commune, IndiceATMO, IndiceUv,
+                                             VigilanceMeteo)
+from psycopg2.extras import DateTimeTZRange
+
 from ecosante.inscription.models import Inscription
 from ecosante.newsletter.models import Newsletter
-from indice_pollution.history.models import Commune, IndiceATMO, VigilanceMeteo, IndiceUv
-from datetime import date, datetime, timedelta
-from psycopg2.extras import DateTimeTZRange
-import pytest
 
 
 @pytest.mark.parametrize(
@@ -24,16 +26,22 @@ def test_indice(commune: Commune, inscription: Inscription, valeur):
         pm25=valeur,
         valeur=valeur,
     )
-    nl = Newsletter(forecast={"data": [indice.dict()]}, inscription=inscription)
-    assert nl.show_qa == True
+    newsletter = Newsletter(
+        forecast={"data": [indice.dict()]}, inscription=inscription)
+    assert newsletter.show_qa is True
 
 
 def test_episode_pollution(inscription, episode_soufre):
     inscription.indicateurs = ['episode_pollution']
-    nl = Newsletter(episodes=[episode_soufre.dict()], inscription=inscription)
-    nl.show_vigilance == True
-    nl = Newsletter(episodes=[], inscription=inscription)
-    nl.show_vigilance == False
+    newsletter = Newsletter(
+        episodes=[episode_soufre.dict()], inscription=inscription)
+    # TODO: Fix me
+    # pylint: disable-next=pointless-statement
+    newsletter.show_vigilance is True
+    newsletter = Newsletter(episodes=[], inscription=inscription)
+    # pylint: disable-next=pointless-statement
+    newsletter.show_vigilance is False
+
 
 @pytest.mark.parametrize(
     "raep, expected",
@@ -41,8 +49,9 @@ def test_episode_pollution(inscription, episode_soufre):
 )
 def test_raep(inscription, raep, expected):
     inscription.indicateurs = ["raep"]
-    nl = Newsletter(raep=raep, inscription=inscription)
-    assert nl.show_raep == expected
+    newsletter = Newsletter(raep=raep, inscription=inscription)
+    assert newsletter.show_raep == expected
+
 
 @pytest.mark.parametrize(
     "couleur_id",
@@ -51,20 +60,22 @@ def test_raep(inscription, raep, expected):
 def test_vigilance(inscription, couleur_id):
     inscription.indicateurs = ["vigilance_meteo"]
 
-    v = VigilanceMeteo(
-            zone_id=inscription.commune.departement.zone_id,
-            phenomene_id=1,
-            couleur_id=couleur_id,
-            date_export=datetime.now() - timedelta(hours=1),
-            validity=DateTimeTZRange(date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
-        )
-    nl = Newsletter(vigilances={'globale': {'vigilance': v, 'recommandation': None}}, inscription=inscription)
-    assert nl.show_vigilance == True
+    vigilance_meteo = VigilanceMeteo(
+        zone_id=inscription.commune.departement.zone_id,
+        phenomene_id=1,
+        couleur_id=couleur_id,
+        date_export=datetime.now() - timedelta(hours=1),
+        validity=DateTimeTZRange(
+            date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
+    )
+    newsletter = Newsletter(vigilances={'globale': {
+        'vigilance': vigilance_meteo, 'recommandation': None}}, inscription=inscription)
+    assert newsletter.show_vigilance is True
 
 
 @pytest.mark.parametrize(
     "valeur",
-    list(range(0,9))
+    list(range(0, 9))
 )
 def test_indice_uv(inscription, valeur):
     inscription.indicateurs = ["indice_uv"]
@@ -73,5 +84,5 @@ def test_indice_uv(inscription, valeur):
         date=date.today(),
         uv_j0=valeur,
     )
-    nl = Newsletter(indice_uv=indice_uv, inscription=inscription)
-    assert nl.show_indice_uv == True
+    newsletter = Newsletter(indice_uv=indice_uv, inscription=inscription)
+    assert newsletter.show_indice_uv is True

@@ -2,5 +2,6 @@
   "reportGeneralTypeIssues": false,
   "reportOptionalMemberAccess": false,
   "reportOptionalOperand": false,
-  "reportOptionalSubscript": false
+  "reportOptionalSubscript": false,
+  "reportWildcardImportFromLibrary": false
 }
