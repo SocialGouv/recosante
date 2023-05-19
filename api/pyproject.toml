@@ -50,6 +50,9 @@ pytest-mock = "3.10.0"
 pytest-postgresql = "4.1.1"
 requests-mock = "1.10.0"
 
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.17.4"
+
 [tool.pytest]
 testpaths = "tests"
 mocked-sessions = "ecosante.extensions.db.session indice_pollution.db.session"

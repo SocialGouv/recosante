@@ -1,14 +1,18 @@
-from . import EpisodeMixin, ForecastMixin
+# pylint: disable=invalid-name,non-ascii-file-name
+# pylint: enable=invalid-name,non-ascii-file-name
 from datetime import date, timedelta
-from indice_pollution.history.models import EPCI, Commune
 
-class Service(object):
+from . import EpisodeMixin, ForecastMixin
+
+
+class Service:
     is_active = True
     website = 'https://www.atmo-bfc.org/'
     nom_aasqa = 'ATMO Bourgogne-Franche-Comté'
 
     def get_close_insee(self, insee):
         return insee
+
 
 class Forecast(Service, ForecastMixin):
     url = 'https://atmo-bfc.iad-informatique.com/geoserver/ows'
@@ -35,6 +39,7 @@ class Forecast(Service, ForecastMixin):
             'outputFormat': 'application/json',
             'CQL_FILTER': f"date_ech >= {date.today() - timedelta(days=2)}"
         }
+
 
 class Episode(Service, EpisodeMixin):
     url = 'https://atmo-bfc.iad-informatique.com/geoserver/ows'

@@ -1,9 +1,12 @@
-import re
-from bs4 import BeautifulSoup
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
 import requests
+from bs4 import BeautifulSoup
+
 from . import EpisodeMixin, ForecastMixin
 
-class Service(object):
+
+class Service:
     is_active = True
     website = 'http://www.ligair.fr/'
     nom_aasqa = "Lig'Air"
@@ -11,8 +14,10 @@ class Service(object):
 
 
 class Forecast(Service, ForecastMixin):
+    # pylint: disable-next=line-too-long
     url = 'https://services1.arcgis.com/HzzPcgRsxxyIZdlU/arcgis/rest/services/Indices_%C3%A0_la_commune_sur_3_jours/FeatureServer/0/query'
-    outfields = ['date_ech', 'code_qual', 'lib_qual' , 'coul_qual', 'date_dif', 'code_zone', 'lib_zone']
+    outfields = ['date_ech', 'code_qual', 'lib_qual',
+                 'coul_qual', 'date_dif', 'code_zone', 'lib_zone']
 
     def params(self, date_, insee):
         return {
@@ -33,38 +38,46 @@ class Forecast(Service, ForecastMixin):
 
     @classmethod
     def get_from_scraping(cls, previous_results, date_, insee):
-        r = requests.get(f'http://www.ligair.fr/commune/{cls.get_nom_ville(insee)}')
-        soup = BeautifulSoup(r.text, "html.parser")
+        request = requests.get(
+            # Shouldn't get_nom_ville be a class method ???
+            # pylint: disable-next=no-value-for-parameter
+            f'http://www.ligair.fr/commune/{cls.get_nom_ville(insee)}', timeout=10)
+        soup = BeautifulSoup(request.text, "html.parser")
         indices = soup.find_all('div', class_='atmo-index-legend')
         legend = indices[0]
         bars = legend.find_all('div', class_='atmo-bar')
         today = next(filter(lambda v: "Aujourd'hui" in v.text, bars))
         labels = today.find_all('div', class_="atmo-bar-label")
-        today_text = next(filter(lambda v: "Aujourd'hui" in v.find_next('strong').text, labels)).text
+        today_text = next(
+            filter(lambda v: "Aujourd'hui" in v.find_next('strong').text, labels)).text
         indice = today_text[len("Aujourd'hui : "):].lower()
         return previous_results + [
             cls.getter({
-                "date": str(date_), 
+                "date": str(date_),
                 "indice": indice,
             })
         ]
 
     def get_nom_ville(self, insee):
-        r = requests.get(f'https://geo.api.gouv.fr/communes/{insee}',
-                params={
-                    "fields": "codesPostaux",
-                    "format": "json",
-                    "geometry": "centre"
-                }
-        )
-        code_postal = r.json()['codesPostaux'][0]
-        r = requests.get('http://www.ligair.fr/ville/city',
-                params={"q": code_postal},
-                headers={"X-Requested-With": "XMLHttpRequest"}
-        )
-        return list(r.json().values())[0]
+        request = requests.get(f'https://geo.api.gouv.fr/communes/{insee}',
+                               params={
+                                   "fields": "codesPostaux",
+                                   "format": "json",
+                                   "geometry": "centre"
+                               },
+                               timeout=10
+                               )
+        code_postal = request.json()['codesPostaux'][0]
+        request = requests.get('http://www.ligair.fr/ville/city',
+                               params={"q": code_postal},
+                               headers={"X-Requested-With": "XMLHttpRequest"},
+                               timeout=10
+                               )
+        return list(request.json().values())[0]
 
-    url_fetch_all = 'https://services1.arcgis.com/HzzPcgRsxxyIZdlU/ArcGIS/rest/services/Indices_Atmo_%C3%A0_la_commune/FeatureServer/0/query'
+    # pylint: disable-next=line-too-long
+    url_all = 'https://services1.arcgis.com/HzzPcgRsxxyIZdlU/ArcGIS/rest/services/Indices_Atmo_%C3%A0_la_commune/FeatureServer/0/query'
+
 
 class Episode(Service, EpisodeMixin):
     url = "https://services1.arcgis.com/HzzPcgRsxxyIZdlU/arcgis/rest/services/alerte_3j1/FeatureServer/0/query"

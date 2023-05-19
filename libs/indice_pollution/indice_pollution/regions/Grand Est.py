@@ -1,5 +1,9 @@
-from . import ServiceMixin, ForecastMixin, EpisodeMixin
+# pylint: disable=invalid-name
+# pylint: enable=invalid-name
 from indice_pollution.history.models import Zone
+
+from . import EpisodeMixin, ForecastMixin, ServiceMixin
+
 
 class Service(ServiceMixin):
     is_active = True
@@ -10,6 +14,7 @@ class Service(ServiceMixin):
         '8105', '57463', '67180', '67482', '88160', '57672', '10387', '68224', '68297',
         '57227', '68066', '52448', '51454', '54395', '51108'
     ]
+
 
 class Forecast(Service, ForecastMixin):
     url = 'https://opendata.arcgis.com/api/v3/datasets/b0d57e8f0d5e4cb786cb554eb15c3bcb_0/downloads/data'
@@ -25,6 +30,7 @@ class Forecast(Service, ForecastMixin):
         int_code = properties['code_zone']
         code = f"{int_code:05}"
         return Zone.get(code=code, type_=properties['type_zone'].lower())
+
 
 class Episode(Service, EpisodeMixin):
     url = 'https://services3.arcgis.com/Is0UwT37raQYl9Jj/arcgis/rest/services/alrt3j_grandest/FeatureServer/0/query'

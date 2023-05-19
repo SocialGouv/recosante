@@ -1,0 +1,7 @@
+{
+  "reportGeneralTypeIssues": false,
+  "reportOptionalMemberAccess": false,
+  "reportOptionalOperand": false,
+  "reportOptionalSubscript": false,
+  "reportWildcardImportFromLibrary": false
+}

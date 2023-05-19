@@ -1,22 +1,32 @@
+import copy
+import csv
+import logging
+import os
 from dataclasses import dataclass
-from indice_pollution import db
+from datetime import date, datetime, timedelta
+
+import requests
 from psycopg2.extras import DateRange
+from sqlalchemy import (Column, ForeignKey, Index, Integer, UniqueConstraint,
+                        func, select)
 from sqlalchemy.dialects.postgresql import DATERANGE
 from sqlalchemy.dialects.postgresql import insert as pg_insert
-from sqlalchemy import Column, ForeignKey, Index, Integer, UniqueConstraint, func, select
 from sqlalchemy.engine.row import Row
-from datetime import date, datetime, timedelta
-import os, requests, logging, csv, copy
-from indice_pollution.history.models.commune import Commune
 
+from indice_pollution import db
+from indice_pollution.history.models.commune import Commune
 from indice_pollution.history.models.departement import Departement
+
 
 @dataclass
 class RAEP(db.Base):
     __tablename__ = "raep"
 
+    # This is the database field
+    # pylint: disable-next=invalid-name
     id: int = Column(Integer, primary_key=True)
-    zone_id: int = Column(Integer, ForeignKey('indice_schema.zone.id'), nullable=False)
+    zone_id: int = Column(Integer, ForeignKey(
+        'indice_schema.zone.id'), nullable=False)
     validity = Column(DATERANGE(), nullable=False)
 
     cypres: int = Column(Integer)
@@ -45,22 +55,42 @@ class RAEP(db.Base):
         UniqueConstraint(zone_id, validity),
         {"schema": "indice_schema"},
     )
-    liste_allergenes = ["cypres", "noisetier", "aulne", "peuplier", "saule", "frene", "charme", "bouleau", "platane", "chene", "olivier", "tilleul", "chataignier", "rumex", "graminees", "plantain", "urticacees", "armoises", "ambroisies"]
-
+    liste_allergenes = [
+        "cypres",
+        "noisetier",
+        "aulne",
+        "peuplier",
+        "saule",
+        "frene",
+        "charme",
+        "bouleau",
+        "platane",
+        "chene",
+        "olivier",
+        "tilleul",
+        "chataignier",
+        "rumex",
+        "graminees",
+        "plantain",
+        "urticacees",
+        "armoises",
+        "ambroisies"
+    ]
 
     @classmethod
     def save_all(cls):
         if not os.getenv('ALLERGIES_URL'):
-            return {}
+            return
         try:
-            r = requests.get(os.getenv("ALLERGIES_URL"))
-        except Exception as e:
-            logging.error(e)
-            return {}
-        decoded_content = r.content.decode('utf-8')
-        first_column_name = decoded_content[:10] #Il s'agit de la date
+            request = requests.get(os.getenv("ALLERGIES_URL"), timeout=10)
+        except Exception as exception:
+            logging.error(exception)
+            return
+        decoded_content = request.content.decode('utf-8')
+        first_column_name = decoded_content[:10]  # Il s'agit de la date
         date_format = "%d/%m/%Y"
-        debut_validite = datetime.strptime(first_column_name, date_format).date()
+        debut_validite = datetime.strptime(
+            first_column_name, date_format).date()
         fin_validite = debut_validite + timedelta(weeks=1)
         reader = csv.DictReader(
             decoded_content.splitlines(),
@@ -68,23 +98,23 @@ class RAEP(db.Base):
         )
 
         risques = []
-        for r in reader:
-            departement_code = f"{r[first_column_name]:0>2}"
+        for request in reader:
+            departement_code = f"{request[first_column_name]:0>2}"
             if departement_code == "20":
-                departement_code = "2A"   
+                departement_code = "2A"
             departement = Departement.get(departement_code)
             risques.append({
                 **{
                     "zone_id": departement.zone_id,
-                    "total": r["Total"],
+                    "total": request["Total"],
                     "validity": DateRange(debut_validite, fin_validite)
                 },
-                **{allergene: int(r[allergene]) for allergene in cls.liste_allergenes}
+                **{allergene: int(request[allergene]) for allergene in cls.liste_allergenes}
             })
             if departement_code == "2A":
-                r = copy.deepcopy(risques[-1])
-                r["zone_id"] = Departement.get("2B").zone_id
-                risques.append(r)
+                request = copy.deepcopy(risques[-1])
+                request["zone_id"] = Departement.get("2B").zone_id
+                risques.append(request)
         ins = pg_insert(cls)\
             .values(risques)\
             .on_conflict_do_nothing()
@@ -109,15 +139,16 @@ class RAEP(db.Base):
         ).order_by(
             func.upper(cls.validity).desc()
         )
-        if r := db.session.execute(stmt).first():
-            return r[0]
+        if request := db.session.execute(stmt).first():
+            return request[0]
+        return None
 
     @classmethod
     def get_all(cls):
         stmt = select(cls).where(
             cls.validity.contains(date.today())
         ).distinct(cls.zone_id
-        ).order_by(
+                   ).order_by(
             cls.zone_id,
             func.upper(cls.validity).desc()
         )

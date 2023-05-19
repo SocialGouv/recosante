@@ -1,23 +1,23 @@
-from flask import current_app, request, abort, jsonify
 from datetime import datetime
-from . import forecast as forecast_
-from . import episodes as episodes_
-from .autocomplete import autocomplete as autocomplete_
+
 import pytz
-from dateutil import parser
+from flask import abort, current_app, jsonify, request
+
+from . import episodes as episodes_
+from . import forecast as forecast_
+from .autocomplete import autocomplete as autocomplete_
 
 
 @current_app.route("/forecast")
 def forecast():
     insee = request.args.get("insee")
-    zone = pytz.timezone("Europe/Paris")
     date_ = request.args.get("date")
 
     try:
         result = forecast_(insee, date_)
-    except KeyError as e:
-        current_app.logger.error(f"INSEE {insee} not found")
-        current_app.logger.error(e)
+    except KeyError as exception:
+        current_app.logger.error("INSEE %s not found", insee)
+        current_app.logger.error(exception)
         abort(404)
 
     return jsonify(result)
@@ -27,13 +27,14 @@ def forecast():
 def episodes():
     insee = request.args.get("insee")
     zone = pytz.timezone("Europe/Paris")
-    date_ = request.args.get("date") or str(datetime.now(tz=zone).date().isoformat())
+    date_ = request.args.get("date") or str(
+        datetime.now(tz=zone).date().isoformat())
 
     try:
         result = episodes_(insee, date_)
-    except KeyError as e:
-        current_app.logger.error(f"INSEE {insee} not found")
-        current_app.logger.error(e)
+    except KeyError as exception:
+        current_app.logger.error("INSEE %s not found", insee)
+        current_app.logger.error(exception)
         abort(404)
 
     return jsonify(result)
@@ -41,9 +42,9 @@ def episodes():
 
 @current_app.route("/autocomplete")
 def autocomplete():
-    q = request.args.get("q")
+    query = request.args.get("q")
 
-    return jsonify(autocomplete_(q))
+    return jsonify(autocomplete_(query))
 
 
 @current_app.route("/healthz")

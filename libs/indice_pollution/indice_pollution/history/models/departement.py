@@ -1,9 +1,11 @@
+import requests
 from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
 from indice_pollution import db
 from indice_pollution.history.models.region import Region
 from indice_pollution.history.models.tncc import TNCC
-from sqlalchemy.orm import relationship
-import requests
+
 
 class Departement(db.Base, TNCC):
     __tablename__ = 'departement'
@@ -30,15 +32,16 @@ class Departement(db.Base, TNCC):
     def get_and_init_from_api(cls, code):
         res_api = cls.get_from_api(code)
 
-        r = cls(**res_api)
-        db.session.add(r)
-        return r
+        request = cls(**res_api)
+        db.session.add(request)
+        return request
 
     @classmethod
     def get_from_api(cls, code):
-        r = requests.get(
+        request = requests.get(
             f'https://geo.api.gouv.fr/departements/{code}?fields=nom,code,codeRegion',
-            headers={"Accept": "application/json"}
+            headers={"Accept": "application/json"},
+            timeout=10,
         )
-        r.raise_for_status()
-        return r.json()
+        request.raise_for_status()
+        return request.json()

@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String
 
+
 class TNCC:
     tncc = Column(Integer)
     nccenr = Column(String)
-    tncc_codes= {
+    tncc_codes = {
         0: {"article": " ",    "charniere": "de "},
         1: {"article": " ", 	  "charniere": "d'"},
         2: {"article": "le ",  "charniere": "du "},
