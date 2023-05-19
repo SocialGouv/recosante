@@ -1,0 +1,11 @@
+{
+  "name": "indice_pollution",
+  "version": "1.0.0",
+  "license": "See LICENSE in ../../LICENSE",
+  "private": true,
+  "author": "Fabrique des ministères sociaux",
+  "scripts": {
+    "lint": "./start_lint.sh",
+    "test": "echo \"No test\""
+  }
+}

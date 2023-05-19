@@ -6,11 +6,12 @@
   "author": "Fabrique des ministères sociaux",
   "scripts": {
     "build": " yarn iframe && gatsby build",
-    "iframe": "webpack",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
-    "start": "npm run develop",
+    "iframe": "webpack",
+    "lint": "echo \"Do lint!\"",
     "serve": "gatsby serve",
+    "start": "npm run develop",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },
   "dependencies": {

@@ -1,0 +1,39 @@
+name: 🚨 Lint
+
+on:
+  push:
+    branches: ["**"]
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.ref }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10.6
+
+      - name: Install Dependencies
+        run: |
+          pip install poetry
+          yarn install
+          cd api
+          poetry install
+          cd ../libs/indice_pollution
+          poetry install
+
+      - name: Lint
+        run: yarn lint

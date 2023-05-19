@@ -5,6 +5,7 @@
   "private": true,
   "author": "Fabrique des ministères sociaux",
   "scripts": {
+    "lint": "./start_lint.sh",
     "node-scss": "node-sass",
     "rollup": "rollup",
     "test": "./start_tests.sh"
