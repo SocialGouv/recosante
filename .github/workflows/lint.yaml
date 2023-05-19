@@ -9,7 +9,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.ref }}
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
