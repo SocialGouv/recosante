@@ -1,7 +1,9 @@
-from jinja2.nodes import Mul
-from wtforms.fields import IntegerField, SelectField
-from ecosante.utils.form import RadioField, BaseForm, OuiNonField, MultiCheckboxField, IntegerField, coerce_int
-from wtforms import TextAreaField, HiddenField
+from wtforms import HiddenField, TextAreaField
+from wtforms.fields import SelectField
+
+from ecosante.utils.form import (BaseForm, IntegerField, MultiCheckboxField,
+                                 OuiNonField, RadioField, coerce_int)
+
 
 class FormAdd(BaseForm):
     status = RadioField(
@@ -27,16 +29,17 @@ class FormAdd(BaseForm):
         ]
     )
     saison = MultiCheckboxField("Montrer la recommandation que durant les saisons :",
-        choices=[
-            ('hiver', 'Hiver'),
-            ('printemps', 'Printemps'),
-            ('ete', 'Été'),
-            ('automne', 'Automne'),
-        ]
-    )
+                                choices=[
+                                    ('hiver', 'Hiver'),
+                                    ('printemps', 'Printemps'),
+                                    ('ete', 'Été'),
+                                    ('automne', 'Automne'),
+                                ]
+                                )
     qa = MultiCheckboxField(
         "Montrer en cas d’indice ATMO :",
-        choices=[('bonne', 'bon à moyen'), ('mauvaise', 'dégradé à extrêment mauvais'), ('evenement', 'Évévement')]
+        choices=[('bonne', 'bon à moyen'), ('mauvaise',
+                                            'dégradé à extrêment mauvais'), ('evenement', 'Évévement')]
     )
     polluants = MultiCheckboxField(
         "Montrer en cas d’épisode de pollution :",
@@ -89,6 +92,7 @@ class FormAdd(BaseForm):
     animal_de_compagnie = OuiNonField("Animal de compagnie")
     sources = TextAreaField("Sources")
     categorie = TextAreaField("Catégorie")
+    # pylint: disable-next=line-too-long
     ordre = IntegerField("Ordre", description="Si renseigné, une recommandation avec un ordre plus petit sera donnée à l’utilisateur avant celle d’un ordre plus grand. Si pour une journée deux recommandations avec le même ordre sont possibles, l’une ou l’autre sera donnée.")
     potentiel_radon = MultiCheckboxField(
         "Potentiel Radon associé",
@@ -130,16 +134,22 @@ class FormAdd(BaseForm):
 
     min_indice_uv = SelectField(
         'Montrer pour un indice UV',
-        choices=[(0, "de 0") ,(1, "de 1 à 2"),  (3, "de 3 à 5"), (6, "de 6 à 7"), (8, "de 8 à 10"), (11, "de 11 et plus")],
+        choices=[(0, "de 0"), (1, "de 1 à 2"),  (3, "de 3 à 5"),
+                 (6, "de 6 à 7"), (8, "de 8 à 10"), (11, "de 11 et plus")],
         coerce=int
     )
 
-    def validate(self, extra_validators=[]):
-        rv = super().validate(extra_validators=extra_validators)
-        if not self.qa.data and not self.polluants.data and self.type_.data == "indice_atmo":# and not self.raep.data:
-            rv = False
-            self.qa.errors = ["Vous devez remplir soit une qualité de l’air, soit un pic de pollution, sinon la recommandation n’est jamais envoyée"]
-        return rv
+    def validate(self, extra_validators=None):
+        if extra_validators is None:
+            extra_validators = []
+        valid = super().validate(extra_validators=extra_validators)
+        # and not self.raep.data:
+        if not self.qa.data and not self.polluants.data and self.type_.data == "indice_atmo":
+            valid = False
+            self.qa.errors = [
+                # pylint: disable-next=line-too-long
+                "Vous devez remplir soit une qualité de l’air, soit un pic de pollution, sinon la recommandation n’est jamais envoyée"]
+        return valid
 
 
 class FormEdit(FormAdd):

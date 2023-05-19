@@ -2,44 +2,58 @@ from calendar import different_locale
 from dataclasses import dataclass
 from datetime import date
 from itertools import chain
-from sqlalchemy import ForeignKeyConstraint, text
-from sqlalchemy.dialects import postgresql
 from typing import List
 
-from ecosante.extensions import db, authenticator
-from ecosante.inscription.models import Inscription, WebpushSubscriptionInfo
-from ecosante.recommandations.models import Recommandation
-from ecosante.newsletter.models.newsletter import Newsletter
-from ecosante.newsletter.models.newsletter_hebdo_template import NewsletterHebdoTemplate
-
 from indice_pollution.history.models import IndiceUv, VigilanceMeteo
+from sqlalchemy import ForeignKeyConstraint, text
+from sqlalchemy.dialects import postgresql
 
+from ecosante.extensions import authenticator, db
+from ecosante.inscription.models import Inscription, WebpushSubscriptionInfo
+from ecosante.newsletter.models.newsletter import Newsletter
+from ecosante.newsletter.models.newsletter_hebdo_template import \
+    NewsletterHebdoTemplate
+from ecosante.recommandations.models import Recommandation
 from ecosante.utils.funcs import generate_line
 
 
 @dataclass
+# pylint: disable-next=too-many-instance-attributes
 class NewsletterDB(db.Model, Newsletter):
     __tablename__ = "newsletter"
 
+    # pylint: disable-next=invalid-name
     id: int = db.Column(db.Integer, primary_key=True)
     short_id: str = db.Column(
         db.String(),
-        server_default=text("generate_random_id('public', 'newsletter', 'short_id', 8)")
+        server_default=text(
+            "generate_random_id('public', 'newsletter', 'short_id', 8)")
     )
-    inscription_id: int = db.Column(db.Integer, db.ForeignKey('inscription.id'), index=True)
+    inscription_id: int = db.Column(
+        db.Integer, db.ForeignKey('inscription.id'), index=True)
     inscription: Inscription = db.relationship(Inscription)
     lien_aasqa: str = db.Column(db.String())
     nom_aasqa: str = db.Column(db.String())
-    recommandation_id: int = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[recommandation_id])
-    recommandation_qa_id: int = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    recommandation_qa: Recommandation = db.relationship("Recommandation", foreign_keys=[recommandation_qa_id])
-    recommandation_raep_id: int = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    recommandation_raep: Recommandation = db.relationship("Recommandation", foreign_keys=[recommandation_raep_id])
-    recommandation_episode_id: int = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    recommandation_episode: Recommandation = db.relationship("Recommandation", foreign_keys=[recommandation_episode_id])
-    recommandation_indice_uv_id: int = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    recommandation_indice_uv: Recommandation = db.relationship("Recommandation", foreign_keys=[recommandation_indice_uv_id])
+    recommandation_id: int = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[recommandation_id])
+    recommandation_qa_id: int = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    recommandation_qa: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[recommandation_qa_id])
+    recommandation_raep_id: int = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    recommandation_raep: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[recommandation_raep_id])
+    recommandation_episode_id: int = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    recommandation_episode: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[recommandation_episode_id])
+    recommandation_indice_uv_id: int = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    recommandation_indice_uv: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[recommandation_indice_uv_id])
     date: date = db.Column(db.Date())
     qualif: str = db.Column(db.String())
     label: str = db.Column(db.String())
@@ -56,77 +70,126 @@ class NewsletterDB(db.Model, Newsletter):
     indice_uv_value: int = db.Column(db.Integer())
     indice_uv_zone_id: int = db.Column(db.Integer)
     indice_uv_date: date = db.Column(db.Date())
-    indice_uv: IndiceUv = db.relationship(IndiceUv, foreign_keys=[indice_uv_zone_id, indice_uv_date])
+    indice_uv: IndiceUv = db.relationship(
+        IndiceUv, foreign_keys=[indice_uv_zone_id, indice_uv_date])
     show_raep = db.Column(db.Boolean())
     show_radon = db.Column(db.Boolean())
     show_indice_uv = db.Column(db.Boolean())
     show_qa = db.Column(db.Boolean())
     show_vigilance = db.Column(db.Boolean())
     sous_indices: dict = db.Column(postgresql.JSONB)
-    webpush_subscription_info_id: int = db.Column(db.Integer, db.ForeignKey('webpush_subscription_info.id'), index=True)
-    webpush_subscription_info: WebpushSubscriptionInfo = db.relationship(WebpushSubscriptionInfo)
+    webpush_subscription_info_id: int = db.Column(
+        db.Integer, db.ForeignKey('webpush_subscription_info.id'), index=True)
+    webpush_subscription_info: WebpushSubscriptionInfo = db.relationship(
+        WebpushSubscriptionInfo)
     mail_list_id: int = db.Column(db.Integer)
-    newsletter_hebdo_template_id: int = db.Column(db.Integer(), db.ForeignKey('newsletter_hebdo_template.id'))
-    newsletter_hebdo_template: NewsletterHebdoTemplate = db.relationship(NewsletterHebdoTemplate)
+    newsletter_hebdo_template_id: int = db.Column(
+        db.Integer(), db.ForeignKey('newsletter_hebdo_template.id'))
+    newsletter_hebdo_template: NewsletterHebdoTemplate = db.relationship(
+        NewsletterHebdoTemplate)
 
-    vigilance_vent_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_vent: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_vent_id])
-    vigilance_vent_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_vent_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_vent_recommandation_id])
+    vigilance_vent_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_vent: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_vent_id])
+    vigilance_vent_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_vent_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_vent_recommandation_id])
 
-    vigilance_pluie_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_pluie: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_pluie_id])
-    vigilance_pluie_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_pluie_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_pluie_recommandation_id])
+    vigilance_pluie_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_pluie: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_pluie_id])
+    vigilance_pluie_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_pluie_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_pluie_recommandation_id])
 
-    vigilance_orages_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_orages: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_orages_id])
-    vigilance_orages_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_orages_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_orages_recommandation_id])
+    vigilance_orages_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_orages: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_orages_id])
+    vigilance_orages_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_orages_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_orages_recommandation_id])
 
-    vigilance_crues_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_crues: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_crues_id])
-    vigilance_crues_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_crues_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_crues_recommandation_id])
+    vigilance_crues_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_crues: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_crues_id])
+    vigilance_crues_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_crues_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_crues_recommandation_id])
 
-    vigilance_neige_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_neige: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_neige_id])
-    vigilance_neige_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_neige_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_neige_recommandation_id])
+    vigilance_neige_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_neige: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_neige_id])
+    vigilance_neige_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_neige_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_neige_recommandation_id])
 
-    vigilance_canicule_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_canicule: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_canicule_id])
-    vigilance_canicule_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_canicule_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_canicule_recommandation_id])
+    vigilance_canicule_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_canicule: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_canicule_id])
+    vigilance_canicule_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_canicule_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_canicule_recommandation_id])
 
-    vigilance_froid_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_froid: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_froid_id])
-    vigilance_froid_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_froid_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_froid_recommandation_id])
+    vigilance_froid_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_froid: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_froid_id])
+    vigilance_froid_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_froid_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_froid_recommandation_id])
 
-    vigilance_avalanches_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_avalanches: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_avalanches_id])
-    vigilance_avalanches_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_avalanches_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_avalanches_recommandation_id])
+    vigilance_avalanches_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_avalanches: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_avalanches_id])
+    vigilance_avalanches_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_avalanches_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_avalanches_recommandation_id])
 
-    vigilance_vagues_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_vagues: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_vagues_id])
-    vigilance_vagues_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_vagues_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_vagues_recommandation_id])
+    vigilance_vagues_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_vagues: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_vagues_id])
+    vigilance_vagues_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_vagues_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_vagues_recommandation_id])
 
-    vigilance_globale_id: VigilanceMeteo = db.Column(db.Integer(), db.ForeignKey(VigilanceMeteo.id))
-    vigilance_globale: VigilanceMeteo = db.relationship(VigilanceMeteo, foreign_keys=[vigilance_globale_id])
-    vigilance_globale_recommandation_id: Recommandation = db.Column(db.Integer, db.ForeignKey('recommandation.id'))
-    vigilance_globale_recommandation: Recommandation = db.relationship("Recommandation", foreign_keys=[vigilance_globale_recommandation_id])
+    vigilance_globale_id: VigilanceMeteo = db.Column(
+        db.Integer(), db.ForeignKey(VigilanceMeteo.id))
+    vigilance_globale: VigilanceMeteo = db.relationship(
+        VigilanceMeteo, foreign_keys=[vigilance_globale_id])
+    vigilance_globale_recommandation_id: Recommandation = db.Column(
+        db.Integer, db.ForeignKey('recommandation.id'))
+    vigilance_globale_recommandation: Recommandation = db.relationship(
+        "Recommandation", foreign_keys=[vigilance_globale_recommandation_id])
     __table_args__ = (
-        ForeignKeyConstraint([indice_uv_zone_id, indice_uv_date], [IndiceUv.zone_id, IndiceUv.date]),
+        ForeignKeyConstraint([indice_uv_zone_id, indice_uv_date], [
+                             IndiceUv.zone_id, IndiceUv.date]),
     )
 
+    # pylint: disable-next=too-many-statements
     def __init__(self, newsletter: Newsletter, mail_list_id=None):
+        # pylint: disable=line-too-long
+        super().__init__()
         self.inscription = newsletter.inscription
         self.inscription_id = newsletter.inscription.id
-        self.lien_aasqa = newsletter.inscription.commune.departement.region.aasqa_website if newsletter.inscription.commune.departement else "",
-        self.nom_aasqa = newsletter.inscription.commune.departement.region.aasqa_nom if newsletter.inscription.commune.departement else "",
+        self.lien_aasqa = newsletter.inscription.commune.departement.region.aasqa_website if newsletter.inscription.commune.departement else ""
+        self.nom_aasqa = newsletter.inscription.commune.departement.region.aasqa_nom if newsletter.inscription.commune.departement else ""
         self.recommandation = newsletter.recommandation
         self.recommandation_id = newsletter.recommandation.id if newsletter.recommandation else None
         self.recommandation_qa = newsletter.recommandation_qa
@@ -142,7 +205,8 @@ class NewsletterDB(db.Model, Newsletter):
         self.label = newsletter.label
         self.couleur = newsletter.couleur
         self.polluants = newsletter.polluants
-        self.raep = int(newsletter.raep) if newsletter.raep is not None else None
+        self.raep = int(
+            newsletter.raep) if newsletter.raep is not None else None
         self.allergenes = newsletter.allergenes
         self.raep_debut_validite = newsletter.validite_raep.get('debut')
         self.raep_fin_validite = newsletter.validite_raep.get('fin')
@@ -174,13 +238,15 @@ class NewsletterDB(db.Model, Newsletter):
         self.vigilance_globale_id = newsletter.vigilance_globale.id if self.vigilance_globale else None
         self.vigilance_globale_recommandation = newsletter.vigilance_globale_recommandation
         self.vigilance_globale_recommandation_id = newsletter.vigilance_globale_recommandation.id if self.vigilance_globale_recommandation else None
+        # pylint: enable=line-too-long
 
     @property
     def vigilances_dict(self):
         max_couleur = VigilanceMeteo.make_max_couleur(
-            list(filter(None, map(lambda ph: getattr(self, f"vigilance_{ph}"), self.phenomenes_sib.values())))
+            list(filter(None, map(lambda ph: getattr(
+                self, f"vigilance_{ph}"), self.phenomenes_sib.values())))
         )
-        to_return = dict()
+        to_return = {}
         for phenomene in self.phenomenes_sib.values():
             key = f"vigilance_{phenomene}"
             vigilance = getattr(self, key)
@@ -196,11 +262,13 @@ class NewsletterDB(db.Model, Newsletter):
             to_return['VIGILANCE_GLOBALE_COULEUR'] = self.vigilance_globale.couleur
         to_return['VIGILANCE_GLOBALE_RECOMMANDATION'] = ""
         if self.vigilance_globale_recommandation:
+            # pylint: disable-next=line-too-long
             to_return['VIGILANCE_GLOBALE_RECOMMANDATION'] = self.vigilance_globale_recommandation.recommandation_sanitized
         return to_return
 
     def attributes(self):
         noms_sous_indices = ['no2', 'so2', 'o3', 'pm10', 'pm25']
+
         def get_sous_indice(nom):
             if not self.sous_indices:
                 return {}
@@ -209,6 +277,7 @@ class NewsletterDB(db.Model, Newsletter):
             except StopIteration:
                 return {}
         return {
+            # pylint: disable=line-too-long
             **{
                 'EMAIL': self.inscription.mail,
                 'RECOMMANDATION': (self.recommandation.format(self.inscription.commune) or "") if self.recommandation else "",
@@ -232,7 +301,7 @@ class NewsletterDB(db.Model, Newsletter):
                 "RAEP_FIN_VALIDITE": self.raep_fin_validite,
                 'QUALITE_AIR_VALIDITE': self.date.strftime('%d/%m/%Y'),
                 'INDICE_UV_VALIDITE': self.date.strftime('%d/%m/%Y'),
-                'POLLINARIUM_SENTINELLE': (False if not self.inscription.commune or not self.inscription.commune.pollinarium_sentinelle else True),
+                'POLLINARIUM_SENTINELLE': self.inscription.commune and self.inscription.commune.pollinarium_sentinelle,
                 'INDICE_UV_LABEL': self.indice_uv_label or "",
                 'INDICE_UV_VALUE': self.indice_uv_value or "",
                 'SHOW_QA': self.show_qa,
@@ -250,20 +319,33 @@ class NewsletterDB(db.Model, Newsletter):
                 "VIGILANCE_VALIDITE_FIN": VigilanceMeteo.make_end_date([self.vigilance_globale]).strftime('%d/%m/%Y à %H:%M') if self.vigilance_globale else "",
                 "VIGILANCE_LABEL": VigilanceMeteo.make_label(self.vigilance_globale.couleur_id) if self.vigilance_globale else "",
             },
-            **{f'ALLERGENE_{a[0]}': int(a[1]) if a[1] is not None else None for a in (self.allergenes if type(self.allergenes) == dict else dict() ).items()},
+            **{f'ALLERGENE_{a[0]}': int(a[1]) if a[1] is not None else None for a in (self.allergenes if isinstance(self.allergenes, dict) else {}).items()},
             **dict(chain(*[[(f'SS_INDICE_{si.upper()}_LABEL', get_sous_indice(si).get('label') or ""), (f'SS_INDICE_{si.upper()}_COULEUR', get_sous_indice(si).get('couleur') or "")] for si in noms_sous_indices])),
             **self.vigilances_dict
+            # pylint: enable=line-too-long
         }
 
-    header = ['EMAIL','RECOMMANDATION','LIEN_AASQA','NOM_AASQA','PRECISIONS','QUALITE_AIR','VILLE','VILLE_CODE','VILLE_SLUG','BACKGROUND_COLOR','SHORT_ID','POLLUANT',
-'LIEN_RECOMMANDATIONS_ALERTE','SHOW_RAEP','RAEP','BACKGROUND_COLOR_RAEP','USER_UID','AUTH_TOKEN','DEPARTEMENT','DEPARTEMENT_PREPOSITION','OBJECTIF','RAEP_DEBUT_VALIDITE',
-'RAEP_FIN_VALIDITE','QUALITE_AIR_VALIDITE','INDICE_UV_VALIDITE','POLLINARIUM_SENTINELLE','INDICE_UV_LABEL','INDICE_UV_VALUE','SHOW_QA','SHOW_INDICE_UV','INDICATEURS_FREQUENCE','RECOMMANDATION_QA','RECOMMANDATION_RAEP',
-'RECOMMANDATION_EPISODE','RECOMMANDATION_INDICE_UV','NEW_USER','INDICATEURS_MEDIA','ALLERGENE_aulne','ALLERGENE_chene','ALLERGENE_frene','ALLERGENE_rumex','ALLERGENE_saule',
-'ALLERGENE_charme','ALLERGENE_cypres','ALLERGENE_bouleau','ALLERGENE_olivier','ALLERGENE_platane','ALLERGENE_tilleul','ALLERGENE_armoises','ALLERGENE_peuplier',
-'ALLERGENE_plantain','ALLERGENE_graminees','ALLERGENE_noisetier','ALLERGENE_ambroisies','ALLERGENE_urticacees','ALLERGENE_chataignier','SS_INDICE_NO2_LABEL',
-'SS_INDICE_NO2_COULEUR','SS_INDICE_SO2_LABEL','SS_INDICE_SO2_COULEUR','SS_INDICE_O3_LABEL','SS_INDICE_O3_COULEUR','SS_INDICE_PM10_LABEL','SS_INDICE_PM10_COULEUR',
-'SS_INDICE_PM25_LABEL','SS_INDICE_PM25_COULEUR', 'VIGILANCE_VALIDITE_FIN', 'VIGILANCE_LABEL', 'VIGILANCE_VALIDITE_DEBUT', 'VIGILANCE_GLOBALE_RECOMMANDATION',
- 'SHOW_VIGILANCE', 'VIGILANCE_GLOBALE_COULEUR'] + [f'VIGILANCE_{ph.upper()}_COULEUR' for ph in Newsletter.phenomenes_sib.values()] + [f'VIGILANCE_{ph.upper()}_RECOMMANDATION' for ph in Newsletter.phenomenes_sib.values()]
+    header = [
+        'EMAIL', 'RECOMMANDATION', 'LIEN_AASQA', 'NOM_AASQA', 'PRECISIONS', 'QUALITE_AIR', 'VILLE', 'VILLE_CODE',
+        'VILLE_SLUG', 'BACKGROUND_COLOR', 'SHORT_ID', 'POLLUANT', 'LIEN_RECOMMANDATIONS_ALERTE', 'SHOW_RAEP', 'RAEP',
+        'BACKGROUND_COLOR_RAEP', 'USER_UID', 'AUTH_TOKEN', 'DEPARTEMENT', 'DEPARTEMENT_PREPOSITION', 'OBJECTIF',
+        'RAEP_DEBUT_VALIDITE', 'RAEP_FIN_VALIDITE', 'QUALITE_AIR_VALIDITE', 'INDICE_UV_VALIDITE',
+        'POLLINARIUM_SENTINELLE', 'INDICE_UV_LABEL', 'INDICE_UV_VALUE', 'SHOW_QA', 'SHOW_INDICE_UV',
+        'INDICATEURS_FREQUENCE', 'RECOMMANDATION_QA', 'RECOMMANDATION_RAEP', 'RECOMMANDATION_EPISODE',
+        'RECOMMANDATION_INDICE_UV', 'NEW_USER', 'INDICATEURS_MEDIA', 'ALLERGENE_aulne', 'ALLERGENE_chene',
+        'ALLERGENE_frene', 'ALLERGENE_rumex', 'ALLERGENE_saule', 'ALLERGENE_charme', 'ALLERGENE_cypres',
+        'ALLERGENE_bouleau', 'ALLERGENE_olivier', 'ALLERGENE_platane', 'ALLERGENE_tilleul', 'ALLERGENE_armoises',
+        'ALLERGENE_peuplier', 'ALLERGENE_plantain', 'ALLERGENE_graminees', 'ALLERGENE_noisetier',
+        'ALLERGENE_ambroisies', 'ALLERGENE_urticacees', 'ALLERGENE_chataignier', 'SS_INDICE_NO2_LABEL',
+        'SS_INDICE_NO2_COULEUR', 'SS_INDICE_SO2_LABEL', 'SS_INDICE_SO2_COULEUR', 'SS_INDICE_O3_LABEL',
+        'SS_INDICE_O3_COULEUR', 'SS_INDICE_PM10_LABEL', 'SS_INDICE_PM10_COULEUR', 'SS_INDICE_PM25_LABEL',
+        'SS_INDICE_PM25_COULEUR', 'VIGILANCE_VALIDITE_FIN', 'VIGILANCE_LABEL', 'VIGILANCE_VALIDITE_DEBUT',
+        'VIGILANCE_GLOBALE_RECOMMANDATION', 'SHOW_VIGILANCE', 'VIGILANCE_GLOBALE_COULEUR'
+    ] + [
+        f'VIGILANCE_{ph.upper()}_COULEUR' for ph in Newsletter.phenomenes_sib.values()
+    ] + [
+        f'VIGILANCE_{ph.upper()}_RECOMMANDATION' for ph in Newsletter.phenomenes_sib.values()
+    ]
 
     @property
     def webpush_data(self):
@@ -280,8 +362,10 @@ class NewsletterDB(db.Model, Newsletter):
         if len(body) > 0:
             body += "\n"
         second_line = []
+        # pylint: disable-next=line-too-long
         if self.inscription.has_indicateur("vigilance_meteo") and self.vigilance_globale and self.vigilance_globale.couleur:
-            second_line.append(f"Vigilance météo : {self.vigilance_globale.couleur.lower()}")
+            second_line.append(
+                f"Vigilance météo : {self.vigilance_globale.couleur.lower()}")
         if self.inscription.has_indicateur("indice_uv") and self.indice_uv_value:
             second_line.append(f"UV : {self.indice_uv_value}")
         body += ". ".join(second_line)

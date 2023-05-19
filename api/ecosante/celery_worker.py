@@ -1,8 +1,10 @@
-from . import create_app
+import os
+
 import sentry_sdk
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
-import os
+
+from . import create_app
 
 if os.getenv('SENTRY_DSN'):
     sentry_sdk.init(
@@ -14,4 +16,5 @@ if os.getenv('SENTRY_DSN'):
     )
 app = create_app()
 
-from .extensions import celery #noqa
+# pylint: disable-next=unused-import,wrong-import-position
+from .extensions import celery  # noqa

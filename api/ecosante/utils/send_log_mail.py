@@ -1,7 +1,9 @@
-from ecosante.extensions import sib
 import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
 from flask import current_app
+from sib_api_v3_sdk.rest import ApiException
+
+from ecosante.extensions import sib
+
 
 def send_log_mail(subject, text_content, name="Technique recosanté", email="technique@recosante.beta.gouv.fr"):
     if current_app.config['ENV'] != 'production':
@@ -28,5 +30,6 @@ def send_log_mail(subject, text_content, name="Technique recosanté", email="tec
     try:
         api_response = api_instance.send_transac_email(send_smtp_email)
         current_app.logger.debug(api_response)
-    except ApiException as e:
-        current_app.logger.error("Exception when calling TransactionalEmailsApi->send_transac_email: %s\n" % e)
+    except ApiException as exception:
+        current_app.logger.error(
+            "Exception when calling TransactionalEmailsApi->send_transac_email: %s\n", exception)

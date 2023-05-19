@@ -16,5 +16,5 @@ if os.getenv('SENTRY_DSN'):
     )
 app = create_app()
 
-# pylint: disable-next=wrong-import-position,unused-import
+# pylint: disable-next=unused-import,wrong-import-position
 from .extensions import celery  # noqa

@@ -1,24 +1,25 @@
-import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
 import os
+
+import sib_api_v3_sdk
+from flask import current_app
+from sib_api_v3_sdk.rest import ApiException
+
 from ecosante.extensions import celery, sib
 from ecosante.utils.send_log_mail import send_log_mail
-from flask import current_app
-import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
 
 
 @celery.task()
 def call_sib_unsubscribe(mail):
     contact_api = sib_api_v3_sdk.ContactsApi(sib)
     try:
-        r = contact_api.get_contact_info(mail)
-        if not r.email_blacklisted:
+        response = contact_api.get_contact_info(mail)
+        if not response.email_blacklisted:
             contact_api.update_contact(
                 mail, sib_api_v3_sdk.UpdateContact(email_blacklisted=True)
             )
-    except ApiException as e:
-        print("Exception when calling ContactsApi->update_contact: %s\n" % e)
+    except ApiException as exception:
+        print(
+            f"Exception when calling ContactsApi->update_contact: {exception}\n")
 
 
 @celery.task()
@@ -34,14 +35,15 @@ L'utilisateur {mail} s'est désinscrit de la newsletter
 
 Bonne journée !
 """)
-    unsubscribe_template_id = int(os.getenv('SIB_UNSUBSCRIBE_TEMPLATE_ID', 1594))
+    unsubscribe_template_id = int(
+        os.getenv('SIB_UNSUBSCRIBE_TEMPLATE_ID', "1594"))
     email_api = sib_api_v3_sdk.TransactionalEmailsApi(sib)
     try:
         email_api.send_transac_email(
             sib_api_v3_sdk.SendSmtpEmail(
                 sender=sib_api_v3_sdk.SendSmtpEmailSender(
-                    name= "Recosanté",
-                    email= "hi@recosante.beta.gouv.fr"
+                    name="Recosanté",
+                    email="hi@recosante.beta.gouv.fr"
                 ),
                 to=[sib_api_v3_sdk.SendSmtpEmailTo(email=mail)],
                 reply_to=sib_api_v3_sdk.SendSmtpEmailReplyTo(
@@ -51,10 +53,11 @@ Bonne journée !
                 template_id=unsubscribe_template_id
             )
         )
-    except ApiException as e:
+    except ApiException as exception:
         current_app.logger.error(
-            f"Error: {e}"
+            f"Error: {exception}"
         )
+
 
 @celery.task()
 def send_unsubscribe_error(mail):

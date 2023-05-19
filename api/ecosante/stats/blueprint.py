@@ -1,30 +1,33 @@
+import json
+import os
+from calendar import different_locale, month_name
 from datetime import date, datetime, timedelta
 from functools import reduce
+from itertools import accumulate, groupby
+
+import requests
+import sib_api_v3_sdk
+from dateutil.parser import ParserError, parse
 from flask import current_app
-from flask.globals import request
+from sib_api_v3_sdk.rest import ApiException
+from sqlalchemy import func, text
+
 from ecosante.extensions import db, sib
 from ecosante.inscription.models import Inscription
 from ecosante.newsletter.models import NewsletterDB
 from ecosante.utils.blueprint import Blueprint
-from sqlalchemy import func, or_, text
-from calendar import month_name, different_locale
-import json
-from dateutil.parser import parse, ParserError
-import sib_api_v3_sdk
-from sib_api_v3_sdk.rest import ApiException
-from itertools import accumulate, groupby
-import requests
-import os
+
 
 def get_month_name(month_no, locale):
     with different_locale(locale):
         return month_name[month_no]
 
+
 bp = Blueprint("stats", __name__)
 
 
-def first_day_last_day_of_week(d):
-    year, week, _ = d.isocalendar()
+def first_day_last_day_of_week(day):
+    year, week, _ = day.isocalendar()
     first_day = datetime.fromisocalendar(year, week, 1)
     last_day = datetime.fromisocalendar(year, week, 7)
     return f'{first_day.strftime("%d/%m/%Y")} au {last_day.strftime("%d/%m/%Y")}'
@@ -32,7 +35,7 @@ def first_day_last_day_of_week(d):
 
 @bp.route('/openings/')
 def openings():
-    openings = []
+    _openings = []
     api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib)
     try:
         api_response = api_instance.get_email_campaigns(
@@ -45,40 +48,42 @@ def openings():
                 continue
             try:
                 date_ = parse(campaign['name'])
-            except ParserError as e:
-                current_app.logger.info(e)
+            except ParserError as exception:
+                current_app.logger.info(exception)
                 continue
             stats = campaign['statistics']['globalStats']
             if stats['delivered'] == 0:
                 continue
-            openings.append(
+            _openings.append(
                 (
                     date_,
                     (stats['uniqueViews'], stats['delivered'])
                 )
             )
-    except ApiException as e:
-        current_app.logger.error(e)
-    openings.sort(key=lambda v: v[0])
-    openings = [
+    except ApiException as exception:
+        current_app.logger.error(exception)
+    _openings.sort(key=lambda v: v[0])
+    _openings = [
         (v[0].strftime("%d/%m/%Y"), (v[1][0]/v[1][1])*100)
         for v in
         [
-            (d, reduce(
+            (key, reduce(
                 lambda acc, v: (acc[0] + v[1][0], acc[1] + v[1][1]),
                 values,
                 (0, 0))
-            )
-            for d, values in groupby(openings, lambda v: v[0].date())
+             )
+            for key, values in groupby(_openings, lambda v: v[0].date())
         ]
     ]
-    opening_yesterday = openings[-1] if openings else None
+    opening_yesterday = _openings[-1] if _openings else None
     return {
-        "openings": json.dumps(dict(openings)),
+        "openings": json.dumps(dict(_openings)),
         "opening_yesterday": opening_yesterday,
     }
 
+
 @bp.route('/web/')
+# pylint: disable-next=too-many-statements
 def stats_web():
     matomo_api_url = os.getenv('MATOMO_API_URL')
     if matomo_api_url is None:
@@ -87,63 +92,89 @@ def stats_web():
     # Nombre total de visites
     total_visits = 0
     try:
-        r = requests.get(f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={start_date},today")
-        r.raise_for_status()
-        total_visits = r.json().get('value', 0)
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
+        request = requests.get(
+            f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={start_date},today",
+            timeout=10
+        )
+        request.raise_for_status()
+        total_visits = request.json().get('value', 0)
+    except Exception as exception:
+        current_app.logger.error("Error relative to Matomo API: %s", exception)
     # Nombre de visites mensuelles
     monthly_visits = {}
     try:
-        r = requests.get(f"{matomo_api_url}&method=VisitsSummary.getVisits&period=month&date={start_date},today")
-        r.raise_for_status()
+        request = requests.get(
+            f"{matomo_api_url}&method=VisitsSummary.getVisits&period=month&date={start_date},today",
+            timeout=10
+        )
+        request.raise_for_status()
         with different_locale('fr_FR.utf8'):
-            monthly_visits = {datetime.strptime(m, '%Y-%m').strftime('%B %Y'): v for m, v in r.json().items()}
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
+            monthly_visits = {datetime.strptime(
+                m, '%Y-%m').strftime('%B %Y'): v for m, v in request.json().items()}
+    except Exception as exception:
+        current_app.logger.error("Error relative to Matomo API: %s", exception)
     # Nombre de visites mensuelles sur le tableau de bord
     place_monthly_visits = {}
     try:
-        r = requests.get(f"{matomo_api_url}&method=Actions.getPageUrls&period=month&date={start_date},today&filter_column=label&filter_pattern=^place$")
-        r.raise_for_status()
+        request = requests.get(
+            # pylint: disable-next=line-too-long
+            f"{matomo_api_url}&method=Actions.getPageUrls&period=month&date={start_date},today&filter_column=label&filter_pattern=^place$",
+            timeout=10
+        )
+        request.raise_for_status()
         with different_locale('fr_FR.utf8'):
-            place_monthly_visits = {datetime.strptime(m, '%Y-%m').strftime('%B %Y'): (next(iter(v), {})).get('nb_visits', 0) for m, v in r.json().items()}
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
-    # Le site a beaucoup évolué entre 2021 et 2022 ce qui nous oblige à ignorer les stats d'intégration et de referrer antérieures
+            place_monthly_visits = {datetime.strptime(m, '%Y-%m').strftime('%B %Y'): (
+                next(iter(v), {})).get('nb_visits', 0) for m, v in request.json().items()}
+    except Exception as exception:
+        current_app.logger.error("Error relative to Matomo API: %s", exception)
+    # Le site a beaucoup évolué entre 2021 et 2022
+    # ce qui nous oblige à ignorer les stats d'intégration et de referrer antérieures
     new_version_start_date = '2022-01-01'
     # Nombre de visites qui proviennent de l'intégration du widget
     integration_widget = 0
     try:
-        r = requests.get(f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={new_version_start_date},today&segment=entryPageUrl=@iframe%253D1")
-        r.raise_for_status()
-        integration_widget = r.json().get('value', 0)
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
+        request = requests.get(
+            # pylint: disable-next=line-too-long
+            f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={new_version_start_date},today&segment=entryPageUrl=@iframe%253D1",
+            timeout=10
+        )
+        request.raise_for_status()
+        integration_widget = request.json().get('value', 0)
+    except Exception as exception:
+        current_app.logger.error("Error relative to Matomo API: %s", exception)
     # Nombre de visites qui proviennent du site web
     integration_website = 0
     try:
-        r = requests.get(f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={new_version_start_date},today&segment=entryPageUrl!@iframe%253D1")
-        r.raise_for_status()
-        integration_website = r.json().get('value', 0)
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
-    # Nombre de visites selon le type de referrer (moteur de rechercher, entrée directe, site web externe, réseaux sociaux, campagne suivie)
+        request = requests.get(
+            # pylint: disable-next=line-too-long
+            f"{matomo_api_url}&method=VisitsSummary.getVisits&period=range&date={new_version_start_date},today&segment=entryPageUrl!@iframe%253D1",
+            timeout=10
+        )
+        request.raise_for_status()
+        integration_website = request.json().get('value', 0)
+    except Exception as exception:
+        current_app.logger.error("Error relative to Matomo API: %s", exception)
+    # Nombre de visites selon le type de referrer
+    # (moteur de rechercher, entrée directe, site web externe, réseaux sociaux, campagne suivie)
     channel_search = 0
     channel_direct = 0
     channel_website = 0
     channel_social = 0
     channel_campaign = 0
     try:
-        r = requests.get(f"{matomo_api_url}&method=Referrers.get&period=range&date={new_version_start_date},today&segment=entryPageUrl!@iframe%253D1")
-        r.raise_for_status()
-        channel_search = r.json().get('Referrers_visitorsFromSearchEngines', 0)
-        channel_direct = r.json().get('Referrers_visitorsFromDirectEntry', 0)
-        channel_website = r.json().get('Referrers_visitorsFromWebsites', 0)
-        channel_social = r.json().get('Referrers_visitorsFromSocialNetworks', 0)
-        channel_campaign = r.json().get('Referrers_visitorsFromCampaigns', 0)
-    except Exception as e:
-        current_app.logger.error(f"Error relative to Matomo API: {e}")
+        request = requests.get(
+            # pylint: disable-next=line-too-long
+            f"{matomo_api_url}&method=Referrers.get&period=range&date={new_version_start_date},today&segment=entryPageUrl!@iframe%253D1",
+            timeout=10
+        )
+        request.raise_for_status()
+        channel_search = request.json().get('Referrers_visitorsFromSearchEngines', 0)
+        channel_direct = request.json().get('Referrers_visitorsFromDirectEntry', 0)
+        channel_website = request.json().get('Referrers_visitorsFromWebsites', 0)
+        channel_social = request.json().get('Referrers_visitorsFromSocialNetworks', 0)
+        channel_campaign = request.json().get('Referrers_visitorsFromCampaigns', 0)
+    except Exception as exception:
+        current_app.logger.error(f"Error relative to Matomo API: {exception}")
     to_return = {
         "total_visits": total_visits,
         "monthly_visits": json.dumps(monthly_visits),
@@ -158,18 +189,26 @@ def stats_web():
     }
     return to_return
 
+
 @bp.route('/email/')
+# pylint: disable-next=too-many-locals
 def stats_email():
     # Nombre d'utilisateurs actuellement abonnés
     total_actifs = Inscription.active_query().count()
     # Nombre d'inscriptions par mois
     month_trunc = func.date_trunc('month', Inscription.date_inscription)
     count_id = func.count(Inscription.id)
-    inscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None)).group_by(month_trunc).order_by(month_trunc)
-    dict_format = lambda v: (f"{get_month_name(v[0].month, 'fr_FR.utf8')} {v[0].year}", int(v[1]))
-    inscriptions = dict(map(dict_format, db.session.execute(inscriptions_month_query).all()))
+    inscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.ville_insee.isnot(
+        None) | Inscription.commune_id.isnot(None)).group_by(month_trunc).order_by(month_trunc)
+
+    def dict_format(values):
+        return (f"{get_month_name(values[0].month, 'fr_FR.utf8')} {values[0].year}", int(values[1]))
+    inscriptions = dict(
+        map(dict_format, db.session.execute(inscriptions_month_query).all()))
     # Nombre cumulé d'inscriptions par mois
-    acc_add = lambda acc, i: (i[0], acc[1] + i[1])
+
+    def acc_add(acc, i):
+        return (i[0], acc[1] + i[1])
     acc_inscriptions = dict(accumulate([
         (v[0], v[1])
         for v in inscriptions.items()
@@ -177,17 +216,22 @@ def stats_email():
     # Nombre de désinscriptions par mois
     month_trunc = func.date_trunc('month', Inscription.deactivation_date)
     count_id = func.count(Inscription.id)
-    desinscriptions_month_query = db.session.query(month_trunc, count_id).filter(Inscription.deactivation_date.isnot(None)).group_by(month_trunc).order_by(month_trunc)
-    desinscriptions = dict(map(dict_format, db.session.execute(desinscriptions_month_query).all()))
+    desinscriptions_month_query = db.session.query(month_trunc, count_id).filter(
+        Inscription.deactivation_date.isnot(None)).group_by(month_trunc).order_by(month_trunc)
+    desinscriptions = dict(
+        map(dict_format, db.session.execute(desinscriptions_month_query).all()))
     # Nombre cumulé de désinscriptions par mois
     acc_desinscriptions = dict(accumulate([
         (v[0], v[1])
         for v in desinscriptions.items()
     ], acc_add))
     # Nombre cumulé d'abonnés par mois
-    active_users = {k: acc_inscriptions.get(k, 0) - acc_desinscriptions.get(k, 0) for k in acc_inscriptions.keys()}
+    active_users = {k: acc_inscriptions.get(
+        k, 0) - acc_desinscriptions.get(k, 0) for k in acc_inscriptions.keys()}
     grouped_query = Inscription.active_query().group_by(text('1')).order_by(text('1'))
-    make_dict = lambda attribute: dict(grouped_query.with_entities(func.unnest(getattr(Inscription, attribute)), count_id).all())
+
+    def make_dict(attribute):
+        return dict(grouped_query.with_entities(func.unnest(getattr(Inscription, attribute)), count_id).all())
     # Nombre d'abonnés par type d'indicateur
     indicateurs = make_dict('indicateurs')
     # Nombre d'abonnés par fréquence
@@ -214,7 +258,7 @@ def stats_email():
             ) - Inscription.date_inscription
         ) / func.count(Inscription.id)
     ).filter(
-        Inscription.date_inscription != None
+        Inscription.date_inscription is not None
     ).one_or_none()
     to_return = {
         "active_users": json.dumps(active_users),
@@ -238,19 +282,23 @@ def stats_email():
     }
     return to_return
 
+
 @bp.route('/email/last2d')
 def stats_email_last2d():
     to_return = {}
     yesterday = date.today() - timedelta(days=1)
     # Nombre d'inscriptions ces 2 derniers jours
-    inscriptions = db.session.query(Inscription).filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None)).filter(func.date(Inscription.date_inscription) >= yesterday).count()
+    inscriptions = db.session.query(Inscription).filter(Inscription.ville_insee.isnot(
+        None) | Inscription.commune_id.isnot(None)).filter(func.date(Inscription.date_inscription) >= yesterday).count()
     # Nombre de désinscriptions ces 2 derniers jours
-    desinscriptions = db.session.query(Inscription).filter(Inscription.deactivation_date.isnot(None)).filter(func.date(Inscription.deactivation_date) >= yesterday).count()
+    desinscriptions = db.session.query(Inscription).filter(Inscription.deactivation_date.isnot(
+        None)).filter(func.date(Inscription.deactivation_date) >= yesterday).count()
     if inscriptions > 0:
         to_return['inscriptions'] = inscriptions
     if desinscriptions > 0:
         to_return['desinscriptions'] = desinscriptions
     return to_return
+
 
 @bp.route('/email/openings')
 def stats_email_openings():
@@ -261,14 +309,17 @@ def stats_email_openings():
     try:
         day = date.today()
         weekday = day.weekday()
-        thursday_weekday = 3 # jeudi
+        thursday_weekday = 3  # jeudi
         if thursday_weekday < weekday:
             thursday = day - timedelta(weekday - thursday_weekday)
         else:
-            thursday = day - timedelta(weeks=1) + timedelta(thursday_weekday - weekday)
+            thursday = day - timedelta(weeks=1) + \
+                timedelta(thursday_weekday - weekday)
         # Jeudi précédent (jour de la dernière session d'envoi d'infolettres)
-        end_date = datetime.combine(thursday, datetime.max.time()).astimezone().isoformat()
-        start_date = datetime.combine(thursday, datetime.min.time()).astimezone().isoformat()
+        end_date = datetime.combine(
+            thursday, datetime.max.time()).astimezone().isoformat()
+        start_date = datetime.combine(
+            thursday, datetime.min.time()).astimezone().isoformat()
         api_response = api_instance.get_email_campaigns(
             end_date=end_date,
             start_date=start_date,
@@ -291,8 +342,8 @@ def stats_email_openings():
                     stats['uniqueViews'] / stats['delivered']
                 )
             )
-    except ApiException as e:
-        current_app.logger.error(f"Error relative to SIB API: {e}")
+    except ApiException as exception:
+        current_app.logger.error("Error relative to SIB API: %s", exception)
     # Taux d'ouverture global pour tous les sujets
     opening = total_unique_views / total_delivered if total_delivered > 0 else 0
     return {

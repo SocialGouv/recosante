@@ -1,41 +1,35 @@
-from flask.globals import current_app
-from flask.helpers import make_response
-from ecosante.pages.blueprint import admin
-from flask import (
-    render_template,
-    abort,
-    jsonify,
-    request,
-    url_for,
-    redirect,
-    flash,
-    stream_with_context
-)
-from ecosante.extensions import admin_authenticator
-from flask.wrappers import Response
 from datetime import datetime
 from itertools import chain
-from .models import Recommandation, db
+
+from flask import (abort, flash, jsonify, redirect, render_template, request,
+                   stream_with_context, url_for)
+from flask.wrappers import Response
+from sqlalchemy import func, or_
+
+from ecosante.extensions import admin_authenticator
 from ecosante.newsletter.models import NewsletterDB
-from .forms import FormAdd, FormEdit, FormSearch
+from ecosante.recommandations.forms import FormAdd, FormEdit, FormSearch
+from ecosante.recommandations.models import Recommandation, db
 from ecosante.utils import Blueprint
 from ecosante.utils.funcs import generate_line
-from sqlalchemy import or_, func
 
 bp = Blueprint(
     "recommandations",
     __name__,
 )
 
+
 @bp.route('_list')
 def list_recommandations():
     form = FormSearch(request.args)
     query = make_query(form)
-    return jsonify(query.filter(Recommandation.status=="published").all())
+    return jsonify(query.filter(Recommandation.status == "published").all())
+
 
 @bp.route('_rendu_markdown', methods=['POST'])
 def rendu_markdown():
     return Recommandation.sanitizer(request.form.get('to_render'))
+
 
 @bp.route('add', methods=['GET', 'POST'])
 @admin_authenticator.route
@@ -54,8 +48,10 @@ def add():
         action="Ajouter"
     )
 
+
 @bp.route('edit/<id>', methods=['GET', 'POST'])
 @admin_authenticator.route
+# pylint: disable-next=invalid-name,redefined-builtin
 def edit(id):
     recommandation = db.session.query(Recommandation).get(id)
     if not recommandation:
@@ -73,8 +69,10 @@ def edit(id):
         recommandation=recommandation
     )
 
+
 @bp.route('remove/<id>', methods=["GET", "POST"])
 @admin_authenticator.route
+# pylint: disable-next=invalid-name,redefined-builtin
 def remove(id):
     recommandation = Recommandation.query.get(id)
     if request.method == "POST":
@@ -95,18 +93,18 @@ def make_query(form):
         search = f"%{form.search.data}%"
         query = query.filter(
             or_(
-                    Recommandation.recommandation.ilike(search),
-                    Recommandation.precisions.ilike(search),
-                    Recommandation.categorie.ilike(search)
+                Recommandation.recommandation.ilike(search),
+                Recommandation.precisions.ilike(search),
+                Recommandation.categorie.ilike(search)
             )
         )
     if form.status.data:
-        query = query.filter(Recommandation.status==form.status.data)
+        query = query.filter(Recommandation.status == form.status.data)
     else:
         query = query.filter(
             or_(
-                Recommandation.status==None,
-                Recommandation.status!='deleted'
+                Recommandation.status is None,
+                Recommandation.status != 'deleted'
             )
         )
     for categorie in form.categories.data:
@@ -117,11 +115,11 @@ def make_query(form):
             query = query.filter(attr.is_(True))
 
     if form.type.data is not None and form.type.data != "None":
-        query = query.filter(Recommandation.type_==form.type.data)
+        query = query.filter(Recommandation.type_ == form.type.data)
     if form.order.data == 'random':
         return query.order_by(func.random())
-    else:
-        return query.order_by(Recommandation.id)
+    return query.order_by(Recommandation.id)
+
 
 @bp.route('/', methods=["GET", "POST"])
 @admin_authenticator.route
@@ -134,6 +132,7 @@ def list_():
         count=query.count(),
         form=form,
     )
+
 
 @bp.route('/csv', methods=["GET", "POST"])
 @admin_authenticator.route
@@ -153,12 +152,15 @@ def csv():
         ),
         mimetype="text/csv",
         headers={
+            # pylint: disable-next=line-too-long
             "Content-Disposition": f"attachment; filename=recommandations-export-{datetime.now().strftime('%Y-%m-%d_%H%M')}.csv"
         }
     )
 
+
 @bp.route('/<id>/details')
 @admin_authenticator.route
+# pylint: disable-next=invalid-name,redefined-builtin
 def details(id):
     recommandation = Recommandation.query.get(id)
     if not recommandation:

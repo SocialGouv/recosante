@@ -1,10 +1,15 @@
-from flask import Flask, g
-import os
-from .extensions import db, migrate, assets_env, celery, sib, cors, rebar, cache
-from indice_pollution import init_app
-from werkzeug.urls import url_encode
 import logging
+import os
+
+from celery.signals import after_setup_logger, after_setup_task_logger
+from flask import Flask, g
+from indice_pollution import init_app
 from kombu import Queue
+from werkzeug.urls import url_encode
+
+from .extensions import (assets_env, cache, celery, cors, db, migrate, rebar,
+                         sib)
+
 
 def configure_celery(flask_app):
     """Configure tasks.celery:
@@ -25,7 +30,7 @@ def configure_celery(flask_app):
     if flask_app.config['ENV'] == 'staging':
         queues = [Queue("staging", routing_key='staging.#')]
     else:
-	    queues = [
+        queues = [
             Queue("default", routing_key='task.#'),
             Queue("recosante-api", routing_key='recosante-api.#'),
             Queue("send_newsletter", routing_key='send_newsletter.#'),
@@ -43,12 +48,11 @@ def configure_celery(flask_app):
 
     celery.Task = ContextTask
 
-
     def set_log_level(logger=None, loglevel=logging.DEBUG, **kwargs):
+        _ = (loglevel, kwargs)
         logger.setLevel(logging.DEBUG)
         return logger
 
-    from celery.signals import after_setup_task_logger, after_setup_logger
     after_setup_task_logger.connect(set_log_level)
     after_setup_logger.connect(set_log_level)
 
@@ -56,7 +60,7 @@ def configure_celery(flask_app):
 def configure_cache(app):
     conf = {
         "CACHE_TYPE": os.getenv("CACHE_TYPE", "SimpleCache"),
-        "CACHE_DEFAULT_TIMEOUT": os.getenv("CACHE_DEFAULT_TIMEOUT", 86400),
+        "CACHE_DEFAULT_TIMEOUT": int(os.getenv("CACHE_DEFAULT_TIMEOUT", "86400")),
     }
     if conf["CACHE_TYPE"] == "RedisCache":
         conf["CACHE_REDIS_HOST"] = os.getenv("REDIS_HOST")
@@ -77,20 +81,25 @@ def create_app(testing=False):
     )
 
     app.config['ENV'] = os.getenv('FLASK_ENV')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI') or os.getenv('POSTGRESQL_ADDON_URI')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+        'SQLALCHEMY_DATABASE_URI') or os.getenv('POSTGRESQL_ADDON_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['ASSETS_DEBUG'] = True
-    app.config['CELERY_RESULT_BACKEND'] = os.getenv('CELERY_RESULT_BACKEND') or f"db+{app.config['SQLALCHEMY_DATABASE_URI']}"
-    app.config['CELERY_BROKER_URL'] = os.getenv('CELERY_BROKER_URL') or f"sqla+{app.config['SQLALCHEMY_DATABASE_URI']}"
-    app.config['CELERY_REDBEAT_REDIS_URL'] = os.getenv('CELERY_REDBEAT_REDIS_URL')
+    app.config['CELERY_RESULT_BACKEND'] = os.getenv(
+        'CELERY_RESULT_BACKEND') or f"db+{app.config['SQLALCHEMY_DATABASE_URI']}"
+    app.config['CELERY_BROKER_URL'] = os.getenv(
+        'CELERY_BROKER_URL') or f"sqla+{app.config['SQLALCHEMY_DATABASE_URI']}"
+    app.config['CELERY_REDBEAT_REDIS_URL'] = os.getenv(
+        'CELERY_REDBEAT_REDIS_URL')
     app.config['TESTING'] = testing
     app.config['SERVER_NAME'] = os.getenv("SERVER_NAME")
     app.config['ROOT_URL'] = os.getenv("ROOT_URL")
     app.config['FRONTEND_URL'] = os.getenv("FRONTEND_URL")
     app.config['APPLICATION_SERVER_KEY'] = os.getenv('APPLICATION_SERVER_KEY')
     app.config['VAPID_PRIVATE_KEY'] = os.getenv('VAPID_PRIVATE_KEY')
-    app.config['TEMP_AUTHENTICATOR_EXP_TIME'] = os.getenv('TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 30
+    app.config['TEMP_AUTHENTICATOR_EXP_TIME'] = os.getenv(
+        'TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 30
     app.logger.setLevel(logging.INFO)
 
     init_app(app)
@@ -99,18 +108,23 @@ def create_app(testing=False):
     assets_env.init_app(app)
     cors.init_app(app)
     sib.configuration.api_key['api-key'] = os.getenv('SIB_APIKEY')
-    celery = configure_celery(app)
+    configure_celery(app)
     configure_cache(app)
 
     with app.app_context():
-        from .inscription import models, tasks
-        from .recommandations import models, commands, blueprint as recommandation_bp
-        from .stats import blueprint as stats_bp
-        from .newsletter import blueprint as newsletter_bp, tasks
-        from .pages import blueprint as pages_bp
+        # pylint: disable=import-outside-toplevel,unused-import
         from .api import blueprint as api_bp
-        from .users import blueprint #noqa
-        from .utils.funcs import oxford_comma, display_check
+        from .inscription import models, tasks
+        from .newsletter import blueprint as newsletter_bp
+        from .newsletter import tasks
+        from .pages import blueprint as pages_bp
+        from .recommandations import blueprint as recommandation_bp
+        from .recommandations import commands, models
+        from .stats import blueprint as stats_bp
+        from .users import blueprint  # noqa
+        from .utils.funcs import display_check, oxford_comma
+
+        # pylint: enable=import-outside-toplevel,unused-import
 
         app.register_blueprint(stats_bp.bp)
         app.register_blueprint(recommandation_bp.bp)

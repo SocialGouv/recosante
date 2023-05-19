@@ -1,18 +1,24 @@
 from datetime import timedelta
 from typing import List
+
 from indice_pollution.history.models.episode_pollution import EpisodePollution
-from ecosante.api.schemas.indice import FullIndiceSchema, IndiceDetailsSchema, NestedIndiceSchema
 from marshmallow import fields, pre_dump
+
+from ecosante.api.schemas.indice import FullIndiceSchema, IndiceDetailsSchema
 from ecosante.utils.funcs import oxford_comma
+
 
 class EpisodeIndiceDetailsSchema(IndiceDetailsSchema):
     level = fields.String()
+
     @pre_dump
     def dump_details(self, data, **kwargs):
+        _ = kwargs
         return {
             "label": data.lib_pol,
             "level": data.lib_etat.capitalize()
         }
+
 
 class IndiceSchema(EpisodeIndiceDetailsSchema):
     details = fields.List(fields.Nested(EpisodeIndiceDetailsSchema))
@@ -26,31 +32,33 @@ class IndiceSchema(EpisodeIndiceDetailsSchema):
         preposition = "au"
         if len(episodes_etat_haut) > 1 or 'particules' in episodes_etat_haut[0].lib_pol.lower():
             preposition = "aux"
-        return  {
+        return {
             "label": f"Épisode de pollution {preposition} {oxford_comma([v.lib_pol for v in episodes_etat_haut])}",
             "level": episodes_etat_haut[0].lib_etat.capitalize()
         }
 
     @pre_dump
-    def dump_details(self, episodes, **kwargs):
-        label_level = self.make_label_level(episodes)
+    def dump_details(self, data, **kwargs):
+        _ = kwargs
+        label_level = self.make_label_level(data)
         return {
             "label": label_level['label'],
             "level": label_level['level'],
-            "details": episodes
+            "details": data
         }
+
 
 class EpisodePollutionSchema(FullIndiceSchema):
     indice = fields.Nested(IndiceSchema)
 
-
     @pre_dump
     def load_sources(self, data, many, **kwargs):
-        regions = set([e.commune.departement.region for e in data["indice"]])
+        _ = (many, kwargs)
+        regions = {e.commune.departement.region for e in data["indice"]}
         data['sources'] = [{
-                   "label":  region.aasqa_nom,
-                   "url": region.aasqa_website
-                } for region in regions
+            "label":  region.aasqa_nom,
+            "url": region.aasqa_website
+        } for region in regions
         ]
         errors = [e.error for e in data["indice"] if hasattr(e, "error")]
         if len(errors) > 0:
@@ -58,8 +66,9 @@ class EpisodePollutionSchema(FullIndiceSchema):
             del data["indice"]
         else:
             if data["indice"]:
-                start = min([e.date_ech for e in data["indice"]])
-                end = max([e.date_ech for e in data["indice"]]) + timedelta(1) - timedelta(seconds=1)
+                start = min(e.date_ech for e in data["indice"])
+                end = max(e.date_ech for e in data["indice"]) + \
+                    timedelta(1) - timedelta(seconds=1)
                 area_details = data["indice"][0].zone
                 area = area_details.lib
             else:

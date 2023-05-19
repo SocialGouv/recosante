@@ -1,17 +1,20 @@
-from marshmallow import fields, Schema, pre_dump
+from marshmallow import Schema, fields, pre_dump
 
+from ecosante.api.schemas.source import SourceSchema
+from ecosante.api.schemas.validity import ValiditySchema
 from ecosante.recommandations.models import Recommandation
-from .validity import ValiditySchema
-from .source import SourceSchema
+
 
 class NestedIndiceSchema(Schema):
     value = fields.Integer()
     label = fields.String()
     color = fields.String()
 
+
 class IndiceDetailsSchema(Schema):
     label = fields.String()
     indice = fields.Nested(NestedIndiceSchema)
+
 
 class AdviceSchema(Schema):
     main = fields.Function(
@@ -19,11 +22,13 @@ class AdviceSchema(Schema):
     )
     details = fields.String(attribute='precisions_sanitized')
 
+
 class RecommandationSchema(Schema):
     recommandation = fields.Function(
         lambda recommandation, context: recommandation.format(context.get('commune')), swagger_type="string"
     )
     type = fields.String(attribute='type_')
+
 
 class RecommandationExportSchema(RecommandationSchema):
     qa_bonne = fields.Boolean()
@@ -41,6 +46,7 @@ class RecommandationExportSchema(RecommandationSchema):
 
     @pre_dump
     def filter_attributes(self, data, many, **kwargs):
+        _ = (many, kwargs)
         attributes_per_type = {
             "episode_pollution": ["ozone", "dioxyde_azote", "dioxyde_soufre", "particules_fines"],
             "indice_atmo": ["qa_bonne", "qa_mauvaise", "qa_evenement", "categorie"],
@@ -51,11 +57,16 @@ class RecommandationExportSchema(RecommandationSchema):
             "baignades": []
         }
         return Recommandation(
-            **{attribute: getattr(data, attribute) for attribute in attributes_per_type[data.type_] + ["type_", "recommandation"]}
+            **{
+                attribute: getattr(data, attribute) for attribute in attributes_per_type[data.type_]
+                + ["type_", "recommandation"]
+            }
         )
+
 
 class IndiceSchema(NestedIndiceSchema):
     details = fields.List(fields.Nested(IndiceDetailsSchema))
+
 
 class FullIndiceSchema(Schema):
     indice = fields.Nested(IndiceSchema)

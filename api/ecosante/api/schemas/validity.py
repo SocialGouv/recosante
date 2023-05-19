@@ -1,5 +1,6 @@
-from marshmallow import fields, Schema, pre_dump
-from indice_pollution.history.models import Zone, Commune
+from indice_pollution.history.models import Zone
+from marshmallow import Schema, fields, pre_dump
+
 
 class AreaDetails(Schema):
     nom = fields.String()
@@ -7,6 +8,7 @@ class AreaDetails(Schema):
     charniere = fields.String()
     code = fields.String()
     article = fields.String()
+
 
 class ValiditySchema(Schema):
     start = fields.DateTime()
@@ -16,6 +18,7 @@ class ValiditySchema(Schema):
 
     @pre_dump
     def load_area_details(self, data, many, **kwargs):
+        _ = (many, kwargs)
         area_details = data.get('area_details')
         if isinstance(area_details, Zone):
             data['area_details'] = {

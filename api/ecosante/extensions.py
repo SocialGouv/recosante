@@ -1,14 +1,15 @@
-from celery import Celery
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_assets import Environment
-from flask_rebar import Rebar
-from flask_caching import Cache
-from markdown_link_attr_modifier import LinkAttrModifierExtension
 import sib_api_v3_sdk
+from celery import Celery
+from flask_assets import Environment
+from flask_caching import Cache
 from flask_cors import CORS
+from flask_migrate import Migrate
+from flask_rebar import Rebar
+from flask_sqlalchemy import SQLAlchemy
 from markdown import Markdown
-from ecosante.utils.authenticator import APIAuthenticator, AdminAuthenticator
+from markdown_link_attr_modifier import LinkAttrModifierExtension
+
+from ecosante.utils.authenticator import AdminAuthenticator, APIAuthenticator
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -23,5 +24,3 @@ markdown = Markdown(
 cache = Cache()
 authenticator = APIAuthenticator()
 admin_authenticator = AdminAuthenticator()
-
-import ecosante.utils.rollup
