@@ -27,6 +27,7 @@ class Forecast(Service, ForecastMixin):
             return []
 
         request = requests.get(
+            # pylint: disable-next=line-too-long
             f'https://api.atmo-aura.fr/api/v1/communes/{insee}/indices/atmo?api_token={api_key}&date_debut_echeance={date_}',
             timeout=10,
         )

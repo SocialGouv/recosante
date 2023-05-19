@@ -19,7 +19,7 @@
 
 ## Lint/autoformat/etc.
 
-- à setuper pour back et front
+- à setuper ~~pour back~~ et front
 
 ## Tests
 

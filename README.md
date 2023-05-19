@@ -192,6 +192,50 @@ yarn test
 
 à la racine du projet.
 
+### Linter
+
+Afin d'exécuter le lint, merci de vous référer au `README.md` de chaque projet afin de préparer les dépendances nécessaires. Une fois les instructions complétées, vous pouvez utiliser la commande
+
+```bash
+yarn lint
+```
+
+Le projet utilise [pylint](https://github.com/pylint-dev/pylint). Pour autoformatter votre code avec `vsCode`, nous vous conseillons les extensions suivantes
+
+- [Pylint](https://github.com/microsoft/vscode-pylint)
+- [Pylance](https://github.com/microsoft/pylance-release)
+- [isort](https://github.com/microsoft/vscode-isort)
+- [autopep8](https://github.com/microsoft/vscode-autopep8)
+
+`Nota Bene`
+
+Lorsque vous développez sur la librairie `indice_pollution` ou sur l'`api`, vous devez utiliser leur virtual environnement respectifs. Cela peut être fait sous vscode en utilisant la commande `command + shift + p`, puis `Python: Select Interpreter` et choisir celui que vous souhaitez dans la liste afin que les dépendances soient résolues correctement.
+
+Il faut que les `.venv` des projets soient installés avec `poetry` pour que `vsCode` les détecte. Merci de vous référer aux `README.md` de chaque projet.
+
+`pylint` va vérifier l'ordre des imports. Pour les formatter automatiquement, nous vous conseillons d'utiliser `isort`. Cependant, il y a une limitation d'`isort` considérant les répertoires locaux comme des libraries. Vous pouvez lui spécifier de la configuration via vos settings `vsCode` (`settings.json` racine ou workspace).
+
+```json
+{
+  "isort.args": [
+    "--known-local-folder",
+    "ecosante",
+    "--known-local-folder",
+    "tests"
+  ]
+}
+```
+
+Pour l'`api`
+
+```json
+{
+  "isort.args": ["--known-local-folder", "indice_pollution"]
+}
+```
+
+Pour la librairie `indice_pollution`
+
 ## Licence
 
 Apache 2.0 - Direction du numérique des ministère sociaux.

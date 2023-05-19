@@ -46,7 +46,7 @@ Pour envoyer les mails il vout faut un compte https://app.brevo.com/
 
 Après avoir cloné ce répertoire vous pouvez installer les dépendences avec la commande
 
-```
+```bash
 poetry install
 ```
 
@@ -90,4 +90,18 @@ ou
 
 ```
 ./start_tests.sh
+```
+
+## Lint
+
+Pour lancer le lint, utilisez la commande
+
+```bash
+yarn lint
+```
+
+ou
+
+```
+./start_lint.sh
 ```
