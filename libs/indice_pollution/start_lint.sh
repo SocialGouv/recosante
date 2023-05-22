@@ -1,1 +1,1 @@
-.venv/bin/pylint --rcfile='../../.pylintrc' --reports=no --output-format=colorized 'indice_pollution';
+.venv/bin/pylint --rcfile='../../.pylintrc' --fail-under=10.0 --reports=no --output-format=colorized 'indice_pollution';

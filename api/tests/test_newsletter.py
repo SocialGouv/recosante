@@ -77,7 +77,7 @@ def test_formatted_polluants_indice_atmo_pm10_no2(db_session, inscription, episo
     assert newsletter.recommandation_qa.particules_fines is True
 
 
-# pylint: disable-next=line-too-long,too-many-arguments
+# pylint: disable-next=line-too-long
 def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]
@@ -97,7 +97,7 @@ def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_s
     assert newsletter.lien_recommandations_alerte == 'http://localhost:5000/recommandation-episodes-pollution?population=generale&polluants=so2&polluants=pm10&polluants=o3&polluants=no2'
 
 
-# pylint: disable-next=line-too-long,too-many-arguments
+# pylint: disable-next=line-too-long
 def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]

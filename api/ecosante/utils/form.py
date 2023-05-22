@@ -1,12 +1,15 @@
-from wtforms import widgets, SelectMultipleField, SelectField, IntegerField as BaseIntegerField
-from markupsafe import Markup
 from flask_wtf import FlaskForm
+from markupsafe import Markup
+from wtforms import IntegerField as BaseIntegerField
+from wtforms import SelectField, SelectMultipleField, widgets
+
 
 class BaseForm(FlaskForm):
     class Meta:
         locales = ['fr_FR', 'fr', 'fr_FR.utf8']
 
         def get_translations(self, form):
+            # pylint: disable-next=bad-super-call
             return super(FlaskForm.Meta, self).get_translations(form)
 
 
@@ -20,9 +23,11 @@ class BlankListWidget:
         html = []
         for subfield in field:
             if self.prefix_label:
-                html.append(f"{subfield.label(class_=self.class_labels)} {subfield()}")
+                html.append(
+                    f"{subfield.label(class_=self.class_labels)} {subfield()}")
             else:
-                html.append(f"{subfield()} {subfield.label(class_=self.class_labels)}")
+                html.append(
+                    f"{subfield()} {subfield.label(class_=self.class_labels)}")
         return Markup("".join(html))
 
 
@@ -36,7 +41,9 @@ class AutocompleteInputWidget(widgets.TextInput):
             kwargs['required'] = True
         html_params = self.html_params(name=field.name, **kwargs)
         class_ = kwargs.get('class_')
+        # pylint: disable-next=line-too-long
         return Markup(f'<div class="{class_}" id="{field.name}"><input class="autocomplete-input" {html_params}><ul class="autocomplete-result-list"></ul></div>')
+
 
 class MultiCheckboxField(SelectMultipleField):
     widget = BlankListWidget(prefix_label=False, class_labels="label-inline")
@@ -47,24 +54,28 @@ class RadioField(SelectField):
     widget = BlankListWidget(prefix_label=False, class_labels="label-inline")
     option_widget = widgets.RadioInput()
 
+
 class BlankListWithUnselectWidget(BlankListWidget):
     def __call__(self, field, **kwargs):
         return super().__call__(field, **kwargs) + Markup(f"""
 <a onclick="(function(){{document.getElementsByName('{field.id}').forEach(i => i.checked = false)}})()">Déselectionner</a>
 """)
 
+
 class OuiNonField(SelectMultipleField):
     option_widget = widgets.RadioInput()
-    widget = BlankListWithUnselectWidget(prefix_label=False, class_labels="label-inline")
+    widget = BlankListWithUnselectWidget(
+        prefix_label=False, class_labels="label-inline")
 
     def __init__(self, *args, **kwargs):
-        kwargs['choices']= [('oui', 'Oui'), ('non', 'Non')]
+        self.data = None
+        kwargs['choices'] = [('oui', 'Oui'), ('non', 'Non')]
         super().__init__(*args, **kwargs)
 
     def process_data(self, value):
-        if value == True:
+        if value is True:
             self.data = ['oui']
-        elif value == False:
+        elif value is False:
             self.data = ['non']
         else:
             self.data = None
@@ -77,17 +88,19 @@ class OuiNonField(SelectMultipleField):
 
     def pre_validate(self, form):
         if self.data not in (True, False, None):
-            raise ValueError(self.gettext("'%(value)s' is not a valid choice for this field") % dict(value=d))
+            raise ValueError(self.gettext(
+                "'%(value)s' is not a valid choice for this field") % {"value": self.data})
+
 
 class IntegerField(BaseIntegerField):
     def process_formdata(self, valuelist):
         if valuelist and valuelist[0]:
             super().process_formdata(valuelist)
 
+
 def coerce_int(i):
     if i is None:
         return i
-    elif i == "":
+    if i == "":
         return None
-    else:
-        return int(i)
+    return int(i)

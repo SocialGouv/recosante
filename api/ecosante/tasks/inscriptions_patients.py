@@ -1,6 +1,9 @@
-import sib_api_v3_sdk
-from ecosante.extensions import celery, sib
 from time import sleep
+
+import sib_api_v3_sdk
+
+from ecosante.extensions import celery, sib
+
 
 @celery.task
 def inscription_patients_task(nom_medecin, emails):

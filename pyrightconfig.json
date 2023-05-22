@@ -3,5 +3,6 @@
   "reportOptionalMemberAccess": false,
   "reportOptionalOperand": false,
   "reportOptionalSubscript": false,
-  "reportWildcardImportFromLibrary": false
+  "reportUnboundVariable": false,
+  "reportWildcardImportFromLibrary": false,
 }

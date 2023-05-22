@@ -5,7 +5,6 @@ from indice_pollution.history.models import (IndiceUv, PotentielRadon,
 from psycopg2.extras import DateTimeTZRange
 
 
-# pylint: disable-next=too-many-arguments
 def helper_test(response, indice_key, label, area, charniere, code):
     assert indice_key in response.json
     indice_json = response.json[indice_key]

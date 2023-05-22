@@ -1,15 +1,18 @@
 from flask.globals import request
-from ecosante.extensions import rebar, db, admin_authenticator
-from .schemas import RequestPOST, Response, RequestPOSTID, RequestUpdateProfile
+
+from ecosante.extensions import (admin_authenticator, authenticator, celery,
+                                 db, rebar)
 from ecosante.inscription.models import Inscription
-from ecosante.extensions import celery, authenticator
+from ecosante.users.schemas import (RequestPOST, RequestPOSTID,
+                                    RequestUpdateProfile, Response)
 
 registry = rebar.create_handler_registry('/users/')
+
 
 @registry.handles(
     rule='/_search',
     hidden=True,
-    response_body_schema={200:Response(many=True)},
+    response_body_schema={200: Response(many=True)},
     authenticators=[admin_authenticator]
 )
 @admin_authenticator.route
@@ -19,6 +22,7 @@ def search_users():
         .filter(Inscription.mail.ilike(f'%{mail}%'))\
         .order_by(Inscription.mail)\
         .limit(10)
+
 
 @registry.handles(
     rule='/',
@@ -38,7 +42,8 @@ def post_users():
         queue='send_email',
         routing_key='send_email.subscribe'
     )
-    inscription.authentication_token = authenticator.make_token(uid=inscription.uid)
+    inscription.authentication_token = authenticator.make_token(
+        uid=inscription.uid)
     return inscription, 201
 
 
@@ -61,6 +66,7 @@ def get_user(uid):
     authenticators=[authenticator]
 )
 def post_user_id(uid):
+    _ = uid
     inscription = rebar.validated_body
     db.session.add(inscription)
     db.session.commit()
@@ -73,8 +79,8 @@ def post_user_id(uid):
     request_body_schema=RequestUpdateProfile()
 )
 def send_update_profile():
-    r = rebar.validated_body
-    inscription = Inscription.query.filter_by(mail=r['mail']).first()
+    body = rebar.validated_body
+    inscription = Inscription.query.filter_by(mail=body['mail']).first()
     if not inscription:
         return {}, 404
     celery.send_task(
@@ -84,6 +90,7 @@ def send_update_profile():
         routing_key='send_email.subscribe'
     )
     return 'ok', 200
+
 
 @registry.handles(
     rule='/<uid>/_deactivate',
@@ -97,6 +104,7 @@ def deactivate(uid):
         return 'error', 404
     inscription.unsubscribe()
     return inscription, 200
+
 
 @registry.handles(
     rule='/<uid>/_reactivate',

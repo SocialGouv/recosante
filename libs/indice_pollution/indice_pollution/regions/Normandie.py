@@ -100,7 +100,6 @@ class Forecast(Service, ForecastMixin):
             set_printable = set(printable + 'éèàçôêùà')
             clean_string = str(
                 "".join(takewhile(lambda c: c in set_printable, r.text)))
-            # pylint: disable=maybe-no-member
             return json.loads(clean_string)['features']
 
 

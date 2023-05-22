@@ -1,34 +1,38 @@
-from flask import current_app
 import csv
+
+from flask import current_app
+
 from .models import Recommandation, db
+
 
 @current_app.cli.command('import-recommandations')
 def import_recommandations():
     current_app.logger.info("Removing all recommandations")
     Recommandation.query.delete()
     current_app.logger.info("Reading recommandations file")
-    with open('data/recommandations.csv') as f:
-        reader = csv.DictReader(f)
+    with open('data/recommandations.csv', encoding="utf-8") as file:
+        csv_reader = csv.DictReader(file)
         i = 0
-        for r in reader:
+        for line in csv_reader:
+            # pylint: disable-next=unexpected-keyword-arg
             db.session.add(Recommandation(
-                recommandation=r['Recommandation'],
-                precisions=r['Précisions'],
-                qa_mauvaise=r['QA mauvaise'],
-                menage=r['Ménage'],
-                bricolage=r['Bricolage'],
-                chauffage_a_bois=r['Chauffage à bois'],
-                jardinage=r['Jardinage'],
-                balcon_terasse=r['Balcon/Terrasse'],
-                velo_trott_skate=r['Vélo/trottinette/skateboard'],
-                transport_en_commun=r['Transports en commun'],
-                voiture=r['Voiture'],
-                activite_physique=r['Activité physique'],
-                allergies=r['Allergies'],
-                enfants=r['Enfants'],
-                personnes_sensibles=r['Personne sensibles'],
-                sources=r['Sources'],
-                categorie=r['Catégorie'],
+                recommandation=line['Recommandation'],
+                precisions=line['Précisions'],
+                qa_mauvaise=line['QA mauvaise'],
+                menage=line['Ménage'],
+                bricolage=line['Bricolage'],
+                chauffage_a_bois=line['Chauffage à bois'],
+                jardinage=line['Jardinage'],
+                balcon_terasse=line['Balcon/Terrasse'],
+                velo_trott_skate=line['Vélo/trottinette/skateboard'],
+                transport_en_commun=line['Transports en commun'],
+                voiture=line['Voiture'],
+                activite_physique=line['Activité physique'],
+                allergies=line['Allergies'],
+                enfants=line['Enfants'],
+                personnes_sensibles=line['Personne sensibles'],
+                sources=line['Sources'],
+                categorie=line['Catégorie'],
             ))
             i += 1
     db.session.commit()

@@ -1,1 +1,1 @@
-from .blueprint import Blueprint #noqa
+from .blueprint import Blueprint  # noqa

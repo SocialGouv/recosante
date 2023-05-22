@@ -65,6 +65,20 @@ Once everything is ready, you can start the worker locally with the `start_*.sh`
 
 There is currently no test in this project. PRs are welcome !
 
+### Lint
+
+To launch lint over source code, please use the command
+
+```bash
+yarn lint
+```
+
+or
+
+```
+./start_lint.sh
+```
+
 ## Usage
 
 ### Forecast

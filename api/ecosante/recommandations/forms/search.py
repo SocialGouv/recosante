@@ -1,15 +1,18 @@
-from ecosante.utils.form import BaseForm, MultiCheckboxField
-from wtforms.widgets import SearchInput
-from wtforms.fields import StringField, SelectField, SelectMultipleField
 from markupsafe import Markup
-from ..models import RECOMMANDATION_FILTERS
+from wtforms.fields import SelectField, StringField
+from wtforms.widgets import SearchInput
+
+from ecosante.recommandations.models import RECOMMANDATION_FILTERS
+from ecosante.utils.form import BaseForm, MultiCheckboxField
+
 
 class FormSearch(BaseForm):
     search = StringField("Recherche", widget=SearchInput())
     categories = MultiCheckboxField(
         'Catégories',
         choices=[
-            (filter[0], Markup(f'<abbr title="{filter[2]}">{filter[1]}</abbr>'))
+            (filter[0], Markup(
+                f'<abbr title="{filter[2]}">{filter[1]}</abbr>'))
             for filter in RECOMMANDATION_FILTERS
         ]
     )
@@ -26,7 +29,7 @@ class FormSearch(BaseForm):
 
     type = SelectField(
         "Type",
-        choices = [
+        choices=[
             (None, 'Tous les types'),
             ("indice_atmo", "Indice ATMO"),
             ("episode_pollution", "Épisode de pollution"),

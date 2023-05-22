@@ -1,28 +1,28 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from flask import current_app, url_for
-from itertools import groupby, chain
+from itertools import chain, groupby
 from math import inf
 from typing import Dict, List
 
+from flask import current_app, url_for
+from indice_pollution import get_all
+from indice_pollution import raep as get_raep
+from indice_pollution import today
+from indice_pollution.history.models import IndiceUv, VigilanceMeteo
+
 from ecosante.extensions import db
 from ecosante.inscription.models import Inscription, WebpushSubscriptionInfo
-from ecosante.newsletter.models.newsletter_hebdo_template import NewsletterHebdoTemplate
+from ecosante.newsletter.models.newsletter_hebdo_template import \
+    NewsletterHebdoTemplate
 from ecosante.recommandations.models import Recommandation
-from ecosante.utils.funcs import (
-    convert_boolean_to_oui_non,
-    generate_line,
-    oxford_comma
-)
-
-from indice_pollution import today, raep as get_raep, get_all
-from indice_pollution.history.models import VigilanceMeteo
-from indice_pollution.history.models import IndiceUv
+from ecosante.utils.funcs import (convert_boolean_to_oui_non, generate_line,
+                                  oxford_comma)
 
 FR_DATE_FORMAT = '%d/%m/%Y'
 
 
 @dataclass
+# pylint: disable-next=too-many-instance-attributes,too-many-public-methods
 class Newsletter:
     webpush_subscription_info_id: int = None
     webpush_subscription_info: dict = None
@@ -43,49 +43,69 @@ class Newsletter:
     allergenes: dict = field(default_factory=dict, init=True)
     validite_raep: dict = field(default_factory=dict, init=True)
     indice_uv: IndiceUv = field(default=None, init=True)
-    newsletter_hebdo_template: NewsletterHebdoTemplate = field(default=None, init=True)
+    newsletter_hebdo_template: NewsletterHebdoTemplate = field(
+        default=None, init=True)
     type_: str = field(default="quotidien", init=True)
     force_send: bool = False
 
-    vigilances: List[VigilanceMeteo]= field(default=None, init=True)
+    vigilances: List[VigilanceMeteo] = field(default=None, init=True)
     vigilance_vent: VigilanceMeteo = field(default=None, init=True)
-    vigilance_vent_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_vent_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_pluie: VigilanceMeteo = field(default=None, init=True)
-    vigilance_pluie_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_pluie_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_orages: VigilanceMeteo = field(default=None, init=True)
-    vigilance_orages_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_orages_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_crues: VigilanceMeteo = field(default=None, init=True)
-    vigilance_crues_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_crues_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_neige: VigilanceMeteo = field(default=None, init=True)
-    vigilance_neige_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_neige_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_canicule: VigilanceMeteo = field(default=None, init=True)
-    vigilance_canicule_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_canicule_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_froid: VigilanceMeteo = field(default=None, init=True)
-    vigilance_froid_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_froid_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_avalanches: VigilanceMeteo = field(default=None, init=True)
-    vigilance_avalanches_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_avalanches_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_vagues: VigilanceMeteo = field(default=None, init=True)
-    vigilance_vagues_recommandation: Recommandation = field(default=None, init=True)
+    vigilance_vagues_recommandation: Recommandation = field(
+        default=None, init=True)
     vigilance_globale: VigilanceMeteo = field(default=None, init=True)
-    vigilance_globale_recommandation: Recommandation = field(default=None, init=True)
-    
-    phenomenes_sib = {1: 'vent', 2: 'pluie', 3: 'orages', 4: 'crues', 5: 'neige', 6: 'canicule', 7: 'froid', 8: 'avalanches', 9: 'vagues'}
+    vigilance_globale_recommandation: Recommandation = field(
+        default=None, init=True)
+
+    phenomenes_sib = {1: 'vent', 2: 'pluie', 3: 'orages', 4: 'crues',
+                      5: 'neige', 6: 'canicule', 7: 'froid', 8: 'avalanches', 9: 'vagues'}
 
     def __post_init__(self):
         if self.type_ != "quotidien":
             return
         if not 'label' in self.today_forecast:
-            current_app.logger.warn(f'No label for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
+            current_app.logger.warn(
+                'No label for forecast for inscription: id: %s insee: %s',
+                self.inscription.id,
+                self.inscription.commune.insee
+            )
         if not 'couleur' in self.today_forecast:
-            current_app.logger.warn(f'No couleur for forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
+            current_app.logger.warn(
+                'No couleur for forecast for inscription: id: %s insee: %s',
+                self.inscription.id,
+                self.inscription.commune.insee
+            )
         if self.episodes:
             if 'data' in self.episodes:
                 self.episodes = self.episodes['data']
             self.polluants = [
                 e['lib_pol_normalized']
                 for e in self.episodes
-                if e['etat'] != 'PAS DE DEPASSEMENT'\
-                and 'date' in e\
+                if e['etat'] != 'PAS DE DEPASSEMENT'
+                and 'date' in e
                 and e['date'] == str(self.date)
             ]
         else:
@@ -98,28 +118,37 @@ class Newsletter:
                 self.validite_raep = raep['periode_validite']
         try:
             self.raep = int(self.raep) if self.raep is not None else None
-        except ValueError as e:
-            current_app.logger.error(f"Parsing error for raep of {self.inscription.mail}")
-            current_app.logger.error(e)
-        except TypeError as e:
-            current_app.logger.error(f"Parsing error for raep of {self.inscription.mail}")
-            current_app.logger.error(e)
-        self.recommandations = self.recommandations or Recommandation.shuffled(user_seed=self.user_seed)
-        if type(self.recommandations) == list:
+        except ValueError as exception:
+            current_app.logger.error(
+                f"Parsing error for raep of {self.inscription.mail}")
+            current_app.logger.error(exception)
+        except TypeError as exception:
+            current_app.logger.error(
+                f"Parsing error for raep of {self.inscription.mail}")
+            current_app.logger.error(exception)
+        self.recommandations = self.recommandations or Recommandation.shuffled(
+            user_seed=self.user_seed)
+        if isinstance(self.recommandations, list):
             self.recommandations = {r.id: r for r in self.recommandations}
-        self.recommandation = self.recommandation or self.get_recommandation(self.recommandations)
-        self.recommandation_qa = self.get_recommandation(self.recommandations, types=["indice_atmo"])
-        self.recommandation_raep = self.get_recommandation(self.recommandations, types=["pollens"])
-        self.recommandation_episode = self.get_recommandation(self.recommandations, types=["episode_pollution"])
-        self.recommandation_indice_uv = self.get_recommandation(self.recommandations, types=["indice_uv"])
+        self.recommandation = self.recommandation or self.get_recommandation(
+            self.recommandations)
+        self.recommandation_qa = self.get_recommandation(
+            self.recommandations, types=["indice_atmo"])
+        self.recommandation_raep = self.get_recommandation(
+            self.recommandations, types=["pollens"])
+        self.recommandation_episode = self.get_recommandation(
+            self.recommandations, types=["episode_pollution"])
+        self.recommandation_indice_uv = self.get_recommandation(
+            self.recommandations, types=["indice_uv"])
         self.fill_vigilances()
 
     def fill_vigilances(self):
         if not self.vigilances:
             return
-        for phenomene, v in self.vigilances.items():
-            setattr(self, f"vigilance_{phenomene}", v['vigilance'])
-            setattr(self, f"vigilance_{phenomene}_recommandation", v['recommandation'])
+        for phenomene, item in self.vigilances.items():
+            setattr(self, f"vigilance_{phenomene}", item['vigilance'])
+            setattr(
+                self, f"vigilance_{phenomene}_recommandation", item['recommandation'])
         self.vigilance_globale = self.vigilances['globale']['vigilance']
         self.vigilance_globale_recommandation = self.vigilances['globale']['recommandation']
 
@@ -129,37 +158,42 @@ class Newsletter:
             k: list(g)
             for k, g in groupby(sorted(vigilances, key=lambda v: v.phenomene_id), lambda v: v.phenomene_id)}
         vigilances_max_couleur = {
-            k: max(v, key=lambda v: v.couleur_id) if len(v) > 0 else None 
+            k: max(v, key=lambda v: v.couleur_id) if len(v) > 0 else None
             for k, v in vigilances_par_phenomenes.items()
         }
-        to_return = dict()
+        to_return = {}
         for ph_id, vigilance in vigilances_max_couleur.items():
             if not isinstance(vigilance, VigilanceMeteo):
                 continue
             phenomene = cls.phenomenes_sib.get(ph_id)
             try:
-                recommandation = next(filter(lambda r: r.is_relevant(types=["vigilance_meteo"], media=["dashboard"], vigilances=[vigilance]), recommandations))
+                recommandation = next(filter(lambda r: r.is_relevant(types=["vigilance_meteo"], media=[
+                    # pylint: disable-next=cell-var-from-loop
+                                      "dashboard"], vigilances=[vigilance]), recommandations))
             except StopIteration:
-                current_app.logger.info(f"Impossible de trouver une recommandation pour {vigilance.id}")
+                current_app.logger.info(
+                    f"Impossible de trouver une recommandation pour {vigilance.id}")
                 recommandation = None
             to_return[phenomene] = {
                 "vigilance": db.session.merge(vigilance),
                 "recommandation": recommandation
             }
         to_return['globale'] = {"vigilance": None, 'recommandation': None}
-        to_return['globale']['vigilance'] = max(chain(vigilances_max_couleur.values()), key=lambda v: v.couleur_id)
+        to_return['globale']['vigilance'] = max(
+            chain(vigilances_max_couleur.values()), key=lambda v: v.couleur_id)
         if to_return['globale']['vigilance']:
-            to_return['globale']['vigilance'] = db.session.merge(to_return['globale']['vigilance'])
+            to_return['globale']['vigilance'] = db.session.merge(
+                to_return['globale']['vigilance'])
             if to_return['globale']['vigilance'].couleur_id <= 2:
                 to_return['globale']['recommandation'] = Recommandation.published_query().filter(
-                    Recommandation.vigilance_couleur_ids.contains([to_return['globale']['vigilance'].couleur_id])
+                    Recommandation.vigilance_couleur_ids.contains(
+                        [to_return['globale']['vigilance'].couleur_id])
                 ).first()
         return to_return
-    
 
     @property
     def polluants_formatted(self):
-        label_to_formatted_text ={
+        label_to_formatted_text = {
             'dioxyde_soufre': 'au dioxyde de soufre',
             'particules_fines': 'aux particules fines',
             'ozone': 'à l’ozone',
@@ -186,28 +220,40 @@ class Newsletter:
     @property
     def today_forecast(self):
         if not self.forecast:
-            return dict()
+            return {}
         try:
             data = self.forecast['data']
         except KeyError:
-            current_app.logger.error(f'No data for forecast of inscription "{self.inscription.id}" INSEE: "{self.inscription.commune.insee}"')
-            return dict()
+            current_app.logger.error(
+                'No data for forecast of inscription "%s" INSEE: "%s"',
+                self.inscription.id,
+                self.inscription.commune.insee
+            )
+            return {}
         try:
-            return next(iter([v for v in data if v['date'] == str(self.date)]), dict())
-        except (TypeError, ValueError, StopIteration) as e:
-            current_app.logger.error(f'Unable to get forecast for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
-            current_app.logger.error(e)
-            return dict()
+            return next(iter([v for v in data if v['date'] == str(self.date)]), {})
+        except (TypeError, ValueError, StopIteration) as exception:
+            current_app.logger.error(
+                'Unable to get forecast for inscription: id: %s insee: %s',
+                self.inscription.id,
+                self.inscription.commune.insee
+            )
+            current_app.logger.error(exception)
+            return {}
 
     @property
     def today_episodes(self):
         data = self.episodes['data']
         try:
             return [v for v in data if v['date'] == str(self.date)]
-        except (TypeError, ValueError, StopIteration) as e:
-            current_app.logger.error(f'Unable to get episodes for inscription: id: {self.inscription.id} insee: {self.inscription.commune.insee}')
-            current_app.logger.error(e)
-            return [dict()]
+        except (TypeError, ValueError, StopIteration) as exception:
+            current_app.logger.error(
+                'Unable to get episodes for inscription: id: %s insee: %s',
+                self.inscription.id,
+                self.inscription.commune.insee
+            )
+            current_app.logger.error(exception)
+            return [{}]
 
     @property
     def qualif(self):
@@ -245,11 +291,15 @@ class Newsletter:
     def has_depassement(self):
         return len(self.get_depassement) > 0
 
-
     @classmethod
-    def export(cls, preferred_reco=None, user_seed=None, remove_reco=[], only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
-        recommandations = Recommandation.shuffled(user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
-        indices, all_episodes, allergenes, vigilances, indices_uv = get_all(date_)
+    # pylint: disable-next=line-too-long,too-many-arguments,too-many-branches,too-many-locals
+    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
+        if remove_reco is None:
+            remove_reco = []
+        recommandations = Recommandation.shuffled(
+            user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
+        indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
+            date_)
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
@@ -260,10 +310,13 @@ class Newsletter:
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
-                episodes = all_episodes.get(inscription.commune.zone_pollution_id)
+                episodes = all_episodes.get(
+                    inscription.commune.zone_pollution_id)
                 if inscription.commune.departement:
-                    raep = allergenes.get(inscription.commune.departement.zone_id, None)
-                    vigilances_recommandations_dep = vigilances_recommandations.get(inscription.commune.departement.zone_id, {})
+                    raep = allergenes.get(
+                        inscription.commune.departement.zone_id, None)
+                    vigilances_recommandations_dep = vigilances_recommandations.get(
+                        inscription.commune.departement.zone_id, {})
                 else:
                     raep = None
                     vigilances_recommandations_dep = {}
@@ -283,7 +336,8 @@ class Newsletter:
                 if date_:
                     init_dict['date'] = date_
             elif type_ == 'hebdomadaire':
-                next_template = NewsletterHebdoTemplate.next_template(inscription, templates)
+                next_template = NewsletterHebdoTemplate.next_template(
+                    inscription, templates)
                 if not next_template:
                     continue
                 init_dict.update({
@@ -291,11 +345,11 @@ class Newsletter:
                     'inscription': inscription
                 })
             if media == 'notifications_web' and 'notifications_web' in inscription.indicateurs_media:
-                for wp in WebpushSubscriptionInfo.query.filter_by(inscription_id=inscription.id):
+                for webpush_subscription in WebpushSubscriptionInfo.query.filter_by(inscription_id=inscription.id):
                     init_dict.update({
-                        'webpush_subscription_info_id': wp.id,
-                        'webpush_subscription_info': wp
-                        }
+                        'webpush_subscription_info_id': webpush_subscription.id,
+                        'webpush_subscription_info': webpush_subscription
+                    }
                     )
                     newsletter = cls(**init_dict)
                     if newsletter.to_send(type_, force_send):
@@ -305,6 +359,7 @@ class Newsletter:
                 if newsletter.to_send(type_, force_send):
                     yield newsletter
 
+    # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
         if type_ == 'hebdomadaire':
             return self.newsletter_hebdo_template is not None
@@ -327,6 +382,7 @@ class Newsletter:
             if self.inscription.has_indicateur("indice_atmo") and not self.label:
                 errors.append({
                     "type": "no_air_quality",
+                    # pylint: disable-next=line-too-long
                     "region": self.inscription.commune.departement.region.nom if self.inscription.commune.departement else "",
                     "ville": self.inscription.commune.nom,
                     "insee": self.inscription.commune.insee
@@ -339,7 +395,7 @@ class Newsletter:
                     "insee": self.inscription.commune.insee
                 })
         elif self.type_ == 'hebdomadaire':
-            if self.newsletter_hebdo_template == None:
+            if self.newsletter_hebdo_template is None:
                 errors.append({
                     "type": "no_template_weekly_nl",
                     "inscription_id": self.inscription.id,
@@ -347,33 +403,40 @@ class Newsletter:
                 })
         return errors
 
-    def eligible_recommandations(self, recommandations: Dict[int, Recommandation], types=["indice_atmo", "episode_pollution", "pollens", "indice_uv"]):
+    def eligible_recommandations(self, recommandations: Dict[int, Recommandation], types=None):
+        if types is None:
+            types = ["indice_atmo", "episode_pollution",
+                     "pollens", "indice_uv"]
         if not recommandations:
             return
-            yield # See https://stackoverflow.com/questions/13243766/python-empty-generator-function
+            yield  # See https://stackoverflow.com/questions/13243766/python-empty-generator-function
         if self.inscription.last_month_newsletters:
             last_nl = self.inscription.last_month_newsletters[0]
         else:
             last_nl = None
         recommandations_id = set(recommandations.keys())
-        sorted_recommandation_ids = list()
-        for nl in self.inscription.last_month_newsletters:
-            if nl.recommandation_id in recommandations_id:
-                sorted_recommandation_ids.append((nl.date, nl.recommandation_id))
-                recommandations_id.discard(nl.recommandation_id)
+        sorted_recommandation_ids = []
+        for newsletter in self.inscription.last_month_newsletters:
+            if newsletter.recommandation_id in recommandations_id:
+                sorted_recommandation_ids.append(
+                    (newsletter.date, newsletter.recommandation_id))
+                recommandations_id.discard(newsletter.recommandation_id)
         for recommandation_id in recommandations_id:
-            sorted_recommandation_ids.append((datetime.min.date(), recommandation_id))
+            sorted_recommandation_ids.append(
+                (datetime.min.date(), recommandation_id))
 
-        last_recommandation = recommandations.get(last_nl.recommandation_id) if last_nl else None
+        last_recommandation = recommandations.get(
+            last_nl.recommandation_id) if last_nl else None
         last_criteres = last_recommandation.criteres if last_recommandation else set()
         last_type = last_recommandation.type_ if last_recommandation else ""
 
         sorted_recommandations_ids_by_criteria = sorted(
-                sorted_recommandation_ids,
-                key=lambda r: (r[0], recommandations[r[1]].ordre if recommandations[r[1]].ordre != None else inf, len(recommandations[r[1]].criteres.intersection(last_criteres)), recommandations[r[1]].type_ != last_type)
-            )
-        for r in sorted_recommandations_ids_by_criteria:
-            if recommandations[r[1]].is_relevant(
+            sorted_recommandation_ids,
+            key=lambda r: (r[0], recommandations[r[1]].ordre if recommandations[r[1]].ordre is not None else inf, len(
+                recommandations[r[1]].criteres.intersection(last_criteres)), recommandations[r[1]].type_ != last_type)
+        )
+        for recommandation in sorted_recommandations_ids_by_criteria:
+            if recommandations[recommandation[1]].is_relevant(
                 inscription=self.inscription,
                 qualif=self.qualif,
                 polluants=self.polluants,
@@ -383,15 +446,16 @@ class Newsletter:
                 media='mail',
                 types=types
             ):
-                yield recommandations[r[1]]
+                yield recommandations[recommandation[1]]
 
-
-    def get_recommandation(self, recommandations: List[Recommandation], types=["indice_atmo", "episode_pollution", "pollens", "indice_uv"]):
+    def get_recommandation(self, recommandations: List[Recommandation], types=None):
+        if types is None:
+            types = ["indice_atmo", "episode_pollution",
+                     "pollens", "indice_uv"]
         try:
             return next(self.eligible_recommandations(recommandations, types))
         except StopIteration:
             return None
-
 
     def csv_line(self):
         return generate_line([
@@ -400,7 +464,8 @@ class Newsletter:
             convert_boolean_to_oui_non(self.inscription.sport),
             "Non",
             ";".join(self.inscription.activites or []),
-            convert_boolean_to_oui_non(self.inscription.pathologie_respiratoire),
+            convert_boolean_to_oui_non(
+                self.inscription.pathologie_respiratoire),
             convert_boolean_to_oui_non(self.inscription.allergie_pollens),
             self.inscription.enfants,
             self.inscription.mail,
@@ -420,7 +485,7 @@ class Newsletter:
     @property
     def lien_recommandations_alerte(self):
         if not self.polluants:
-            return
+            return None
         population = "vulnerable" if self.inscription.personne_sensible else "generale"
         return url_for(
             "pages.recommandation_episode_pollution",
@@ -481,8 +546,7 @@ class Newsletter:
             return self.force_send
         if self.inscription.has_frequence("alerte"):
             return self.raep >= 1
-        else:
-            return self.raep > 0
+        return self.raep > 0
 
     @property
     def is_init_vigilance(self):
@@ -500,7 +564,7 @@ class Newsletter:
 
     @property
     def is_init_qa(self):
-        return  isinstance(self.valeur, int)
+        return isinstance(self.valeur, int)
 
     @property
     def show_qa(self):
@@ -514,7 +578,7 @@ class Newsletter:
 
     @property
     def is_init_indice_uv(self):
-        return self.indice_uv != None and isinstance(self.indice_uv.uv_j0, int)
+        return self.indice_uv is not None and isinstance(self.indice_uv.uv_j0, int)
 
     @property
     def show_indice_uv(self):
@@ -527,6 +591,5 @@ class Newsletter:
                 return False
             if 3 <= self.indice_uv.uv_j0 <= 5:
                 return self.inscription.has_enfants
-            return True # >= 8
-        else:
-            return True
+            return True  # >= 8
+        return True

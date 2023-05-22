@@ -1,12 +1,14 @@
-from marshmallow.utils import pprint
-from .indice import FullIndiceSchema, IndiceDetailsSchema, IndiceSchema, NestedIndiceSchema
-from marshmallow import fields, pre_dump
 from datetime import timedelta
+
+from marshmallow import fields, pre_dump
+
+from .indice import FullIndiceSchema, IndiceDetailsSchema, NestedIndiceSchema
 
 
 class NestedIndiceATMOSchema(NestedIndiceSchema):
     value = fields.Integer(attribute='valeur')
     color = fields.String(attribute='couleur')
+
 
 class IndiceATMODetailsSchema(IndiceDetailsSchema):
     label = fields.String(attribute='polluant_name')
@@ -14,26 +16,32 @@ class IndiceATMODetailsSchema(IndiceDetailsSchema):
 
     @pre_dump
     def envelop_data(self, data, **kwargs):
-        data['indice'] = {k: v for k, v in data.items() if k != 'polluant_name'}
+        _ = kwargs
+        data['indice'] = {k: v for k, v in data.items() if k !=
+                          'polluant_name'}
         if data.get('polluant_name') == 'PM25':
             data['polluant_name'] = 'PM2,5'
         return data
 
+
 class IndiceATMOSchema(NestedIndiceATMOSchema):
-    details = fields.List(fields.Nested(IndiceATMODetailsSchema), attribute='sous_indices')
+    details = fields.List(fields.Nested(
+        IndiceATMODetailsSchema), attribute='sous_indices')
+
 
 class IndiceATMO(FullIndiceSchema):
     indice = fields.Nested(IndiceATMOSchema)
 
     @pre_dump
     def load_indice_atmo(self, data, many, **kwargs):
+        _ = (many, kwargs)
         if data["indice"] is None:
             return {}
-        resp =  {
+        resp = {
             "sources": [
                 {
-                   "label":  data["indice"].commune.departement.region.aasqa_nom,
-                   "url": data["indice"].commune.departement.region.aasqa_website
+                    "label":  data["indice"].commune.departement.region.aasqa_nom,
+                    "url": data["indice"].commune.departement.region.aasqa_website
                 }
             ],
         }
