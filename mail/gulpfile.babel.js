@@ -160,11 +160,11 @@ function creds(done) {
     CONFIG = JSON.parse(fs.readFileSync(configPath));
   } catch (e) {
     beep();
-    console.log(
-      "[AWS]".bold.red +
-        " Sorry, there was an issue locating your config.json. Please see README.md"
+    console.error(
+      "[AWS] Sorry, there was an issue locating your config.json. Please see README.md",
+      e
     );
-    process.exit();
+    process.exit(1);
   }
   done();
 }
