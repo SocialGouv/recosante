@@ -1,6 +1,0 @@
-.dockerignore
-.env.example
-.venv
-Dockerfile
-node_modules
-README.md

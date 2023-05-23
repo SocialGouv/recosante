@@ -1,5 +1,11 @@
+.cache
 .dockerignore
+.env.example
+.github
+.gitignore
 .venv
+Dockerfile
 LICENSE
 node_modules
+public
 README.md

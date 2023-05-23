@@ -64,6 +64,14 @@ services:
     env_file:
       - api/.env.docker
 
+  frontend:
+    image: recosante-frontend
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    env_file:
+      - frontend/.env.docker
+
   indice_pollution:
     image: recosante-indice_pollution
     build:
