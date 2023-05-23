@@ -8,26 +8,19 @@ th {
 }
 
 th.callout-inner {
-  padding-top: 24px;
-  padding-bottom: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 24px 16px 16px;
   border-radius: $global-radius;
 }
 
 th.callout-inner.success {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 8px 0;
 }
+
 th.callout-inner.secondary {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 8px 0;
   background-image: url('../assets/img/background-blue.png');
 }
+
 .hide-for-large {
   display: block !important;
 }
@@ -44,9 +37,11 @@ strong {
   margin: 0;
   color: $white;
 }
+
 .blue {
   color: $primary-color;
 }
+
 .black {
   color: $black !important;
 }
@@ -54,6 +49,7 @@ strong {
 .tiny {
   font-size: 12px;
 }
+
 .small {
   font-size: 14px;
 }
@@ -61,6 +57,7 @@ strong {
 .no-margin {
   margin-bottom: 0;
 }
+
 sup {
   line-height: 0;
 }

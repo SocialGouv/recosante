@@ -7,7 +7,7 @@
   "main": "gulpfile.babel.js",
   "scripts": {
     "build": "gulp --production",
-    "lint": "echo \"No lint\"",
+    "lint": "stylelint src/**/*.scss",
     "litmus": "gulp litmus --production",
     "mail": "gulp mail --production",
     "start": "gulp",
@@ -49,6 +49,8 @@
     "postcss-uncss": "^0.17.0",
     "rimraf": "^4.4.1",
     "siphon-media-query": "^1.0.0",
+    "stylelint": "^15.6.2",
+    "stylelint-config-standard-scss": "^9.0.0",
     "uncss": "^0.17.3",
     "yargs": "^17.7.2"
   },

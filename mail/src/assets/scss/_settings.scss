@@ -1,16 +1,18 @@
-//  Foundation for Emails Settings
-//  ------------------------------
-//
-//  Table of Contents:
-//
-//   1. Global
-//   2. Grid
-//   3. Block Grid
-//   4. Typography
-//   5. Button
-//   6. Callout
-//   7. Menu
-//   8. Thumbnail
+/*
+  Foundation for Emails Settings
+  ------------------------------
+
+  Table of Contents:
+
+   1. Global
+   2. Grid
+   3. Block Grid
+   4. Typography
+   5. Button
+   6. Callout
+   7. Menu
+   8. Thumbnail
+*/
 
 // 1. Global
 // ---------
@@ -55,13 +57,13 @@ $block-grid-gutter: $global-gutter;
 // -------------
 
 $global-font-color: $dark-gray;
-$body-font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+$body-font-family: arial, helvetica neue, helvetica, sans-serif;
 $global-font-weight: normal;
 $header-color: $black;
 $global-line-height: 1.4;
 $global-font-size: 16px;
 $body-line-height: $global-line-height;
-$header-font-family: Arial Black, Arial Bold, Gadget, sans-serif;
+$header-font-family: arial black, arial bold, gadget, sans-serif;
 $header-font-weight: bold;
 $h1-font-size: 34px;
 $h2-font-size: 24px;
@@ -87,7 +89,7 @@ $hr-margin: 20px;
 $anchor-text-decoration: underline;
 $anchor-color: $primary-color;
 $anchor-color-visited: $anchor-color;
-$anchor-color-hover: darken($primary-color, 10%);
+$anchor-color-hover: darken($primary-color, 10%); /* stylelint-disable-line */
 $anchor-color-active: $anchor-color-hover;
 $stat-font-size: 40px;
 
