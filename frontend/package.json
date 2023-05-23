@@ -5,13 +5,12 @@
   "private": true,
   "author": "Fabrique des ministères sociaux",
   "scripts": {
-    "build": " yarn iframe && gatsby build",
-    "develop": "gatsby develop",
+    "build": "yarn iframe && gatsby build",
     "format": "prettier --write src/**/*.{js,jsx}",
     "iframe": "webpack",
     "lint": "echo \"Do lint!\"",
     "serve": "gatsby serve",
-    "start": "npm run develop",
+    "start": "gatsby develop",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },
   "dependencies": {
