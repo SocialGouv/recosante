@@ -9,16 +9,16 @@ import merge from "merge-stream";
 import nodeSass from "node-sass";
 import panini from "panini";
 import path from "path";
-import postcssUncss from "postcss-uncss";
 import rimraf from "rimraf";
 import siphon from "siphon-media-query";
+import { postcssPlugin } from "uncss";
 import yargs from "yargs";
 
 const $ = plugins();
 
 const sassPlugin = $.sass(nodeSass);
 const uncssPlugin = $.postcss([
-  postcssUncss({
+  postcssPlugin({
     html: ["dist/**/*.html"],
   }),
 ]);
