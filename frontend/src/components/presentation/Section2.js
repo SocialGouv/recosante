@@ -1,9 +1,9 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import useOnScreen from 'hooks/useOnScreen'
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 
 const StyledSection = styled(Section)`
@@ -50,7 +50,7 @@ export default function Who() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "medecins-pour-qui" }) {
+        mdx(fields: { slug: { eq: "medecins-pour-qui" } }) {
           body
         }
       }
@@ -68,7 +68,7 @@ export default function Who() {
       animationIsOnScreen={animationIsOnScreen}
       small
     >
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <Markdown>{data.mdx.body}</Markdown>
     </StyledSection>
   )
 }

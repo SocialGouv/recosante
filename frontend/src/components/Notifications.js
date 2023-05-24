@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQueryParam } from 'use-query-params'
+import { useQueryParam } from 'hooks/useQueryParam';
 import { useStaticQuery, graphql } from 'gatsby'
 
 import { useUser, useUserMutation } from 'hooks/useUser'

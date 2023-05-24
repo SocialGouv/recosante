@@ -16,7 +16,7 @@ export default function EauBaignade() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction-baignades" }) {
+        mdx(fields: { slug: { eq: "introduction-baignades" } }) {
           body
         }
       }

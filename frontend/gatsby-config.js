@@ -26,16 +26,17 @@ module.exports = {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [".mdx", ".md"],
-        gatsbyRemarkPlugins: [
-          {
-            resolve: "gatsby-remark-external-links",
-            resolve: "gatsby-remark-images",
-          },
-        ],
+        mdxOptions: {
+          remarkPlugins: [
+            {
+              resolve: "gatsby-remark-external-links",
+              resolve: "gatsby-remark-images",
+            },
+          ],
+        },
       },
     },
     `gatsby-plugin-react-helmet`,
-    "gatsby-plugin-use-query-params",
     `gatsby-plugin-root-import`,
     `gatsby-plugin-sitemap`,
     `gatsby-transformer-json`,

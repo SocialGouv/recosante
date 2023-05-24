@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 import Button from 'components/base/Button'
 
@@ -14,7 +14,7 @@ export default function AboutQa() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "about-qa" }) {
+        mdx(fields: { slug: { eq: "about-qa" } }) {
           body
         }
       }
@@ -23,7 +23,7 @@ export default function AboutQa() {
 
   return (
     <Section id='about-qa' small>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <Markdown>{data.mdx.body}</Markdown>
       <Button.Wrapper center>
         <StyledButton hollow to='/'>
           Consulter la qualité de l’air de ma commune

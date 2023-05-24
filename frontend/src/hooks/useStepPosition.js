@@ -1,4 +1,4 @@
-import { useQueryParam } from 'use-query-params'
+import { useQueryParam } from 'hooks/useQueryParam';
 
 export default function useStepPosition(name) {
   const [current, setCurrent] = useQueryParam('step')

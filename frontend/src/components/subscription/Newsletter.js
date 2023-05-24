@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
 import { StaticImage } from 'gatsby-plugin-image'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import FocusTrap from 'focus-trap-react'
 
 import Button from 'components/base/Button'
+import Markdown from 'components/base/Markdown'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -55,7 +55,7 @@ export default React.forwardRef(function Newsletter(props, ref) {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "newsletter-modal" }) {
+        mdx(fields: { slug: { eq: "newsletter-modal" } }) {
           body
         }
       }
@@ -69,7 +69,7 @@ export default React.forwardRef(function Newsletter(props, ref) {
           <StaticImage src={'./newsletter/newsletter-preview.png'} alt='' height={400} />
         </Image>
         <Content ref={ref}>
-          <MDXRenderer>{data.mdx.body}</MDXRenderer>
+          <Markdown>{data.mdx.body}</Markdown>
         </Content>
         <StyledButton onClick={() => props.setModal(false)} noExpand>
           J'ai compris

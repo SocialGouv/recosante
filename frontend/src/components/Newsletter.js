@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { navigate } from 'gatsby'
 import { useLocation } from '@reach/router'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import ModalContext from 'utils/ModalContext'
 import { useLocalUser } from 'hooks/useUser'
 import useOnScreen from 'hooks/useOnScreen'
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 import Button from 'components/base/Button'
 import Mockup from './newsletter/Mockup'
@@ -87,7 +87,7 @@ export default function Newsletter(props) {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction" }) {
+        mdx(fields: { slug: { eq: "introduction" } }) {
           body
         }
       }
@@ -116,7 +116,7 @@ export default function Newsletter(props) {
     <>
       <StyledSection first={props.first} id='newsletter'>
         <Content ref={ref} seo={props.seo}>
-          <MDXRenderer>{(props.data || data).mdx.body}</MDXRenderer>
+          <Markdown>{(props.data || data).mdx.body}</Markdown>
           <Button.Wrapper>
             {props.type === 'baignades' ? (
               <StyledButton to='/'>

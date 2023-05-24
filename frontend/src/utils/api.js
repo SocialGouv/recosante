@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from 'react-query'
 import axios from 'axios'
-import { useQueryParam } from 'use-query-params'
+import { useQueryParam } from 'hooks/useQueryParam';
 
 import apiUrl from 'utils/apiUrl'
 

@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import Web from 'components/layout/Web'
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 import Referral from 'components/Referral'
 
@@ -14,7 +14,7 @@ export default function InscriptionPatients() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "inscription-patients" }) {
+        mdx(fields: { slug: { eq: "inscription-patients" } }) {
           body
         }
       }
@@ -24,7 +24,7 @@ export default function InscriptionPatients() {
   return (
     <Web title={'Recommander Recosanté'}>
       <StyledSection small first>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        <Markdown>{data.mdx.body}</Markdown>
         <Referral />
       </StyledSection>
     </Web>

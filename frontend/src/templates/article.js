@@ -1,6 +1,5 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import { StaticImage, GatsbyImage, getImage } from 'gatsby-plugin-image'
 import styled from 'styled-components'
 import Web from 'components/layout/Web'
@@ -88,7 +87,7 @@ export default function Article(props) {
             </Content>
           </BonGeste>
         }
-        <MDXRenderer>{props.data.mdx.body}</MDXRenderer>
+        {props.children}
       </Section>
       {!iframe && (
         <>
@@ -102,8 +101,7 @@ export default function Article(props) {
 
 export const articleQuery = graphql`
   query article($slug: String!) {
-    mdx(slug: { eq: $slug }) {
-      body
+    mdx(fields: { slug: { eq: $slug } }) {
       frontmatter {
         title
         category

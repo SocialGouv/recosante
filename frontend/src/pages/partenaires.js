@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { GatsbyImage, getImage } from 'gatsby-plugin-image'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import MagicLink from 'components/base/MagicLink'
+import Markdown from 'components/base/Markdown'
 import Web from 'components/layout/Web'
 import Section from 'components/base/Section'
 
@@ -22,7 +22,7 @@ export default function Partners(props) {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "partenaires" }) {
+        mdx(fields: { slug: { eq: "partenaires" } }) {
           body
           frontmatter {
             partners {
@@ -51,7 +51,7 @@ export default function Partners(props) {
   return (
     <Web title={'Partenaires'}>
       <Section first small>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        <Markdown>{data.mdx.body}</Markdown>
         <Wrapper>
           {data.mdx.frontmatter.partners.map((logo) => (
             <Logo to={logo.link} key={logo.link}>
