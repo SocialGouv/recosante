@@ -30,6 +30,8 @@ module.exports = {
           remarkPlugins: [
             {
               resolve: "gatsby-remark-external-links",
+            },
+            {
               resolve: "gatsby-remark-images",
             },
           ],
