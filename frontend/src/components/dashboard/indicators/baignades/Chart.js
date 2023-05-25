@@ -1,24 +1,24 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.svg`
   overflow: visible;
   width: auto;
   height: 10rem;
-`
+`;
 const Path = styled.path`
   stroke: ${(props) =>
-    props.visible && props.index <= props['data-value']
-      ? props['data-value'] > 2 ?
-        props['data-summary'][props.index] > 0 ?
-          props.theme.colors.baignades[props.index]
+    props.visible && props.index <= props["data-value"]
+      ? props["data-value"] > 2
+        ? props["data-summary"][props.index] > 0
+          ? props.theme.colors.baignades[props.index]
           : props.theme.colors.disabled
-        : props.theme.colors.baignades[props['data-value']]
+        : props.theme.colors.baignades[props["data-value"]]
       : props.theme.colors.disabled};
   transition: opacity ${(props) => (props.visible ? 1200 : 0)}ms
-                      ${(props) => (props.visible ? props.index * 300 + 300 : 0)}ms,
-              stroke  ${(props) => (props.visible ? 400 : 0)}ms
-                      ${(props) => (props.visible ? props.index * 300 + 300 : 0)}ms;
+      ${(props) => (props.visible ? props.index * 300 + 300 : 0)}ms,
+    stroke ${(props) => (props.visible ? 400 : 0)}ms
+      ${(props) => (props.visible ? props.index * 300 + 300 : 0)}ms;
   ${(props) => props.theme.mq.medium} {
     transition: none;
   }
@@ -26,16 +26,23 @@ const Path = styled.path`
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
-`
+`;
 
 export default function Chart(props) {
-  const indice = props?.data?.baignades?.indice
-  const value = ['Bons résultats', 'Résultats moyens', 'Mauvais résultats', 'Résultats mixtes'].indexOf(
-    indice?.label
-  )
-  const summary = [indice?.summary['Bons résultats'], indice?.summary['Résultats moyens'], indice?.summary['Mauvais résultats']]
+  const indice = props?.data?.baignades?.indice;
+  const value = [
+    "Bons résultats",
+    "Résultats moyens",
+    "Mauvais résultats",
+    "Résultats mixtes",
+  ].indexOf(indice?.label);
+  const summary = [
+    indice?.summary["Bons résultats"],
+    indice?.summary["Résultats moyens"],
+    indice?.summary["Mauvais résultats"],
+  ];
   return (
-    <Wrapper aria-hidden={true} width='48' height='48' viewBox='0 0 48 48'>
+    <Wrapper aria-hidden={true} width="48" height="48" viewBox="0 0 48 48">
       <Path
         visible={props.data}
         data-value={props.data ? value : 0}
@@ -58,5 +65,5 @@ export default function Chart(props) {
         d="M6 42C10.966 42 14.69 36 14.69 36C14.69 36 18.414 42 23.379 42C28.345 42 33.31 36 33.31 36C33.31 36 38.276 42 42 42"
       />
     </Wrapper>
-  )
+  );
 }

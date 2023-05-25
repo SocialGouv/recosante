@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   background-color: ${(props) => props.theme.colors.tile};
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -26,11 +26,11 @@ const Wrapper = styled.div`
   p:last-child {
     margin: 0;
   }
-`
+`;
 export default function Alert(props) {
   return (
-    <Wrapper className={props.className} error={props.error} role='alert'>
+    <Wrapper className={props.className} error={props.error} role="alert">
       {props.children}
     </Wrapper>
-  )
+  );
 }

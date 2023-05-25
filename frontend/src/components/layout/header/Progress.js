@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from "react";
+import styled from "styled-components";
 
-import ProfileContext from 'utils/ProfileContext'
+import ProfileContext from "utils/ProfileContext";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   background-color: ${(props) => props.theme.colors.background};
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -35,9 +35,9 @@ const Wrapper = styled.div`
     transform-origin: left;
     transition: transform 600ms ease-in-out;
   }
-`
+`;
 export default function Progress() {
-  const { form, profile } = useContext(ProfileContext)
+  const { form, profile } = useContext(ProfileContext);
 
   return (
     <Wrapper
@@ -46,5 +46,5 @@ export default function Progress() {
       }
       total={form ? form.length : 10}
     />
-  )
+  );
 }

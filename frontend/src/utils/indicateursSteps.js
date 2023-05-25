@@ -1,39 +1,39 @@
-import React from 'react'
+import React from "react";
 
-import IndiceAtmo from './icons/IndiceAtmo'
-import Raep from './icons/Raep'
-import IndiceUv from './icons/IndiceUv'
-import VigilanceMeteo from './icons/VigilanceMeteo'
-import Quotidien from './icons/Quotidien'
-import Alerte from './icons/Alerte'
-import Email from './icons/Email'
-import Notification from './icons/Notification'
-import Newsletter from './icons/Newsletter'
-import NoNewsletter from './icons/NoNewsletter'
+import Alerte from "./icons/Alerte";
+import Email from "./icons/Email";
+import IndiceAtmo from "./icons/IndiceAtmo";
+import IndiceUv from "./icons/IndiceUv";
+import Newsletter from "./icons/Newsletter";
+import NoNewsletter from "./icons/NoNewsletter";
+import Notification from "./icons/Notification";
+import Quotidien from "./icons/Quotidien";
+import Raep from "./icons/Raep";
+import VigilanceMeteo from "./icons/VigilanceMeteo";
 
 const steps = [
   {
-    name: 'indicateurs',
-    title: 'Indicateurs',
-    label: 'Je choisis les indicateurs que je souhaite recevoir.',
+    name: "indicateurs",
+    title: "Indicateurs",
+    label: "Je choisis les indicateurs que je souhaite recevoir.",
     options: [
       {
-        value: 'indice_atmo',
+        value: "indice_atmo",
         label: `Indice de qualité de l'air`,
         icon: <IndiceAtmo />,
       },
       {
-        value: 'raep',
+        value: "raep",
         label: `Risque d'allergie aux pollens`,
         icon: <Raep />,
       },
       {
-        value: 'vigilance_meteo',
+        value: "vigilance_meteo",
         label: `Vigilance météorologique`,
         icon: <VigilanceMeteo />,
       },
       {
-        value: 'indice_uv',
+        value: "indice_uv",
         label: `Indice UV`,
         icon: <IndiceUv />,
       },
@@ -41,13 +41,13 @@ const steps = [
     mandatory: true,
   },
   {
-    name: 'indicateurs_frequence',
-    title: 'Fréquence',
+    name: "indicateurs_frequence",
+    title: "Fréquence",
     label:
-      'Je choisis à quelle fréquence je souhaite recevoir ces indicateurs.',
+      "Je choisis à quelle fréquence je souhaite recevoir ces indicateurs.",
     options: [
       {
-        value: 'alerte',
+        value: "alerte",
         label: `En cas<br />de vigilance`,
         icon: <Alerte />,
         detail: {
@@ -55,12 +55,12 @@ const steps = [
         },
       },
       {
-        value: 'quotidien',
+        value: "quotidien",
         label: `Tous les<br />jours`,
         icon: <Quotidien />,
         detail: {
           label:
-            'Chaque matin, même lorsque la situation ne nécessite pas de vigilance particulière.',
+            "Chaque matin, même lorsque la situation ne nécessite pas de vigilance particulière.",
         },
       },
     ],
@@ -68,22 +68,22 @@ const steps = [
     mandatory: true,
   },
   {
-    name: 'indicateurs_media',
-    title: 'Média',
-    label: 'Je choisis de quelle façon je souhaite recevoir ces indicateurs.',
+    name: "indicateurs_media",
+    title: "Média",
+    label: "Je choisis de quelle façon je souhaite recevoir ces indicateurs.",
     options: [
       {
-        value: 'mail',
+        value: "mail",
         label: `Email`,
         icon: <Email />,
       },
       {
-        value: 'notifications_web',
+        value: "notifications_web",
         label: `Notification`,
         icon: <Notification />,
         detail: {
           label: `Qu'est ce que c'est ?`,
-          modal: 'notifications',
+          modal: "notifications",
         },
       },
     ],
@@ -91,19 +91,19 @@ const steps = [
     mandatory: true,
   },
   {
-    name: 'recommandations',
-    title: 'Recommandations',
+    name: "recommandations",
+    title: "Recommandations",
     label:
-      'Je choisis si je souhaite aussi recevoir des conseils adaptés à mes habitudes pour m’aider&#160;à&#160;agir.',
+      "Je choisis si je souhaite aussi recevoir des conseils adaptés à mes habitudes pour m’aider&#160;à&#160;agir.",
     options: [
       {
-        value: 'oui',
+        value: "oui",
         label: `M’abonner à la lettre d'information`,
         small: true,
         icon: <Newsletter />,
       },
       {
-        value: 'non',
+        value: "non",
         label: `Peut être<br />plus tard`,
         icon: <NoNewsletter />,
       },
@@ -111,6 +111,6 @@ const steps = [
     exclusive: true,
     mandatory: true,
   },
-]
+];
 
-export default steps
+export default steps;

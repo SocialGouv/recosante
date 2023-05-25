@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import useIos from 'hooks/useIos'
+import useIos from "hooks/useIos";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   ${(props) => props.theme.mq.smallish} {
     top: calc(100% - 8rem);
   }
-`
+`;
 const Title = styled.div`
   font-size: 0.875rem;
   text-align: center;
@@ -23,14 +23,14 @@ const Title = styled.div`
   strong {
     font-weight: 700;
   }
-`
+`;
 const Text = styled.div`
   font-size: 0.75rem;
   font-weight: 300;
   text-align: center;
-`
+`;
 export default function DisclaimerIos() {
-  const ios = useIos()
+  const ios = useIos();
   return ios ? (
     <Wrapper>
       <Title>
@@ -42,5 +42,5 @@ export default function DisclaimerIos() {
         tard sur vos autres appareils
       </Text>
     </Wrapper>
-  ) : null
+  ) : null;
 }

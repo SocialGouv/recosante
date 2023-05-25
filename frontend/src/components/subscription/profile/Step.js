@@ -1,21 +1,21 @@
-import React, { useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import { toast } from 'react-toastify'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useContext, useEffect } from "react";
+import { toast } from "react-toastify";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
-import { useUser, useUserMutation } from 'hooks/useUser'
-import useNotificationsPrompt from 'hooks/useNotificationsPrompt'
-import Option from 'components/subscription/question/Option'
+import Option from "components/subscription/question/Option";
+import useNotificationsPrompt from "hooks/useNotificationsPrompt";
+import { useUser, useUserMutation } from "hooks/useUser";
+import ModalContext from "utils/ModalContext";
 
 const Wrapper = styled.div`
   margin-top: ${(props) => (props.large ? 3 : 0)}rem;
   padding-top: ${(props) => (props.large ? 3 : 0)}rem;
   border-top: ${(props) => (props.large ? 0.25 : 0)}rem solid
     rgba(${(props) => props.theme.colors.mainAlpha}, 0.2);
-`
-const Title = styled.h3``
-const Text = styled.p``
+`;
+const Title = styled.h3``;
+const Text = styled.p``;
 const Options = styled.div`
   position: relative;
   display: flex;
@@ -28,7 +28,7 @@ const Options = styled.div`
     justify-content: flex-start;
     align-items: stretch;
   }
-`
+`;
 export default function Step(props) {
   const { applicationServerKey } = useStaticQuery(
     graphql`
@@ -38,33 +38,33 @@ export default function Step(props) {
         }
       }
     `
-  )
+  );
   const notifications = useNotificationsPrompt(
-    '/sw.js',
+    "/sw.js",
     applicationServerKey.application_server_key
-  )
+  );
 
-  const { setModal } = useContext(ModalContext)
+  const { setModal } = useContext(ModalContext);
 
-  const { data } = useUser()
-  const mutation = useUserMutation()
+  const { data } = useUser();
+  const mutation = useUserMutation();
 
   useEffect(() => {
     if (mutation.isSuccess) {
-      toast.dismiss()
-      toast.success('Informations mises à jour.')
+      toast.dismiss();
+      toast.success("Informations mises à jour.");
     }
-  }, [mutation.isSuccess])
+  }, [mutation.isSuccess]);
   useEffect(() => {
     if (mutation.isError) {
-      toast.dismiss()
-      toast.error(`Vos modifications n'ont pas été sauvegardées.`)
+      toast.dismiss();
+      toast.error(`Vos modifications n'ont pas été sauvegardées.`);
     }
-  }, [mutation.isError])
+  }, [mutation.isError]);
 
   return (
     <Wrapper large={props.large} id={props.step.name}>
-      <Title as={props.large ? 'h2' : 'h3'}>{props.step.title}</Title>
+      <Title as={props.large ? "h2" : "h3"}>{props.step.title}</Title>
       <Text
         dangerouslySetInnerHTML={{
           __html: props.step.label,
@@ -90,15 +90,15 @@ export default function Step(props) {
                         (userOption) => userOption !== option.value
                       )
                     : [...(data[props.step.name] || []), option.value],
-                })
-                if (option.value === 'notifications_web') {
+                });
+                if (option.value === "notifications_web") {
                   notifications.subscribe().then((pushSubscription) => {
                     pushSubscription &&
                       mutation.mutate({
                         webpush_subscriptions_info:
                           JSON.stringify(pushSubscription),
-                      })
-                  })
+                      });
+                  });
                 }
               }}
               setModal={setModal}
@@ -108,5 +108,5 @@ export default function Step(props) {
         </Options>
       )}
     </Wrapper>
-  )
+  );
 }

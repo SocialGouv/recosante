@@ -1,19 +1,19 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import useProgressionPercent from 'hooks/useProgressionPercent'
+import useProgressionPercent from "hooks/useProgressionPercent";
 
 const Wrapper = styled.ol`
-  position: ${(props) => (props.small ? 'absolute' : 'relative')};
+  position: ${(props) => (props.small ? "absolute" : "relative")};
   display: flex;
   width: ${(props) => (props.small ? 80 : 100)}%;
   margin: 0;
   padding: 0;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
-    top: ${(props) => (props.small ? 0 : '100%')};
+    top: ${(props) => (props.small ? 0 : "100%")};
     left: 0;
     right: 0;
     height: 0.25rem;
@@ -21,9 +21,9 @@ const Wrapper = styled.ol`
     opacity: ${(props) => (props.small ? 0 : 0.2)};
   }
   &:after {
-    content: '';
+    content: "";
     position: absolute;
-    top: ${(props) => (props.small ? 0 : '100%')};
+    top: ${(props) => (props.small ? 0 : "100%")};
     left: 0;
     right: 0;
     height: 0.25rem;
@@ -37,9 +37,9 @@ const Wrapper = styled.ol`
   ${(props) => props.theme.mq.small} {
     display: none;
   }
-`
-const Step = styled.li.attrs(props => ({
-  'aria-current': props.current ? (props.small ? 'true' : 'step') : null,
+`;
+const Step = styled.li.attrs((props) => ({
+  "aria-current": props.current ? (props.small ? "true" : "step") : null,
 }))`
   flex: 1;
   padding: 0.5rem 0.25rem 0.25rem;
@@ -49,9 +49,9 @@ const Step = styled.li.attrs(props => ({
   opacity: ${(props) => (props.current ? 1 : 0.6)};
   font-weight: ${(props) => (props.current ? 500 : 300)};
   list-style: none;
-`
+`;
 export default function Progress(props) {
-  const percent = useProgressionPercent(props)
+  const percent = useProgressionPercent(props);
 
   return (
     <Wrapper
@@ -64,7 +64,7 @@ export default function Progress(props) {
           key={step.name}
           current={
             index === props.currentStep ||
-            (step.name === 'recommandations' && props.currentStep === 4)
+            (step.name === "recommandations" && props.currentStep === 4)
           }
           small={props.small}
         >
@@ -72,8 +72,8 @@ export default function Progress(props) {
         </Step>
       ))}
       {!props.small && (
-        <Step current={props.currentStep === 'identity'}>Contact</Step>
+        <Step current={props.currentStep === "identity"}>Contact</Step>
       )}
     </Wrapper>
-  )
+  );
 }

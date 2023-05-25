@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import { useLocalUser, useSendProfileLink } from 'hooks/useUser'
-import Button from 'components/base/Button'
+import Button from "components/base/Button";
+import { useLocalUser, useSendProfileLink } from "hooks/useUser";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -19,13 +19,13 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
-  pointer-events: ${(props) => (props.visible ? 'inherit' : 'none')};
+  pointer-events: ${(props) => (props.visible ? "inherit" : "none")};
   transition: opacity ${(props) => (props.visible ? 300 : 0)}ms;
 
   ${(props) => props.theme.mq.smallish} {
     justify-content: flex-start;
   }
-`
+`;
 const Title = styled.h3`
   max-width: 31.5rem;
   margin: 0 auto;
@@ -36,7 +36,7 @@ const Title = styled.h3`
     font-size: 1.5rem;
     margin: 0 auto 1rem;
   }
-`
+`;
 const Text = styled.p`
   font-size: 1.25rem;
   text-align: center;
@@ -44,7 +44,7 @@ const Text = styled.p`
   ${(props) => props.theme.mq.smallish} {
     font-size: 1rem;
   }
-`
+`;
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -58,14 +58,14 @@ const ButtonWrapper = styled.div`
     background-color: ${(props) => props.theme.colors.background};
     border-top: 0.25rem solid ${(props) => props.theme.colors.main};
   }
-`
+`;
 export default function Error(props) {
-  const mutation = useSendProfileLink()
-  const { user } = useLocalUser()
+  const mutation = useSendProfileLink();
+  const { user } = useLocalUser();
 
   return (
     <Wrapper visible={props.error}>
-      {props?.error?.response?.data?.errors?.mail === 'mail already used' ? (
+      {props?.error?.response?.data?.errors?.mail === "mail already used" ? (
         mutation.isSuccess ? (
           <>
             <Title>Un compte est déjà associé à cet email</Title>
@@ -105,7 +105,7 @@ export default function Error(props) {
           </Text>
           <ButtonWrapper>
             <Button
-              to={'mailto:contact@recosante.beta.gouv.fr'}
+              to={"mailto:contact@recosante.beta.gouv.fr"}
               hollow
               noExpand
             >
@@ -118,5 +118,5 @@ export default function Error(props) {
         </>
       )}
     </Wrapper>
-  )
+  );
 }

@@ -1,15 +1,15 @@
-import React, { useContext, useRef } from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useContext, useRef } from "react";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
-import { useLocalUser } from 'hooks/useUser'
-import Button from 'components/base/Button'
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
-import Images from './notifications/Images'
+import Button from "components/base/Button";
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
+import { useLocalUser } from "hooks/useUser";
+import ModalContext from "utils/ModalContext";
+import Images from "./notifications/Images";
 
-import useOnScreen from 'hooks/useOnScreen'
+import useOnScreen from "hooks/useOnScreen";
 
 const StyledSection = styled(Section)`
   display: flex;
@@ -19,7 +19,7 @@ const StyledSection = styled(Section)`
     flex-direction: column-reverse;
     align-items: center;
   }
-`
+`;
 const Content = styled.div`
   width: 29.25rem;
   margin-left: 2rem;
@@ -35,7 +35,7 @@ const Content = styled.div`
   p {
     margin-bottom: 1em;
   }
-`
+`;
 const MockupWrapper = styled.div`
   flex: 1;
   position: relative;
@@ -47,14 +47,14 @@ const MockupWrapper = styled.div`
   ${(props) => props.theme.mq.small} {
     min-height: auto;
   }
-`
+`;
 const StyledButton = styled(Button)`
   font-size: 1.125rem;
 
   ${(props) => props.theme.mq.small} {
     font-size: 1rem;
   }
-`
+`;
 export default function Notifications() {
   const data = useStaticQuery(
     graphql`
@@ -64,16 +64,16 @@ export default function Notifications() {
         }
       }
     `
-  )
+  );
 
-  const { setSubscription } = useContext(ModalContext)
-  const { mutateUser } = useLocalUser()
+  const { setSubscription } = useContext(ModalContext);
+  const { mutateUser } = useLocalUser();
 
-  const ref = useRef()
-  const isOnScreen = useOnScreen(ref)
+  const ref = useRef();
+  const isOnScreen = useOnScreen(ref);
 
   return (
-    <StyledSection ref={ref} id='notifications'>
+    <StyledSection ref={ref} id="notifications">
       <MockupWrapper>
         <Images isOnScreen={isOnScreen} />
       </MockupWrapper>
@@ -83,15 +83,15 @@ export default function Notifications() {
           <StyledButton
             onClick={() => {
               mutateUser({
-                indicateurs: ['indice_atmo', 'raep'],
-              })
-              setSubscription('indicators')
+                indicateurs: ["indice_atmo", "raep"],
+              });
+              setSubscription("indicators");
               window?._paq?.push([
-                'trackEvent',
-                'Subscription',
-                'Indicateur',
-                'Tous',
-              ])
+                "trackEvent",
+                "Subscription",
+                "Indicateur",
+                "Tous",
+              ]);
             }}
             hollow
           >
@@ -100,5 +100,5 @@ export default function Notifications() {
         </Button.Wrapper>
       </Content>
     </StyledSection>
-  )
+  );
 }

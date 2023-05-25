@@ -1,26 +1,26 @@
-import { useQuery, useMutation } from 'react-query'
-import axios from 'axios'
-import { useQueryParam } from 'hooks/useQueryParam';
+import axios from "axios";
+import { useQueryParam } from "hooks/useQueryParam";
+import { useMutation, useQuery } from "react-query";
 
-import apiUrl from 'utils/apiUrl'
+import apiUrl from "utils/apiUrl";
 
 export function useStatistiques() {
-  return useQuery(['statistiques'], () =>
+  return useQuery(["statistiques"], () =>
     axios.get(`${apiUrl}/stats/`).then((res) => res.data)
-  )
+  );
 }
 export function useAvis(location) {
-  const [short_id] = useQueryParam('short_id')
-  const [appliquee] = useQueryParam('avis')
+  const [short_id] = useQueryParam("short_id");
+  const [appliquee] = useQueryParam("avis");
   return useQuery(
-    ['profile', short_id, appliquee],
+    ["profile", short_id, appliquee],
     () =>
       axios
         .post(
           `${apiUrl}/newsletter/${short_id}/avis?appliquee=${appliquee}`,
           null,
           {
-            headers: { Accept: ' application/json' },
+            headers: { Accept: " application/json" },
           }
         )
         .then((res) => res.data),
@@ -28,23 +28,23 @@ export function useAvis(location) {
       enabled: short_id && appliquee ? true : false,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 }
 export function useAvisMutation() {
-  const [short_id] = useQueryParam('short_id')
-  const [appliquee] = useQueryParam('avis')
+  const [short_id] = useQueryParam("short_id");
+  const [appliquee] = useQueryParam("avis");
   return useMutation((avis) =>
     axios.post(
       `${apiUrl}/newsletter/${short_id}/avis?appliquee=${appliquee}`,
       avis,
       {
         headers: {
-          Accept: ' application/json',
-          'Content-Type': 'application/json',
+          Accept: " application/json",
+          "Content-Type": "application/json",
         },
       }
     )
-  )
+  );
 }
 export function useInscriptionPatients() {
   return useMutation((nom_medecin, mails) =>
@@ -53,10 +53,10 @@ export function useInscriptionPatients() {
       { nom_medecin, mails },
       {
         headers: {
-          Accept: ' application/json',
-          'Content-Type': 'application/json',
+          Accept: " application/json",
+          "Content-Type": "application/json",
         },
       }
     )
-  )
+  );
 }

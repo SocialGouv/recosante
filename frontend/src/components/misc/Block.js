@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export default styled.div`
   position: relative;
@@ -25,7 +25,7 @@ export default styled.div`
   }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -38,4 +38,4 @@ export default styled.div`
       display: none;
     }
   }
-`
+`;

@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Button from 'components/base/Button'
+import Button from "components/base/Button";
 
 const Wrapper = styled.ul`
   display: flex;
@@ -21,87 +21,143 @@ const Wrapper = styled.ul`
   li {
     list-style: none;
   }
-`
+`;
 const StyledButton = styled(Button)`
   margin-right: 1rem;
   margin-bottom: 1rem;
   font-size: 1rem;
-`
+`;
 export default function Suggestions() {
   return (
     <Wrapper>
       <li>
-        <StyledButton hollow to='/place/75056/paris/'
+        <StyledButton
+          hollow
+          to="/place/75056/paris/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Paris'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Paris",
+            ]);
           }}
         >
           Paris
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/13055/marseille/'
+        <StyledButton
+          hollow
+          to="/place/13055/marseille/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Marseille'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Marseille",
+            ]);
           }}
         >
           Marseille
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/69123/lyon/'
+        <StyledButton
+          hollow
+          to="/place/69123/lyon/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Lyon'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Lyon",
+            ]);
           }}
         >
           Lyon
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/31555/toulouse/'
+        <StyledButton
+          hollow
+          to="/place/31555/toulouse/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Toulouse'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Toulouse",
+            ]);
           }}
         >
           Toulouse
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/06088/nice/'
+        <StyledButton
+          hollow
+          to="/place/06088/nice/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Nice'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Nice",
+            ]);
           }}
         >
           Nice
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/44109/nantes/'
+        <StyledButton
+          hollow
+          to="/place/44109/nantes/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Nantes'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Nantes",
+            ]);
           }}
         >
           Nantes
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/34172/montpellier/'
+        <StyledButton
+          hollow
+          to="/place/34172/montpellier/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Montpellier'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Montpellier",
+            ]);
           }}
         >
           Montpellier
         </StyledButton>
       </li>
       <li>
-        <StyledButton hollow to='/place/67482/strasbourg/'
+        <StyledButton
+          hollow
+          to="/place/67482/strasbourg/"
           onClick={() => {
-            window?._paq?.push(['trackEvent', 'Search', 'PlaceSuggestion', 'Strasbourg'])
+            window?._paq?.push([
+              "trackEvent",
+              "Search",
+              "PlaceSuggestion",
+              "Strasbourg",
+            ]);
           }}
         >
           Strasbourg
         </StyledButton>
       </li>
     </Wrapper>
-  )
+  );
 }

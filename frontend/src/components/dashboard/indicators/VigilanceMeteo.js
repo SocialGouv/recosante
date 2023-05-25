@@ -1,34 +1,37 @@
-import React from 'react'
+import React from "react";
 
-import useIndicators from 'hooks/useIndicators'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './vigilanceMeteo/Chart'
-import Details from './vigilanceMeteo/Details'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useIndicators from "hooks/useIndicators";
+import Chart from "./vigilanceMeteo/Chart";
+import Details from "./vigilanceMeteo/Details";
 
 export default function VigilanceMeteo(props) {
-  const { data, isError, isLoading } = useIndicators(props.place.code, props.date)
+  const { data, isError, isLoading } = useIndicators(
+    props.place.code,
+    props.date
+  );
 
   return (
     <Card columns={6}>
       <Card.Content>
         <Card.Header>
           <Card.Info>
-            <Card.Title isLoading={isLoading} indicateur='vigilancemeteo'>
+            <Card.Title isLoading={isLoading} indicateur="vigilancemeteo">
               Vigilance météo
             </Card.Title>
             <Card.Value isError={isError}>
               {isError
-                ? 'Arf 🦖'
+                ? "Arf 🦖"
                 : data &&
                   (data.vigilance_meteo.indice?.label
                     ? data.vigilance_meteo.indice.label
-                    : 'Pas de données')}
+                    : "Pas de données")}
             </Card.Value>
           </Card.Info>
           <Chart data={data && !data.vigilance_meteo.error && data} />
         </Card.Header>
-        <Card.Mobile indicateur='vigilancemeteo' place={props.place}>
+        <Card.Mobile indicateur="vigilancemeteo" place={props.place}>
           <Card.Details>
             <Details data={data && !data.vigilance_meteo.error && data} />
           </Card.Details>
@@ -45,7 +48,7 @@ export default function VigilanceMeteo(props) {
           />
         </Card.Mobile>
         <Card.SubscribeWrapper>
-          <Card.Subscribe indicateur='vigilance_meteo' place={props.place} />
+          <Card.Subscribe indicateur="vigilance_meteo" place={props.place} />
         </Card.SubscribeWrapper>
       </Card.Content>
       {data &&
@@ -54,37 +57,36 @@ export default function VigilanceMeteo(props) {
         data.vigilance_meteo.sources && (
           <Card.Source>
             <p>
-              Prévision{' '}
+              Prévision{" "}
               {data.vigilance_meteo.validity.start ? (
                 <>
-                  du{' '}
+                  du{" "}
                   {new Date(
                     data.vigilance_meteo.validity.start
-                  ).toLocaleDateString('fr', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                  })}{' '}
-                  au{' '}
-                  {new Date(data.vigilance_meteo.validity.end).toLocaleDateString(
-                    'fr',
-                    {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                    }
-                  )}{' '}
+                  ).toLocaleDateString("fr", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                  })}{" "}
+                  au{" "}
+                  {new Date(
+                    data.vigilance_meteo.validity.end
+                  ).toLocaleDateString("fr", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                  })}{" "}
                   dans
                 </>
               ) : (
                 <> dans </>
-              )}{' '}
+              )}{" "}
               {data.vigilance_meteo.validity.area}
             </p>
             <p>
-              Données fournies par{' '}
+              Données fournies par{" "}
               <MagicLink to={data.vigilance_meteo.sources[0].url}>
                 {data.vigilance_meteo.sources[0].label}
               </MagicLink>
@@ -92,5 +94,5 @@ export default function VigilanceMeteo(props) {
           </Card.Source>
         )}
     </Card>
-  )
+  );
 }

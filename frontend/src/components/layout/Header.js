@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { navigate } from 'gatsby'
-import { useLocation } from '@reach/router'
-import { formatPlaceUrl } from 'utils/formatPlaceUrl'
-import Logos from './header/Logos'
-import SearchBar from 'components/search/SearchBar'
-import MobileSearch from './header/MobileSearch'
+import { useLocation } from "@reach/router";
+import SearchBar from "components/search/SearchBar";
+import { navigate } from "gatsby";
+import React from "react";
+import styled from "styled-components";
+import { formatPlaceUrl } from "utils/formatPlaceUrl";
+import Logos from "./header/Logos";
+import MobileSearch from "./header/MobileSearch";
 
 const Wrapper = styled.header`
   position: absolute;
@@ -13,7 +13,7 @@ const Wrapper = styled.header`
   padding: 0 1rem;
   z-index: 1000;
   background: rgba(${(props) => props.theme.colors.backgroundAlpha}, 1);
-`
+`;
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
@@ -21,14 +21,14 @@ const Content = styled.div`
   width: 100%;
   max-width: 73rem;
   margin: 0 auto;
-`
+`;
 const Search = styled.div`
   position: relative;
 
   ${(props) => props.theme.mq.small} {
     display: none;
   }
-`
+`;
 const StyledSearchBar = styled(SearchBar)`
   top: -1rem;
   left: auto;
@@ -39,20 +39,20 @@ const StyledSearchBar = styled(SearchBar)`
     max-width: none;
     transform: none;
   }
-`
+`;
 export default function Header() {
-  const { pathname } = useLocation()
+  const { pathname } = useLocation();
 
   return (
-    <Wrapper role='banner'>
+    <Wrapper role="banner">
       <Content>
         <Logos />
-        {pathname !== '/' && (
+        {pathname !== "/" && (
           <Search>
             <StyledSearchBar
-              placeholder='Entrez une ville'
+              placeholder="Entrez une ville"
               handlePlaceSelection={(place) => {
-                navigate(formatPlaceUrl(place) + window.location.search)
+                navigate(formatPlaceUrl(place) + window.location.search);
               }}
             />
           </Search>
@@ -60,5 +60,5 @@ export default function Header() {
         <MobileSearch />
       </Content>
     </Wrapper>
-  )
+  );
 }

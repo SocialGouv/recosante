@@ -1,12 +1,12 @@
-import React from 'react'
-import { ThemeProvider } from 'styled-components'
-import { useQueryParam } from 'hooks/useQueryParam';
+import { useQueryParam } from "hooks/useQueryParam";
+import React from "react";
+import { ThemeProvider } from "styled-components";
 
-import StyleContext from 'utils/StyleContext'
-import { themes } from 'utils/styles'
+import StyleContext from "utils/StyleContext";
+import { themes } from "utils/styles";
 
 export default function StyleProvider(props) {
-  const [theme, setTheme] = useQueryParam('theme', 'default')
+  const [theme, setTheme] = useQueryParam("theme", "default");
 
   return (
     <StyleContext.Provider
@@ -20,5 +20,5 @@ export default function StyleProvider(props) {
         {props.children}
       </ThemeProvider>
     </StyleContext.Provider>
-  )
+  );
 }

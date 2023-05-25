@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { useContext } from "react";
+import styled, { keyframes } from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
+import ModalContext from "utils/ModalContext";
 
 const fetching = keyframes`
   from {
@@ -20,7 +20,7 @@ const fetching = keyframes`
     transform: scaleX(0);
     transform-origin: right;
   }
-`
+`;
 const Wrapper = styled.h2`
   position: relative;
   margin-bottom: 1.5rem;
@@ -29,7 +29,7 @@ const Wrapper = styled.h2`
   cursor: pointer;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@ const Wrapper = styled.h2`
     background-color: ${(props) => props.theme.colors.background};
     opacity: 0.7;
     transform: scaleX(0);
-    animation: ${(props) => (props.isLoading ? fetching : '')} 1000ms infinite;
+    animation: ${(props) => (props.isLoading ? fetching : "")} 1000ms infinite;
   }
 
   ${(props) => props.theme.mq.small} {
@@ -46,13 +46,13 @@ const Wrapper = styled.h2`
     font-size: 1rem;
     text-align: center;
   }
-`
+`;
 const Superscript = styled.sup`
   font-size: 0.625rem;
   color: ${(props) => props.theme.colors.main};
-`
+`;
 export default function Title(props) {
-  const { setModal } = useContext(ModalContext)
+  const { setModal } = useContext(ModalContext);
   return (
     <Wrapper
       isLoading={props.isLoading}
@@ -61,5 +61,5 @@ export default function Title(props) {
       {props.children}
       <Superscript> (?)</Superscript>
     </Wrapper>
-  )
+  );
 }

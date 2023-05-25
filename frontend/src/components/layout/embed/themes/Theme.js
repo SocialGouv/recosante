@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: calc(50% - 1rem);
   margin: 0.5rem;
-`
+`;
 const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -13,19 +13,19 @@ const Content = styled.div`
   background-color: ${(props) => props.displayTheme.colors.background};
   border: 0.125rem solid
     ${(props) =>
-      props.displayTheme.colors[props.current ? 'main' : 'background']};
+      props.displayTheme.colors[props.current ? "main" : "background"]};
   border-radius: 1rem;
   cursor: pointer;
-`
+`;
 const Title = styled.h4`
   margin-bottom: 0.4em;
   font-size: 1.5em;
   color: ${(props) => props.displayTheme.colors.second};
-`
+`;
 const Tiles = styled.div`
   display: flex;
   margin: 0 -0.5em;
-`
+`;
 const Tile = styled.div`
   flex: 1;
   height: 2em;
@@ -40,7 +40,7 @@ const Tile = styled.div`
         ? props.displayTheme.colors.main
         : props.displayTheme.colors.text};
   border-radius: 0.5em;
-`
+`;
 export default function Theme(props) {
   return (
     <Wrapper>
@@ -57,5 +57,5 @@ export default function Theme(props) {
         </Tiles>
       </Content>
     </Wrapper>
-  )
+  );
 }

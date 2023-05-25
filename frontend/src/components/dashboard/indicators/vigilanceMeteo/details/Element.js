@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Card from 'components/misc/Card'
-import Avalanches from './images/Avalanches.png'
-import Canicule from './images/Canicule.png'
-import Crues from './images/Crues.png'
-import GrandFroid from './images/GrandFroid.png'
-import Neige from './images/Neige.png'
-import Orages from './images/Orages.png'
-import PluieInondation from './images/PluieInondation.png'
-import VaguesSubmersion from './images/VaguesSubmersion.png'
-import Vent from './images/Vent.png'
+import Card from "components/misc/Card";
+import Avalanches from "./images/Avalanches.png";
+import Canicule from "./images/Canicule.png";
+import Crues from "./images/Crues.png";
+import GrandFroid from "./images/GrandFroid.png";
+import Neige from "./images/Neige.png";
+import Orages from "./images/Orages.png";
+import PluieInondation from "./images/PluieInondation.png";
+import VaguesSubmersion from "./images/VaguesSubmersion.png";
+import Vent from "./images/Vent.png";
 
-const Wrapper = styled.div``
+const Wrapper = styled.div``;
 const Title = styled.h3`
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@ const Title = styled.h3`
   line-height: 1.7;
   color: ${(props) => props.theme.colors.text};
   font-size: inherit;
-`
+`;
 const Icon = styled.div`
   position: relative;
   height: 1.5rem;
@@ -39,55 +39,57 @@ const Icon = styled.div`
     width: calc(100% - 0.25rem);
     object-fit: contain;
   }
-`
+`;
 export default function Element(props) {
   const images = {
-    'Vent violent': Vent,
+    "Vent violent": Vent,
     Orages,
     Canicule,
-    'Vagues-Submersion': VaguesSubmersion,
-    'Neige-verglas': Neige,
+    "Vagues-Submersion": VaguesSubmersion,
+    "Neige-verglas": Neige,
     Avalanches,
     Crues,
-    'Grand Froid': GrandFroid,
-    'Pluie-Inondation': PluieInondation,
-  }
-  const value = ['Vert', 'Jaune', 'Orange', 'Rouge'].indexOf(props.indice.color)
-  const tomorrow = new Date()
-  tomorrow.setHours(24, 0, 0, 0)
+    "Grand Froid": GrandFroid,
+    "Pluie-Inondation": PluieInondation,
+  };
+  const value = ["Vert", "Jaune", "Orange", "Rouge"].indexOf(
+    props.indice.color
+  );
+  const tomorrow = new Date();
+  tomorrow.setHours(24, 0, 0, 0);
   return (
     <Wrapper>
       <Title>
         <Icon value={value}>
-          <img src={images[props.indice.label]} alt='' />
+          <img src={images[props.indice.label]} alt="" />
         </Icon>
-        {props.indice.label}{' '}
-        {props.validity.map((v, i) => (
+        {props.indice.label}{" "}
+        {props.validity.map((v, i) =>
           v.start ? (
-            (!v.end || v.end >= tomorrow) ? (
-              <React.Fragment key={v.start + '-' + v.end}>
-                {i > 0 ? ' et ' : ''}
-                à partir de{' '}
-                {v.start.toLocaleTimeString('fr', {
-                  hour: '2-digit'
+            !v.end || v.end >= tomorrow ? (
+              <React.Fragment key={v.start + "-" + v.end}>
+                {i > 0 ? " et " : ""}à partir de{" "}
+                {v.start.toLocaleTimeString("fr", {
+                  hour: "2-digit",
                 })}
               </React.Fragment>
             ) : (
-              <React.Fragment key={v.start + '-' + v.end}>
-                {i > 0 ? ' et ' : ''}
-                de{' '}
-                {v.start.toLocaleTimeString('fr', {
-                  hour: '2-digit'
-                })}{' '}
-                à{' '}
-                {v.end.toLocaleTimeString('fr', {
-                  hour: '2-digit'
+              <React.Fragment key={v.start + "-" + v.end}>
+                {i > 0 ? " et " : ""}
+                de{" "}
+                {v.start.toLocaleTimeString("fr", {
+                  hour: "2-digit",
+                })}{" "}
+                à{" "}
+                {v.end.toLocaleTimeString("fr", {
+                  hour: "2-digit",
                 })}
               </React.Fragment>
-            )) : (
+            )
+          ) : (
             <></>
           )
-        ))}
+        )}
       </Title>
       {props.indice.advice && (
         <Card.Recommandation
@@ -97,5 +99,5 @@ export default function Element(props) {
         />
       )}
     </Wrapper>
-  )
+  );
 }

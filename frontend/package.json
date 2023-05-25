@@ -6,7 +6,7 @@
   "author": "Fabrique des ministères sociaux",
   "scripts": {
     "build": "yarn iframe && gatsby build",
-    "format": "prettier --write src/**/*.{js,jsx}",
+    "format": "prettier --write **/*.{js,jsx}",
     "iframe": "webpack",
     "lint": "echo \"Do lint!\"",
     "serve": "gatsby serve",

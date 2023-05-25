@@ -1,12 +1,12 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import { StaticImage, GatsbyImage, getImage } from 'gatsby-plugin-image'
-import styled from 'styled-components'
-import Web from 'components/layout/Web'
-import Section from 'components/base/Section'
-import useIframe from 'hooks/useIframe'
-import Search from 'components/Search'
-import Newsletter from 'components/Newsletter'
+import Newsletter from "components/Newsletter";
+import Search from "components/Search";
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
+import { graphql } from "gatsby";
+import { GatsbyImage, StaticImage, getImage } from "gatsby-plugin-image";
+import useIframe from "hooks/useIframe";
+import React from "react";
+import styled from "styled-components";
 
 const Title = styled.h1`
   color: ${(props) => props.theme.colors.main};
@@ -17,16 +17,16 @@ const Title = styled.h1`
     font-size: 1.5rem;
     margin: 1.5rem 0;
   }
-`
+`;
 const Category = styled.span`
   color: #fff;
   background-color: ${(props) => props.theme.colors.main};
   padding: 0.5rem 1rem;
-`
+`;
 const Thumbnail = styled(GatsbyImage)`
   width: 100%;
   margin-bottom: 2rem;
-`
+`;
 const BonGeste = styled.div`
   display: flex;
   background-color: #eef1f7;
@@ -35,14 +35,14 @@ const BonGeste = styled.div`
   ${(props) => props.theme.mq.small} {
     flex-direction: column;
   }
-`
+`;
 const ImageWrapper = styled.div`
   text-align: center;
   margin-right: 2rem;
   ${(props) => props.theme.mq.small} {
     margin: 0 0 2rem;
   }
-`
+`;
 const Content = styled.div`
   flex: 1;
   h2 {
@@ -51,42 +51,48 @@ const Content = styled.div`
   p {
     margin: 0;
   }
-`
+`;
 
 export default function Article(props) {
-  const iframe = useIframe()
+  const iframe = useIframe();
   return (
     <Web title={props.data.mdx.frontmatter.title}>
       <Section first medium>
-        {props.data.mdx.frontmatter.category &&
+        {props.data.mdx.frontmatter.category && (
           <Category
             dangerouslySetInnerHTML={{
               __html: props.data.mdx.frontmatter.category,
-            }}/>
-        }
+            }}
+          />
+        )}
         <Title
           dangerouslySetInnerHTML={{
             __html: props.data.mdx.frontmatter.title,
           }}
         />
-        {props.data.mdx.frontmatter.image &&
-          <Thumbnail image={getImage(props.data.mdx.frontmatter.image)} alt='' />
-        }
-        {props.data.mdx.frontmatter.bon_geste &&
+        {props.data.mdx.frontmatter.image && (
+          <Thumbnail
+            image={getImage(props.data.mdx.frontmatter.image)}
+            alt=""
+          />
+        )}
+        {props.data.mdx.frontmatter.bon_geste && (
           <BonGeste>
             <ImageWrapper>
-              <StaticImage src={'./images/bon-geste.png'} alt='' height={128} />
+              <StaticImage src={"./images/bon-geste.png"} alt="" height={128} />
             </ImageWrapper>
             <Content>
-              <h2>Le <strong>bon geste</strong></h2>
+              <h2>
+                Le <strong>bon geste</strong>
+              </h2>
               <p
                 dangerouslySetInnerHTML={{
-                __html: props.data.mdx.frontmatter.bon_geste,
-                }
-              }/>
+                  __html: props.data.mdx.frontmatter.bon_geste,
+                }}
+              />
             </Content>
           </BonGeste>
-        }
+        )}
         {props.children}
       </Section>
       {!iframe && (
@@ -96,7 +102,7 @@ export default function Article(props) {
         </>
       )}
     </Web>
-  )
+  );
 }
 
 export const articleQuery = graphql`
@@ -114,4 +120,4 @@ export const articleQuery = graphql`
       }
     }
   }
-`
+`;

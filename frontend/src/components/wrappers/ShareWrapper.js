@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import Share from 'components/layout/Share'
+import Share from "components/layout/Share";
 
 export default function ShareWrapper(props) {
   return (
@@ -45,5 +45,5 @@ Et en plus, c'est complètement gratuit. Pour t'inscrire : `,
         },
       }}
     />
-  )
+  );
 }

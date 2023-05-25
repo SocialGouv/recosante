@@ -1,23 +1,23 @@
-import React from 'react'
-import styled from 'styled-components'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import React from "react";
+import styled from "styled-components";
 
-import MagicLink from 'components/base/MagicLink'
-import Markdown from 'components/base/Markdown'
-import Web from 'components/layout/Web'
-import Section from 'components/base/Section'
+import MagicLink from "components/base/MagicLink";
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
 
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   margin: 0 -0.5rem;
-`
+`;
 const Logo = styled(MagicLink)`
   width: 7rem;
   margin: 0.5rem;
-`
+`;
 export default function Partners(props) {
   const data = useStaticQuery(
     graphql`
@@ -47,9 +47,9 @@ export default function Partners(props) {
         }
       }
     `
-  )
+  );
   return (
-    <Web title={'Partenaires'}>
+    <Web title={"Partenaires"}>
       <Section first small>
         <Markdown>{data.mdx.body}</Markdown>
         <Wrapper>
@@ -75,5 +75,5 @@ export default function Partners(props) {
         </Wrapper>
       </Section>
     </Web>
-  )
+  );
 }

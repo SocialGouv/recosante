@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { useQueryParam } from 'hooks/useQueryParam';
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import { useQueryParam } from "hooks/useQueryParam";
+import React, { useState } from "react";
 
-import { useUser, useUserMutation } from 'hooks/useUser'
-import useNotificationsPrompt from 'hooks/useNotificationsPrompt'
-import useIos from 'hooks/useIos'
-import Section from 'components/base/Section'
-import Button from 'components/base/Button'
-import Alert from 'components/base/Alert'
-import UnloggedForm from 'components/misc/UnloggedForm'
+import Alert from "components/base/Alert";
+import Button from "components/base/Button";
+import Section from "components/base/Section";
+import UnloggedForm from "components/misc/UnloggedForm";
+import useIos from "hooks/useIos";
+import useNotificationsPrompt from "hooks/useNotificationsPrompt";
+import { useUser, useUserMutation } from "hooks/useUser";
 
 export default function Notifications() {
-  const ios = useIos()
+  const ios = useIos();
 
   const { applicationServerKey } = useStaticQuery(
     graphql`
@@ -21,17 +21,17 @@ export default function Notifications() {
         }
       }
     `
-  )
+  );
   const notifications = useNotificationsPrompt(
-    '/sw.js',
+    "/sw.js",
     applicationServerKey.application_server_key
-  )
+  );
 
-  const [user] = useQueryParam('user')
-  const [token] = useQueryParam('token')
-  const { error, data }  = useUser()
-  const mutation = useUserMutation()
-  const [success, setSuccess] = useState(false)
+  const [user] = useQueryParam("user");
+  const [token] = useQueryParam("token");
+  const { error, data } = useUser();
+  const mutation = useUserMutation();
+  const [success, setSuccess] = useState(false);
 
   return user && token && !error ? (
     <Section first small>
@@ -42,10 +42,10 @@ export default function Notifications() {
       </h1>
       {data && (
         <>
-          {data.indicateurs_media[0] === 'mail' ? (
+          {data.indicateurs_media[0] === "mail" ? (
             <>
               <p>
-                Vous recevez pour l'instant les{' '}
+                Vous recevez pour l'instant les{" "}
                 <strong>indicateurs par mail</strong>.
               </p>
               {ios ? (
@@ -64,13 +64,13 @@ export default function Notifications() {
             </>
           ) : success ? (
             <p>
-              Vous recevrez maintenant les{' '}
+              Vous recevrez maintenant les{" "}
               <strong>indicateurs par notifications</strong> sur cet appareil !
             </p>
           ) : (
             <>
               <p>
-                Vous recevez pour l'instant les{' '}
+                Vous recevez pour l'instant les{" "}
                 <strong>indicateurs par notifications.</strong>
               </p>
               {ios ? (
@@ -96,14 +96,14 @@ export default function Notifications() {
                 onClick={() => {
                   notifications.subscribe().then((pushSubscription) => {
                     if (pushSubscription) {
-                      setSuccess(true)
+                      setSuccess(true);
                       mutation.mutate({
-                        indicateurs_media: ['notifications_web'],
+                        indicateurs_media: ["notifications_web"],
                         webpush_subscriptions_info:
                           JSON.stringify(pushSubscription),
-                      })
+                      });
                     }
-                  })
+                  });
                 }}
               >
                 Activer les notifications sur cet appareil
@@ -130,5 +130,5 @@ export default function Notifications() {
     <Section first>
       <UnloggedForm unauthorized={!!error} />
     </Section>
-  )
+  );
 }

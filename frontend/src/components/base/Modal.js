@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react'
-import styled from 'styled-components'
+import React, { useCallback, useEffect } from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -12,9 +12,9 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   transform: translate3d(0, 0, 1em);
-  pointer-events: ${(props) => (props.open ? 'inherit' : 'none')};
-  visibility: ${(props) => (props.open ? 'visible' : 'hidden')};
-`
+  pointer-events: ${(props) => (props.open ? "inherit" : "none")};
+  visibility: ${(props) => (props.open ? "visible" : "hidden")};
+`;
 const Background = styled.div`
   position: absolute;
   top: 0;
@@ -25,14 +25,14 @@ const Background = styled.div`
   backdrop-filter: blur(1rem);
   opacity: ${(props) => (props.open ? 1 : 0)};
   transition: all ${(props) => (props.open ? 300 : 0)}ms;
-`
+`;
 const Content = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: ${(props) => (props.large ? '48rem' : '35.5rem')};
+  width: ${(props) => (props.large ? "48rem" : "35.5rem")};
   max-width: calc(100% - 1rem);
-  max-height: ${(props) => (props.large ? 'calc(100% - 0.5rem)' : '90vh')};
+  max-height: ${(props) => (props.large ? "calc(100% - 0.5rem)" : "90vh")};
   background: rgba(${(props) => props.theme.colors.backgroundAlpha}, 1);
   border: 1px solid rgba(${(props) => props.theme.colors.mainAlpha}, 0.1);
   border-radius: 1.5rem;
@@ -40,7 +40,7 @@ const Content = styled.div`
 
   opacity: ${(props) => (props.open ? 1 : 0)};
   transform: scale(${(props) => (props.open ? 1 : 0.7)})
-    translateY(${(props) => (props.open ? 0 : '10em')});
+    translateY(${(props) => (props.open ? 0 : "10em")});
   transition: opacity ${(props) => (props.open ? 300 : 0)}ms ease-in-out,
     transform ${(props) => (props.open ? 300 : 0)}ms ease-in-out;
 
@@ -57,7 +57,7 @@ const Content = styled.div`
       `}
   }
   overflow: hidden;
-`
+`;
 const ButtonClose = styled.div`
   position: absolute;
   z-index: 10000;
@@ -68,7 +68,7 @@ const ButtonClose = styled.div`
   transform: rotate(45deg);
   cursor: pointer;
   line-height: 0.5;
-`
+`;
 const Scroll = styled.div`
   height: 100%;
   overflow-y: auto;
@@ -77,20 +77,22 @@ const Scroll = styled.div`
   ${(props) => props.theme.mq.small} {
     padding: 1.5rem 1rem;
   }
-`
+`;
 export default React.forwardRef(function Modal(props, ref) {
-
-  const escKeyDown = useCallback((e) => {
-    if (e.key === 'Escape') {
-      props.setOpen(false)
-    }
-  }, [props]);
+  const escKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Escape") {
+        props.setOpen(false);
+      }
+    },
+    [props]
+  );
 
   useEffect(() => {
     if (props.open) {
-      document.addEventListener("keydown", escKeyDown)
+      document.addEventListener("keydown", escKeyDown);
     } else {
-      document.removeEventListener("keydown", escKeyDown)
+      document.removeEventListener("keydown", escKeyDown);
     }
     return () => {
       document.removeEventListener("keydown", escKeyDown);
@@ -111,5 +113,5 @@ export default React.forwardRef(function Modal(props, ref) {
         <Scroll>{props.children}</Scroll>
       </Content>
     </Wrapper>
-  )
-})
+  );
+});

@@ -1,26 +1,26 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
 import {
-  PieChart,
-  Pie,
-  Tooltip,
   Cell,
-  ResponsiveContainer,
   Legend,
-} from 'recharts'
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import styled from "styled-components";
 
-import Section from 'components/base/Section'
+import Section from "components/base/Section";
 
 const Wrapper = styled.div`
   width: 100%;
   height: 35rem;
-`
+`;
 export default function Subscriptions(props) {
   const data = Object.keys(props.satisfaction).map((key) => ({
     name: key,
     satisfaction: props.satisfaction[key],
-  }))
-  const colors = ['#FFCD56', '#FFA726', '#2FA0F2', '#4BC0C0']
+  }));
+  const colors = ["#FFCD56", "#FFA726", "#2FA0F2", "#4BC0C0"];
   return (
     <Section>
       <Section.Title center>Satisfaction des utilisateurs</Section.Title>
@@ -28,11 +28,11 @@ export default function Subscriptions(props) {
         <ResponsiveContainer>
           <PieChart width={700} height={600}>
             <Pie
-              dataKey='satisfaction'
+              dataKey="satisfaction"
               data={data}
-              cx='50%'
-              cy='55%'
-              outerRadius={'90%'}
+              cx="50%"
+              cy="55%"
+              outerRadius={"90%"}
               label
               margin={{ top: 500 }}
             >
@@ -41,10 +41,10 @@ export default function Subscriptions(props) {
               ))}
             </Pie>
             <Tooltip />
-            <Legend layout='vertical' align='center' verticalAlign='top' />
+            <Legend layout="vertical" align="center" verticalAlign="top" />
           </PieChart>
         </ResponsiveContainer>
       </Wrapper>
     </Section>
-  )
+  );
 }

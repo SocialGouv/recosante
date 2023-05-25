@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
+import styled from "styled-components";
 
-import Web from 'components/layout/Web'
-import Newsletter from '../components/Newsletter'
-import AboutBaignades from 'components/AboutBaignades'
-import useIframe from 'hooks/useIframe'
-import Search from 'components/Search'
+import AboutBaignades from "components/AboutBaignades";
+import Search from "components/Search";
+import Web from "components/layout/Web";
+import useIframe from "hooks/useIframe";
+import Newsletter from "../components/Newsletter";
 
 const StyledSearch = styled(Search)`
-    margin-bottom: 0;
-`
+  margin-bottom: 0;
+`;
 export default function EauBaignade() {
-  const iframe = useIframe()
+  const iframe = useIframe();
   const data = useStaticQuery(
     graphql`
       query {
@@ -21,11 +21,11 @@ export default function EauBaignade() {
         }
       }
     `
-  )
+  );
 
   return (
     <Web title={`Eaux de baignade`}>
-      <Newsletter first data={data} type={'baignades'} seo />
+      <Newsletter first data={data} type={"baignades"} seo />
       <AboutBaignades />
       {!iframe && (
         <>
@@ -33,5 +33,5 @@ export default function EauBaignade() {
         </>
       )}
     </Web>
-  )
+  );
 }

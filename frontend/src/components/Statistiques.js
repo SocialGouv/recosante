@@ -1,29 +1,29 @@
-import React from 'react'
-import styled from 'styled-components'
-import Section from 'components/base/Section'
-import useStatistiques from 'hooks/useStatistiques'
-import Email from 'components/statistiques/Email'
-import Web from 'components/statistiques/Web'
+import Section from "components/base/Section";
+import Email from "components/statistiques/Email";
+import Web from "components/statistiques/Web";
+import useStatistiques from "hooks/useStatistiques";
+import React from "react";
+import styled from "styled-components";
 
 export const MainTitle = styled.h1`
   color: ${(props) => props.theme.colors.main};
   font-size: 2.75rem;
   margin-bottom: 5rem;
-`
+`;
 export const Subsection = styled(Section)`
   margin-bottom: 5rem;
-`
+`;
 export const StyledSection = styled(Section)`
   display: flex;
   ${(props) => props.theme.mq.medium} {
     flex-direction: column;
   }
   margin-bottom: 0;
-`
+`;
 export const Wrapper = styled.div`
   width: 100%;
   height: 25rem;
-`
+`;
 export const Text = styled.h3`
   flex: 1;
   text-align: center;
@@ -31,10 +31,10 @@ export const Text = styled.h3`
   strong {
     font-size: 4rem;
   }
-`
+`;
 
 export default function Statistiques() {
-  const { web, email, openings } = useStatistiques()
+  const { web, email, openings } = useStatistiques();
   return web && web && email && email ? (
     <>
       {web.total_visits && (
@@ -56,7 +56,7 @@ export default function Statistiques() {
           total_actifs={email.total_actifs}
           active_users={JSON.parse(email.active_users)}
           desinscriptions={JSON.parse(email.desinscriptions)}
-          temps_moyen_inscription={email.temps_moyen_inscription} 
+          temps_moyen_inscription={email.temps_moyen_inscription}
           indicateur_indice_atmo={email.indicateur_indice_atmo}
           indicateur_raep={email.indicateur_raep}
           indicateur_vigilance_meteo={email.indicateur_vigilance_meteo}
@@ -72,5 +72,5 @@ export default function Statistiques() {
         />
       )}
     </>
-  ) : null
+  ) : null;
 }

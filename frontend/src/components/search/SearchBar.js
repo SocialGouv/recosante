@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 
-import { useSearch } from 'hooks/useSearch'
-import useDebounce from 'hooks/useDebounce'
-import TextInput from './searchBar/TextInput'
-import Suggestions from './searchBar/Suggestions'
+import useDebounce from "hooks/useDebounce";
+import { useSearch } from "hooks/useSearch";
+import Suggestions from "./searchBar/Suggestions";
+import TextInput from "./searchBar/TextInput";
 
 const Wrapper = styled.form`
   position: absolute;
@@ -30,38 +30,38 @@ const Wrapper = styled.form`
   ${(props) => props.theme.mq.small} {
     font-size: 1.25rem;
   }
-`
+`;
 export default function SearchBar(props) {
-  const [search, setSearch] = useState(props.initialValue || '')
+  const [search, setSearch] = useState(props.initialValue || "");
 
-  const debouncedSearch = useDebounce(search)
+  const debouncedSearch = useDebounce(search);
 
-  const { data, isFetching } = useSearch(debouncedSearch)
+  const { data, isFetching } = useSearch(debouncedSearch);
 
-  const [focus, setFocus] = useState(false)
-  const input = useRef(null)
-  const [current, setCurrent] = useState(0)
+  const [focus, setFocus] = useState(false);
+  const input = useRef(null);
+  const [current, setCurrent] = useState(0);
   useEffect(() => {
     if (!focus) {
-      setCurrent(0)
+      setCurrent(0);
     }
-  }, [focus])
+  }, [focus]);
   const selectPlace = (place) => {
-    window?._paq?.push(['trackEvent', 'Search', 'PlaceInput', place.nom])
-    setSearch(place.nom)
-    props.handlePlaceSelection(place)
-    setFocus(false)
-  }
+    window?._paq?.push(["trackEvent", "Search", "PlaceInput", place.nom]);
+    setSearch(place.nom);
+    props.handlePlaceSelection(place);
+    setFocus(false);
+  };
 
   return (
     <Wrapper
       className={props.className}
       focus={focus}
       onSubmit={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
+        e.preventDefault();
+        e.stopPropagation();
         if (current > -1 && data[current]) {
-          selectPlace(data[current])
+          selectPlace(data[current]);
         }
       }}
     >
@@ -75,7 +75,7 @@ export default function SearchBar(props) {
         setFocus={setFocus}
         placeholder={props.placeholder}
         handlePlaceSelection={(place) => {
-          selectPlace(place)
+          selectPlace(place);
         }}
       />
       {data && focus && (
@@ -87,10 +87,10 @@ export default function SearchBar(props) {
           isFetching={isFetching}
           setCurrent={setCurrent}
           handleSuggestionClick={(place) => {
-            selectPlace(place)
+            selectPlace(place);
           }}
         />
       )}
     </Wrapper>
-  )
+  );
 }

@@ -1,33 +1,36 @@
-import React from 'react'
+import React from "react";
 
-import useIndicators from 'hooks/useIndicators'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './indiceUv/Chart'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useIndicators from "hooks/useIndicators";
+import Chart from "./indiceUv/Chart";
 
 export default function IndiceUv(props) {
-  const { data, isError, isLoading } = useIndicators(props.place.code, props.date)
+  const { data, isError, isLoading } = useIndicators(
+    props.place.code,
+    props.date
+  );
 
   return (
     <Card columns={6}>
       <Card.Content>
         <Card.Header>
           <Card.Info>
-            <Card.Title isLoading={isLoading} indicateur='indice_uv'>
+            <Card.Title isLoading={isLoading} indicateur="indice_uv">
               Indice UV
             </Card.Title>
             <Card.Value isError={isError}>
               {isError
-                ? 'Oups 🦔'
+                ? "Oups 🦔"
                 : data &&
                   (data.indice_uv?.indice?.label
                     ? data.indice_uv.indice.label
-                    : 'Pas de données')}
+                    : "Pas de données")}
             </Card.Value>
           </Card.Info>
           <Chart data={data && !data.indice_uv?.error && data} />
         </Card.Header>
-        <Card.Mobile indicateur='indice_uv' place={props.place}>
+        <Card.Mobile indicateur="indice_uv" place={props.place}>
           <Card.Recommandation
             dangerouslySetInnerHTML={{
               __html: isError
@@ -35,39 +38,35 @@ export default function IndiceUv(props) {
                 : data &&
                   (data.indice_uv?.error
                     ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
-                    : data.indice_uv?.advice &&
-                      data.indice_uv?.advice.main),
+                    : data.indice_uv?.advice && data.indice_uv?.advice.main),
             }}
           />
         </Card.Mobile>
         <Card.SubscribeWrapper>
-          <Card.Subscribe indicateur='indice_uv' place={props.place} />
+          <Card.Subscribe indicateur="indice_uv" place={props.place} />
         </Card.SubscribeWrapper>
       </Card.Content>
       {data && data.indice_uv?.validity && (
-          <Card.Source>
-            <p>
-              Prévision pour le{' '}
-              {new Date(data.indice_uv.validity.start).toLocaleDateString(
-                'fr',
-                {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                }
-              )}{' '}
-              dans {data.indice_uv.validity.area}
-            </p>
-            <p>
-              Données fournies par{' '}
-              {data.indice_uv.sources && (
-                <MagicLink to={data.indice_uv.sources[0].url}>
-                  {data.indice_uv.sources[0].label}
-                </MagicLink>
-              )}
-            </p>
-          </Card.Source>
-        )}
+        <Card.Source>
+          <p>
+            Prévision pour le{" "}
+            {new Date(data.indice_uv.validity.start).toLocaleDateString("fr", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
+            dans {data.indice_uv.validity.area}
+          </p>
+          <p>
+            Données fournies par{" "}
+            {data.indice_uv.sources && (
+              <MagicLink to={data.indice_uv.sources[0].url}>
+                {data.indice_uv.sources[0].label}
+              </MagicLink>
+            )}
+          </p>
+        </Card.Source>
+      )}
     </Card>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from "react";
+import styled from "styled-components";
 
-import { themes } from 'utils/styles'
-import StyleContext from 'utils/StyleContext'
-import Theme from './themes/Theme'
+import StyleContext from "utils/StyleContext";
+import { themes } from "utils/styles";
+import Theme from "./themes/Theme";
 
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 1em -0.5em;
-`
+`;
 export default function Themes() {
-  const { theme, setTheme } = useContext(StyleContext)
+  const { theme, setTheme } = useContext(StyleContext);
 
   return (
     <Wrapper>
@@ -24,5 +24,5 @@ export default function Themes() {
         />
       ))}
     </Wrapper>
-  )
+  );
 }

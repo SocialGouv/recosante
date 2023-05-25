@@ -1,13 +1,16 @@
-import React from 'react'
+import React from "react";
 
-import useIndicators from 'hooks/useIndicators'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './indiceAtmo/Chart'
-import Details from './indiceAtmo/Details'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useIndicators from "hooks/useIndicators";
+import Chart from "./indiceAtmo/Chart";
+import Details from "./indiceAtmo/Details";
 
 export default function IndiceAtmo(props) {
-  const { data, isError, isLoading } = useIndicators(props.place.code, props.date)
+  const { data, isError, isLoading } = useIndicators(
+    props.place.code,
+    props.date
+  );
 
   return (
     (!data || data.indice_atmo !== {}) && (
@@ -15,19 +18,19 @@ export default function IndiceAtmo(props) {
         <Card.Content>
           <Card.Header>
             <Card.Info>
-              <Card.Title isLoading={isLoading} indicateur='indice_atmo'>
+              <Card.Title isLoading={isLoading} indicateur="indice_atmo">
                 Indice ATMO de la qualité de l'air
               </Card.Title>
               <Card.Value isError={isError}>
                 {isError
-                  ? 'Oups 🦔'
+                  ? "Oups 🦔"
                   : data &&
-                    (data.indice_atmo.indice?.label || 'Pas de données')}
+                    (data.indice_atmo.indice?.label || "Pas de données")}
               </Card.Value>
             </Card.Info>
             <Chart data={data && !data.indice_atmo.error && data} />
           </Card.Header>
-          <Card.Mobile indicateur='indice_atmo' place={props.place}>
+          <Card.Mobile indicateur="indice_atmo" place={props.place}>
             <Card.Details>
               <Details data={data && !data.indice_atmo.error && data} />
             </Card.Details>
@@ -44,25 +47,25 @@ export default function IndiceAtmo(props) {
             />
           </Card.Mobile>
           <Card.SubscribeWrapper>
-            <Card.Subscribe indicateur='indice_atmo' place={props.place} />
+            <Card.Subscribe indicateur="indice_atmo" place={props.place} />
           </Card.SubscribeWrapper>
         </Card.Content>
         {data && !data.indice_atmo.error && data.indice_atmo.validity && (
           <Card.Source>
             <p>
-              Prévision pour le{' '}
+              Prévision pour le{" "}
               {new Date(data.indice_atmo.validity.start).toLocaleDateString(
-                'fr',
+                "fr",
                 {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 }
-              )}{' '}
+              )}{" "}
               dans {data.indice_atmo.validity.area}
             </p>
             <p>
-              Données fournies par{' '}
+              Données fournies par{" "}
               {data.indice_atmo.sources && (
                 <MagicLink to={data.indice_atmo.sources[0].url}>
                   {data.indice_atmo.sources[0].label}
@@ -73,5 +76,5 @@ export default function IndiceAtmo(props) {
         )}
       </Card>
     )
-  )
+  );
 }

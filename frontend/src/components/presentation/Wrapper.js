@@ -1,12 +1,12 @@
-import React, { useRef } from 'react'
-import styled from 'styled-components'
+import React, { useRef } from "react";
+import styled from "styled-components";
 
-import useOnScreen from 'hooks/useOnScreen'
-import Section from 'components/base/Section'
+import Section from "components/base/Section";
+import useOnScreen from "hooks/useOnScreen";
 
 const Columns = styled.div`
   display: flex;
-  flex-direction: ${(props) => (props.invert ? 'row' : 'row-reverse')};
+  flex-direction: ${(props) => (props.invert ? "row" : "row-reverse")};
   align-items: center;
   margin-left: -1rem;
   margin-right: -1rem;
@@ -16,17 +16,17 @@ const Columns = styled.div`
     align-items: center;
     margin-bottom: 3rem;
   }
-`
+`;
 function Wrapper(props) {
-  const ref = useRef()
-  const isOnScreen = useOnScreen(ref, '-200px', 0)
+  const ref = useRef();
+  const isOnScreen = useOnScreen(ref, "-200px", 0);
   return (
     <Section ref={ref}>
-      <Columns invert={props.invert} className={isOnScreen ? 'onScreen' : null}>
+      <Columns invert={props.invert} className={isOnScreen ? "onScreen" : null}>
         {props.children}
       </Columns>
     </Section>
-  )
+  );
 }
 
 Wrapper.Content = styled.div`
@@ -36,7 +36,7 @@ Wrapper.Content = styled.div`
   p {
     margin-bottom: 1rem;
   }
-`
+`;
 Wrapper.Image = styled.div`
   position: relative;
   width: ${(props) => props.width};
@@ -62,5 +62,5 @@ Wrapper.Image = styled.div`
     opacity: 1;
     transform: translateY(0);
   }
-`
-export default Wrapper
+`;
+export default Wrapper;

@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import steps from 'utils/indicateursSteps'
-import { useLocalUser } from 'hooks/useUser'
-import useNotificationsPrompt from 'hooks/useNotificationsPrompt'
-import Progress from './subscription/Progress'
-import Question from './subscription/Question'
-import Navigation from './subscription/Navigation'
-import Recommandations from './subscription/Recommandations'
-import Identity from './subscription/Identity'
-import Notifications from './subscription/Notifications'
-import Newsletter from './subscription/Newsletter'
+import useNotificationsPrompt from "hooks/useNotificationsPrompt";
+import { useLocalUser } from "hooks/useUser";
+import steps from "utils/indicateursSteps";
+import Identity from "./subscription/Identity";
+import Navigation from "./subscription/Navigation";
+import Newsletter from "./subscription/Newsletter";
+import Notifications from "./subscription/Notifications";
+import Progress from "./subscription/Progress";
+import Question from "./subscription/Question";
+import Recommandations from "./subscription/Recommandations";
 
-const Wrapper = styled.div``
+const Wrapper = styled.div``;
 export default function Indicators(props) {
   const { applicationServerKey } = useStaticQuery(
     graphql`
@@ -23,17 +23,17 @@ export default function Indicators(props) {
         }
       }
     `
-  )
+  );
   const notifications = useNotificationsPrompt(
-    '/sw.js',
+    "/sw.js",
     applicationServerKey.application_server_key
-  )
+  );
 
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(false);
 
-  const { user, mutateUser } = useLocalUser()
+  const { user, mutateUser } = useLocalUser();
 
   return (
     <Wrapper>
@@ -47,30 +47,30 @@ export default function Indicators(props) {
             setCurrentStep={(newStep) => {
               if (
                 newStep === 3 &&
-                user['indicateurs_media'][0] === 'notifications_web'
+                user["indicateurs_media"][0] === "notifications_web"
               ) {
                 notifications.subscribe().then((pushSubscription) => {
                   pushSubscription &&
                     mutateUser({
                       webpush_subscriptions_info:
                         JSON.stringify(pushSubscription),
-                    })
-                  setCurrentStep(newStep)
-                })
+                    });
+                  setCurrentStep(newStep);
+                });
               } else {
-                setCurrentStep(newStep)
+                setCurrentStep(newStep);
               }
             }}
             forceCurrentStep={(newStep) => {
-              notifications.clear()
-              setCurrentStep(newStep)
+              notifications.clear();
+              setCurrentStep(newStep);
             }}
             steps={steps}
           />
         </>
-      ) : currentStep === 'end' ? (
-        'End'
-      ) : currentStep === 'identity' ? (
+      ) : currentStep === "end" ? (
+        "End"
+      ) : currentStep === "identity" ? (
         <Identity setPreviousStep={() => setCurrentStep(3)} />
       ) : (
         <Recommandations
@@ -84,5 +84,5 @@ export default function Indicators(props) {
       <Notifications modal={modal} setModal={setModal} />
       <Newsletter modal={modal} setModal={setModal} />
     </Wrapper>
-  )
+  );
 }

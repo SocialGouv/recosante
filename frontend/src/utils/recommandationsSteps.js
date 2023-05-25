@@ -1,61 +1,61 @@
-import React from 'react'
+import React from "react";
 
-import Jardinage from './icons/Jardinage'
-import Bricolage from './icons/Bricolage'
-import Menage from './icons/Menage'
-import Sport from './icons/Sport'
-import Enfant from './icons/Enfant'
-import NoEnfant from './icons/NoEnfant'
-import Bois from './icons/Bois'
-import Chaudiere from './icons/Chaudiere'
-import Appoint from './icons/Appoint'
-import Velo from './icons/Velo'
-import Tec from './icons/Tec'
-import Voiture from './icons/Voiture'
-import Chat from './icons/Chat'
-import Chien from './icons/Chien'
+import Appoint from "./icons/Appoint";
+import Bois from "./icons/Bois";
+import Bricolage from "./icons/Bricolage";
+import Chat from "./icons/Chat";
+import Chaudiere from "./icons/Chaudiere";
+import Chien from "./icons/Chien";
+import Enfant from "./icons/Enfant";
+import Jardinage from "./icons/Jardinage";
+import Menage from "./icons/Menage";
+import NoEnfant from "./icons/NoEnfant";
+import Sport from "./icons/Sport";
+import Tec from "./icons/Tec";
+import Velo from "./icons/Velo";
+import Voiture from "./icons/Voiture";
 
 const steps = [
   {
-    name: 'activites',
-    title: 'Activités',
+    name: "activites",
+    title: "Activités",
     label:
-      'Je renseigne les activités que je pratique au moins 2h par semaine.',
+      "Je renseigne les activités que je pratique au moins 2h par semaine.",
     options: [
       {
-        value: 'jardinage',
+        value: "jardinage",
         label: `Jardinage`,
         icon: <Jardinage />,
       },
       {
-        value: 'bricolage',
+        value: "bricolage",
         label: `Bricolage`,
         icon: <Bricolage />,
       },
       {
-        value: 'menage',
+        value: "menage",
         label: `Ménage`,
         icon: <Menage />,
       },
       {
-        value: 'sport',
+        value: "sport",
         label: `Sport`,
         icon: <Sport />,
       },
     ],
   },
   {
-    name: 'enfants',
-    title: 'Enfants',
-    label: 'Je renseigne si je vis avec des enfants de moins de 6 ans.',
+    name: "enfants",
+    title: "Enfants",
+    label: "Je renseigne si je vis avec des enfants de moins de 6 ans.",
     options: [
       {
-        value: 'oui',
+        value: "oui",
         label: `Un ou plusieurs enfants`,
         icon: <Enfant />,
       },
       {
-        value: 'non',
+        value: "non",
         label: `Pas<br />d’enfant`,
         icon: <NoEnfant />,
       },
@@ -63,66 +63,66 @@ const steps = [
     exclusive: true,
   },
   {
-    name: 'chauffage',
-    title: 'Chauffage',
-    label: 'Je renseigne le mode de chauffage de mon logement.',
+    name: "chauffage",
+    title: "Chauffage",
+    label: "Je renseigne le mode de chauffage de mon logement.",
     options: [
       {
-        value: 'bois',
+        value: "bois",
         label: `Cheminée, insert ou poêle à bois`,
         icon: <Bois />,
       },
       {
-        value: 'chaudiere',
+        value: "chaudiere",
         label: `Chaudière au fioul ou au gaz`,
         icon: <Chaudiere />,
       },
       {
-        value: 'appoint',
+        value: "appoint",
         label: `Chauffage mobile d’appoint au fioul`,
         icon: <Appoint />,
       },
     ],
   },
   {
-    name: 'deplacement',
-    title: 'Transport',
-    label: 'Je renseigne les modes de transport que j’utilise.',
+    name: "deplacement",
+    title: "Transport",
+    label: "Je renseigne les modes de transport que j’utilise.",
     options: [
       {
-        value: 'velo',
+        value: "velo",
         label: `Vélo`,
         icon: <Velo />,
       },
       {
-        value: 'tec',
+        value: "tec",
         label: `Transport en commun`,
         icon: <Tec />,
       },
       {
-        value: 'voiture',
+        value: "voiture",
         label: `Voiture`,
         icon: <Voiture />,
       },
     ],
   },
   {
-    name: 'animaux_domestiques',
-    title: 'Animaux',
-    label: 'Je renseigne si je vis avec des animaux.',
+    name: "animaux_domestiques",
+    title: "Animaux",
+    label: "Je renseigne si je vis avec des animaux.",
     options: [
       {
-        value: 'chat',
+        value: "chat",
         label: `Chat`,
         icon: <Chat />,
       },
       {
-        value: 'chien',
+        value: "chien",
         label: `Chien`,
         icon: <Chien />,
       },
     ],
   },
-]
+];
 
-export default steps
+export default steps;

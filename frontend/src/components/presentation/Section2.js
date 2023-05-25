@@ -1,14 +1,14 @@
-import React, { useRef } from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useRef } from "react";
+import styled from "styled-components";
 
-import useOnScreen from 'hooks/useOnScreen'
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
+import useOnScreen from "hooks/useOnScreen";
 
 const StyledSection = styled(Section)`
   opacity: ${(props) => (props.isOnScreen ? 1 : 0)};
-  transform: translateY(${(props) => (props.isOnScreen ? 0 : '25%')});
+  transform: translateY(${(props) => (props.isOnScreen ? 0 : "25%")});
   transition: opacity 600ms, transform 900ms ease-out;
 
   ${(props) => props.theme.mq.small} {
@@ -27,7 +27,7 @@ const StyledSection = styled(Section)`
     list-style: none;
 
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0.25rem;
       left: 0.5rem;
@@ -45,7 +45,7 @@ const StyledSection = styled(Section)`
       }
     }
   }
-`
+`;
 export default function Who() {
   const data = useStaticQuery(
     graphql`
@@ -55,11 +55,11 @@ export default function Who() {
         }
       }
     `
-  )
+  );
 
-  const ref = useRef()
-  const isOnScreen = useOnScreen(ref, '-100px', 0)
-  const animationIsOnScreen = useOnScreen(ref)
+  const ref = useRef();
+  const isOnScreen = useOnScreen(ref, "-100px", 0);
+  const animationIsOnScreen = useOnScreen(ref);
 
   return (
     <StyledSection
@@ -70,5 +70,5 @@ export default function Who() {
     >
       <Markdown>{data.mdx.body}</Markdown>
     </StyledSection>
-  )
+  );
 }

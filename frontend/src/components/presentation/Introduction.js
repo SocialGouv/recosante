@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
+import styled from "styled-components";
 
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
-import Button from 'components/base/Button'
+import Button from "components/base/Button";
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
 
 const StyledSection = styled(Section)`
   p {
@@ -23,7 +23,7 @@ const StyledSection = styled(Section)`
       text-align: left;
     }
   }
-`
+`;
 const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 3rem;
@@ -34,10 +34,10 @@ const Title = styled.h1`
     font-size: 1.5rem;
     text-align: left;
   }
-`
+`;
 const Left = styled.span`
   display: block;
-`
+`;
 const Right = styled.span`
   display: block;
   margin-bottom: 1rem;
@@ -49,7 +49,7 @@ const Right = styled.span`
   ${(props) => props.theme.mq.small} {
     margin: 0;
   }
-`
+`;
 export default function What(props) {
   const data = useStaticQuery(
     graphql`
@@ -59,7 +59,7 @@ export default function What(props) {
         }
       }
     `
-  )
+  );
 
   return (
     <StyledSection first medium>
@@ -73,33 +73,33 @@ export default function What(props) {
       </Title>
       <Markdown>{(props.data || data).mdx.body}</Markdown>
       <Button.Wrapper center>
-        <Button to={'/kit_de_communication.zip'} hollow>
+        <Button to={"/kit_de_communication.zip"} hollow>
           Télecharger le kit de communication
         </Button>
         <Button
           hollow
-          to='mailto:contact@recosante.beta.gouv.fr'
+          to="mailto:contact@recosante.beta.gouv.fr"
           onClick={() =>
             window._paq &&
             window._paq.push([
-              'trackEvent',
-              'Doctors',
-              'Navigate',
-              'Appointment',
+              "trackEvent",
+              "Doctors",
+              "Navigate",
+              "Appointment",
             ])
           }
         >
           Prendre rendez-vous
         </Button>
         <Button
-          to='/'
+          to="/"
           onClick={() =>
             window._paq &&
             window._paq.push([
-              'trackEvent',
-              'Doctors',
-              'Navigate',
-              'Appointment',
+              "trackEvent",
+              "Doctors",
+              "Navigate",
+              "Appointment",
             ])
           }
         >
@@ -107,5 +107,5 @@ export default function What(props) {
         </Button>
       </Button.Wrapper>
     </StyledSection>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import { useLocation } from '@reach/router'
+import { useLocation } from "@reach/router";
+import React, { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
 
-import UXContext from 'utils/UXContext'
-import Select from 'components/base/FancySelect'
-import Panel from 'components/base/Panel'
-import Link from './share/Link'
-import Mail from './share/Mail'
-import Facebook from './share/Facebook'
-import Twitter from './share/Twitter'
-import Linkedin from './share/Linkedin'
-import Whatsapp from './share/Whatsapp'
-import Messenger from './share/Messenger'
+import Select from "components/base/FancySelect";
+import Panel from "components/base/Panel";
+import UXContext from "utils/UXContext";
+import Facebook from "./share/Facebook";
+import Link from "./share/Link";
+import Linkedin from "./share/Linkedin";
+import Mail from "./share/Mail";
+import Messenger from "./share/Messenger";
+import Twitter from "./share/Twitter";
+import Whatsapp from "./share/Whatsapp";
 
 const ShareButtons = styled.ul`
   display: flex;
@@ -37,55 +37,53 @@ const ShareButtons = styled.ul`
       fill: ${(props) => props.theme.colors.main};
     }
   }
-`
+`;
 export default function Share(props) {
-  const {
-    shareOpen,
-    toggleShareOpen,
-    typeShare,
-    setTypeShare,
-  } = useContext(UXContext)
+  const { shareOpen, toggleShareOpen, typeShare, setTypeShare } =
+    useContext(UXContext);
 
-  let location = useLocation()
-  const [url, setUrl] = useState()
+  let location = useLocation();
+  const [url, setUrl] = useState();
   useEffect(() => {
     setUrl(
       `${window.location.origin}/${
-        typeShare === 'result' ? location.pathname.substring(1) + location.search : ''
+        typeShare === "result"
+          ? location.pathname.substring(1) + location.search
+          : ""
       }`
-    )
-  }, [location.search, location.pathname, typeShare])
-  const [title, setTitle] = useState()
+    );
+  }, [location.search, location.pathname, typeShare]);
+  const [title, setTitle] = useState();
   useEffect(() => {
     setTitle(
       `URL du site web Recosanté${
-        typeShare === 'result' && props.place ? ' - ' + props.place.nom : ''
+        typeShare === "result" && props.place ? " - " + props.place.nom : ""
       }`
-    )
-  }, [props.place, typeShare])
+    );
+  }, [props.place, typeShare]);
   return (
     <Panel
       small={props.small}
-      id={props.small ? 'share-mobile' : null}
+      id={props.small ? "share-mobile" : null}
       open={shareOpen}
       toggleClose={toggleShareOpen}
       index={1}
     >
       <h2>
-        Partager{' '}
+        Partager{" "}
         <Select
           fancy
           value={typeShare}
           onChange={setTypeShare}
           options={[
-            { value: 'simulator', label: `Recosanté` },
+            { value: "simulator", label: `Recosanté` },
             {
-              value: 'result',
+              value: "result",
               label: props.place ? props.place.nom : `cette ville`,
               disabled: !props.place,
             },
           ]}
-          title='Choisissez de partager l’accueil de Recosanté ou le tableau de bord d’une ville'
+          title="Choisissez de partager l’accueil de Recosanté ou le tableau de bord d’une ville"
         />
       </h2>
       <ShareButtons>
@@ -97,7 +95,10 @@ export default function Share(props) {
           />
         </li>
         <li>
-          <Facebook quote={props.messages.facebook[typeShare].quote} url={url} />
+          <Facebook
+            quote={props.messages.facebook[typeShare].quote}
+            url={url}
+          />
         </li>
         <li>
           <Twitter title={props.messages.twitter[typeShare].title} url={url} />
@@ -106,7 +107,10 @@ export default function Share(props) {
           <Linkedin url={url} />
         </li>
         <li>
-          <Whatsapp title={props.messages.whatsapp[typeShare].title} url={url} />
+          <Whatsapp
+            title={props.messages.whatsapp[typeShare].title}
+            url={url}
+          />
         </li>
         <li>
           <Messenger url={url} />
@@ -114,5 +118,5 @@ export default function Share(props) {
       </ShareButtons>
       <Link title={title} url={url} />
     </Panel>
-  )
+  );
 }

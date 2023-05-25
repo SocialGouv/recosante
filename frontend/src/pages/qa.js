@@ -1,9 +1,9 @@
-import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
 
-import Web from 'components/layout/Web'
-import Newsletter from '../components/Newsletter'
-import AboutQa from 'components/AboutQa'
+import AboutQa from "components/AboutQa";
+import Web from "components/layout/Web";
+import Newsletter from "../components/Newsletter";
 
 export default function Qa() {
   const data = useStaticQuery(
@@ -14,12 +14,18 @@ export default function Qa() {
         }
       }
     `
-  )
+  );
 
   return (
     <Web title={`Qualité de l’air`}>
-      <Newsletter first data={data} type={'qa'} indicateurs={['indice_atmo']} seo />
+      <Newsletter
+        first
+        data={data}
+        type={"qa"}
+        indicateurs={["indice_atmo"]}
+        seo
+      />
       <AboutQa />
     </Web>
-  )
+  );
 }

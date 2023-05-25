@@ -1,121 +1,121 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
-import StyleContext from 'utils/StyleContext'
+import React, { useContext } from "react";
+import styled from "styled-components";
+import StyleContext from "utils/StyleContext";
 
 const Wrapper = styled.svg`
   overflow: visible;
   width: auto;
   height: 10rem;
   transform: rotate(-90deg);
-`
+`;
 
 const Circle = styled.circle`
-  stroke: ${(props) => props.theme.colors.indiceuv[props['data-value']]};
-  stroke-dashoffset: ${(props) => 2 * Math.PI * props.r * (1 - props['data-value'] / props.maxValue)};
+  stroke: ${(props) => props.theme.colors.indiceuv[props["data-value"]]};
+  stroke-dashoffset: ${(props) =>
+    2 * Math.PI * props.r * (1 - props["data-value"] / props.maxValue)};
   stroke-width: ${(props) => 2 * props.r}};
   stroke-dasharray: ${(props) => 2 * Math.PI * props.r};
-  transition: stroke-dashoffset ${(props) => ( props['data-value'] ? 3 : 0)}s ease-in-out;
-`
+  transition: stroke-dashoffset ${(props) =>
+    props["data-value"] ? 3 : 0}s ease-in-out;
+`;
 
 const Path = styled.path`
   stroke: ${(props) =>
-    props.visible ? props.theme.colors.indiceuv[props['data-value']]
+    props.visible
+      ? props.theme.colors.indiceuv[props["data-value"]]
       : props.theme.colors.main};
-  opacity: ${(props) =>
-    props.visible ? 1 : 0.15};
+  opacity: ${(props) => (props.visible ? 1 : 0.15)};
   transition: opacity ${(props) => (props.visible ? 1000 : 0)}ms
-                      ${(props) => (props.visible ? 2000 : 0)}ms
-                      ease-in-out,
-              stroke  ${(props) => (props.visible ? 500 : 0)}ms
-                      ${(props) => (props.visible ? 2000 : 0)}ms
-                      ease-in-out;
+      ${(props) => (props.visible ? 2000 : 0)}ms ease-in-out,
+    stroke ${(props) => (props.visible ? 500 : 0)}ms
+      ${(props) => (props.visible ? 2000 : 0)}ms ease-in-out;
   stroke-width: 3;
   stroke-linecap: round;
   stroke-linejoin: round;
-`
+`;
 
 export default function Chart(props) {
-  const { themes, theme } = useContext(StyleContext)
-  let value = props.data?.indice_uv?.indice?.value || 0
-  const maxValue = 11
-  value = Math.min(value, maxValue)
+  const { themes, theme } = useContext(StyleContext);
+  let value = props.data?.indice_uv?.indice?.value || 0;
+  const maxValue = 11;
+  value = Math.min(value, maxValue);
   return (
-    <Wrapper aria-hidden={true} width='48' height='48' viewBox='0 0 48 48'>
+    <Wrapper aria-hidden={true} width="48" height="48" viewBox="0 0 48 48">
       <circle
-        cx='24'
-        cy='24'
-        r='12'
+        cx="24"
+        cy="24"
+        r="12"
         fill={themes[theme].colors.main}
         opacity="0.15"
       />
       <Circle
         data-value={value}
         maxValue={maxValue}
-        cx='24'
-        cy='24'
-        r='6'
+        cx="24"
+        cy="24"
+        r="6"
         fill="none"
       />
       <Path // 4
         visible={value > 3}
         data-value={value}
-        d='M15.6553 38.4141L13.0001 43.0529'
+        d="M15.6553 38.4141L13.0001 43.0529"
       />
       <Path // 10
         visible={value > 9}
         data-value={value}
-        d='M35 4.94727L32.3448 9.58602'
+        d="M35 4.94727L32.3448 9.58602"
       />
       <Path // 5
         visible={value > 4}
         data-value={value}
-        d='M9.58691 32.3447L4.94815 34.9999'
+        d="M9.58691 32.3447L4.94815 34.9999"
       />
       <Path // 11
         visible={value > 10}
         data-value={value}
-        d='M43.0527 13L38.414 15.6552'
+        d="M43.0527 13L38.414 15.6552"
       />
       <Path // 0
         visible={value > 0}
         data-value={value}
-        d='M46 24L40.6896 24'
+        d="M46 24L40.6896 24"
       />
       <Path // 6
         visible={value > 5}
         data-value={value}
-        d='M7.31055 24H2.00019'
+        d="M7.31055 24H2.00019"
       />
       <Path // 1
         visible={value > 0}
         data-value={value}
-        d='M43.0527 35L38.414 32.3448'
+        d="M43.0527 35L38.414 32.3448"
       />
       <Path // 7
         visible={value > 6}
         data-value={value}
-        d='M9.58691 15.6548L4.94815 12.9996'
+        d="M9.58691 15.6548L4.94815 12.9996"
       />
       <Path // 2
         visible={value > 1}
         data-value={value}
-        d='M35 43.0527L32.3448 38.414'
+        d="M35 43.0527L32.3448 38.414"
       />
       <Path // 8
         visible={value > 7}
         data-value={value}
-        d='M15.6553 9.58594L13.0001 4.94717'
+        d="M15.6553 9.58594L13.0001 4.94717"
       />
       <Path // 9
         visible={value > 8}
         data-value={value}
-        d='M24 7.31055L24 2.00019'
+        d="M24 7.31055L24 2.00019"
       />
-      <Path // 3 
+      <Path // 3
         visible={value > 2}
         data-value={value}
-        d='M24 46V40.6896'
+        d="M24 46V40.6896"
       />
     </Wrapper>
-  )
+  );
 }

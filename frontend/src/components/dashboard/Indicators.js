@@ -1,13 +1,13 @@
-import React from 'react'
-import styled from 'styled-components'
-import Masonry from 'react-masonry-css'
+import React from "react";
+import Masonry from "react-masonry-css";
+import styled from "styled-components";
 
-import IndiceAtmo from './indicators/IndiceAtmo'
-import Raep from './indicators/Raep'
-import VigilanceMeteo from './indicators/VigilanceMeteo'
-import IndiceUv from './indicators/IndiceUv'
-import Baignades from './indicators/Baignades'
-import PotentielRadon from './indicators/PotentielRadon'
+import Baignades from "./indicators/Baignades";
+import IndiceAtmo from "./indicators/IndiceAtmo";
+import IndiceUv from "./indicators/IndiceUv";
+import PotentielRadon from "./indicators/PotentielRadon";
+import Raep from "./indicators/Raep";
+import VigilanceMeteo from "./indicators/VigilanceMeteo";
 
 const StyledMasonry = styled(Masonry)`
   display: flex;
@@ -17,7 +17,7 @@ const StyledMasonry = styled(Masonry)`
   .my-masonry-grid_column {
     padding-left: 2rem;
   }
-`
+`;
 export default function Indicators(props) {
   return (
     <StyledMasonry
@@ -25,7 +25,7 @@ export default function Indicators(props) {
         default: 2,
         1200: 1,
       }}
-      columnClassName='my-masonry-grid_column'
+      columnClassName="my-masonry-grid_column"
     >
       <IndiceAtmo place={props.place} date={props.date} />
       <Raep place={props.place} date={props.date} />
@@ -34,5 +34,5 @@ export default function Indicators(props) {
       <Baignades place={props.place} />
       <PotentielRadon place={props.place} />
     </StyledMasonry>
-  )
+  );
 }

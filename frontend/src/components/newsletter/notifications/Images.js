@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { StaticImage } from 'gatsby-plugin-image'
+import { StaticImage } from "gatsby-plugin-image";
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
-`
+`;
 const Ios = styled.div`
   position: absolute;
   top: 0;
@@ -27,7 +27,7 @@ const Ios = styled.div`
     transform: none;
     opacity: 1;
   }
-`
+`;
 const Macos = styled.div`
   position: absolute;
   top: 0;
@@ -43,16 +43,16 @@ const Macos = styled.div`
   ${(props) => props.theme.mq.small} {
     display: none;
   }
-`
+`;
 export default function Images(props) {
   return (
     <Wrapper className={props.className}>
       <Ios isOnScreen={props.isOnScreen}>
-        <StaticImage src={'./images/ios.png'} alt='' />
+        <StaticImage src={"./images/ios.png"} alt="" />
       </Ios>
       <Macos isOnScreen={props.isOnScreen}>
-        <StaticImage src={'./images/macos.png'} alt='' />
+        <StaticImage src={"./images/macos.png"} alt="" />
       </Macos>
     </Wrapper>
-  )
+  );
 }

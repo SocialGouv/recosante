@@ -1,40 +1,40 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { MDXProvider } from '@mdx-js/react'
+import { MDXProvider } from "@mdx-js/react";
+import React, { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import styled from "styled-components";
 
-import { GlobalStyle } from 'utils/styles'
-import useIframe from 'hooks/useIframe'
-import StyleProvider from 'components/providers/StyleProvider'
-import UserProvider from 'components/providers/UserProvider'
-import ModalProvider from 'components/providers/ModalProvider'
-import UXProvider from 'components/providers/UXProvider'
-import Seo from './web/Seo'
-import Header from './Header'
-import Footer from './Footer'
-import WrapperModal from 'components/modals/WrapperModal'
-import DeleteModal from 'components/modals/DeleteModal'
-import SubscriptionModal from 'components/modals/SubscriptionModal'
-import ShareWrapper from 'components/wrappers/ShareWrapper'
-import EmbedWrapper from 'components/wrappers/EmbedWrapper'
-import InstallButton from 'components/base/InstallButton'
+import InstallButton from "components/base/InstallButton";
+import DeleteModal from "components/modals/DeleteModal";
+import SubscriptionModal from "components/modals/SubscriptionModal";
+import WrapperModal from "components/modals/WrapperModal";
+import ModalProvider from "components/providers/ModalProvider";
+import StyleProvider from "components/providers/StyleProvider";
+import UXProvider from "components/providers/UXProvider";
+import UserProvider from "components/providers/UserProvider";
+import EmbedWrapper from "components/wrappers/EmbedWrapper";
+import ShareWrapper from "components/wrappers/ShareWrapper";
+import useIframe from "hooks/useIframe";
+import { GlobalStyle } from "utils/styles";
+import Footer from "./Footer";
+import Header from "./Header";
+import Seo from "./web/Seo";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
-const Wrapper = styled.div``
+const Wrapper = styled.div``;
 const Fullscreen = styled.div`
-  min-height: ${(props) => (props.iframe ? 'auto' : '100vh')};
-`
+  min-height: ${(props) => (props.iframe ? "auto" : "100vh")};
+`;
 const Content = styled.main`
   flex: 1;
   padding: 0 1rem;
-`
+`;
 export default function Web(props) {
-  const iframe = useIframe()
+  const iframe = useIframe();
 
   useEffect(() => {
-    window?._paq?.push(['setCookieSameSite', 'None'])
-  }, [])
+    window?._paq?.push(["setCookieSameSite", "None"]);
+  }, []);
 
   return (
     <Wrapper>
@@ -64,5 +64,5 @@ export default function Web(props) {
         </UXProvider>
       </QueryClientProvider>
     </Wrapper>
-  )
+  );
 }

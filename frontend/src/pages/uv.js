@@ -1,9 +1,9 @@
-import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
 
-import Web from 'components/layout/Web'
-import Newsletter from '../components/Newsletter'
-import AboutUv from 'components/AboutUv'
+import AboutUv from "components/AboutUv";
+import Web from "components/layout/Web";
+import Newsletter from "../components/Newsletter";
 
 export default function Uv() {
   const data = useStaticQuery(
@@ -14,12 +14,18 @@ export default function Uv() {
         }
       }
     `
-  )
+  );
 
   return (
     <Web title={`UV`}>
-      <Newsletter first data={data} type={'uv'} indicateurs={['indice_uv']} seo />
+      <Newsletter
+        first
+        data={data}
+        type={"uv"}
+        indicateurs={["indice_uv"]}
+        seo
+      />
       <AboutUv />
     </Web>
-  )
+  );
 }
