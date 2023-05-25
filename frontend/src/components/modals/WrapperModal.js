@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
-import FocusTrap from 'focus-trap-react'
+import FocusTrap from "focus-trap-react";
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useContext } from "react";
 
-import ModalContext from 'utils/ModalContext'
-import Markdown from 'components/base/Markdown'
-import Modal from 'components/base/Modal'
+import Markdown from "components/base/Markdown";
+import Modal from "components/base/Modal";
+import ModalContext from "utils/ModalContext";
 
 export default function WrapperModal() {
   const data = useStaticQuery(
@@ -220,24 +220,27 @@ export default function WrapperModal() {
         }
       }
     `
-  )
+  );
 
-  const { modal, setModal } = useContext(ModalContext)
+  const { modal, setModal } = useContext(ModalContext);
 
   return (
-    <FocusTrap active={!!modal} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+    <FocusTrap
+      active={!!modal}
+      focusTrapOptions={{ allowOutsideClick: true, escapeDeactivates: false }}
+    >
       <Modal open={modal} setOpen={setModal}>
-        {modal && data[modal.replaceAll('.', '')] && (
+        {modal && data[modal.replaceAll(".", "")] && (
           <>
             <h3
               dangerouslySetInnerHTML={{
-                __html: data[modal.replaceAll('.', '')].frontmatter.title,
+                __html: data[modal.replaceAll(".", "")].frontmatter.title,
               }}
             />
-            <Markdown>{data[modal.replaceAll('.', '')].body}</Markdown>
+            <Markdown>{data[modal.replaceAll(".", "")].body}</Markdown>
           </>
         )}
       </Modal>
     </FocusTrap>
-  )
+  );
 }

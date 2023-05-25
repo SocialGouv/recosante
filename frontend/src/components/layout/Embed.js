@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react";
 
-import UXContext from 'utils/UXContext'
-import Panel from 'components/base/Panel'
+import Panel from "components/base/Panel";
+import UXContext from "utils/UXContext";
 //import Themes from './embed/Themes'
-import Code from './embed/Code'
-import ContactPrompt from 'components/base/ContactPrompt'
-import Select from 'components/base/FancySelect'
+import ContactPrompt from "components/base/ContactPrompt";
+import Select from "components/base/FancySelect";
+import Code from "./embed/Code";
 
 export default function Embed(props) {
   const { embedOpen, toggleEmbedOpen, typeShare, setTypeShare } =
-    useContext(UXContext)
+    useContext(UXContext);
 
   return (
     <Panel
@@ -19,20 +19,20 @@ export default function Embed(props) {
       index={0}
     >
       <h2>
-        Intégrer{' '}
+        Intégrer{" "}
         <Select
           fancy
           value={typeShare}
           onChange={setTypeShare}
           options={[
-            { value: 'simulator', label: `Recosanté` },
+            { value: "simulator", label: `Recosanté` },
             {
-              value: 'result',
+              value: "result",
               label: props.place ? props.place.nom : `cette ville`,
               disabled: !props.place,
             },
           ]}
-          title='Choisissez d’intégrer l’accueil de Recosanté ou le tableau de bord d’une ville'
+          title="Choisissez d’intégrer l’accueil de Recosanté ou le tableau de bord d’une ville"
         />
       </h2>
       <Code id={props.id} typeShare={typeShare} />
@@ -46,5 +46,5 @@ export default function Embed(props) {
       <Themes />*/}
       <ContactPrompt configurator />
     </Panel>
-  )
+  );
 }

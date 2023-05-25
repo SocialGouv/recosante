@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from "react";
 
 export default function useIframe() {
-  const [iframe, setIframe] = useState(false)
+  const [iframe, setIframe] = useState(false);
   useEffect(() => {
-    setIframe(window.location.search.includes('iframe'))
-  }, [])
+    setIframe(window.location.search.includes("iframe"));
+  }, []);
 
-  return iframe
+  return iframe;
 }

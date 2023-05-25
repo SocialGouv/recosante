@@ -1,20 +1,20 @@
 /*eslint-disable eqeqeq*/
 
-import { useQuery } from 'react-query'
-import axios from 'axios'
-import apiUrl from "utils/apiUrl"
+import axios from "axios";
+import { useQuery } from "react-query";
+import apiUrl from "utils/apiUrl";
 
 export function useSearch(search) {
   return useQuery(
-    ['search', search],
+    ["search", search],
     () =>
       search.length > 2
         ? axios
             .get(
               `https://geo.api.gouv.fr/communes?&boost=population&limit=10&fields=nom,code,codesPostaux&${
                 Number(search) == search
-                  ? 'codePostal=' + search
-                  : 'nom=' + search
+                  ? "codePostal=" + search
+                  : "nom=" + search
               }`
             )
             .then((res) => res.data)
@@ -23,11 +23,11 @@ export function useSearch(search) {
       keepPreviousData: true,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 }
 export function usePosition(position, pathname) {
   return useQuery(
-    ['position', position?.timestamp],
+    ["position", position?.timestamp],
     () =>
       axios
         .get(
@@ -38,11 +38,11 @@ export function usePosition(position, pathname) {
       enabled: position ? true : false,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 }
 export function useCode(code) {
   return useQuery(
-    ['code', code],
+    ["code", code],
     () =>
       axios
         .get(`https://geo.api.gouv.fr/communes?limit=1&fields=nom&code=${code}`)
@@ -52,11 +52,11 @@ export function useCode(code) {
       keepPreviousData: code ? false : true,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 }
 export function useAvailability(code) {
   return useQuery(
-    ['code', code],
+    ["code", code],
     () =>
       axios
         .get(`${apiUrl}/city-availability?insee=${code}`)
@@ -65,5 +65,5 @@ export function useAvailability(code) {
       enabled: code ? true : false,
       refetchOnWindowFocus: false,
     }
-  )
+  );
 }

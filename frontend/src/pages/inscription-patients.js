@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
+import styled from "styled-components";
 
-import Web from 'components/layout/Web'
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
-import Referral from 'components/Referral'
+import Referral from "components/Referral";
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
 
 const StyledSection = styled(Section)`
   font-size: 1.125rem;
-`
+`;
 export default function InscriptionPatients() {
   const data = useStaticQuery(
     graphql`
@@ -19,14 +19,14 @@ export default function InscriptionPatients() {
         }
       }
     `
-  )
+  );
 
   return (
-    <Web title={'Recommander Recosanté'}>
+    <Web title={"Recommander Recosanté"}>
       <StyledSection small first>
         <Markdown>{data.mdx.body}</Markdown>
         <Referral />
       </StyledSection>
     </Web>
-  )
+  );
 }

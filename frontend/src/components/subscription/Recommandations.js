@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
-import steps from 'utils/recommandationsSteps'
-import { useLocalUser } from 'hooks/useUser'
-import Progress from './Progress'
-import Question from './Question'
-import Navigation from './Navigation'
+import { useLocalUser } from "hooks/useUser";
+import steps from "utils/recommandationsSteps";
+import Navigation from "./Navigation";
+import Progress from "./Progress";
+import Question from "./Question";
 
 const Wrapper = styled.div`
   position: relative;
@@ -13,18 +13,18 @@ const Wrapper = styled.div`
   ${(props) => props.theme.mq.small} {
     position: static;
   }
-`
+`;
 export default function Recommandations(props) {
-  const { user } = useLocalUser()
+  const { user } = useLocalUser();
 
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0);
 
-  const propsSetCurrentStep = props.setCurrentStep
+  const propsSetCurrentStep = props.setCurrentStep;
   useEffect(() => {
-    if (user['recommandations'][0] === 'non' || !steps[currentStep]) {
-      propsSetCurrentStep('identity')
+    if (user["recommandations"][0] === "non" || !steps[currentStep]) {
+      propsSetCurrentStep("identity");
     }
-  }, [user, currentStep, propsSetCurrentStep])
+  }, [user, currentStep, propsSetCurrentStep]);
 
   return (
     <Wrapper>
@@ -40,8 +40,8 @@ export default function Recommandations(props) {
           />
         </>
       ) : (
-        'END RECO'
+        "END RECO"
       )}
     </Wrapper>
-  )
+  );
 }

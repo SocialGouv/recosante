@@ -1,17 +1,16 @@
-import React, { useEffect, useContext, useRef } from 'react'
-import styled from 'styled-components'
-import { navigate } from 'gatsby'
-import { useLocation } from '@reach/router'
-import { useStaticQuery, graphql } from 'gatsby'
+import { useLocation } from "@reach/router";
+import { graphql, navigate, useStaticQuery } from "gatsby";
+import React, { useContext, useEffect, useRef } from "react";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
-import { useLocalUser } from 'hooks/useUser'
-import useOnScreen from 'hooks/useOnScreen'
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
-import Button from 'components/base/Button'
-import Mockup from './newsletter/Mockup'
-import Notifications from './newsletter/Notifications'
+import Button from "components/base/Button";
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
+import useOnScreen from "hooks/useOnScreen";
+import { useLocalUser } from "hooks/useUser";
+import ModalContext from "utils/ModalContext";
+import Mockup from "./newsletter/Mockup";
+import Notifications from "./newsletter/Notifications";
 
 const StyledSection = styled(Section)`
   display: flex;
@@ -19,7 +18,7 @@ const StyledSection = styled(Section)`
   ${(props) => props.theme.mq.medium} {
     flex-direction: column;
   }
-`
+`;
 const Content = styled.div`
   width: 41.75rem;
   margin-right: 2rem;
@@ -61,10 +60,10 @@ const Content = styled.div`
       font-size: 1rem;
     }
   }
-`
+`;
 const StyledButton = styled(Button)`
   font-size: 1.25rem;
-`
+`;
 const MockupWrapper = styled.div`
   flex: 1;
   position: relative;
@@ -79,10 +78,10 @@ const MockupWrapper = styled.div`
     overflow: hidden;
     margin: -10vw 0;
   }
-`
+`;
 export default function Newsletter(props) {
-  const { setSubscription } = useContext(ModalContext)
-  const { mutateUser } = useLocalUser()
+  const { setSubscription } = useContext(ModalContext);
+  const { mutateUser } = useLocalUser();
 
   const data = useStaticQuery(
     graphql`
@@ -92,55 +91,71 @@ export default function Newsletter(props) {
         }
       }
     `
-  )
+  );
 
-  const ref = useRef()
+  const ref = useRef();
 
-  const isOnScreen = useOnScreen(ref, '0px', 0.7)
+  const isOnScreen = useOnScreen(ref, "0px", 0.7);
 
-  const location = useLocation()
+  const location = useLocation();
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const indicateurs = params.getAll('indicateur').filter(i => ['indice_atmo', 'raep', 'vigilance_meteo', 'indice_uv'].includes(i));
+    const indicateurs = params
+      .getAll("indicateur")
+      .filter((i) =>
+        ["indice_atmo", "raep", "vigilance_meteo", "indice_uv"].includes(i)
+      );
     if (indicateurs.length > 0) {
       mutateUser({
         indicateurs: indicateurs,
-      })
-      setSubscription('indicators')
-      params.delete('indicateur')
-      navigate(`${location.pathname}${Array.from(params).length > 0 ? '?' + params.toString() : ''}`, { replace: true })
+      });
+      setSubscription("indicators");
+      params.delete("indicateur");
+      navigate(
+        `${location.pathname}${
+          Array.from(params).length > 0 ? "?" + params.toString() : ""
+        }`,
+        { replace: true }
+      );
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      <StyledSection first={props.first} id='newsletter'>
+      <StyledSection first={props.first} id="newsletter">
         <Content ref={ref} seo={props.seo}>
           <Markdown>{(props.data || data).mdx.body}</Markdown>
           <Button.Wrapper>
-            {props.type === 'baignades' ? (
-              <StyledButton to='/'>
+            {props.type === "baignades" ? (
+              <StyledButton to="/">
                 Consulter la qualité de l’eau de baignade
               </StyledButton>
             ) : (
               <StyledButton
                 onClick={() => {
                   mutateUser({
-                    indicateurs: props.indicateurs || ['indice_atmo', 'raep'],
-                  })
-                  setSubscription('indicators')
-                  window?._paq?.push(['trackEvent', 'Subscription', 'Infolettre'])
+                    indicateurs: props.indicateurs || ["indice_atmo", "raep"],
+                  });
+                  setSubscription("indicators");
+                  window?._paq?.push([
+                    "trackEvent",
+                    "Subscription",
+                    "Infolettre",
+                  ]);
                 }}
               >
                 M'abonner à Recosanté
-              </StyledButton>)}
+              </StyledButton>
+            )}
           </Button.Wrapper>
         </Content>
         <MockupWrapper>
           <Mockup type={props.type} isOnScreen={isOnScreen} />
         </MockupWrapper>
       </StyledSection>
-      {(props.type !== 'qa' && props.type !== 'uv' && props.type !== 'baignades') && <Notifications />}
+      {props.type !== "qa" &&
+        props.type !== "uv" &&
+        props.type !== "baignades" && <Notifications />}
     </>
-  )
+  );
 }

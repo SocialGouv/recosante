@@ -1,34 +1,38 @@
-import React, { useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import FocusTrap from 'focus-trap-react'
+import FocusTrap from "focus-trap-react";
+import React, { useContext, useEffect } from "react";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
-import useIndicators from 'hooks/useIndicators'
-import Button from 'components/base/Button'
-import Modal from 'components/base/Modal'
+import Button from "components/base/Button";
+import Modal from "components/base/Modal";
+import useIndicators from "hooks/useIndicators";
+import ModalContext from "utils/ModalContext";
 
 const Title = styled.h3`
   strong {
     text-transform: lowercase;
   }
-`
+`;
 const Recommandation = styled.div`
   font-weight: 300;
-`
+`;
 export default function EpisodePollution(props) {
-  const { data } = useIndicators(props.place.code, props.date)
+  const { data } = useIndicators(props.place.code, props.date);
 
-  const { episodePollution, setEpisodePollution } = useContext(ModalContext)
+  const { episodePollution, setEpisodePollution } = useContext(ModalContext);
   useEffect(() => {
-    data?.episodes_pollution?.advice && setEpisodePollution(true)
-  }, [data]) // eslint-disable-line react-hooks/exhaustive-deps
+    data?.episodes_pollution?.advice && setEpisodePollution(true);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <FocusTrap active={!!episodePollution} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+    <FocusTrap
+      active={!!episodePollution}
+      focusTrapOptions={{ allowOutsideClick: true, escapeDeactivates: false }}
+    >
       <Modal open={episodePollution} setOpen={setEpisodePollution}>
         <Title>
-          Un <strong>{data?.episodes_pollution?.indice?.label}</strong> est prévu{' '}
-          {props.date ? 'demain' : 'aujourd’hui'} pour {data?.episodes_pollution?.validity?.area}
+          Un <strong>{data?.episodes_pollution?.indice?.label}</strong> est
+          prévu {props.date ? "demain" : "aujourd’hui"} pour{" "}
+          {data?.episodes_pollution?.validity?.area}
         </Title>
         <Recommandation
           dangerouslySetInnerHTML={{
@@ -44,5 +48,5 @@ export default function EpisodePollution(props) {
         )}
       </Modal>
     </FocusTrap>
-  )
+  );
 }

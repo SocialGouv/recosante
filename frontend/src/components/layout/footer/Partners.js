@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { GatsbyImage, getImage } from 'gatsby-plugin-image'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import React from "react";
+import styled from "styled-components";
 
-import MagicLink from 'components/base/MagicLink'
+import MagicLink from "components/base/MagicLink";
 
-const Wrapper = styled.div``
+const Wrapper = styled.div``;
 const Title = styled.div`
   margin-bottom: 1rem;
   font-weight: bold;
@@ -18,7 +18,7 @@ const Title = styled.div`
     margin: 0;
     font-size: inherit;
   }
-`
+`;
 const Logos = styled.ul`
   display: flex;
   align-items: center;
@@ -33,11 +33,11 @@ const Logos = styled.ul`
   li {
     list-style: none;
   }
-`
+`;
 const Logo = styled(MagicLink)`
   width: 5rem;
   margin: 1rem;
-`
+`;
 export default function Partners() {
   const data = useStaticQuery(
     graphql`
@@ -58,10 +58,12 @@ export default function Partners() {
         }
       }
     `
-  )
+  );
   return (
     <Wrapper>
-      <Title><p>Les données sont fournies par</p></Title>
+      <Title>
+        <p>Les données sont fournies par</p>
+      </Title>
       <Logos>
         {data.mdx.frontmatter.data.map((logo) => (
           <li key={logo.link}>
@@ -72,5 +74,5 @@ export default function Partners() {
         ))}
       </Logos>
     </Wrapper>
-  )
+  );
 }

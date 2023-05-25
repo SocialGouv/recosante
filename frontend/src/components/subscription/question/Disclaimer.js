@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -17,18 +17,18 @@ const Wrapper = styled.div`
   p {
     margin: 0;
   }
-`
+`;
 const Title = styled.p`
   font-size: 0.875rem;
 
   strong {
     font-weight: 700;
   }
-`
+`;
 const Text = styled.p`
   font-size: 0.75rem;
   font-weight: 300;
-`
+`;
 const Link = styled.button`
   margin: 0;
   padding: 0;
@@ -41,7 +41,7 @@ const Link = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-`
+`;
 export default function Disclaimer(props) {
   return (
     <Wrapper>
@@ -49,12 +49,16 @@ export default function Disclaimer(props) {
       <Text>Vous pourrez vous désabonner à tout moment</Text>
       <Link
         onClick={() => {
-          window?._paq?.push(['trackEvent', 'Subscription', 'InfolettreDisclaimer'])
-          props.setModal('newsletter')
+          window?._paq?.push([
+            "trackEvent",
+            "Subscription",
+            "InfolettreDisclaimer",
+          ]);
+          props.setModal("newsletter");
         }}
       >
         Voir un exemple d'email que je recevrai
       </Link>
     </Wrapper>
-  )
+  );
 }

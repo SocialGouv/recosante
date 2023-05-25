@@ -1,28 +1,28 @@
-import React from 'react'
+import React from "react";
 
-import useIndicators from 'hooks/useIndicators'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './potentielRadon/Chart'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useIndicators from "hooks/useIndicators";
+import Chart from "./potentielRadon/Chart";
 
 export default function PotentielRadon(props) {
-  const { data, isError, isLoading } = useIndicators(props.place.code)
+  const { data, isError, isLoading } = useIndicators(props.place.code);
 
   return (
     <Card columns={6}>
       <Card.Content>
         <Card.Header>
           <Card.Info>
-            <Card.Title isLoading={isLoading} indicateur='potentiel_radon'>
+            <Card.Title isLoading={isLoading} indicateur="potentiel_radon">
               Potentiel Radon
             </Card.Title>
             <Card.Value isError={isError}>
-              {isError ? 'Arf 🦖' : data && data.potentiel_radon.indice.label}
+              {isError ? "Arf 🦖" : data && data.potentiel_radon.indice.label}
             </Card.Value>
           </Card.Info>
           <Chart data={data} />
         </Card.Header>
-        <Card.Mobile indicateur='potentiel_radon' place={props.place} disabled>
+        <Card.Mobile indicateur="potentiel_radon" place={props.place} disabled>
           <Card.Recommandation
             dangerouslySetInnerHTML={{
               __html: isError
@@ -35,7 +35,7 @@ export default function PotentielRadon(props) {
         </Card.Mobile>
         <Card.SubscribeWrapper>
           <Card.Subscribe
-            indicateur='potentiel_radon'
+            indicateur="potentiel_radon"
             place={props.place}
             disabled
           />
@@ -47,7 +47,8 @@ export default function PotentielRadon(props) {
         data.potentiel_radon.sources && (
           <Card.Source>
             <p>
-              Données statiques valides pour {data.potentiel_radon.validity.area}
+              Données statiques valides pour{" "}
+              {data.potentiel_radon.validity.area}
             </p>
             <p>
               Données fournies par l'
@@ -58,5 +59,5 @@ export default function PotentielRadon(props) {
           </Card.Source>
         )}
     </Card>
-  )
+  );
 }

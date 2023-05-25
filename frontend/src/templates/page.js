@@ -1,8 +1,8 @@
-import React from 'react'
-import { graphql } from 'gatsby'
+import { graphql } from "gatsby";
+import React from "react";
 
-import Web from 'components/layout/Web'
-import Section from 'components/base/Section'
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
 
 export default function Page(props) {
   return (
@@ -16,7 +16,7 @@ export default function Page(props) {
         {props.children}
       </Section>
     </Web>
-  )
+  );
 }
 
 export const pageQuery = graphql`
@@ -27,4 +27,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

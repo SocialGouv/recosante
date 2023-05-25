@@ -1,5 +1,5 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import React from "react";
+import styled, { keyframes } from "styled-components";
 
 const simple = keyframes`
   from {
@@ -17,7 +17,7 @@ const simple = keyframes`
   to {
     opacity: 0;
   }
-`
+`;
 const la = keyframes`
   from {
     opacity: 0;
@@ -58,7 +58,7 @@ const la = keyframes`
   to {
     opacity: 0;
   }
-`
+`;
 const le = keyframes`
   from {
     opacity: 1;
@@ -99,7 +99,7 @@ const le = keyframes`
   to {
     opacity: 1;
   }
-`
+`;
 
 const Wrapper = styled.h1`
   display: flex;
@@ -113,7 +113,7 @@ const Wrapper = styled.h1`
     justify-content: center;
     font-size: 6.5vw;
   }
-`
+`;
 const Words = styled.span`
   flex-basis: 100%;
   margin-right: 0.3em;
@@ -121,17 +121,17 @@ const Words = styled.span`
   ${(props) => props.theme.mq.medium} {
     flex-basis: auto;
   }
-`
+`;
 const Pronouns = styled.span`
   position: relative;
   margin-right: 0.27em;
-`
+`;
 const Pronoun = styled.span`
-  position: ${(props) => (props.absolute ? 'absolute' : 'static')};
+  position: ${(props) => (props.absolute ? "absolute" : "static")};
   top: 0;
   left: 0;
   animation: ${(props) => (props.absolute ? le : la)} 30000ms infinite;
-`
+`;
 const Sentences = styled.strong`
   position: relative;
   height: 1.1em;
@@ -139,7 +139,7 @@ const Sentences = styled.strong`
   ${(props) => props.theme.mq.medium} {
     flex-basis: 100%;
   }
-`
+`;
 const Sentence = styled.span`
   position: absolute;
   white-space: nowrap;
@@ -148,13 +148,13 @@ const Sentence = styled.span`
     left: 50%;
     transform: translateX(-50%);
   }
-`
+`;
 const Letter = styled.span`
   will-change: opacity;
   opacity: 0;
   animation: ${simple} 30000ms
     ${(props) => props.index * 5000 + props.position * 25}ms infinite;
-`
+`;
 
 const VisuallyHidden = styled.span`
   position: absolute !important;
@@ -163,10 +163,10 @@ const VisuallyHidden = styled.span`
   padding: 0 !important;
   margin: -1px !important;
   overflow: hidden !important;
-  clip: rect(0,0,0,0) !important;
+  clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
-`
+`;
 export default function Title() {
   const sentences = [
     `pollution de l’air`,
@@ -175,21 +175,25 @@ export default function Title() {
     `rayonnement UV`,
     `qualité des eaux de baignade`,
     `niveau de risque radon`,
-  ]
+  ];
   return (
     <Wrapper>
-      <VisuallyHidden>Découvrez la pollution de l’air, le risque d’allergie aux pollens, la vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le niveau de risque radon près de chez vous</VisuallyHidden>
-      <Words aria-hidden='true'>Découvrez </Words>
-      <Pronouns aria-hidden='true'>
+      <VisuallyHidden>
+        Découvrez la pollution de l’air, le risque d’allergie aux pollens, la
+        vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le
+        niveau de risque radon près de chez vous
+      </VisuallyHidden>
+      <Words aria-hidden="true">Découvrez </Words>
+      <Pronouns aria-hidden="true">
         <Pronoun>la </Pronoun>
         <Pronoun absolute>le </Pronoun>
       </Pronouns>
-      <Sentences aria-hidden='true'>
+      <Sentences aria-hidden="true">
         {sentences.map((sentence, index) => (
           <Sentence key={sentence} index={index}>
-            {sentence.split('').map((letter, position) => (
+            {sentence.split("").map((letter, position) => (
               <Letter
-                key={position + '_' + index}
+                key={position + "_" + index}
                 index={index}
                 position={position}
                 total={sentence.length}
@@ -200,7 +204,7 @@ export default function Title() {
           </Sentence>
         ))}
       </Sentences>
-      <Words aria-hidden='true'>près de chez vous</Words>
+      <Words aria-hidden="true">près de chez vous</Words>
     </Wrapper>
-  )
+  );
 }

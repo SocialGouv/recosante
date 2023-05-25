@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import useIframe from 'hooks/useIframe'
-import Web from 'components/layout/Web'
-import Dashboard from 'components/Dashboard'
-import Newsletter from '../components/Newsletter'
-import Data from 'components/Data'
-import About from 'components/About'
+import About from "components/About";
+import Dashboard from "components/Dashboard";
+import Data from "components/Data";
+import Web from "components/layout/Web";
+import useIframe from "hooks/useIframe";
+import Newsletter from "../components/Newsletter";
 
 export default function Place(props) {
-  const iframe = useIframe()
+  const iframe = useIframe();
 
   return (
     <Web title={props.pageContext.place.nom} place={props.pageContext.place}>
@@ -21,5 +21,5 @@ export default function Place(props) {
         </>
       )}
     </Web>
-  )
+  );
 }

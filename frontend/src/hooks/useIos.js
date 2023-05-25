@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from "react";
 
 export default function useIos() {
-  const [ios, setIos] = useState(false)
+  const [ios, setIos] = useState(false);
   useEffect(() => {
     setIos(
       [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad',
-        'iPhone',
-        'iPod',
+        "iPad Simulator",
+        "iPhone Simulator",
+        "iPod Simulator",
+        "iPad",
+        "iPhone",
+        "iPod",
       ].includes(navigator.platform) ||
         // iPad on iOS 13 detection
-        (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-    )
-  }, [])
+        (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+    );
+  }, []);
 
-  return ios
+  return ios;
 }

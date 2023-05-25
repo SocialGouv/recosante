@@ -1,13 +1,13 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import styled from 'styled-components'
+import { graphql } from "gatsby";
+import React from "react";
+import styled from "styled-components";
 
-import Web from 'components/layout/Web'
-import Section from 'components/base/Section'
-import Button from 'components/base/Button'
-import Content from 'components/Recommandations'
+import Content from "components/Recommandations";
+import Button from "components/base/Button";
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
 
-import apiUrl from 'utils/apiUrl'
+import apiUrl from "utils/apiUrl";
 
 const Title = styled.h1`
   color: ${(props) => props.theme.colors.main};
@@ -18,7 +18,7 @@ const Title = styled.h1`
     font-size: 1.5rem;
     margin: 1.5rem 0;
   }
-`
+`;
 const Introduction = styled.div`
   background-color: #eef1f7;
   padding: 2rem;
@@ -26,17 +26,15 @@ const Introduction = styled.div`
   p {
     margin-bottom: 0;
   }
-`
+`;
 
 export default function Recommandations(props) {
   return (
     <Web title={props.data.mdx.frontmatter.title}>
       <Section first medium>
         <Title>{props.data.mdx.frontmatter.title}</Title>
-        <Introduction>
-          {props.children}
-        </Introduction>
-        <Content recommandations={props.pageContext.recommandations}/>
+        <Introduction>{props.children}</Introduction>
+        <Content recommandations={props.pageContext.recommandations} />
         <Button.Wrapper center>
           <Button to={`${apiUrl}/v1/recommandations.csv`}>
             Télécharger au format CSV
@@ -44,8 +42,7 @@ export default function Recommandations(props) {
         </Button.Wrapper>
       </Section>
     </Web>
-  )
-
+  );
 }
 
 export const pageQuery = graphql`
@@ -56,4 +53,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-import Embed from 'components/layout/Embed'
+import Embed from "components/layout/Embed";
 
 export default function EmbedWrapper(props) {
   return (
@@ -9,5 +9,5 @@ export default function EmbedWrapper(props) {
       id={process.env.GATSBY_IFRAME_ID}
       place={props.place}
     ></Embed>
-  )
+  );
 }

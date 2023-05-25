@@ -1,10 +1,10 @@
-import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
 
-import Web from 'components/layout/Web'
-import Newsletter from '../components/Newsletter'
-import Data from 'components/Data'
-import About from 'components/About'
+import About from "components/About";
+import Data from "components/Data";
+import Web from "components/layout/Web";
+import Newsletter from "../components/Newsletter";
 
 export default function Asthme() {
   const data = useStaticQuery(
@@ -15,7 +15,7 @@ export default function Asthme() {
         }
       }
     `
-  )
+  );
 
   return (
     <Web title={`Sport`}>
@@ -23,5 +23,5 @@ export default function Asthme() {
       <Data />
       <About />
     </Web>
-  )
+  );
 }

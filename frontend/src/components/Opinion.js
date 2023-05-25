@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useLocation } from '@reach/router'
+import { useLocation } from "@reach/router";
+import React from "react";
+import styled from "styled-components";
 
-import { useAvis } from 'utils/api'
-import Section from 'components/base/Section'
+import Section from "components/base/Section";
+import { useAvis } from "utils/api";
 
 const Text = styled.p`
   ${(props) => props.theme.mq.small} {
     font-size: 1rem;
   }
-`
+`;
 export default function Opinion() {
-  const location = useLocation()
-  useAvis(location)
+  const location = useLocation();
+  useAvis(location);
 
   return (
     <Section small first>
@@ -26,5 +26,5 @@ export default function Opinion() {
         construisons un service utile !
       </Text>
     </Section>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.span`
   position: relative;
@@ -10,7 +10,7 @@ const Wrapper = styled.span`
   width: 1.75rem;
   background-color: ${(props) => props.theme.colors.background};
   border: 0.125rem solid
-    ${(props) => props.theme.colors[props.active ? 'background' : 'main']};
+    ${(props) => props.theme.colors[props.active ? "background" : "main"]};
   border-radius: ${(props) => (props.checkbox ? 0.5 : 0.875)}rem;
   transition: border 200ms ease-out, background-color 300ms ease-out;
 
@@ -18,7 +18,7 @@ const Wrapper = styled.span`
     height: 1.5rem;
     width: 1.5rem;
   }
-`
+`;
 const Check = styled.svg`
   width: auto;
   height: 1.2rem;
@@ -32,24 +32,23 @@ const Check = styled.svg`
     stroke: ${(props) => props.theme.colors.main};
     stroke-width: 600;
     stroke-dasharray: 4322.794921875;
-    stroke-dashoffset: ${(props) => (props['data-checked'] ? 0 : 4322.794921875)};
-    transition: stroke-dashoffset ${(props) => (props['data-checked'] ? 200 : 0)}ms
-      ease-out;
+    stroke-dashoffset: ${(props) =>
+      props["data-checked"] ? 0 : 4322.794921875};
+    transition: stroke-dashoffset
+      ${(props) => (props["data-checked"] ? 200 : 0)}ms ease-out;
   }
-`
+`;
 export default function Checkbox(props) {
   return (
-    <Wrapper checkbox={props.checkbox} active={props.active} className={'box'}>
+    <Wrapper checkbox={props.checkbox} active={props.active} className={"box"}>
       <Check
         data-checked={props.active}
-        width='3213'
-        height='2768'
-        viewBox='0 0 3213 2768'
+        width="3213"
+        height="2768"
+        viewBox="0 0 3213 2768"
       >
-        <path
-          d='M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224'
-        />
+        <path d="M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224" />
       </Check>
     </Wrapper>
-  )
+  );
 }

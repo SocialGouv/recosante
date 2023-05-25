@@ -1,32 +1,31 @@
-import React from 'react'
+import React from "react";
 
-import useBaignades from 'hooks/useBaignades'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './baignades/Chart'
-import Details from './baignades/Details'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useBaignades from "hooks/useBaignades";
+import Chart from "./baignades/Chart";
+import Details from "./baignades/Details";
 
 export default function IndiceAtmo(props) {
-  const { data, isError, isLoading } = useBaignades(props.place.code)
+  const { data, isError, isLoading } = useBaignades(props.place.code);
   return (
     (!data || data.baignades !== {}) && (
       <Card columns={6}>
         <Card.Content>
           <Card.Header>
             <Card.Info>
-              <Card.Title isLoading={isLoading} indicateur='baignades'>
+              <Card.Title isLoading={isLoading} indicateur="baignades">
                 Qualité des eaux de baignade
               </Card.Title>
               <Card.Value isError={isError}>
                 {isError
-                  ? 'Zut 🦙'
-                  : data &&
-                  (data.baignades.indice?.label || 'Pas de données')}
+                  ? "Zut 🦙"
+                  : data && (data.baignades.indice?.label || "Pas de données")}
               </Card.Value>
             </Card.Info>
             <Chart data={data && !data.baignades.error && data} />
           </Card.Header>
-          <Card.Mobile indicateur='baignades' place={props.place} disabled>
+          <Card.Mobile indicateur="baignades" place={props.place} disabled>
             <Card.Details>
               <Details data={data && !data.baignades.error && data} />
             </Card.Details>
@@ -35,44 +34,53 @@ export default function IndiceAtmo(props) {
                 __html: isError
                   ? `<p>Nous ne sommes malheureusement pas en mesure d’afficher la qualité des eaux de baignade pour l’instant. Veuillez réessayer dans quelques instants.</p>`
                   : data &&
-                  (data.baignades.error
-                    ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
-                    : (data.baignades.indice?.label === 'Hors-saison'
+                    (data.baignades.error
+                      ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
+                      : data.baignades.indice?.label === "Hors-saison"
                       ? `<p>La saison de baignade n’a pas encore officiellement débuté dans cette commune.</p>`
-                      : (data.baignades.indice?.label === 'Pas de sites'
-                        ? `<p>Il n’y a pas de sites de baignade en eau de mer ou en eau douce recensés pour cette commune.</p>`
-                        : data.baignades.indice?.summary['Interdiction'] > 0 ?
-                          `<p>Pour plus de renseignements sur les interdictions de baignade, veuillez contacter la mairie ou l’Agence régionale de santé (ARS).</p>` :
-                          data.baignades.advice &&
-                          data.baignades.advice.main))),
+                      : data.baignades.indice?.label === "Pas de sites"
+                      ? `<p>Il n’y a pas de sites de baignade en eau de mer ou en eau douce recensés pour cette commune.</p>`
+                      : data.baignades.indice?.summary["Interdiction"] > 0
+                      ? `<p>Pour plus de renseignements sur les interdictions de baignade, veuillez contacter la mairie ou l’Agence régionale de santé (ARS).</p>`
+                      : data.baignades.advice && data.baignades.advice.main),
               }}
             />
           </Card.Mobile>
           <Card.SubscribeWrapper>
-            <Card.Subscribe indicateur='baignades' place={props.place} disabled />
+            <Card.Subscribe
+              indicateur="baignades"
+              place={props.place}
+              disabled
+            />
           </Card.SubscribeWrapper>
         </Card.Content>
         {data && !data.baignades.error && data.baignades.validity && (
           <Card.Source>
-            {data.baignades.indice?.label !== 'Pas de sites' &&
+            {data.baignades.indice?.label !== "Pas de sites" && (
               <p>
-                Saison ouverte du{' '}
-                {new Date(data.baignades.validity.start).toLocaleDateString('fr', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}{' '}
-                au{' '}
-                {new Date(data.baignades.validity.end).toLocaleDateString('fr', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}{' '}
+                Saison ouverte du{" "}
+                {new Date(data.baignades.validity.start).toLocaleDateString(
+                  "fr",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}{" "}
+                au{" "}
+                {new Date(data.baignades.validity.end).toLocaleDateString(
+                  "fr",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}{" "}
                 dans {data.baignades.validity.area}
               </p>
-            }
+            )}
             <p>
-              Données fournies par{' '}
+              Données fournies par{" "}
               {data.baignades.sources && (
                 <MagicLink to={data.baignades.sources[0].url}>
                   {data.baignades.sources[0].label}
@@ -83,5 +91,5 @@ export default function IndiceAtmo(props) {
         )}
       </Card>
     )
-  )
+  );
 }

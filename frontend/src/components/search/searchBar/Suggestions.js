@@ -1,14 +1,14 @@
-import React, { useEffect, useCallback } from 'react'
-import styled from 'styled-components'
+import React, { useCallback, useEffect } from "react";
+import styled from "styled-components";
 
-import Highlighter from 'react-highlight-words'
+import Highlighter from "react-highlight-words";
 
 const Wrapper = styled.div`
   max-height: 21em;
   margin-bottom: 0.125rem;
   overflow-y: auto;
   background-color: ${(props) => props.theme.colors.background};
-`
+`;
 const Suggestion = styled.div`
   padding: 0.75em 0.75em 0.75em 2em;
   font-size: clamp(0.875rem, 0.875em, 1rem);
@@ -29,37 +29,37 @@ const Suggestion = styled.div`
     background-color: transparent;
     opacity: 0.8;
   }
-`
-const Name = styled.span``
+`;
+const Name = styled.span``;
 const PostalCode = styled.span`
   opacity: 1;
-`
+`;
 export default function Suggestions(props) {
-  const maxSuggestions = 7
+  const maxSuggestions = 7;
 
   const onKeyDown = useCallback(
     (e) => {
-      if (e.code === 'ArrowDown') {
-        e.preventDefault()
+      if (e.code === "ArrowDown") {
+        e.preventDefault();
         props.current < maxSuggestions - 1
           ? props.setCurrent((prevCurrent) => prevCurrent + 1)
-          : props.setCurrent(0)
+          : props.setCurrent(0);
       }
-      if (e.code === 'ArrowUp') {
-        e.preventDefault()
-        props.current > 0 && props.setCurrent((prevCurrent) => prevCurrent - 1)
+      if (e.code === "ArrowUp") {
+        e.preventDefault();
+        props.current > 0 && props.setCurrent((prevCurrent) => prevCurrent - 1);
       }
     },
     [props]
-  )
+  );
 
   useEffect(() => {
-    window.addEventListener('keydown', onKeyDown)
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown)
-    }
-  }, [onKeyDown])
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [onKeyDown]);
 
   return (
     <Wrapper>
@@ -68,31 +68,31 @@ export default function Suggestions(props) {
           index < maxSuggestions && (
             <Suggestion
               current={index === props.current}
-              key={result['code']}
+              key={result["code"]}
               isFetching={props.isFetching}
               onClick={() => props.handleSuggestionClick(result)}
               onMouseDown={(e) => e.preventDefault()}
             >
               <Name>
                 <Highlighter
-                  searchWords={props.search.split(' ')}
+                  searchWords={props.search.split(" ")}
                   autoEscape={true}
-                  textToHighlight={result['nom']}
+                  textToHighlight={result["nom"]}
                 />
               </Name>
               <PostalCode>
-                {' '}
+                {" "}
                 (
-                {result['codesPostaux'].length > 2
-                  ? result['codesPostaux'][0] +
-                    ' ... ' +
-                    result['codesPostaux'][result['codesPostaux'].length - 1]
-                  : result['codesPostaux'].join(', ')}
+                {result["codesPostaux"].length > 2
+                  ? result["codesPostaux"][0] +
+                    " ... " +
+                    result["codesPostaux"][result["codesPostaux"].length - 1]
+                  : result["codesPostaux"].join(", ")}
                 )
               </PostalCode>
             </Suggestion>
           )
       )}
     </Wrapper>
-  )
+  );
 }

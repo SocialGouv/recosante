@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from "react";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
+import ModalContext from "utils/ModalContext";
 
 const Wrapper = styled.div`
   position: relative;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   }
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     right: 0;
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
     }
   }
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 50%;
     right: ${(props) => 12.5 - (props.value / 5) * 12.5}rem;
@@ -42,7 +42,7 @@ const Wrapper = styled.div`
     height: 1.125rem;
     background-color: ${(props) => props.theme.colors.raep[props.value]};
     border-radius: ${(props) =>
-      props.value < 5 ? '0.5rem 0 0 0.5rem' : '0.5rem'};
+      props.value < 5 ? "0.5rem 0 0 0.5rem" : "0.5rem"};
     transition: transform ${(props) => 150 * props.value}ms
       ${(props) => props.index * 100}ms ease-out;
 
@@ -54,39 +54,44 @@ const Wrapper = styled.div`
   &:hover {
     color: ${(props) => props.theme.colors.main};
   }
-`
+`;
 const Superscript = styled.sup`
   font-size: 0.625rem;
   color: ${(props) => props.theme.colors.main};
-`
+`;
 export default function Element(props) {
-  const { setModal } = useContext(ModalContext)
+  const { setModal } = useContext(ModalContext);
   const labels = {
-    ambroisies: 'Ambroisies',
-    cypres: 'Cupressacées',
-    noisetier: 'Noisetier',
-    aulne: 'Aulne',
-    peuplier: 'Peuplier',
-    saule: 'Saule',
-    frene: 'Frêne',
-    charme: 'Charme',
-    bouleau: 'Bouleau',
-    platane: 'Platane',
-    chene: 'Chêne',
-    olivier: 'Olivier',
-    tilleul: 'Tilleul',
-    chataignier: 'Châtaignier',
-    rumex: 'Rumex',
-    graminees: 'Graminées',
-    plantain: 'Plantain',
-    urticacees: 'Urticacées',
-    armoises: 'Armoises',
-  }
+    ambroisies: "Ambroisies",
+    cypres: "Cupressacées",
+    noisetier: "Noisetier",
+    aulne: "Aulne",
+    peuplier: "Peuplier",
+    saule: "Saule",
+    frene: "Frêne",
+    charme: "Charme",
+    bouleau: "Bouleau",
+    platane: "Platane",
+    chene: "Chêne",
+    olivier: "Olivier",
+    tilleul: "Tilleul",
+    chataignier: "Châtaignier",
+    rumex: "Rumex",
+    graminees: "Graminées",
+    plantain: "Plantain",
+    urticacees: "Urticacées",
+    armoises: "Armoises",
+  };
 
   return (
-    <Wrapper index={props.index} visible={props.visible} value={props.value} onClick={() => setModal(props.label)}>
+    <Wrapper
+      index={props.index}
+      visible={props.visible}
+      value={props.value}
+      onClick={() => setModal(props.label)}
+    >
       {labels[props.label]}
       <Superscript> (?)</Superscript>
     </Wrapper>
-  )
+  );
 }

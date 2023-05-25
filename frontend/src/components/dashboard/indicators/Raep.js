@@ -1,31 +1,34 @@
-import React from 'react'
+import React from "react";
 
-import useIndicators from 'hooks/useIndicators'
-import MagicLink from 'components/base/MagicLink'
-import Card from 'components/misc/Card'
-import Chart from './raep/Chart'
-import Details from './raep/Details'
+import MagicLink from "components/base/MagicLink";
+import Card from "components/misc/Card";
+import useIndicators from "hooks/useIndicators";
+import Chart from "./raep/Chart";
+import Details from "./raep/Details";
 
 export default function Raep(props) {
-  const { data, isError, isLoading } = useIndicators(props.place.code, props.date)
+  const { data, isError, isLoading } = useIndicators(
+    props.place.code,
+    props.date
+  );
 
   return (
     <Card columns={6}>
       <Card.Content>
         <Card.Header>
           <Card.Info>
-            <Card.Title isLoading={isLoading} indicateur='raep'>
+            <Card.Title isLoading={isLoading} indicateur="raep">
               Risque d’allergie aux pollens
             </Card.Title>
             <Card.Value isError={isError}>
               {isError
-                ? 'Zut 🦙'
-                : data && (data.raep.indice?.label || 'Pas de données')}
+                ? "Zut 🦙"
+                : data && (data.raep.indice?.label || "Pas de données")}
             </Card.Value>
           </Card.Info>
           <Chart data={data && !data.raep.error && data} />
         </Card.Header>
-        <Card.Mobile indicateur='raep' place={props.place}>
+        <Card.Mobile indicateur="raep" place={props.place}>
           <Card.Details>
             <Details data={data && !data.raep.error && data} />
           </Card.Details>
@@ -41,28 +44,28 @@ export default function Raep(props) {
           />
         </Card.Mobile>
         <Card.SubscribeWrapper>
-          <Card.Subscribe indicateur='raep' place={props.place} />
+          <Card.Subscribe indicateur="raep" place={props.place} />
         </Card.SubscribeWrapper>
       </Card.Content>
       {data && data.raep && data.raep.validity && data.raep.sources && (
         <Card.Source>
           <p>
-            Prévision du{' '}
-            {new Date(data.raep.validity.start).toLocaleDateString('fr', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}{' '}
-            au{' '}
-            {new Date(data.raep.validity.end).toLocaleDateString('fr', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}{' '}
+            Prévision du{" "}
+            {new Date(data.raep.validity.start).toLocaleDateString("fr", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
+            au{" "}
+            {new Date(data.raep.validity.end).toLocaleDateString("fr", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}{" "}
             dans {data.raep.validity.area}
           </p>
           <p>
-            Données fournies par{' '}
+            Données fournies par{" "}
             <MagicLink to={data.raep.sources[0].url}>
               {data.raep.sources[0].label}
             </MagicLink>
@@ -70,5 +73,5 @@ export default function Raep(props) {
         </Card.Source>
       )}
     </Card>
-  )
+  );
 }

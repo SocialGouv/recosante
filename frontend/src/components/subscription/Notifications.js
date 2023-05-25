@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
-import { useStaticQuery, graphql } from 'gatsby'
-import FocusTrap from 'focus-trap-react'
+import FocusTrap from "focus-trap-react";
+import { graphql, useStaticQuery } from "gatsby";
+import React, { useEffect } from "react";
+import styled from "styled-components";
 
-import Button from 'components/base/Button'
-import Markdown from 'components/base/Markdown'
-import Images from 'components/newsletter/notifications/Images'
+import Button from "components/base/Button";
+import Markdown from "components/base/Markdown";
+import Images from "components/newsletter/notifications/Images";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -21,21 +21,21 @@ const Wrapper = styled.div`
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
-  visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
-  pointer-events: ${(props) => (props.visible ? 'inherit' : 'none')};
+  visibility: ${(props) => (props.visible ? "visible" : "hidden")};
+  pointer-events: ${(props) => (props.visible ? "inherit" : "none")};
   transition: opacity 300ms;
 
   ${(props) => props.theme.mq.small} {
     padding: 1rem;
   }
-`
+`;
 const ImagesWrapper = styled.div`
   height: 15.1rem;
 
   ${(props) => props.theme.mq.small} {
     height: 8.5rem;
   }
-`
+`;
 const StyledButton = styled(Button)`
   position: absolute;
   bottom: 1.5rem;
@@ -45,7 +45,7 @@ const StyledButton = styled(Button)`
     bottom: 1rem;
     right: 1rem;
   }
-`
+`;
 export default React.forwardRef(function Notifications(props, ref) {
   const data = useStaticQuery(
     graphql`
@@ -55,13 +55,17 @@ export default React.forwardRef(function Notifications(props, ref) {
         }
       }
     `
-  )
-  const visible = props.modal === 'notifications';
+  );
+  const visible = props.modal === "notifications";
   useEffect(() => {
-    visible && window?._paq?.push(['trackEvent', 'Subscription', 'NotificationDetail'])
-  })
+    visible &&
+      window?._paq?.push(["trackEvent", "Subscription", "NotificationDetail"]);
+  });
   return (
-    <FocusTrap active={visible} focusTrapOptions={{allowOutsideClick: true, escapeDeactivates: false}}>
+    <FocusTrap
+      active={visible}
+      focusTrapOptions={{ allowOutsideClick: true, escapeDeactivates: false }}
+    >
       <Wrapper visible={visible}>
         <ImagesWrapper>
           <Images isOnScreen={true} />
@@ -72,5 +76,5 @@ export default React.forwardRef(function Notifications(props, ref) {
         </StyledButton>
       </Wrapper>
     </FocusTrap>
-  )
-})
+  );
+});

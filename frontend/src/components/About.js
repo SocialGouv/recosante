@@ -1,8 +1,8 @@
-import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from "gatsby";
+import React from "react";
 
-import Markdown from 'components/base/Markdown'
-import Section from 'components/base/Section'
+import Markdown from "components/base/Markdown";
+import Section from "components/base/Section";
 
 export default function About() {
   const data = useStaticQuery(
@@ -13,11 +13,11 @@ export default function About() {
         }
       }
     `
-  )
+  );
 
   return (
-    <Section id='about' small>
+    <Section id="about" small>
       <Markdown>{data.mdx.body}</Markdown>
     </Section>
-  )
+  );
 }

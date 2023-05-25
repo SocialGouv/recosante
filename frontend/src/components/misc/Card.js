@@ -1,15 +1,15 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-import Title from './card/Title'
-import Mobile from './card/Mobile'
-import Subscribe from './card/Subscribe'
+import Mobile from "./card/Mobile";
+import Subscribe from "./card/Subscribe";
+import Title from "./card/Title";
 
 const Card = styled.div`
   position: relative;
   width: 100%;
   max-width: 35.5rem;
   margin: 0 auto 2rem;
-`
+`;
 Card.Content = styled.div`
   margin-bottom: 0.5rem;
   padding: 2rem 2rem 1.5rem;
@@ -22,7 +22,7 @@ Card.Content = styled.div`
   ${(props) => props.theme.mq.small} {
     padding: 1.5rem 1rem 1rem;
   }
-`
+`;
 Card.Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -32,30 +32,30 @@ Card.Header = styled.div`
     flex-direction: column;
     align-items: center;
   }
-`
-Card.Info = styled.div``
-Card.Title = Title
+`;
+Card.Info = styled.div``;
+Card.Title = Title;
 Card.Value = styled.div`
   margin-left: -0.1rem;
   font-size: 3rem;
   font-weight: bold;
   line-height: 1;
-  color: ${(props) => props.theme.colors[props.isError ? 'error' : 'main']};
+  color: ${(props) => props.theme.colors[props.isError ? "error" : "main"]};
 
   ${(props) => props.theme.mq.small} {
     margin: 0 0 1.5rem;
     font-size: 2.25rem;
     text-align: center;
   }
-`
-Card.Mobile = Mobile
+`;
+Card.Mobile = Mobile;
 Card.Details = styled.div`
   margin-bottom: 2rem;
-`
+`;
 Card.Recommandation = styled.div`
   font-weight: 300;
   margin-bottom: 1rem;
-`
+`;
 Card.SubscribeWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -67,8 +67,8 @@ Card.SubscribeWrapper = styled.div`
   ${(props) => props.theme.mq.small} {
     display: none;
   }
-`
-Card.Subscribe = Subscribe
+`;
+Card.Subscribe = Subscribe;
 
 Card.Source = styled.div`
   margin-right: 0.5rem;
@@ -81,6 +81,6 @@ Card.Source = styled.div`
     margin: 0;
     font-size: inherit;
   }
-`
+`;
 
-export default Card
+export default Card;

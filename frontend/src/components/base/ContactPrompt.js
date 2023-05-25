@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from "react";
+import styled from "styled-components";
 
-import UXContext from 'utils/UXContext'
-import MagicLink from 'components/base/MagicLink'
+import MagicLink from "components/base/MagicLink";
+import UXContext from "utils/UXContext";
 
-const Text = styled.p``
-const Title = styled.h3``
+const Text = styled.p``;
+const Title = styled.h3``;
 const StyledLink = styled.button`
   display: inline;
   margin: 0;
@@ -15,9 +15,9 @@ const StyledLink = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-`
+`;
 export default function ContactPrompt(props) {
-  const { toggleEmbedOpen } = useContext(UXContext)
+  const { toggleEmbedOpen } = useContext(UXContext);
 
   return false ? (
     <>
@@ -29,10 +29,10 @@ export default function ContactPrompt(props) {
           <Text>
             <strong>Vous souhaitez afficher Recosanté sur votre site ?</strong>
             <br />
-            Personnalisez le et intégrez le facilement grace à{' '}
+            Personnalisez le et intégrez le facilement grace à{" "}
             <StyledLink
               onClick={() => {
-                toggleEmbedOpen()
+                toggleEmbedOpen();
               }}
             >
               notre configurateur
@@ -47,10 +47,10 @@ export default function ContactPrompt(props) {
           intégrer Recosanté ?
         </strong>
         <br />
-        Contactez nous à{' '}
-        <MagicLink to='mailto:contact@recosante.beta.gouv.fr'>
+        Contactez nous à{" "}
+        <MagicLink to="mailto:contact@recosante.beta.gouv.fr">
           contact@recosante.beta.gouv.fr
-        </MagicLink>{' '}
+        </MagicLink>{" "}
         pour bénéficier de notre expertise et accompagnement.
       </Text>
       {!props.contact && (
@@ -58,7 +58,7 @@ export default function ContactPrompt(props) {
           <strong>Vous souhaitez réutiliser le code de Recosanté ?</strong>
           <br />
           Recosanté est développé de manière ouverte (open source). L’ensemble
-          du code est{' '}
+          du code est{" "}
           <MagicLink to={process.env.GATSBY_REPOSITORY_URL}>
             disponible librement
           </MagicLink>
@@ -66,5 +66,5 @@ export default function ContactPrompt(props) {
         </Text>
       )}
     </>
-  ) : null
+  ) : null;
 }

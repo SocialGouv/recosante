@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
@@ -10,19 +10,17 @@ const Wrapper = styled.div`
     bottom: 0.5rem;
     font-size: 0.875rem;
     font-style: italic;
-        color: ${(props) => props.theme.colors.footer};
-
-
+    color: ${(props) => props.theme.colors.footer};
   }
   &:before {
-    content: '${(props) => props.start}';
+    content: "${(props) => props.start}";
     left: 0;
   }
   &:after {
-    content: '${(props) => props.end}';
+    content: "${(props) => props.end}";
     right: 0;
   }
-`
+`;
 const Input = styled.input`
   -webkit-appearance: none;
   width: 100%;
@@ -106,11 +104,11 @@ const Input = styled.input`
   &:focus::-ms-fill-upper {
     background: ${(props) => props.theme.colors.border};
   }
-`
+`;
 export default function Range(props) {
   return (
     <Wrapper start={props.start} end={props.end}>
-      <Input type='range' {...props} />
+      <Input type="range" {...props} />
     </Wrapper>
-  )
+  );
 }

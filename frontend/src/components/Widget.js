@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import IframeResizer from 'iframe-resizer-react'
+import IframeResizer from "iframe-resizer-react";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-import { formatPlaceUrl } from 'utils/formatPlaceUrl'
-import useWindowSize from 'hooks/useWindowSize'
-import Section from 'components/base/Section'
-import Code from 'components/widget/Code'
-import Options from 'components/widget/Options'
+import Section from "components/base/Section";
+import Code from "components/widget/Code";
+import Options from "components/widget/Options";
+import useWindowSize from "hooks/useWindowSize";
+import { formatPlaceUrl } from "utils/formatPlaceUrl";
 
 const StyledSection = styled(Section)`
   display: flex;
@@ -16,7 +16,7 @@ const StyledSection = styled(Section)`
     flex-direction: column;
     align-items: center;
   }
-`
+`;
 const Configurator = styled.div`
   max-width: 25rem;
   margin-top: 2rem;
@@ -24,21 +24,21 @@ const Configurator = styled.div`
   ${(props) => props.theme.mq.medium} {
     margin-top: 0;
   }
-`
+`;
 const MainTitle = styled.h1`
   width: 29.25rem;
 
   ${(props) => props.theme.mq.medium} {
     width: auto;
   }
-`
+`;
 const Title = styled.h2`
   width: 29.25rem;
 
   ${(props) => props.theme.mq.medium} {
     width: auto;
   }
-`
+`;
 const StyledIframe = styled(IframeResizer)`
   display: block;
   width: 36rem;
@@ -47,14 +47,14 @@ const StyledIframe = styled(IframeResizer)`
   ${(props) => props.theme.mq.medium} {
     width: 100%;
   }
-`
+`;
 
 export default function Widget(props) {
-  const [defaultPlace, setDefaultPlace] = useState(null)
+  const [defaultPlace, setDefaultPlace] = useState(null);
 
-  const url = 'https://recosante.beta.gouv.fr'
+  const url = "https://recosante.beta.gouv.fr";
 
-  const { width } = useWindowSize()
+  const { width } = useWindowSize();
 
   return !props.home || width > 700 ? (
     <StyledSection first={props.main}>
@@ -75,11 +75,11 @@ export default function Widget(props) {
       </Configurator>
       <StyledIframe
         src={`${url}${
-          defaultPlace ? formatPlaceUrl(defaultPlace) : '/'
+          defaultPlace ? formatPlaceUrl(defaultPlace) : "/"
         }?iframe=1`}
         allowFullScreen={true}
-        allow='geolocation'
+        allow="geolocation"
       />
     </StyledSection>
-  ) : null
+  ) : null;
 }

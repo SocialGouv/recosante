@@ -1,27 +1,27 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useQueryParam } from 'hooks/useQueryParam';
-import { ToastContainer, Slide } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.min.css'
+import { useQueryParam } from "hooks/useQueryParam";
+import React from "react";
+import { Slide, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import styled from "styled-components";
 
-import { useUser } from 'hooks/useUser'
-import indicateursSteps from 'utils/indicateursSteps'
-import recommandationsSteps from 'utils/recommandationsSteps'
-import UnloggedForm from 'components/misc/UnloggedForm'
-import Mail from './profile/Mail'
-import Address from './profile/Address'
-import Step from './profile/Step'
-import Delete from './profile/Delete'
-import InactiveProfile from './profile/InactiveProfile'
+import UnloggedForm from "components/misc/UnloggedForm";
+import { useUser } from "hooks/useUser";
+import indicateursSteps from "utils/indicateursSteps";
+import recommandationsSteps from "utils/recommandationsSteps";
+import Address from "./profile/Address";
+import Delete from "./profile/Delete";
+import InactiveProfile from "./profile/InactiveProfile";
+import Mail from "./profile/Mail";
+import Step from "./profile/Step";
 
 const Title = styled.h1`
   margin-bottom: 4rem;
-`
+`;
 export default function Profile() {
-  const [user] = useQueryParam('user')
-  const [token] = useQueryParam('token')
+  const [user] = useQueryParam("user");
+  const [token] = useQueryParam("token");
 
-  const { error, data }  = useUser()
+  const { error, data } = useUser();
 
   return (
     <>
@@ -36,12 +36,12 @@ export default function Profile() {
                 step={step}
                 key={step.name}
                 large={
-                  step.name === 'indicateurs' || step.name === 'recommandations'
+                  step.name === "indicateurs" || step.name === "recommandations"
                 }
               />
             ))}
             {data &&
-              data['recommandations'] &&
+              data["recommandations"] &&
               recommandationsSteps.map((step) => (
                 <Step step={step} key={step.name} />
               ))}
@@ -55,7 +55,7 @@ export default function Profile() {
         <UnloggedForm unauthorized={!!error} />
       )}
       <ToastContainer
-        position='bottom-left'
+        position="bottom-left"
         transition={Slide}
         autoClose={3000}
         hideProgressBar={false}
@@ -64,5 +64,5 @@ export default function Profile() {
         limit={2}
       />
     </>
-  )
+  );
 }

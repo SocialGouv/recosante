@@ -1,16 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import TextInput from 'components/base/TextInput'
+import TextInput from "components/base/TextInput";
 
 const Wrapper = styled.div`
   margin-bottom: 1rem;
-`
+`;
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
-  color: ${(props) => props.theme.colors[props.error ? 'error' : 'text']};
-`
+  color: ${(props) => props.theme.colors[props.error ? "error" : "text"]};
+`;
 export default function TextInputWithLabel(props) {
   return (
     <Wrapper className={props.className}>
@@ -27,5 +27,5 @@ export default function TextInputWithLabel(props) {
         onChange={props.onChange}
       />
     </Wrapper>
-  )
+  );
 }

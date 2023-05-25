@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   position: relative;
@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   margin-bottom: 1rem;
 
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
     border-radius: 0.25rem;
     cursor: pointer;
   }
-`
+`;
 const Check = styled.svg`
   position: absolute;
   top: -0.05em;
@@ -37,19 +37,19 @@ const Check = styled.svg`
     transition: stroke-dashoffset ${(props) => (props.checked ? 200 : 0)}ms
       ease-out;
   }
-`
+`;
 const Input = styled.input`
-  margin-right: ${(props) => (props.label ? '1em' : 0)};
+  margin-right: ${(props) => (props.label ? "1em" : 0)};
   opacity: 0;
   pointer-events: none;
-`
-const LabelWrapper = styled.div``
+`;
+const LabelWrapper = styled.div``;
 const Label = styled.label`
   color: ${(props) =>
     props.focus ? props.theme.colors.main : props.theme.colors.text};
-`
+`;
 export default function Checkbox(props) {
-  const [focus, setFocus] = useState(false)
+  const [focus, setFocus] = useState(false);
   return (
     <Wrapper
       small={props.small}
@@ -59,22 +59,20 @@ export default function Checkbox(props) {
     >
       <Check
         checked={props.checked}
-        width='3213'
-        height='2768'
-        viewBox='0 0 3213 2768'
+        width="3213"
+        height="2768"
+        viewBox="0 0 3213 2768"
       >
-        <path
-          d='M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224'
-        />
+        <path d="M165 1360C165 1360 1153 2220 1277 2336C1885.14 828 3101 224 3101 224" />
       </Check>
       <Input
         checked={props.checked}
-        type='checkbox'
+        type="checkbox"
         id={props.name}
         name={props.name}
         label={props.children || props.label}
         onChange={(e) => {
-          props.onChange(e.target.checked)
+          props.onChange(e.target.checked);
         }}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
@@ -91,5 +89,5 @@ export default function Checkbox(props) {
         </LabelWrapper>
       )}
     </Wrapper>
-  )
+  );
 }

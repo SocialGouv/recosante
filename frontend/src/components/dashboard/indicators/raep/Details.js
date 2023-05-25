@@ -1,13 +1,13 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Element from './details/Element'
+import Element from "./details/Element";
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
-`
+`;
 const Elements = styled.ul`
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ const Elements = styled.ul`
       margin-bottom: 0;
     }
   }
-`
+`;
 export default function Details(props) {
   return props.data ? (
     <Wrapper>
@@ -39,5 +39,5 @@ export default function Details(props) {
           ))}
       </Elements>
     </Wrapper>
-  ) : null
+  ) : null;
 }

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from "react";
 
 export default function useSentence(answers, options) {
-  const [sentence, setSentence] = useState([])
+  const [sentence, setSentence] = useState([]);
   useEffect(() => {
     setSentence(
       answers
@@ -10,21 +10,21 @@ export default function useSentence(answers, options) {
               const sentence = options.find((option) => option.value === answer)
                 ? options.find((option) => option.value === answer).answer ||
                   options.find((option) => option.value === answer).answer ===
-                    ''
+                    ""
                   ? options.find((option) => option.value === answer).answer
                   : options.find((option) => option.value === answer).label
-                : ''
+                : "";
               return index === 0
-                ? sentence + (index === answers.length - 1 ? '.' : '')
+                ? sentence + (index === answers.length - 1 ? "." : "")
                 : index > 0 && index < answers.length - 1
                 ? `, ${sentence}`
-                : ` et ${sentence}.`
+                : ` et ${sentence}.`;
             })
-            .join('')
-            .split('')
+            .join("")
+            .split("")
         : []
-    )
-  }, [answers, options])
+    );
+  }, [answers, options]);
 
-  return sentence
+  return sentence;
 }

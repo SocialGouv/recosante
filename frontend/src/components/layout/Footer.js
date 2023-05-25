@@ -1,17 +1,17 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Logos from './header/Logos'
-import Partners from './footer/Partners'
-import Links from './footer/Links'
-import MobileButtons from './footer/MobileButtons'
+import Links from "./footer/Links";
+import MobileButtons from "./footer/MobileButtons";
+import Partners from "./footer/Partners";
+import Logos from "./header/Logos";
 
 const Wrapper = styled.footer`
   position: relative;
   padding-top: 2rem;
   background-color: ${(props) => props.theme.colors.background};
   border-top: 2px solid ${(props) => props.theme.colors.main};
-`
+`;
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
@@ -23,19 +23,19 @@ const Content = styled.div`
   ${(props) => props.theme.mq.medium} {
     flex-direction: column;
   }
-`
+`;
 const Right = styled.div`
   max-width: 42.75rem;
-`
+`;
 const Description = styled.p`
   ${(props) => props.theme.mq.medium} {
     margin-top: 1rem;
   }
-`
+`;
 
 export default function Footer() {
   return (
-    <Wrapper role='contentinfo'>
+    <Wrapper role="contentinfo">
       <Content>
         <MobileButtons iframe={false} />
         <Logos />
@@ -49,5 +49,5 @@ export default function Footer() {
       </Content>
       <Links />
     </Wrapper>
-  )
+  );
 }

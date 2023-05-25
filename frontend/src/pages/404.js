@@ -1,23 +1,23 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
 
-import Web from 'components/layout/Web'
-import Section from 'components/base/Section'
-import Button from 'components/base/Button'
+import Button from "components/base/Button";
+import Section from "components/base/Section";
+import Web from "components/layout/Web";
 
 const StyledSection = styled(Section)`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 export default function NotFound() {
   return (
-    <Web title={'404'}>
+    <Web title={"404"}>
       <StyledSection first small>
         <h1>404</h1>
         <p>Cette page n’existe pas (ou plus).</p>
-        <Button to='/'>Retourner à l'accueil</Button>
+        <Button to="/">Retourner à l'accueil</Button>
       </StyledSection>
     </Web>
-  )
+  );
 }

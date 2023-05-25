@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
-import useIframe from 'hooks/useIframe'
-import Web from 'components/layout/Web'
-import Search from 'components/Search'
-import Newsletter from '../components/Newsletter'
-import Data from 'components/Data'
-import About from 'components/About'
+import About from "components/About";
+import Data from "components/Data";
+import Search from "components/Search";
+import Web from "components/layout/Web";
+import useIframe from "hooks/useIframe";
+import Newsletter from "../components/Newsletter";
 
 export default function Index() {
-  const iframe = useIframe()
+  const iframe = useIframe();
 
   return (
     <Web>
@@ -21,5 +21,5 @@ export default function Index() {
         </>
       )}
     </Web>
-  )
+  );
 }

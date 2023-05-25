@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import styled from 'styled-components'
+import React, { useContext } from "react";
+import styled from "styled-components";
 
-import ModalContext from 'utils/ModalContext'
+import ModalContext from "utils/ModalContext";
 
 const Wrapper = styled.button`
   margin: 0;
@@ -13,13 +13,13 @@ const Wrapper = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-`
+`;
 export default function Delete() {
-  const { setDeleteProfile } = useContext(ModalContext)
+  const { setDeleteProfile } = useContext(ModalContext);
 
   return (
-    <Wrapper role='button' onClick={() => setDeleteProfile(true)}>
+    <Wrapper role="button" onClick={() => setDeleteProfile(true)}>
       Me désinscrire
     </Wrapper>
-  )
+  );
 }

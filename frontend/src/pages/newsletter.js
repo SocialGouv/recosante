@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 
-import Web from 'components/layout/Web'
-import Search from 'components/Search'
-import Newsletter from '../components/Newsletter'
-import Widget from 'components/Widget'
-import Data from 'components/Data'
-import About from 'components/About'
+import About from "components/About";
+import Data from "components/Data";
+import Search from "components/Search";
+import Widget from "components/Widget";
+import Web from "components/layout/Web";
+import Newsletter from "../components/Newsletter";
 
 export default function NewsletterPage() {
   return (
@@ -16,5 +16,5 @@ export default function NewsletterPage() {
       <Data />
       <About />
     </Web>
-  )
+  );
 }

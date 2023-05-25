@@ -1,50 +1,50 @@
-import { useQuery } from 'react-query'
-import axios from 'axios'
+import axios from "axios";
+import { useQuery } from "react-query";
 
-import apiUrl from 'utils/apiUrl'
+import apiUrl from "utils/apiUrl";
 
 export default function useStatistiques() {
   const web = useQuery(
-    ['web'],
+    ["web"],
     () =>
       axios
         .get(`${apiUrl}/stats/web`, {
           headers: {
-            Accept: ' application/json',
+            Accept: " application/json",
           },
         })
         .then((res) => res.data),
     {
       refetchOnWindowFocus: false,
     }
-  )
+  );
   const email = useQuery(
-    ['email'],
+    ["email"],
     () =>
       axios
         .get(`${apiUrl}/stats/email`, {
           headers: {
-            Accept: ' application/json',
+            Accept: " application/json",
           },
         })
         .then((res) => res.data),
     {
       refetchOnWindowFocus: false,
     }
-  )
+  );
   const openings = useQuery(
-    ['openings'],
+    ["openings"],
     () =>
       axios
         .get(`${apiUrl}/stats/email/openings`, {
           headers: {
-            Accept: ' application/json',
+            Accept: " application/json",
           },
         })
         .then((res) => res.data),
     {
       refetchOnWindowFocus: false,
     }
-  )
-  return { web: web.data, email: email.data, openings: openings.data }
+  );
+  return { web: web.data, email: email.data, openings: openings.data };
 }
