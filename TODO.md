@@ -19,7 +19,7 @@
 
 ## Lint/autoformat/etc.
 
-- à setuper ~~pour back~~ et front
+- ~~à setuper pour back et front~~
 
 ## Tests
 
@@ -30,9 +30,9 @@
 ## Perf
 
 - docker
-  - améliorer les images docker python (optim via multi stage + viretualenv)
-  - optimiser images node
-  - check rootless
+  - ~~améliorer les images docker python (optim via multi stage + viretualenv)~~
+  - ~~optimiser images node~~
+  - check rootless ~~back~~ et front
 - intégrer l'index SQL pour l'api /stats/emails `CREATE INDEX idx_newsletter_appliquee ON public.newsletter USING btree (appliquee)` dans une migration alembic
 
 ## Monitoring
