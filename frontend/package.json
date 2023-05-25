@@ -8,7 +8,7 @@
     "build": "yarn iframe && gatsby build",
     "format": "prettier --write **/*.{js,jsx}",
     "iframe": "webpack",
-    "lint": "echo \"Do lint!\"",
+    "lint": "prettier --check **/*.{js,jsx}",
     "serve": "gatsby serve",
     "start": "gatsby develop",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
