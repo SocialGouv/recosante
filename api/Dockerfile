@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.10.6-slim@sha256:c8ef926b002a8371fff6b4f40142dcc6d6f7e217f7afce2c2d1ed2e6c28e2b7c
+ARG PYTHON_VERSION=3.11.3-slim@sha256:7b866f12347fbfccbb73284d9c04bbd67b5f9cca8b46786e9fa2bd07af53f09a
 
 ########
 # Base : node / fr locales + libs
