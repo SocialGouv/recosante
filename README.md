@@ -54,6 +54,14 @@ Ce projet contient les templates mails utilisés par Brevo (ex sendInBlue).
 
 Plus d'information dans le [`README.md`](./mail/README.md) du projet.
 
+### Stack technique
+
+Notre stack technique est principalement composée de :
+
+- front-end : React, Gatsby.
+- back-end : Python, Flask, Celery / Redis, PostgreSQL.
+- hébergement et autres services : Docker, Kubernetes, Brevo (ex Sendinblue).
+
 ### shema simplifié d'architecture
 
 ```mermaid
@@ -235,6 +243,16 @@ Pour l'`api`
 ```
 
 Pour la librairie `indice_pollution`
+
+## Contribution et deploiement continu
+
+Chaque contribution fonctionnelle se fait sous la forme de pull-requests.
+
+A chaque création et mise à jour de pull-request, une nouvelle version de l’application est déployée sur le cluster kubernetes de la fabrique dans un environnement de démo (preview) qui lui est propre.
+
+Une fois la pull-request validée, le merge dans la branche master va déclencher le déploiement dans l'environnement de pré-production sans interruption de service.
+
+Pour déployer en production, une task github est disponible.
 
 ## Licence
 
