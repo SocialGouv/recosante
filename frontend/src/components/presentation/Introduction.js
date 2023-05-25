@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 import Button from 'components/base/Button'
 
@@ -54,7 +54,7 @@ export default function What(props) {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "medecins-introduction" }) {
+        mdx(fields: { slug: { eq: "medecins-introduction" } }) {
           body
         }
       }
@@ -71,7 +71,7 @@ export default function What(props) {
           <strong>Agir</strong> pour sa santé
         </Right>
       </Title>
-      <MDXRenderer>{(props.data || data).mdx.body}</MDXRenderer>
+      <Markdown>{(props.data || data).mdx.body}</Markdown>
       <Button.Wrapper center>
         <Button to={'/kit_de_communication.zip'} hollow>
           Télecharger le kit de communication

@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
+import Markdown from 'components/base/Section'
 import Section from 'components/base/Section'
 import Button from 'components/base/Button'
 
@@ -14,7 +14,7 @@ export default function AboutUv() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "about-uv" }) {
+        mdx(fields: { slug: { eq: "about-uv" } }) {
           body
         }
       }
@@ -23,7 +23,7 @@ export default function AboutUv() {
 
   return (
     <Section id='about-uv' small>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <Markdown>{data.mdx.body}</Markdown>
       <Button.Wrapper center>
         <StyledButton hollow to='/'>
           Consulter l’indice UV de ma commune

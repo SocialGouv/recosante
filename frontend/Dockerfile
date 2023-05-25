@@ -1,28 +1,9 @@
-ARG NODE_VERSION=16-alpine3.16@sha256:27f56734cabb1bf0ed5176730091b67fb59b0c7249193e350f175c8b4ab12f8d
+ARG NODE_VERSION=18-alpine3.17@sha256:44aaf1ccc80eaed6572a0f2ef7d6b5a2982d54481e4255480041ac92221e2f11
 
-# Install dependencies only when needed
-FROM node:$NODE_VERSION AS prepare
-WORKDIR /app
-COPY package.json yarn.lock ./
-
-# Keep yarn install cache when bumping version and dependencies still the sames
-RUN node -e " \
-    const package = JSON.parse(fs.readFileSync('/app/package.json')); \
-    const packageZero = { ...package, version: '0.0.0' };  \
-    fs.writeFileSync('/app/package.json', JSON.stringify(packageZero));"
-
-FROM node:$NODE_VERSION as deps
-WORKDIR /app
-COPY --from=prepare /app/package.json /app/yarn.lock ./
-RUN yarn install --frozen-lockfile
-
-# Rebuild the source code only when needed
-FROM node:$NODE_VERSION AS builder
-
-ARG PRODUCTION
-ENV PRODUCTION $PRODUCTION
-ARG GITHUB_SHA
-ENV GITHUB_SHA $GITHUB_SHA
+########
+# Base : node
+FROM node:$NODE_VERSION AS base
+# Gatsby vaiables for the install / build / run
 ARG GATSBY_API_BASE_URL
 ENV GATSBY_API_BASE_URL $GATSBY_API_BASE_URL
 ARG GATSBY_IFRAME_ID
@@ -31,18 +12,54 @@ ARG GATSBY_URL
 ENV GATSBY_URL $GATSBY_URL
 ARG GATSBY_REPOSITORY_URL
 ENV GATSBY_REPOSITORY_URL $GATSBY_REPOSITORY_URL
-
-ENV NODE_ENV production
 ENV GATSBY_TELEMETRY_DISABLED 1
-
 WORKDIR /app
+# Need lscpu
+RUN apk add --no-cache --update util-linux && \
+    rm -rf /var/cache/apk/* > /dev/null 2>&1
+COPY frontend/package.json ./frontend/
+ADD package.json yarn.lock ./
+# Keep yarn install cache when bumping version and dependencies still the sames
+RUN node -e " \
+    const package = JSON.parse(fs.readFileSync('/app/package.json')); \
+    const packageZero = { ...package, version: '0.0.0' };  \
+    fs.writeFileSync('/app/package.json', JSON.stringify(packageZero, null, 2));"
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+########
+# Need this hack to not install dependencies when frontend changes
+FROM node:$NODE_VERSION AS tmp-frontend
+COPY frontend frontend/
 
-RUN yarn build && yarn --production && yarn cache clean
+########
+# Install dependencies only when needeed
+FROM base AS installer
+RUN yarn install
 
-#USER 1000
+########
+# Build gatsby
+FROM installer AS builder
+COPY --from=tmp-frontend /frontend ./frontend
+RUN ls
+WORKDIR /app/frontend
+RUN yarn build
 
+########
+# Runner
+FROM base AS runner
+# Apparently still does not work with gatsby 5.10 ...
+# See https://github.com/gatsbyjs/gatsby/issues/37246
+# RUN addgroup --system --gid 1001 nodejs && \
+#     adduser --system --uid 1001 frontend
+# COPY --from=builder --chown=nodejs:frontend /app ./
+COPY --from=builder /app ./
+ARG GITHUB_SHA
+ENV GITHUB_SHA $GITHUB_SHA
+ARG PRODUCTION
+ENV PRODUCTION $PRODUCTION
+ENV NODE_ENV production
+RUN yarn install --production && yarn cache clean
+
+# USER 1001
+
+WORKDIR /app/frontend
 CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
-

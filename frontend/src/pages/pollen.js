@@ -10,7 +10,7 @@ export default function Asthme() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction-pollen" }) {
+        mdx(fields: { slug: { eq: "introduction-pollen" } }) {
           body
         }
       }

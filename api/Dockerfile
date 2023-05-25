@@ -1,31 +1,51 @@
-FROM python:3.10.6-slim@sha256:c8ef926b002a8371fff6b4f40142dcc6d6f7e217f7afce2c2d1ed2e6c28e2b7c
+ARG PYTHON_VERSION=3.10.6-slim@sha256:c8ef926b002a8371fff6b4f40142dcc6d6f7e217f7afce2c2d1ed2e6c28e2b7c
 
-RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
-
+########
+# Base : node / fr locales + libs
+FROM python:$PYTHON_VERSION AS base
+RUN pip install poetry
 RUN apt update && apt install -y --no-install-recommends curl
 RUN apt update \
     && apt install -y --no-install-recommends curl gcc libc6-dev libpq-dev locales python3-dev \
     && rm -rf /var/lib/apt/lists/* \
     && sed -i '/^#.* fr_FR.UTF-8 /s/^#//' /etc/locale.gen \
     && locale-gen
-
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs && npm install --global yarn
-
 WORKDIR /code
-
-COPY api api/
 COPY libs libs/
-RUN pip install poetry
+ADD api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
+ADD package.json yarn.lock ./
+# Keep yarn install cache when bumping version and dependencies still the sames
+RUN node -e " \
+    const package = JSON.parse(fs.readFileSync('/code/package.json')); \
+    const packageZero = { ...package, version: '0.0.0' };  \
+    fs.writeFileSync('/code/package.json', JSON.stringify(packageZero));"
 
-WORKDIR /code/api
+########
+# Need this hack to not install dependencies when api changes
+FROM python:$PYTHON_VERSION AS tmp-api
+COPY api api/
 
-RUN poetry install --without dev
+########
+# Install dependencies only when needeed
+FROM base AS installer
 RUN yarn install --frozen-lockfile
+WORKDIR /code/api
+RUN poetry install --without dev
 
+########
+# Runner
+FROM base AS runner
+RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
 RUN apt-get purge -y curl gcc libc6-dev && apt-get autoremove -y
-
-RUN chown -R 1000:1000 /code
+RUN chown -R pn:pn /code
+COPY --from=tmp-api --chown=pn:pn /api ./api
+COPY --from=installer --chown=pn:pn /code/node_modules ./node_modules
+COPY --from=installer --chown=pn:pn /code/api/node_modules ./api/node_modules
+COPY --from=installer --chown=pn:pn /code/api/.venv ./api/.venv
+RUN yarn install --production && yarn cache clean
 
 USER 1000
 
+WORKDIR /code/api
 CMD ["./start_all.sh"]

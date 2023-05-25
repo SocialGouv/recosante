@@ -9,7 +9,7 @@ export default function Qa() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction-qa" }) {
+        mdx(fields: { slug: { eq: "introduction-qa" } }) {
           body
         }
       }

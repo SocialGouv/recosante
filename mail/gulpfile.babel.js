@@ -83,7 +83,7 @@ function sass() {
     .pipe($.if(!PRODUCTION, $.sourcemaps.init()))
     .pipe(
       sassPlugin({
-        includePaths: ["node_modules/foundation-emails/scss"],
+        includePaths: ["../node_modules/foundation-emails/scss"],
       }).on("error", sassPlugin.logError)
     )
     .pipe($.if(PRODUCTION, uncssPlugin))

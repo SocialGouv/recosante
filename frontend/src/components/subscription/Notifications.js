@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 import FocusTrap from 'focus-trap-react'
 
 import Button from 'components/base/Button'
+import Markdown from 'components/base/Markdown'
 import Images from 'components/newsletter/notifications/Images'
 
 const Wrapper = styled.div`
@@ -50,7 +50,7 @@ export default React.forwardRef(function Notifications(props, ref) {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "notifications-modal" }) {
+        mdx(fields: { slug: { eq: "notifications-modal" } }) {
           body
         }
       }
@@ -66,7 +66,7 @@ export default React.forwardRef(function Notifications(props, ref) {
         <ImagesWrapper>
           <Images isOnScreen={true} />
         </ImagesWrapper>
-        <MDXRenderer ref={ref}>{data.mdx.body}</MDXRenderer>
+        <Markdown ref={ref}>{data.mdx.body}</Markdown>
         <StyledButton onClick={() => props.setModal(false)} noExpand>
           J'ai compris
         </StyledButton>

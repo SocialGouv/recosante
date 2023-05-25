@@ -20,7 +20,7 @@ export default function Articles(props) {
         <Section first medium>
           <h1>Nos articles</h1>
           {props.data.allMdx.edges.map(({ node }) => (
-            <ArticleLink to={node.slug} key={node.slug}>
+            <ArticleLink to={node.fields.slug} key={node.fields.slug}>
               <Title>{node.frontmatter.title}</Title>
               <Excerpt>{node.excerpt}</Excerpt>
             </ArticleLink>
@@ -34,12 +34,14 @@ export const articlesQuery = graphql
 `
 {
   allMdx(
-    filter: { fileAbsolutePath: { regex: "/articles/" } }
-    sort: { fields: [frontmatter___order], order: DESC }
+    filter: { internal: { contentFilePath: { regex: "/articles/" } } }
+    sort: { frontmatter: { order: DESC } }
   ) {
     edges {
       node {
-        slug
+        fields {
+          slug
+        }
         excerpt(pruneLength: 250)
         frontmatter {
           title

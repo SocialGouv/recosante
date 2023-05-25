@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { MDXProvider } from '@mdx-js/react'
 
 import { GlobalStyle } from 'utils/styles'
 import useIframe from 'hooks/useIframe'
@@ -41,22 +42,24 @@ export default function Web(props) {
       <QueryClientProvider client={queryClient}>
         <UXProvider>
           <StyleProvider>
-            <UserProvider>
-              <ModalProvider>
-                <GlobalStyle />
-                <Fullscreen iframe={iframe}>
-                  <Header />
-                  <Content role="main">{props.children}</Content>
-                </Fullscreen>
-                {!iframe && <Footer />}
-                <EmbedWrapper place={props.place} />
-                <ShareWrapper place={props.place} />
-                <InstallButton />
-                <WrapperModal />
-                <DeleteModal />
-                <SubscriptionModal />
-              </ModalProvider>
-            </UserProvider>
+            <MDXProvider>
+              <UserProvider>
+                <ModalProvider>
+                  <GlobalStyle />
+                  <Fullscreen iframe={iframe}>
+                    <Header />
+                    <Content role="main">{props.children}</Content>
+                  </Fullscreen>
+                  {!iframe && <Footer />}
+                  <EmbedWrapper place={props.place} />
+                  <ShareWrapper place={props.place} />
+                  <InstallButton />
+                  <WrapperModal />
+                  <DeleteModal />
+                  <SubscriptionModal />
+                </ModalProvider>
+              </UserProvider>
+            </MDXProvider>
           </StyleProvider>
         </UXProvider>
       </QueryClientProvider>

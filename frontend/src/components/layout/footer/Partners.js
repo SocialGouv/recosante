@@ -42,7 +42,7 @@ export default function Partners() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "partenaires" }) {
+        mdx(fields: { slug: { eq: "partenaires" } }) {
           body
           frontmatter {
             data {

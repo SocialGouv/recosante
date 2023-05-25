@@ -8,7 +8,8 @@
   "workspaces": [
     "api",
     "frontend",
-    "libs/*"
+    "libs/*",
+    "mail"
   ],
   "scripts": {
     "down": "docker-compose down",

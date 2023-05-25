@@ -1,6 +1,5 @@
 import React from 'react'
-import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
+import { graphql } from 'gatsby'
 import styled from 'styled-components'
 
 import Web from 'components/layout/Web'
@@ -30,26 +29,12 @@ const Introduction = styled.div`
 `
 
 export default function Recommandations(props) {
-
-  const data = useStaticQuery(
-    graphql`
-      query {
-        mdx(slug: { eq: "recommandations" }) {
-          body
-          frontmatter {
-            title
-          }
-        }
-      }
-    `
-  )
-
   return (
-    <Web title={data.mdx.frontmatter.title}>
+    <Web title={props.data.mdx.frontmatter.title}>
       <Section first medium>
-        <Title>{data.mdx.frontmatter.title}</Title>
+        <Title>{props.data.mdx.frontmatter.title}</Title>
         <Introduction>
-          <MDXRenderer>{data.mdx.body}</MDXRenderer>
+          {props.children}
         </Introduction>
         <Content recommandations={props.pageContext.recommandations}/>
         <Button.Wrapper center>
@@ -62,3 +47,13 @@ export default function Recommandations(props) {
   )
 
 }
+
+export const pageQuery = graphql`
+  query Recommandations($slug: String!) {
+    mdx(fields: { slug: { eq: $slug } }) {
+      frontmatter {
+        title
+      }
+    }
+  }
+`

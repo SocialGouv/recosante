@@ -9,7 +9,7 @@ export default function Uv() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction-uv" }) {
+        mdx(fields: { slug: { eq: "introduction-uv" } }) {
           body
         }
       }

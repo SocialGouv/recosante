@@ -126,7 +126,7 @@ jobs:
       ~needs: [api] # yes, the frontend build needs some running API
       with:
         imagePackage: frontend
-        context: frontend
+        dockerfile: frontend/Dockerfile
         buildArgs:
           GATSBY_API_BASE_URL: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
           GATSBY_URL: "https://{{ .Values.global.host }}"

@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import axios from 'axios'
-import { useQueryParam } from 'use-query-params'
+import { useQueryParam } from 'hooks/useQueryParam';
 
 import UserContext from 'utils/UserContext'
 import apiUrl from 'utils/apiUrl'

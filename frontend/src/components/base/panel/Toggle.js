@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip as ReactTooltip } from 'react-tooltip'
 
 const Wrapper = styled.button`
   position: fixed;

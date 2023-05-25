@@ -1,15 +1,15 @@
 import React from 'react'
 import { StaticImage } from 'gatsby-plugin-image'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
+import Markdown from 'components/base/Markdown'
 import Wrapper from './Wrapper'
 
 export default function Why() {
   const data = useStaticQuery(
     graphql`
       query {
-        content: mdx(slug: { eq: "medecins-naissance" }) {
+        content: mdx(fields: { slug: { eq: "medecins-naissance" } }) {
           body
         }
       }
@@ -19,7 +19,7 @@ export default function Why() {
   return (
     <Wrapper invert>
       <Wrapper.Content>
-        <MDXRenderer>{data.content.body}</MDXRenderer>
+        <Markdown>{data.content.body}</Markdown>
       </Wrapper.Content>
       <Wrapper.Image width='35.5rem'>
         <StaticImage src={'./images/section3.jpg'} alt='' />

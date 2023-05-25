@@ -1,14 +1,14 @@
 import React from 'react'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 
 export default function About() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "about" }) {
+        mdx(fields: { slug: { eq: "about" } }) {
           body
         }
       }
@@ -17,7 +17,7 @@ export default function About() {
 
   return (
     <Section id='about' small>
-      <MDXRenderer>{data.mdx.body}</MDXRenderer>
+      <Markdown>{data.mdx.body}</Markdown>
     </Section>
   )
 }

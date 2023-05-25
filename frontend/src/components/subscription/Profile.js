@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useQueryParam } from 'use-query-params'
+import { useQueryParam } from 'hooks/useQueryParam';
 import { ToastContainer, Slide } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 

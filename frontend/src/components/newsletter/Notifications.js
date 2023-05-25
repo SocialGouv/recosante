@@ -1,11 +1,11 @@
 import React, { useContext, useRef } from 'react'
 import styled from 'styled-components'
 import { useStaticQuery, graphql } from 'gatsby'
-import { MDXRenderer } from 'gatsby-plugin-mdx'
 
 import ModalContext from 'utils/ModalContext'
 import { useLocalUser } from 'hooks/useUser'
 import Button from 'components/base/Button'
+import Markdown from 'components/base/Markdown'
 import Section from 'components/base/Section'
 import Images from './notifications/Images'
 
@@ -59,7 +59,7 @@ export default function Notifications() {
   const data = useStaticQuery(
     graphql`
       query {
-        mdx(slug: { eq: "introduction-notifications" }) {
+        mdx(fields: { slug: { eq: "introduction-notifications" } }) {
           body
         }
       }
@@ -78,7 +78,7 @@ export default function Notifications() {
         <Images isOnScreen={isOnScreen} />
       </MockupWrapper>
       <Content>
-        <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        <Markdown>{data.mdx.body}</Markdown>
         <Button.Wrapper right>
           <StyledButton
             onClick={() => {
