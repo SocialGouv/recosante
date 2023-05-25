@@ -1,4 +1,4 @@
-ARG NODE_VERSION=16-alpine3.16@sha256:27f56734cabb1bf0ed5176730091b67fb59b0c7249193e350f175c8b4ab12f8d
+ARG NODE_VERSION=18-alpine3.17@sha256:44aaf1ccc80eaed6572a0f2ef7d6b5a2982d54481e4255480041ac92221e2f11
 
 ########
 # Base : node
@@ -46,7 +46,7 @@ RUN yarn build
 ########
 # Runner
 FROM base AS runner
-# Apparently needs gatsby 5.3.1
+# Apparently still does not work with gatsby 5.10 ...
 # See https://github.com/gatsbyjs/gatsby/issues/37246
 # RUN addgroup --system --gid 1001 nodejs && \
 #     adduser --system --uid 1001 frontend
