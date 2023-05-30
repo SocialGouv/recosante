@@ -1,7 +1,5 @@
-import zipfile
+import os
 from datetime import date, datetime, time, timedelta
-from io import BytesIO
-from xml.dom.minidom import parseString
 
 import requests
 from psycopg2.extras import DateTimeTZRange
@@ -66,69 +64,85 @@ class VigilanceMeteo(db.Base):
     hours_to_add_after_16 = 40
 
     @staticmethod
-    def get_departement_codes(code):
-        if code == "20":
-            return ["2A"]
-        if code == "120":
-            return ["2B"]
-        if code == "175":
-            return ["75", "92", "93", "94"]
-        if code == "99":
-            return [None]
-        return [code]
+    def get_departement_code(code):
+        if code == "2A10":
+            return "2A"
+        if code == "2B10":
+            return "2B"
+        if code in {"99", "FRA"}:
+            return None
+        return code
 
     @classmethod
     def save_all(cls):
-        def convert_datetime(date_export_tu):
-            return datetime.strptime(date_export_tu.value, "%Y%m%d%H%M%S")
-        request = requests.get(
-            "http://vigilance2019.meteofrance.com/data/vigilance.zip", timeout=10)
-        with zipfile.ZipFile(BytesIO(request.content)) as zip_file:
-            fname = "NXFR49_LFPW_.xml"
-            if not fname in zip_file.namelist():
-                return
-            with zip_file.open(fname) as raw_file:
-                raw_content = parseString(raw_file.read())
-                date_export = convert_datetime(raw_content.getElementsByTagName(
-                    'SIV_MENHIR')[0].attributes['dateExportTU'])
-                if db.session.query(func.max(cls.date_export)).first() == (date_export,):
-                    logger.warn("Import déjà fait aujourd’hui")
-                    return
+        def convert_datetime(iso_date):
+            return datetime.strptime(iso_date[:19], "%Y-%m-%dT%H:%M:%S")
 
-                for phenomene in raw_content.getElementsByTagName("PHENOMENE"):
-                    for departement_code in cls.get_departement_codes(phenomene.attributes['departement'].value):
-                        if not departement_code:
-                            continue
-                        departement = Departement.get(departement_code)
-                        if not departement:
-                            logger.error(
-                                "Pas de département pour : %s", departement_code)
-                            continue
-                        debut = convert_datetime(
-                            phenomene.attributes['dateDebutEvtTU'])
-                        fin = convert_datetime(
-                            phenomene.attributes['dateFinEvtTU'])
-                        if debut < fin:
-                            obj = cls(
-                                zone_id=departement.zone_id,
-                                phenomene_id=int(
-                                    phenomene.attributes['phenomene'].value),
-                                date_export=date_export,
-                                couleur_id=int(
-                                    phenomene.attributes['couleur'].value),
-                                validity=DateTimeTZRange(debut, fin),
-                            )
-                            db.session.add(obj)
-                        else:
-                            logger.error(
-                                "Impossible d’enregistrer le phénomène: %s", phenomene)
-                db.session.commit()
+        portal_api_meteofrance_api_key = os.getenv(
+            'PORTAL_API_METEOFRANCE_API_KEY')
+        if not portal_api_meteofrance_api_key:
+            logger.error(
+                'The following env var is required: PORTAL_API_METEOFRANCE_API_KEY')
+            return None
+
+        request = requests.get(
+            "https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours",
+            timeout=10,
+            headers={"apikey": portal_api_meteofrance_api_key}
+        )
+
+        product = request.json().get('product')
+
+        if product is None:
+            logger.error(
+                'Invalid payload returned by PORTAL_API_METEOFRANCE')
+            return None
+
+        date_export = convert_datetime(product['update_time'])
+
+        if db.session.query(func.max(cls.date_export)).first() == (date_export,):
+            logger.warn("Import déjà fait aujourd’hui")
+            return None
+
+        period_j = next(
+            (period for period in product['periods'] if period['echeance'] == 'J'), None)
+
+        for domain in period_j['timelaps']['domain_ids']:
+            dept_code = cls.get_departement_code(domain['domain_id'])
+
+            if dept_code is None:
+                continue
+
+            try:
+                departement = Departement.get(dept_code)
+            except requests.HTTPError:
+                departement = None
+
+            if not departement:
+                logger.warn("domain_id inconnu : %s", dept_code)
+                continue
+
+            for phenomene in domain['phenomenon_items']:
+                timelaps_items = phenomene['timelaps_items'][0]
+                debut = convert_datetime(
+                    timelaps_items['begin_time'][:19])
+                fin = convert_datetime(timelaps_items['end_time'])
+                obj = cls(
+                    zone_id=departement.zone_id,
+                    phenomene_id=int(phenomene['phenomenon_id']),
+                    date_export=date_export,
+                    couleur_id=int(phenomene['phenomenon_max_color_id']),
+                    validity=DateTimeTZRange(debut, fin),
+                )
+                db.session.add(obj)
+        db.session.commit()
 
     # Cette requête selectionne les vigilances météo du dernier export fait avant date_ & time_
     # Et ne renvoie que les vigilances comprises entre :
     #  * le date & time passés et date_export J +16h si l’heure dans le date export est < 6
     #  * le date & time passés et date_export J+1 6h si l’heure dans le date export est < 16
     #  * le date & time passés et date_export J+1 16h si l’heure dans le date export est >= 16
+
     @classmethod
     def get_query(cls, departement_code, insee, date_, time_):
         if not isinstance(date_, date):
