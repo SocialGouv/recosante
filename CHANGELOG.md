@@ -1,3 +1,20 @@
+# [1.4.0](https://github.com/SocialGouv/recosante/compare/v1.3.0...v1.4.0) (2023-05-31)
+
+
+### Bug Fixes
+
+* **preprod:** add SIB api key ([#56](https://github.com/SocialGouv/recosante/issues/56)) ([173aa08](https://github.com/SocialGouv/recosante/commit/173aa08b85be19b12829f2ca3ae429d072cd4643))
+* **semantic-release:** Script ([debc9db](https://github.com/SocialGouv/recosante/commit/debc9dbf8701ecbaae46a2edf862556ccdc5bffe))
+* **vigilance-meteo:** Use new meteofrance API ([#71](https://github.com/SocialGouv/recosante/issues/71)) ([f38212d](https://github.com/SocialGouv/recosante/commit/f38212d6ef7bea3acd3dbf10b2cacd295d18b2d2))
+
+
+### Features
+
+* **lint:** api + pipeline ([#58](https://github.com/SocialGouv/recosante/issues/58)) ([5fa4a62](https://github.com/SocialGouv/recosante/commit/5fa4a62ce76f462c8dedea2fcd498d91900aed2e))
+* **lint:** frontend ([#68](https://github.com/SocialGouv/recosante/issues/68)) ([464a45b](https://github.com/SocialGouv/recosante/commit/464a45b5462fe1ba1100cfea87f60e60b61c26a2))
+* **mail:** update project ([#63](https://github.com/SocialGouv/recosante/issues/63)) ([f25633f](https://github.com/SocialGouv/recosante/commit/f25633f345ab18b0d9917c141ff5306828c9d0a8))
+* **pylint:** enable on indice_pollution ([#57](https://github.com/SocialGouv/recosante/issues/57)) ([b2c828c](https://github.com/SocialGouv/recosante/commit/b2c828cedb065b57c7d151377418b9dcf348edb0))
+
 # [1.3.0](https://github.com/SocialGouv/recosante/compare/v1.2.29...v1.3.0) (2023-05-16)
 
 
