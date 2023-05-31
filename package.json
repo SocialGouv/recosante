@@ -18,5 +18,11 @@
     "stop": "docker-compose stop",
     "test": "yarn workspaces run test",
     "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@socialgouv/releaserc": "^1.1.1",
+    "semantic-release": "^21.0.2"
   }
 }
