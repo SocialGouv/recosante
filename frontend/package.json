@@ -52,7 +52,7 @@
     "react-tooltip": "^5.13.1",
     "recharts": "^2.6.2",
     "rehype-raw": "^6.1.1",
-    "styled-components": "^5.3.10",
+    "styled-components": "^5.3.11",
     "styled-normalize": "^8.0.7"
   },
   "devDependencies": {
