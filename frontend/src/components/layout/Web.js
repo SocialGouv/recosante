@@ -1,6 +1,6 @@
 import { MDXProvider } from "@mdx-js/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import styled from "styled-components";
 
 import InstallButton from "components/base/InstallButton";
