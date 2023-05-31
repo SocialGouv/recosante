@@ -22,7 +22,7 @@ flask-rebar = "2.3.0"
 flask-sqlalchemy = "2.5.1"
 flask-wtf = "1.1.1"
 html2text = "2020.1.16"
-icalevents = "0.1.25"
+icalevents = "0.1.27"
 idna = "2.10"
 indice_pollution = {path = "../libs/indice_pollution", develop = true}
 kombu = "5.2.4"
@@ -44,7 +44,7 @@ wtforms = "3.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.3.1"
-pytest-alembic = "0.10.4"
+pytest-alembic = "0.10.5"
 pytest-flask-sqlalchemy = "1.1.0"
 pytest-mock = "3.10.0"
 pytest-postgresql = "4.1.1"
