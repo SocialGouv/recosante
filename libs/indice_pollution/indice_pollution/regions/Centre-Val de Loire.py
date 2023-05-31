@@ -80,4 +80,5 @@ class Forecast(Service, ForecastMixin):
 
 
 class Episode(Service, EpisodeMixin):
-    url = "https://services1.arcgis.com/HzzPcgRsxxyIZdlU/arcgis/rest/services/alerte_3j1/FeatureServer/0/query"
+    # pylint: disable-next=line-too-long
+    url = "https://services1.arcgis.com/HzzPcgRsxxyIZdlU/arcgis/rest/services/alrt_centre_val_de_loire_1/FeatureServer/0/query"

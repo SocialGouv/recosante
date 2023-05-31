@@ -10,9 +10,15 @@ class Service(ServiceMixin):
 
 
 class Forecast(Service, ForecastMixin):
-    url = 'https://services1.arcgis.com/y8pKCLYeLI1K2217/arcgis/rest/services/ind_martinique/FeatureServer/0/query'
+    url = 'https://services1.arcgis.com/y8pKCLYeLI1K2217/arcgis/rest/services/Indice_QA/FeatureServer/0/query'
     outfields = ['*']
-
+    params_fetch_all = {
+        'where': '1=1',
+        'f': 'json',
+        'returnGeometry': False,
+        'orderByFields': 'ESRI_OID',
+        'outFields': '*'
+    }
 
 class Episode(Service, EpisodeMixin):
     # pylint: disable-next=line-too-long
