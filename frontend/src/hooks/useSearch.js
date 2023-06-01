@@ -1,7 +1,7 @@
 /*eslint-disable eqeqeq*/
 
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useQuery } from "react-query";
 import apiUrl from "utils/apiUrl";
 
 export function useSearch(search) {

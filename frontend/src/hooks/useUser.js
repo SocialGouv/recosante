@@ -1,7 +1,7 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useQueryParam } from "hooks/useQueryParam";
 import { useContext } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import UserContext from "utils/UserContext";
 import apiUrl from "utils/apiUrl";

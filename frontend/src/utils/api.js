@@ -1,6 +1,6 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useQueryParam } from "hooks/useQueryParam";
-import { useMutation, useQuery } from "react-query";
 
 import apiUrl from "utils/apiUrl";
 
