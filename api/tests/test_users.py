@@ -40,7 +40,7 @@ def test_same_mail(client):
     assert 'already used' in response.json['errors']['mail']
 
 
-def test_default(client, commune):
+def test_default(client, commune_commited):
     data = {
         'mail': 'lebo@tonvelo.com',
         "commune": {
@@ -62,7 +62,7 @@ def test_default(client, commune):
     assert response.json['commune']['codes_postaux'] == ['53000']
     assert response.json['commune']['code'] == '53130'
     assert response.json['commune']['nom'] == 'Laval'
-    assert inscription.commune.id == commune.id
+    assert inscription.commune.id == commune_commited.id
 
     assert 'authentication_token' in response.json
     authentication_token = authenticator.decode_token(
