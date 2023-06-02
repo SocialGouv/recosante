@@ -42,4 +42,4 @@
 
 ## Data
 
-- supprimer l'historique ancien des grosses tables (notamment dans indice_schema.indiceATMO de plus de 70M de lignes)
+- ~~supprimer l'historique ancien des grosses tables (notamment dans indice_schema.indiceATMO de plus de 70M de lignes)~~
