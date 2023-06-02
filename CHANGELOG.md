@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/SocialGouv/recosante/compare/v1.4.0...v1.4.1) (2023-06-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency requests to v2.31.0 [security] ([#64](https://github.com/SocialGouv/recosante/issues/64)) ([15852f6](https://github.com/SocialGouv/recosante/commit/15852f6b5a7b504e5821dde005b5dae075b503c9))
+* **indices:** Centre val de loire et martinique ([#72](https://github.com/SocialGouv/recosante/issues/72)) ([d4ec454](https://github.com/SocialGouv/recosante/commit/d4ec45418d8bd3fd6e9977a98b2df46a252644b5))
+* **modals:** FocusTrap no tabbable child ([da993a0](https://github.com/SocialGouv/recosante/commit/da993a0cde5e34f44a308b7938410af04306ac98))
+
 # [1.4.0](https://github.com/SocialGouv/recosante/compare/v1.3.0...v1.4.0) (2023-05-31)
 
 
