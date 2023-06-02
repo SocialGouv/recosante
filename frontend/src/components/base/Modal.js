@@ -58,7 +58,7 @@ const Content = styled.div`
   }
   overflow: hidden;
 `;
-const ButtonClose = styled.div`
+const ButtonClose = styled.button`
   position: absolute;
   z-index: 10000;
   top: 0.5em;
@@ -68,6 +68,12 @@ const ButtonClose = styled.div`
   transform: rotate(45deg);
   cursor: pointer;
   line-height: 0.5;
+  border: none;
+  background: none;
+
+  &:focus-visible {
+    outline: none;
+  }
 `;
 const Scroll = styled.div`
   height: 100%;
