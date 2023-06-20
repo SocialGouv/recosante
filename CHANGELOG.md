@@ -1,3 +1,11 @@
+## [1.4.2](https://github.com/SocialGouv/recosante/compare/v1.4.1...v1.4.2) (2023-06-20)
+
+
+### Bug Fixes
+
+* add larger limits to indice worker ([0c65fec](https://github.com/SocialGouv/recosante/commit/0c65fecea2ddc7bd8f77a9230f8a014936038bc9))
+* **deps:** update dependency cryptography to v41 [security] ([#88](https://github.com/SocialGouv/recosante/issues/88)) ([d85a871](https://github.com/SocialGouv/recosante/commit/d85a87114f9032a9c012ac0ca8fbe5f3685a50bf))
+
 ## [1.4.1](https://github.com/SocialGouv/recosante/compare/v1.4.0...v1.4.1) (2023-06-02)
 
 
