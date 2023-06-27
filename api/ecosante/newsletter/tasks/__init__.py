@@ -14,6 +14,9 @@ def setup_periodic_tasks(sender, **kwargs):
         return
     sender.add_periodic_task(
         crontab(minute='30', hour='06-13', day_of_week='*/1'),
+        # this cron is sending the daily newsletter
+        # it's repeated every hour to try again the failures
+        # check import_send_and_report comments for the details of the process
         import_send_and_report.s(type_='quotidien'),
         queue='send_newsletter',
         routing_key='send_newsletter.import_send_and_report'

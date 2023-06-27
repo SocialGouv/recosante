@@ -17,6 +17,8 @@ from ecosante.recommandations.models import Recommandation
 from ecosante.utils.funcs import generate_line
 
 
+# This model saves in DB the newsletters sent to users, by date and location
+
 @dataclass
 # pylint: disable-next=too-many-instance-attributes
 class NewsletterDB(db.Model, Newsletter):
