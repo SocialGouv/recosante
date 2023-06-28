@@ -167,14 +167,14 @@ zstd = ["zstandard"]
 
 [[package]]
 name = "celery-redbeat"
-version = "2.1.0"
+version = "2.1.1"
 description = "A Celery Beat Scheduler using Redis for persistent storage"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "celery-redbeat-2.1.0.tar.gz", hash = "sha256:863432cdcc81c14bd1f7a5d6e228cf7e0cd034faa53d01100d55ecb602072b1d"},
-    {file = "celery_redbeat-2.1.0-py2.py3-none-any.whl", hash = "sha256:7f5ef04d6467736f5f490c504d5ad2b8ee9483f995ae43c94af6d50a73d3ca4b"},
+    {file = "celery-redbeat-2.1.1.tar.gz", hash = "sha256:7fa582c0e1624f94c11536f00734d11011b31df520ffa3531e9e2aebdc8639fd"},
+    {file = "celery_redbeat-2.1.1-py2.py3-none-any.whl", hash = "sha256:2bd5932fb8830bcc7fb63be506c64c80bcb3da8bf6e48ac8a34df4212966fcfa"},
 ]
 
 [package.dependencies]
@@ -1197,14 +1197,14 @@ files = [
 
 [[package]]
 name = "typing-extensions"
-version = "4.6.2"
+version = "4.6.3"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.6.2-py3-none-any.whl", hash = "sha256:3a8b36f13dd5fdc5d1b16fe317f5668545de77fa0b8e02006381fd49d731ab98"},
-    {file = "typing_extensions-4.6.2.tar.gz", hash = "sha256:06006244c70ac8ee83fa8282cb188f697b8db25bc8b4df07be1873c43897060c"},
+    {file = "typing_extensions-4.6.3-py3-none-any.whl", hash = "sha256:88a4153d8505aabbb4e13aacb7c486c2b4a33ca3b3f807914a9b4c844c471c26"},
+    {file = "typing_extensions-4.6.3.tar.gz", hash = "sha256:d91d5919357fe7f681a9f2b5b4cb2a5f1ef0a1e9f59c4d8ff0d3491e05c0ffd5"},
 ]
 
 [[package]]
@@ -1405,4 +1405,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "1ea8e0d2ea9ddaef47a311e3127b4c2b91cf6abbbdb1dc2af0637dd8a7397f75"
+content-hash = "898ac45834c039d5450ccc6202df524c6052d49ee311e6477e77d2d831fc8331"
