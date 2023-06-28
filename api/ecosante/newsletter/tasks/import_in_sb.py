@@ -15,6 +15,25 @@ from ecosante.utils.healthchecksio import ping
 from ecosante.utils.send_log_mail import send_log_mail
 
 
+# how to send the daily newsletter ?
+# 1. start the task in `import_send_and_report` - if the task is still ongoing, it will do nothing
+# 2. get all the contacts from sendinblue in `get_all_contacts`
+# 3. deactivate the contacts that are blacklisted in sendinblue in `deactivate_contacts`
+# 4. delete lists of contacts created before yesterday in sendinblue in `delete_lists`
+#       (don't try to understand now, it will make sens at the end of the explanation)
+# 5. create the newsletters "templates" to send in `Newsletter.export` - by day, by location and by user's parameters
+#       (if the indicators are not all ready, the news letter won't be created)
+# 6. create the list of contacts to send the newsletters to in `get_mail_list_id`
+# 7. every 1000 newsletter "template", save it in `NewsletterDB.__table__.insert`
+# 8. update the contacts in sendinblue in `import_contacts_in_sb` with the new `mail_list_id`
+# 9. create the campaign in sendinblue in `create_campaign` for each `mail_list_id` and `template_id` associated
+#      (it seems that it's only one template_id and one mail_list_id per task `import_send_and_report`... but not 100% sure)
+# 10. send the campaign in sendinblue in `send_email_campaign_now`
+# 11. repeat the process every hour, to see if t=some indicators are now ready
+# 12. the last repetition will have `force_send=True` and `report=True`, so that it's sent even if all the indicators are not ready
+
+
+
 def get_all_contacts(limit=100):
     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
     contacts = []
@@ -129,6 +148,10 @@ def get_mail_list_id(newsletter, template_id_mail_list_id, now, test):
     template_sib_id = newsletter.newsletter_hebdo_template.sib_id if newsletter.newsletter_hebdo_template else None
     if not template_sib_id in template_id_mail_list_id:
         template_id_mail_list_id[template_sib_id] = create_mail_list(now, test)
+    # basically, for the daily newsletter, template_id_mail_list_id is a dictionary with a unique key/value
+    # we'll have
+    # key: template_id == None
+    # value: mail_list_id == 1234 (the id of the mail list in sendinblue)
     return template_id_mail_list_id[template_sib_id]
 
 
@@ -270,6 +293,9 @@ def import_contacts_in_sb_all(
     _ = activate_webhook
     if current_app.config['ENV'] == 'production' or test:
         for template_id, mail_list_id in template_id_mail_list_id.items():
+            # basically, for the daily newsletter, template_id_mail_list_id is a dictionary with a unique key/value
+            # template_id == None
+            # mail_list_id == 1234 (the id of the mail list in sendinblue)
             import_contacts_in_sb(task, mail_list_id,
                                   send_in_blue_contacts, type_)
             campaign_id = create_campaign(
