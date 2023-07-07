@@ -1,3 +1,13 @@
+## [1.4.3](https://github.com/SocialGouv/recosante/compare/v1.4.2...v1.4.3) (2023-07-07)
+
+
+### Bug Fixes
+
+* Add Arnaud to admin list ([aed1321](https://github.com/SocialGouv/recosante/commit/aed1321fb4be66c4e03b66f6f93cca7999d63dda))
+* add new admin on list ([8b73863](https://github.com/SocialGouv/recosante/commit/8b73863216f58f47ae8792c077cc19953b449b12))
+* admins list + default local docker env variables ([a76d80a](https://github.com/SocialGouv/recosante/commit/a76d80a9f2aa1f0776a76c733ecc585a4945eccb))
+* node-sass for admin ([#106](https://github.com/SocialGouv/recosante/issues/106)) ([268de38](https://github.com/SocialGouv/recosante/commit/268de38370a90304cc1c12003621922e3c842aa4))
+
 ## [1.4.2](https://github.com/SocialGouv/recosante/compare/v1.4.1...v1.4.2) (2023-06-20)
 
 
