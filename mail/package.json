@@ -48,7 +48,7 @@
     "postcss": "^8.4.24",
     "rimraf": "^4.4.1",
     "siphon-media-query": "^1.0.0",
-    "stylelint": "^15.6.2",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard-scss": "^9.0.0",
     "uncss": "^0.17.3",
     "yargs": "^17.7.2"
