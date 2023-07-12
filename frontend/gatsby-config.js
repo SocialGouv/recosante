@@ -112,5 +112,6 @@ module.exports = {
         appendScript: `static/sw-push.js`,
       },
     },
+    `gatsby-plugin-postcss`,
   ],
 };

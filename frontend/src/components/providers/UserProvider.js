@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import UserContext from "utils/UserContext";
 
-export default function ModalProvider(props) {
+export default function UserProvider(props) {
   const [user, setUser] = useState({
     indicateurs_frequence: ["alerte"],
     indicateurs_media: ["mail"],
@@ -16,8 +16,7 @@ export default function ModalProvider(props) {
         user,
         setUser,
         mutateUser: (mutation) => setUser({ ...user, ...mutation }),
-      }}
-    >
+      }}>
       {props.children}
     </UserContext.Provider>
   );
