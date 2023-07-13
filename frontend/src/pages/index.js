@@ -4,16 +4,15 @@ import About from "components/About";
 import Data from "components/Data";
 import Search from "components/Search";
 import Web from "components/layout/Web";
-import useIframe from "hooks/useIframe";
-import Newsletter from "../components/Newsletter";
+import Newsletter from "components/Newsletter";
+import useIframe, { IFrameProvider } from "hooks/useIframe";
 
-export default function Index() {
-  const iframe = useIframe();
-
+function App() {
+  const isIframe = useIframe();
   return (
     <Web>
       <Search />
-      {!iframe && (
+      {!isIframe && (
         <>
           <Newsletter />
           <Data />
@@ -21,5 +20,13 @@ export default function Index() {
         </>
       )}
     </Web>
+  );
+}
+
+export default function Index() {
+  return (
+    <IFrameProvider>
+      <App />
+    </IFrameProvider>
   );
 }

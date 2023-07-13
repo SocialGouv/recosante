@@ -39,8 +39,8 @@ export default function SearchInput({
   return (
     <form
       className={[
-        "z-[100] w-[21rem] border border-b-2 border-main/5 border-b-main bg-white/30 text-[2rem] focus:border-main/20",
-        "max-w-full xl:left-auto xl:max-w-none xl:translate-x-0",
+        "z-[100] mx-auto w-full border border-b-2 border-main/5 border-b-main bg-white/30 text-[2rem] focus:border-main/20",
+        "max-w-xs xl:left-auto xl:mx-0 xl:max-w-2xl xl:translate-x-0",
         "text-xl xl:text-base",
         className,
       ]

@@ -37,7 +37,8 @@ const rain = keyframes`
   }
 `;
 const Wrapper = styled.svg`
-  margin-left: calc(100% - 7rem);
+  // margin-left: calc(100% - 7rem);
+  transform: translateX(5rem);
   width: 14rem;
   height: auto;
   cursor: ${(props) => (props.animated ? "none" : "pointer")};
@@ -45,6 +46,7 @@ const Wrapper = styled.svg`
 
   ${(props) => props.theme.mq.medium} {
     margin-left: calc(50% - 2.275rem);
+    transform: translateX(0);
     margin-right: auto;
     width: 10rem;
   }
@@ -52,20 +54,24 @@ const Wrapper = styled.svg`
 const Bolt = styled.path`
   fill: #fffd53 !important;
   opacity: 0;
-  animation: ${(props) => (props.animated && props.animation === 1 ? bolt : "")} 1500ms;
+  animation: ${(props) => (props.animated && props.animation === 1 ? bolt : "")}
+    1500ms;
 `;
 const Raindrop = styled.path`
   opacity: 0;
-  animation: ${(props) => (props.animated && props.animation === 2 ? rain : "")} 1000ms;
+  animation: ${(props) => (props.animated && props.animation === 2 ? rain : "")}
+    1000ms;
   animation-delay: ${(props) => props.index * 300}ms;
   fill: ${(props) => props.theme.colors.main};
 `;
 const Ray = styled.path`
   stroke-dasharray: ${(props) => props.length * 2};
   stroke-dashoffset: ${(props) =>
-    props.animated && props.animation === 3 ? -props.length * 2 : props.length * 2};
-  transition: stroke-dashoffset ${(props) => (props.animated ? 1700 : 0)}ms ease-out
-    ${(props) => props.index * 50}ms;
+    props.animated && props.animation === 3
+      ? -props.length * 2
+      : props.length * 2};
+  transition: stroke-dashoffset ${(props) => (props.animated ? 1700 : 0)}ms
+    ease-out ${(props) => props.index * 50}ms;
 `;
 export default function Cloud() {
   const [animated, setAnimated] = useState(false);
@@ -77,7 +83,9 @@ export default function Cloud() {
       onClick={() => {
         window._paq?.push(["trackEvent", "Misc", "Nuage"]);
         if (!animated) {
-          setAnimation((prevAnimation) => (prevAnimation < 3 ? prevAnimation + 1 : 1));
+          setAnimation((prevAnimation) =>
+            prevAnimation < 3 ? prevAnimation + 1 : 1
+          );
           setAnimated(true);
           setTimeout(() => setAnimated(false), 1900);
         }
@@ -86,7 +94,8 @@ export default function Cloud() {
       width="127"
       height="89"
       viewBox="0 0 127 89"
-      fill="none">
+      fill="none"
+    >
       <Bolt
         animated={animated}
         animation={animation}
@@ -153,7 +162,8 @@ export default function Cloud() {
         x="22"
         y="-11"
         width="119"
-        height="64">
+        height="64"
+      >
         <path
           d="M50.8389 42.0677C52.5677 32.6373 45.3024 23.9994 35.7976 23.9994C30.3051 23.9994 25.3901 26.9131 22.6816 31.4231L39.0007 -10.5L139.5 -7.5L140.001 52.8861L50.8389 42.0677Z"
           fill="white"

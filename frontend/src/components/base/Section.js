@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 
-const SectionStyled= styled.section`
+const SectionStyled = styled.section`
   position: relative;
   width: ${(props) => (props.small ? 35.5 : props.medium ? 48 : 73)}rem;
   max-width: 100%;
@@ -29,6 +29,8 @@ Section.Subtitle = styled.h3`
   }
 `;
 
-export default function Section(props) {
-  return <SectionStyled {...props} />;
+function Section(props, ref) {
+  return <SectionStyled {...props} ref={ref} />;
 }
+
+export default forwardRef(Section);

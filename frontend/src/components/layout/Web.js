@@ -12,7 +12,7 @@ import UXProvider from "components/providers/UXProvider";
 import UserProvider from "components/providers/UserProvider";
 import EmbedWrapper from "components/wrappers/EmbedWrapper";
 import ShareWrapper from "components/wrappers/ShareWrapper";
-import useIframe, { IFrameProvider } from "hooks/useIframe";
+import useIframe from "hooks/useIframe";
 import Footer from "./Footer";
 import Header from "./Header";
 import Seo from "./web/Seo";
@@ -22,17 +22,15 @@ const queryClient = new QueryClient();
 function Providers({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <IFrameProvider>
-        <UXProvider>
-          <StyleProvider>
-            <MDXProvider>
-              <UserProvider>
-                <ModalProvider>{children}</ModalProvider>
-              </UserProvider>
-            </MDXProvider>
-          </StyleProvider>
-        </UXProvider>
-      </IFrameProvider>
+      <UXProvider>
+        <StyleProvider>
+          <MDXProvider>
+            <UserProvider>
+              <ModalProvider>{children}</ModalProvider>
+            </UserProvider>
+          </MDXProvider>
+        </StyleProvider>
+      </UXProvider>
     </QueryClientProvider>
   );
 }
@@ -43,7 +41,7 @@ function App({ children }) {
     <>
       <div className={iframe ? "" : "min-h-screen"}>
         <Header />
-        <main className="flex-1 px-4" role="main">
+        <main className="w-full flex-1" role="main">
           {children}
         </main>
       </div>

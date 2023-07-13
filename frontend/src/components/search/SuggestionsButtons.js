@@ -19,18 +19,20 @@ const suggestions = [
 
 export default function SuggestionsButtons() {
   return (
-    <div className="-mx-4 overflow-hidden">
-      <ul className="m-0 mx-auto flex max-w-xl cursor-all-scroll gap-3 overflow-x-scroll pb-4 xl:mx-0 xl:flex-wrap xl:justify-start [&_li]:list-none">
+    <div className="overflow-hidden xl:pb-40">
+      <ul className="m-0 mx-auto flex gap-3 overflow-x-scroll pb-4 sm:max-w-sm sm:flex-wrap sm:justify-center sm:overflow-auto xl:mx-0 xl:max-w-2xl xl:justify-start xl:pb-0 [&_li]:list-none">
         {suggestions.map((suggestion, index) => {
           return (
-            <li key={suggestion.slug}>
+            <li
+              key={suggestion.slug}
+              className={[
+                "inline-flex w-auto rounded-full border-2 border-main",
+                index === 0 ? "ml-6 sm:ml-0" : "",
+                index === suggestions.length - 1 ? "mr-6 sm:mr-0" : "",
+              ].join(" ")}
+            >
               <MagicLink
-                className={[
-                  "w-auto rounded-full border-2 border-main px-4 py-1 text-xs xl:text-base",
-                  index === 0 ? "ml-6" : "",
-                  index === suggestions.length - 1 ? "mr-6" : "",
-                ].join(" ")}
-                hollow
+                className="px-4 py-1 text-xs xl:text-base"
                 to={suggestion.slug}
                 onClick={() => {
                   window?._paq?.push([

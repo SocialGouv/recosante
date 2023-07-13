@@ -15,14 +15,16 @@ export default function Search({ handlePlaceSelection }) {
     <div
       iframe={iframe.toString()}
       className={[
-        "relative -mx-4 flex flex-col items-center justify-start bg-gradient-to-r from-[#d1edff] via-[#f8fafd] to-[#d6eeff] px-4",
+        "relative box-border flex w-full flex-col items-center justify-start bg-gradient-to-r from-[#d1edff] via-[#f8fafd] to-[#d6eeff]",
         // iframe ? "min-h-[50rem]" : "min-h-screen",
       ].join(" ")}
     >
-      <section className="relative flex w-full flex-col pb-6">
-        <CloudAnimated />
-        <TitleAnimated />
-        <div className="relative mb-4 px-2">
+      <section className="relative mx-auto flex w-full max-w-6xl flex-col pb-6 xl:pt-24">
+        <div className="flex flex-col px-6 xl:flex-row-reverse xl:items-start xl:justify-center xl:px-0">
+          <CloudAnimated />
+          <TitleAnimated />
+        </div>
+        <div className="relative mb-4 px-6 xl:my-8 xl:px-0">
           <SearchInput
             handlePlaceSelection={(place) => {
               if (handlePlaceSelection) {

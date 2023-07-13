@@ -165,7 +165,7 @@ export default function TitleAnimated() {
     `niveau de risque radon`,
   ];
   return (
-    <h1 className="mb-4 flex flex-wrap justify-center text-[6.5vw] sm:text-[2.5rem] xl:justify-start">
+    <h1 className="mb-4 flex flex-wrap justify-center text-[6.5vw] sm:text-[2.5rem] xl:justify-start xl:text-6xl xl:font-bold">
       <VisuallyHidden>
         Découvrez la pollution de l’air, le risque d’allergie aux pollens, la
         vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le
