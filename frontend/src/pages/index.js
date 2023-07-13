@@ -12,7 +12,7 @@ export default function Index() {
 
   return (
     <Web>
-      <Search iframe={iframe} />
+      <Search />
       {!iframe && (
         <>
           <Newsletter />

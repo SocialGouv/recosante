@@ -1,6 +1,7 @@
+import React from 'react';
 import styled from "styled-components";
 
-const Section = styled.section`
+const SectionStyled= styled.section`
   position: relative;
   width: ${(props) => (props.small ? 35.5 : props.medium ? 48 : 73)}rem;
   max-width: 100%;
@@ -28,4 +29,6 @@ Section.Subtitle = styled.h3`
   }
 `;
 
-export default Section;
+export default function Section(props) {
+  return <SectionStyled {...props} />;
+}

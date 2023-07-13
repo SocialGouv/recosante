@@ -1,8 +1,72 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      borderColor: {
+        DEFAULT: "#000",
+      },
+      colors: {
+        main: "#000091",
+        background: "#fff",
+        tile: "#f9f8f6",
+        input: "#F0F0F0",
+        title: "#1E1E1E",
+        text: "#383838",
+        border: "#cecece",
+        footer: "#6a6a6a",
+        success: "#008941",
+        error: "#e10600",
+        disabled: "#CCCCE9",
+        episode: "#FB8371",
+        atmo: {
+          1: "#4BF0E6",
+          2: "#4FCBAD",
+          3: "#F0E65F",
+          4: "#FF5354",
+          5: "#A83559",
+          6: "#7D237D",
+        },
+        raep: {
+          1: "#75F94C",
+          2: "#387C21",
+          3: "#FFFD53",
+          4: "#EF8541",
+          5: "#EA3421",
+        },
+        radon: {
+          1: "#EF8541",
+          2: "#EF8541",
+          3: "#EF8541",
+        },
+        vigilancemeteo: {
+          0: "#31AA34",
+          1: "#F0E65F",
+          2: "#EF8541",
+          3: "#EA3421",
+        },
+        indiceuv: {
+          0: "#757575",
+          1: "#207900",
+          2: "#207900",
+          3: "#EFD100",
+          4: "#EFD100",
+          5: "#EFD100",
+          6: "#EB5000",
+          7: "#EB5000",
+          8: "#D8001D",
+          9: "#D8001D",
+          10: "#D8001D",
+          11: "#B600AE",
+        },
+        baignades: {
+          0: "#80FFFF",
+          1: "#80FF80",
+          2: "#FF8080",
+        },
+      },
+    },
   },
   plugins: [],
 };

@@ -37,18 +37,15 @@ const rain = keyframes`
   }
 `;
 const Wrapper = styled.svg`
-  position: absolute;
-  top: 10rem;
-  left: calc(100% - 7rem);
+  margin-left: calc(100% - 7rem);
   width: 14rem;
   height: auto;
   cursor: ${(props) => (props.animated ? "none" : "pointer")};
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 
   ${(props) => props.theme.mq.medium} {
-    top: auto;
-    bottom: calc(100% - 1.5rem);
-    left: calc(50% - 2.275rem);
+    margin-left: calc(50% - 2.275rem);
+    margin-right: auto;
     width: 10rem;
   }
 `;
