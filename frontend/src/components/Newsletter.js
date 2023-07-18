@@ -1,9 +1,8 @@
 import { useLocation } from "@reach/router";
-import { graphql, navigate, useStaticQuery } from "gatsby";
+import { Link, graphql, navigate, useStaticQuery } from "gatsby";
 import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import Button from "components/base/Button";
 import Markdown from "components/base/Markdown";
 import Section from "components/base/Section";
 import useOnScreen from "hooks/useOnScreen";
@@ -12,23 +11,18 @@ import ModalContext from "utils/ModalContext";
 import Mockup from "./newsletter/Mockup";
 import Notifications from "./newsletter/Notifications";
 
-const StyledSection = styled(Section)`
-  display: flex;
-
-  ${(props) => props.theme.mq.medium} {
-    flex-direction: column;
-  }
-`;
 const Content = styled.div`
   width: 41.75rem;
   margin-right: 2rem;
 
   ${(props) => props.theme.mq.medium} {
     width: auto;
-    margin: 0 0 2rem;
+    margin-right: 0;
+    margin-bottom: 2rem;
   }
   ${(props) => props.theme.mq.small} {
-    margin: 0 0 1rem;
+    margin-right: 0;
+    margin-bottom: 1rem;
   }
 
   h1 {
@@ -38,15 +32,7 @@ const Content = styled.div`
       font-size: 1.5rem;
     }
   }
-  h2 {
-    margin-bottom: 2rem;
-    font-size: 4rem;
 
-    ${(props) => props.theme.mq.small} {
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-    }
-  }
   p {
     max-width: 35.5rem;
     margin-bottom: 1em;
@@ -61,24 +47,7 @@ const Content = styled.div`
     }
   }
 `;
-const StyledButton = styled(Button)`
-  font-size: 1.25rem;
-`;
-const MockupWrapper = styled.div`
-  flex: 1;
-  position: relative;
 
-  ${(props) => props.theme.mq.medium} {
-    min-height: 40rem;
-    overflow: hidden;
-    margin: -3rem 0;
-  }
-  ${(props) => props.theme.mq.small} {
-    min-height: 100vw;
-    overflow: hidden;
-    margin: -10vw 0;
-  }
-`;
 export default function Newsletter(props) {
   const { setSubscription } = useContext(ModalContext);
   const { mutateUser } = useLocalUser();
@@ -122,16 +91,24 @@ export default function Newsletter(props) {
 
   return (
     <>
-      <StyledSection first={props.first} id="newsletter">
+      <Section
+        className="flex max-w-prose flex-col p-6 xl:mt-32 xl:max-w-none xl:flex-row [&_h2]:xl:text-6xl"
+        id="newsletter"
+      >
         <Content ref={ref} seo={props.seo}>
           <Markdown>{(props.data || data).mdx.body}</Markdown>
-          <Button.Wrapper>
+          <div className="flex w-full justify-center">
             {props.type === "baignades" ? (
-              <StyledButton to="/">
+              <Link
+                className="rounded-full bg-main px-6 py-2 text-center text-white xl:px-8 xl:py-3 xl:text-xl xl:font-medium"
+                to="/"
+              >
                 Consulter la qualité de l’eau de baignade
-              </StyledButton>
+              </Link>
             ) : (
-              <StyledButton
+              <button
+                type="button"
+                className="rounded-full bg-main px-6 py-2 text-center text-white xl:px-8 xl:py-3 xl:text-xl xl:font-medium"
                 onClick={() => {
                   mutateUser({
                     indicateurs: props.indicateurs || ["indice_atmo", "raep"],
@@ -145,17 +122,15 @@ export default function Newsletter(props) {
                 }}
               >
                 M'abonner à Recosanté
-              </StyledButton>
+              </button>
             )}
-          </Button.Wrapper>
+          </div>
         </Content>
-        <MockupWrapper>
+        <div className="relative min-h-[100vw] flex-1 overflow-hidden sm:min-h-[40rem] sm:overflow-visible xl:min-h-0 xl:overflow-visible">
           <Mockup type={props.type} isOnScreen={isOnScreen} />
-        </MockupWrapper>
-      </StyledSection>
-      {props.type !== "qa" &&
-        props.type !== "uv" &&
-        props.type !== "baignades" && <Notifications />}
+        </div>
+      </Section>
+      {!["qa", "uv", "baignades"].includes(props.type) && <Notifications />}
     </>
   );
 }

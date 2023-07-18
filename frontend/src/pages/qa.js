@@ -18,13 +18,7 @@ export default function Qa() {
 
   return (
     <Web title={`Qualité de l’air`}>
-      <Newsletter
-        first
-        data={data}
-        type={"qa"}
-        indicateurs={["indice_atmo"]}
-        seo
-      />
+      <Newsletter data={data} type={"qa"} indicateurs={["indice_atmo"]} seo />
       <AboutQa />
     </Web>
   );

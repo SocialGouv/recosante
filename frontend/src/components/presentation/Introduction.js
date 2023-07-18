@@ -24,6 +24,7 @@ const StyledSection = styled(Section)`
     }
   }
 `;
+
 const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 3rem;
@@ -62,7 +63,7 @@ export default function What(props) {
   );
 
   return (
-    <StyledSection first medium>
+    <StyledSection className="px-6 pt-20" medium>
       <Title>
         <Left>
           <strong>Connaître</strong> son environnement,

@@ -25,7 +25,7 @@ export default function Dashboard(props) {
   return (
     <Wrapper>
       <Background />
-      <StyledSection first>
+      <StyledSection className="px-6 pt-20">
         <Header place={props.place} date={date} setDate={setDate} />
         <Indicators place={props.place} date={date} />
         <EpisodePollution place={props.place} date={date} />

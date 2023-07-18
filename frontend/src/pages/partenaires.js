@@ -50,7 +50,7 @@ export default function Partners(props) {
   );
   return (
     <Web title={"Partenaires"}>
-      <Section first small>
+      <Section className="px-6 pt-10 xl:pt-20" small>
         <Markdown>{data.mdx.body}</Markdown>
         <Wrapper>
           {data.mdx.frontmatter.partners.map((logo) => (
@@ -60,7 +60,7 @@ export default function Partners(props) {
           ))}
         </Wrapper>
       </Section>
-      <Section small>
+      <Section className="mx-auto max-w-prose px-6 pt-10 xl:pt-0">
         <Section.Title>Ils parlent de nous</Section.Title>
         <Wrapper>
           {data.mdx.frontmatter.press

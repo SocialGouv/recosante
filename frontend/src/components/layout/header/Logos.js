@@ -1,22 +1,18 @@
 import React from "react";
-import styled from "styled-components";
 
-import MagicLink from "components/base/MagicLink";
 import Marianne from "components/base/Marianne";
 import Logo from "components/misc/Logo";
+import { Link } from "gatsby";
 
-const Wrapper = styled(MagicLink)`
-  display: flex;
-  align-items: center;
-`;
 export default function Logos() {
   return (
-    <Wrapper
+    <Link
       to="/"
+      className="mx-auto flex items-center justify-center"
       aria-label="Aller à l’accueil - Recosanté - République Française, Liberté Égalité Fraternité"
     >
       <Marianne />
       <Logo link />
-    </Wrapper>
+    </Link>
   );
 }

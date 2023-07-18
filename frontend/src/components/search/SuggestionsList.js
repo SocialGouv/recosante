@@ -35,7 +35,7 @@ export default function SuggestionsList({
   }
 
   return (
-    <div className="mb-1 max-h-80 overflow-y-auto bg-white">
+    <div className="z-10 mb-1 max-h-80 overflow-y-auto border-x border-b border-main/20 bg-white">
       {results.map((result, index) => {
         return (
           <button

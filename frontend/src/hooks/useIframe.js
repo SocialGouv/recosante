@@ -7,7 +7,6 @@ export function IFrameProvider(props) {
   useEffect(() => {
     setIframe(window.location.search.includes("iframe"));
   }, []);
-  console.log("iframe context", iframe);
   return (
     <IFrameContext.Provider value={iframe}>
       {props.children}

@@ -10,7 +10,7 @@ import Newsletter from "../components/Newsletter";
 export default function NewsletterPage() {
   return (
     <Web title={`Lettre d'information`}>
-      <Newsletter first />
+      <Newsletter />
       <Search />
       <Widget />
       <Data />

@@ -8,7 +8,7 @@ import { formatPlaceUrl } from "utils/formatPlaceUrl";
 import useIframe from "hooks/useIframe";
 import SuggestionsButtons from "./search/SuggestionsButtons";
 
-export default function Search({ handlePlaceSelection }) {
+export default function Search({ handlePlaceSelection, fullScreen }) {
   const iframe = useIframe();
 
   return (
@@ -17,6 +17,7 @@ export default function Search({ handlePlaceSelection }) {
       className={[
         "relative box-border flex w-full flex-col items-center justify-start bg-gradient-to-r from-[#d1edff] via-[#f8fafd] to-[#d6eeff]",
         // iframe ? "min-h-[50rem]" : "min-h-screen",
+        fullScreen ? "min-h-screen" : "",
       ].join(" ")}
     >
       <section className="relative mx-auto flex w-full max-w-6xl flex-col pb-6 xl:pt-24">

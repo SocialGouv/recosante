@@ -19,7 +19,7 @@ export default function Asthme() {
 
   return (
     <Web title={`Sport`}>
-      <Newsletter first data={data} seo />
+      <Newsletter data={data} seo />
       <Data />
       <About />
     </Web>

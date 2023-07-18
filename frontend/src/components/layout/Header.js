@@ -10,13 +10,16 @@ export default function Header() {
   const { pathname } = useLocation();
 
   return (
-    <header className="z-[1000] w-full bg-white px-4 py-0" role="banner">
+    <header
+      className="relative z-[1000] w-full bg-white px-4 py-0"
+      role="banner"
+    >
       <div className="mx-auto flex max-w-6xl items-center	justify-between">
         <Logos />
         {pathname !== "/" && (
           <div className="relative hidden sm:block">
             <SearchInput
-              className=" xl:transform-[initial] -top-4 left-auto right-0 !max-w-none !transform-none text-base xl:max-w-[initial]"
+              className="w-80"
               placeholder="Entrez une ville"
               handlePlaceSelection={(place) => {
                 navigate(formatPlaceUrl(place) + window.location.search);

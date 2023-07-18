@@ -113,18 +113,20 @@ export default function SearchInput({
           handlePlaceSelection={selectPlace}
         />
       </div>
-      {!!data?.length && focus && (
-        <SuggestionsList
-          search={debouncedSearch}
-          results={data?.filter((_, i) => i < 7)}
-          focus
-          current={current}
-          isFetching={isFetching}
-          setCurrent={setCurrent}
-          handleSuggestionClick={(place) => {
-            selectPlace(place);
-          }}
-        />
+      {!!data?.length && !!focus && (
+        <div className="relative sm:absolute sm:top-full">
+          <SuggestionsList
+            search={debouncedSearch}
+            results={data?.filter((_, i) => i < 7)}
+            focus
+            current={current}
+            isFetching={isFetching}
+            setCurrent={setCurrent}
+            handleSuggestionClick={(place) => {
+              selectPlace(place);
+            }}
+          />
+        </div>
       )}
     </form>
   );

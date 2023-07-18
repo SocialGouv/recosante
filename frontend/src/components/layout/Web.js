@@ -12,7 +12,7 @@ import UXProvider from "components/providers/UXProvider";
 import UserProvider from "components/providers/UserProvider";
 import EmbedWrapper from "components/wrappers/EmbedWrapper";
 import ShareWrapper from "components/wrappers/ShareWrapper";
-import useIframe from "hooks/useIframe";
+import useIframe, { IFrameProvider } from "hooks/useIframe";
 import Footer from "./Footer";
 import Header from "./Header";
 import Seo from "./web/Seo";
@@ -21,17 +21,19 @@ const queryClient = new QueryClient();
 
 function Providers({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <UXProvider>
-        <StyleProvider>
-          <MDXProvider>
-            <UserProvider>
-              <ModalProvider>{children}</ModalProvider>
-            </UserProvider>
-          </MDXProvider>
-        </StyleProvider>
-      </UXProvider>
-    </QueryClientProvider>
+    <IFrameProvider>
+      <QueryClientProvider client={queryClient}>
+        <UXProvider>
+          <StyleProvider>
+            <MDXProvider>
+              <UserProvider>
+                <ModalProvider>{children}</ModalProvider>
+              </UserProvider>
+            </MDXProvider>
+          </StyleProvider>
+        </UXProvider>
+      </QueryClientProvider>
+    </IFrameProvider>
   );
 }
 

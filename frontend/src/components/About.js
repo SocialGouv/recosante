@@ -2,7 +2,6 @@ import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 
 import Markdown from "components/base/Markdown";
-import Section from "components/base/Section";
 
 export default function About() {
   const data = useStaticQuery(
@@ -16,8 +15,8 @@ export default function About() {
   );
 
   return (
-    <Section id="about" small>
+    <section className="mx-auto my-20 max-w-prose px-6" id="about">
       <Markdown>{data.mdx.body}</Markdown>
-    </Section>
+    </section>
   );
 }

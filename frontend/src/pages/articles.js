@@ -17,7 +17,7 @@ const Excerpt = styled.p`
 export default function Articles(props) {
   return (
     <Web title={"Nos articles"}>
-      <Section first medium>
+      <Section className="pt-10 xl:pt-20" medium>
         <h1>Nos articles</h1>
         {props.data.allMdx.edges.map(({ node }) => (
           <ArticleLink to={node.fields.slug} key={node.fields.slug}>

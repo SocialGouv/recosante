@@ -7,7 +7,7 @@ import Web from "components/layout/Web";
 export default function Page(props) {
   return (
     <Web title={props.data.mdx.frontmatter.title}>
-      <Section first medium>
+      <Section className="px-6 pt-10 xl:pt-20" medium>
         <h1
           dangerouslySetInnerHTML={{
             __html: props.data.mdx.frontmatter.title,

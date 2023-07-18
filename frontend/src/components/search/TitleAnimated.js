@@ -106,6 +106,7 @@ const Words = styled.span`
   margin-right: 0.3em;
 
   ${(props) => props.theme.mq.medium} {
+    text-align: center;
     flex-basis: auto;
   }
 `;
@@ -165,7 +166,7 @@ export default function TitleAnimated() {
     `niveau de risque radon`,
   ];
   return (
-    <h1 className="mb-4 flex flex-wrap justify-center text-[6.5vw] sm:text-[2.5rem] xl:justify-start xl:text-6xl xl:font-bold">
+    <h1 className="flex flex-wrap justify-center max-sm:text-[6.5vw] xl:justify-start">
       <VisuallyHidden>
         Découvrez la pollution de l’air, le risque d’allergie aux pollens, la
         vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le
