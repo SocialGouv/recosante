@@ -131,7 +131,7 @@ function App() {
                   sont adaptées à une situation environnementale donnée.
                 </p>
                 <Link
-                  className="inline font-medium underline decoration-main"
+                  className="mb-4 inline-block font-medium underline decoration-main"
                   to="/recommandations"
                 >
                   Consultez les recommandations
@@ -176,8 +176,8 @@ function ArrowSummary() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M8.00001 7.29277L11.3 10.5928L12.2427 9.65011L8.00001 5.40744L3.75734 9.65011L4.70001 10.5928L8.00001 7.29277Z"
         fill="#000091"
       />
