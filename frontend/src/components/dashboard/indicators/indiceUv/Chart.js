@@ -1,121 +1,160 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
-import StyleContext from "utils/StyleContext";
+import React from "react";
 
-const Wrapper = styled.svg`
-  overflow: visible;
-  width: auto;
-  height: 10rem;
-  transform: rotate(-90deg);
-`;
-
-const Circle = styled.circle`
-  stroke: ${(props) => props.theme.colors.indiceuv[props["data-value"]]};
-  stroke-dashoffset: ${(props) =>
-    2 * Math.PI * props.r * (1 - props["data-value"] / props.maxValue)};
-  stroke-width: ${(props) => 2 * props.r}};
-  stroke-dasharray: ${(props) => 2 * Math.PI * props.r};
-  transition: stroke-dashoffset ${(props) =>
-    props["data-value"] ? 3 : 0}s ease-in-out;
-`;
-
-const Path = styled.path`
-  stroke: ${(props) =>
-    props.visible
-      ? props.theme.colors.indiceuv[props["data-value"]]
-      : props.theme.colors.main};
-  opacity: ${(props) => (props.visible ? 1 : 0.15)};
-  transition: opacity ${(props) => (props.visible ? 1000 : 0)}ms
-      ${(props) => (props.visible ? 2000 : 0)}ms ease-in-out,
-    stroke ${(props) => (props.visible ? 500 : 0)}ms
-      ${(props) => (props.visible ? 2000 : 0)}ms ease-in-out;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-`;
-
-export default function Chart(props) {
-  const { themes, theme } = useContext(StyleContext);
-  let value = props.data?.indice_uv?.indice?.value || 0;
-  const maxValue = 11;
+const maxValue = 11;
+export default function Chart({ value }) {
   value = Math.min(value, maxValue);
   return (
-    <Wrapper aria-hidden={true} width="48" height="48" viewBox="0 0 48 48">
+    <svg
+      className="h-16 w-auto -rotate-90 overflow-visible"
+      aria-hidden={true}
+      viewBox="0 0 48 48"
+    >
+      <circle cx="24" cy="24" r="12" className="fill-main/10" />
       <circle
-        cx="24"
-        cy="24"
-        r="12"
-        fill={themes[theme].colors.main}
-        opacity="0.15"
-      />
-      <Circle
-        data-value={value}
-        maxValue={maxValue}
+        className={[`stroke-indiceuv-${value}`, "stroke-[12]"].join(" ")}
+        style={{
+          strokeDashoffset: 2 * Math.PI * 6 * (1 - value / maxValue),
+          strokeDasharray: 2 * Math.PI * 6,
+          strokeWidth: 2 * 6,
+          transition: `stroke-dashoffset ${value > 0 ? 3 : 0}s ease-in-out`,
+        }}
         cx="24"
         cy="24"
         r="6"
         fill="none"
       />
-      <Path // 4
+      <path // 4
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 3
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 3}
         data-value={value}
         d="M15.6553 38.4141L13.0001 43.0529"
       />
-      <Path // 10
+      <path // 10
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 9
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 9}
         data-value={value}
         d="M35 4.94727L32.3448 9.58602"
       />
-      <Path // 5
+      <path // 5
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 4
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 4}
         data-value={value}
         d="M9.58691 32.3447L4.94815 34.9999"
       />
-      <Path // 11
+      <path // 11
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 10
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 10}
         data-value={value}
         d="M43.0527 13L38.414 15.6552"
       />
-      <Path // 0
+      <path // 0
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 0
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 0}
         data-value={value}
         d="M46 24L40.6896 24"
       />
-      <Path // 6
+      <path // 6
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 5
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 5}
         data-value={value}
         d="M7.31055 24H2.00019"
       />
-      <Path // 1
+      <path // 1
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 0
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 0}
         data-value={value}
         d="M43.0527 35L38.414 32.3448"
       />
-      <Path // 7
+      <path // 7
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 6
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 6}
         data-value={value}
         d="M9.58691 15.6548L4.94815 12.9996"
       />
-      <Path // 2
+      <path // 2
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 1
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 1}
         data-value={value}
         d="M35 43.0527L32.3448 38.414"
       />
-      <Path // 8
+      <path // 8
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 7
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 7}
         data-value={value}
         d="M15.6553 9.58594L13.0001 4.94717"
       />
-      <Path // 9
+      <path // 9
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 8
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 8}
         data-value={value}
         d="M24 7.31055L24 2.00019"
       />
-      <Path // 3
+      <path // 3
+        className={[
+          "stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
+          value > 2
+            ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
+            : "stroke-main/10",
+        ].join(" ")}
         visible={value > 2}
         data-value={value}
         d="M24 46V40.6896"
       />
-    </Wrapper>
+    </svg>
   );
 }

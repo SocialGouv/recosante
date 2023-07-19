@@ -1,72 +1,197 @@
-import React from "react";
+import React, { useContext, useCallback, useRef, useState } from "react";
 
-import MagicLink from "components/base/MagicLink";
-import Card from "components/misc/Card";
 import useIndicators from "hooks/useIndicators";
 import Chart from "./indiceUv/Chart";
+import ModalContext from "utils/ModalContext";
 
-export default function IndiceUv(props) {
+export default function IndiceAtmo(props) {
   const { data, isError, isLoading } = useIndicators(
     props.place.code,
     props.date
   );
+  const { setModal } = useContext(ModalContext);
+  const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
+  const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
+
+  const adviceRef = useRef(null);
+  const onRefChange = useCallback(
+    (node) => {
+      if (node === null) {
+        // DOM node referenced by ref has been unmounted
+      } else {
+        adviceRef.current = node;
+        if (adviceRef.current?.scrollHeight > adviceRef.current?.clientHeight) {
+          if (!showSeeMoreAdvice) setShowSeeMoreAdvice(true);
+        }
+      }
+    },
+    [showSeeMoreAdvice]
+  );
 
   return (
-    <Card columns={6}>
-      <Card.Content>
-        <Card.Header>
-          <Card.Info>
-            <Card.Title isLoading={isLoading} indicateur="indice_uv">
-              Indice UV
-            </Card.Title>
-            <Card.Value isError={isError}>
-              {isError
-                ? "Oups 🦔"
-                : data &&
-                  (data.indice_uv?.indice?.label
-                    ? data.indice_uv.indice.label
-                    : "Pas de données")}
-            </Card.Value>
-          </Card.Info>
-          <Chart data={data && !data.indice_uv?.error && data} />
-        </Card.Header>
-        <Card.Mobile indicateur="indice_uv" place={props.place}>
-          <Card.Recommandation
-            dangerouslySetInnerHTML={{
-              __html: isError
-                ? `<p>Nous ne sommes malheureusement pas en mesure d'afficher l'indice UV pour l'instant. Veuillez réessayer dans quelques instants.</p>`
-                : data &&
-                  (data.indice_uv?.error
-                    ? `<p>Les données ne sont pas disponibles pour cette commune.</p>`
-                    : data.indice_uv?.advice && data.indice_uv?.advice.main),
-            }}
-          />
-        </Card.Mobile>
-        <Card.SubscribeWrapper>
-          <Card.Subscribe indicateur="indice_uv" place={props.place} />
-        </Card.SubscribeWrapper>
-      </Card.Content>
-      {data && data.indice_uv?.validity && (
-        <Card.Source>
-          <p>
-            Prévision pour le{" "}
-            {new Date(data.indice_uv.validity.start).toLocaleDateString("fr", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}{" "}
-            dans {data.indice_uv.validity.area}
-          </p>
-          <p>
-            Données fournies par{" "}
-            {data.indice_uv.sources && (
-              <MagicLink to={data.indice_uv.sources[0].url}>
-                {data.indice_uv.sources[0].label}
-              </MagicLink>
-            )}
-          </p>
-        </Card.Source>
+    <article className="">
+      <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
+        <button
+          type="button"
+          className={[
+            "flex w-full cursor-pointer items-baseline justify-between bg-main/5 px-2 py-4 text-base font-medium text-main",
+            "after:absolute after:left-0 after:top-0 after:h-full after:w-full after:scale-x-0 after:transform after:bg-background after:opacity-70",
+            isLoading ? "after:animate-fetching" : "",
+          ].join(" ")}
+          onClick={() => setModal("indice_uv")}
+        >
+          <h2 className="m-0 basis-3/4 text-left text-base font-medium text-main">
+            Indice UV (de 1 à 11)
+          </h2>
+          <span
+            aria-label="Plus d'informations sur l'indice ATMO"
+            className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-main text-xs"
+          >
+            ?
+          </span>
+        </button>
+        <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
+          {isError ? (
+            <p>
+              Nous ne sommes malheureusement pas en mesure d'afficher l'indice
+              UV pour l'instant. Veuillez réessayer dans quelques instants.
+            </p>
+          ) : (
+            <>
+              <div className="flex items-start justify-center gap-x-4">
+                {!data?.indice_uv?.advice?.main ? (
+                  <p>Les données ne sont pas disponibles pour cette commune.</p>
+                ) : (
+                  <>
+                    <div>
+                      <Chart value={data.indice_uv.indice?.value} />
+                      <p className="text-center font-medium text-main">
+                        {data.indice_uv.indice?.label}
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div
+                        className={[
+                          "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
+                          seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
+                        ].join(" ")}
+                        ref={onRefChange}
+                        dangerouslySetInnerHTML={{
+                          __html: data.indice_uv.advice.main,
+                        }}
+                      />
+                      {!!showSeeMoreAdvice && (
+                        <button
+                          onClick={() => {
+                            setSeeMoreAdvice(!seeMoreAdvice);
+                          }}
+                          type="button"
+                          className={[
+                            "ml-auto block font-light",
+                            !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
+                          ].join(" ")}
+                        >
+                          {!seeMoreAdvice ? "..." : ""}
+                          <span className="ml-3 text-xs underline">
+                            {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
+                          </span>
+                        </button>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+              <ul className="mb-0 mt-2 flex w-full justify-between">
+                <li className="flex shrink-0 grow basis-0">
+                  <button
+                    type="button"
+                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    onClick={() => setModal("indice_uv")}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-sm bg-indiceuv-1 transition-colors"
+                      aria-hidden
+                    />
+                    0 à 2
+                  </button>
+                </li>
+                <li className="flex shrink-0 grow basis-0">
+                  <button
+                    type="button"
+                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    onClick={() => setModal("indice_uv")}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-sm bg-indiceuv-4 transition-colors"
+                      aria-hidden
+                    />
+                    3 à 5
+                  </button>
+                </li>
+                <li className="flex shrink-0 grow basis-0">
+                  <button
+                    type="button"
+                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    onClick={() => setModal("indice_uv")}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-sm bg-indiceuv-6 transition-colors"
+                      aria-hidden
+                    />
+                    6 à 7
+                  </button>
+                </li>
+                <li className="flex shrink-0 grow basis-0">
+                  <button
+                    type="button"
+                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    onClick={() => setModal("indice_uv")}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-sm bg-indiceuv-9 transition-colors"
+                      aria-hidden
+                    />
+                    8 à 10
+                  </button>
+                </li>
+                <li className="flex shrink-0 grow basis-0">
+                  <button
+                    type="button"
+                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    onClick={() => setModal("indice_uv")}
+                  >
+                    <div
+                      className="h-4 w-4 rounded-sm bg-indiceuv-11 transition-colors"
+                      aria-hidden
+                    />
+                    11
+                  </button>
+                </li>
+              </ul>
+            </>
+          )}
+        </div>
+      </div>
+      {!!data?.indice_uv?.validity?.start && (
+        <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
+          Prévision pour le{" "}
+          {new Date(data.indice_uv.validity.start).toLocaleDateString("fr", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}{" "}
+          dans {data.indice_uv.validity.area}. Données fournies par{" "}
+          {data.indice_uv.sources && (
+            <a
+              href={data.indice_uv.sources[0].url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data.indice_uv.sources[0].label}
+            </a>
+          )}
+        </p>
       )}
-    </Card>
+    </article>
   );
 }

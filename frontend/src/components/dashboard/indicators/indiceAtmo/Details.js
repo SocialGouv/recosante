@@ -20,7 +20,8 @@ const Wrapper = styled.ul`
   }
 `;
 export default function Details(props) {
-  return props.data?.indice_atmo?.indice?.details ? (
+  if (!props.data?.indice_atmo?.indice?.details) return null;
+  return (
     <Wrapper>
       {props.data.indice_atmo.indice.details.map((element) => (
         <li key={element.label}>
@@ -28,5 +29,5 @@ export default function Details(props) {
         </li>
       ))}
     </Wrapper>
-  ) : null;
+  );
 }

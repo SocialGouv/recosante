@@ -59,29 +59,29 @@ const Superscript = styled.sup`
   font-size: 0.625rem;
   color: ${(props) => props.theme.colors.main};
 `;
+const labels = {
+  ambroisies: "Ambroisies",
+  cypres: "Cupressacées",
+  noisetier: "Noisetier",
+  aulne: "Aulne",
+  peuplier: "Peuplier",
+  saule: "Saule",
+  frene: "Frêne",
+  charme: "Charme",
+  bouleau: "Bouleau",
+  platane: "Platane",
+  chene: "Chêne",
+  olivier: "Olivier",
+  tilleul: "Tilleul",
+  chataignier: "Châtaignier",
+  rumex: "Rumex",
+  graminees: "Graminées",
+  plantain: "Plantain",
+  urticacees: "Urticacées",
+  armoises: "Armoises",
+};
 export default function Element(props) {
   const { setModal } = useContext(ModalContext);
-  const labels = {
-    ambroisies: "Ambroisies",
-    cypres: "Cupressacées",
-    noisetier: "Noisetier",
-    aulne: "Aulne",
-    peuplier: "Peuplier",
-    saule: "Saule",
-    frene: "Frêne",
-    charme: "Charme",
-    bouleau: "Bouleau",
-    platane: "Platane",
-    chene: "Chêne",
-    olivier: "Olivier",
-    tilleul: "Tilleul",
-    chataignier: "Châtaignier",
-    rumex: "Rumex",
-    graminees: "Graminées",
-    plantain: "Plantain",
-    urticacees: "Urticacées",
-    armoises: "Armoises",
-  };
 
   return (
     <Wrapper

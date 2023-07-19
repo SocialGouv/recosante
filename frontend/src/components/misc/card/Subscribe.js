@@ -48,7 +48,7 @@ export default function Subscribe(props) {
     >
       {props.disabled
         ? `Pas d'abonnement disponible`
-        : `M’abonner à cet indicateur`}
+        : `M'abonner à cet indicateur`}
       {props.disabled && <Superscript>(?)</Superscript>}
     </Wrapper>
   );
