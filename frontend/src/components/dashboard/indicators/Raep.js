@@ -49,14 +49,14 @@ export default function Raep(props) {
     return longest;
   }, "");
 
-  const minimumALlergensInView = 3;
+  const minimumAllergensInView = 3;
 
   useEffect(() => {
-    setShowSeeMoreAllergensButton(allergens?.length > minimumALlergensInView);
+    setShowSeeMoreAllergensButton(allergens?.length > minimumAllergensInView);
   }, [allergens?.length]);
 
   return (
-    <article className="">
+    <article className="md:pl-6">
       <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"
@@ -132,11 +132,11 @@ export default function Raep(props) {
                   </>
                 )}
               </div>
-              <ul className="mb-0 mt-2 w-full flex-col justify-between xl:mt-6">
+              <ul className="mb-0 mt-4 w-full flex-col justify-between xl:mt-6">
                 {allergens
                   ?.filter((el, index) => {
                     if (seeMoreAllergens) return true;
-                    return index < minimumALlergensInView;
+                    return index < minimumAllergensInView;
                   })
                   .map((element) => (
                     <li
@@ -195,9 +195,9 @@ export default function Raep(props) {
                 >
                   {!seeMoreAllergens
                     ? `Voir ${
-                        allergens.length - minimumALlergensInView
+                        allergens.length - minimumAllergensInView
                       } allergène${
-                        allergens.length - minimumALlergensInView > 1 ? "s" : ""
+                        allergens.length - minimumAllergensInView > 1 ? "s" : ""
                       } de plus`
                     : "Voir moins"}
                 </button>

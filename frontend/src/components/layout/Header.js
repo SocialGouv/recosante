@@ -15,7 +15,7 @@ export default function Header() {
       role="banner"
     >
       <div className="mx-auto flex max-w-6xl items-center	justify-between">
-        <Logos />
+        <Logos className="flex items-center justify-center" />
         {pathname !== "/" && (
           <div className="relative hidden sm:block">
             <SearchInput

@@ -28,8 +28,10 @@ export default function IndiceAtmo(props) {
     [showSeeMoreAdvice]
   );
 
+  console.log(data);
+
   return (
-    <article className="">
+    <article className="md:pl-6">
       <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"
@@ -68,7 +70,7 @@ export default function IndiceAtmo(props) {
                         value={["Vert", "Jaune", "Orange", "Rouge"].indexOf(
                           data?.vigilance_meteo?.indice?.color
                         )}
-                        visible={!!data?.raep?.vigilance_meteo}
+                        visible={!!data?.vigilance_meteo?.indice}
                       />
                       <p className="text-center font-medium text-main">
                         {data.vigilance_meteo.indice?.label}

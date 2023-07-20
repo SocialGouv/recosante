@@ -18,7 +18,7 @@ export default function Footer() {
           environnement et à agir pour protéger votre santé.
         </p>
         <MobileButtons iframe={false} />
-        <Logos />
+        <Logos className="mx-auto flex items-center justify-center" />
       </div>
       <Links />
     </footer>

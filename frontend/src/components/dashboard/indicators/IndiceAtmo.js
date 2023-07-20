@@ -29,7 +29,7 @@ export default function IndiceAtmo(props) {
   );
 
   return (
-    <article className="">
+    <article className="md:pr-6">
       <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"

@@ -4,18 +4,20 @@ import Header from "./dashboard/Header";
 import Indicators from "./dashboard/Indicators";
 import ModalContext from "utils/ModalContext";
 import { useLocalUser } from "hooks/useUser";
+import Home from "components/Home";
 
 export default function Dashboard(props) {
   const [date, setDate] = useState();
   const { setSubscription } = useContext(ModalContext);
   const { mutateUser } = useLocalUser();
   return (
-    <div className="relative mb-20 bg-gradient-to-r from-[#d1edff]  via-[#f8fafd] to-[#d6eeff] pb-28 sm:mb-40">
-      <section className="relative mx-auto my-0 px-6 pt-10">
+    <div className="relative mb-20 sm:mb-40">
+      <section className="relative mx-auto my-0 bg-gradient-to-r from-[#d1edff] via-[#f8fafd]  to-[#d6eeff] px-6  pb-28 pt-10 xl:pt-20 ">
         <Header place={props.place} date={date} setDate={setDate} />
         <Indicators place={props.place} date={date} />
         <EpisodePollution place={props.place} date={date} />
       </section>
+      <Home />
       <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center xl:hidden">
         <button
           type="button"

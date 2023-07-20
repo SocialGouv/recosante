@@ -32,9 +32,9 @@ export const themes = {
         5: "#EA3421",
       },
       radon: {
-        1: "#EF8541",
+        1: "#4ba249",
         2: "#EF8541",
-        3: "#EF8541",
+        3: "#cc0100",
       },
       vigilancemeteo: {
         0: "#31AA34",
