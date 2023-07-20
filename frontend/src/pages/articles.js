@@ -6,8 +6,10 @@ import React from "react";
 export default function Articles({
   data: {
     allMdx: { edges: articles },
+    categories: { group: categories },
   },
 }) {
+  console.log({ categories });
   return (
     <Web title={"Nos articles"}>
       <section
@@ -93,6 +95,13 @@ export const articlesQuery = graphql`
             }
           }
         }
+      }
+    }
+    categories: allMdx(
+      filter: { internal: { contentFilePath: { regex: "/articles/" } } }
+    ) {
+      group(field: frontmatter___category) {
+        fieldValue
       }
     }
   }
