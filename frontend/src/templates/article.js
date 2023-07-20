@@ -77,7 +77,7 @@ export default function Article(props) {
           <BonGeste>
             <ImageWrapper>
               <StaticImage
-                src={"../../content/assets/images/bon-geste.png"}
+                src="./images/bon-geste.png"
                 alt="Ampoule pour indiquer une bonne idée ou un bon geste"
                 height={128}
               />

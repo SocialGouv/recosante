@@ -40,7 +40,12 @@ module.exports = {
     },
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-root-import`,
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        // excludes: [`/place/*/*`],
+      },
+    },
     `gatsby-transformer-json`,
     {
       resolve: "gatsby-plugin-web-font-loader",

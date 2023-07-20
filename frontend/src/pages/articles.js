@@ -9,7 +9,6 @@ export default function Articles({
     categories: { group: categories },
   },
 }) {
-  console.log({ categories });
   return (
     <Web title={"Nos articles"}>
       <section className="relative mx-auto flex max-w-sm flex-col px-6 pt-10 md:max-w-6xl xl:pt-20">
@@ -55,8 +54,8 @@ export default function Articles({
                   className="ml-auto h-8 w-8 fill-main"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M21.5627 14.6662L14.4107 7.51424L16.296 5.62891L26.6667 15.9996L16.296 26.3702L14.4107 24.4849L21.5627 17.3329H5.33337V14.6662H21.5627Z"
                   />
                 </svg>
@@ -97,7 +96,7 @@ export const articlesQuery = graphql`
     categories: allMdx(
       filter: { internal: { contentFilePath: { regex: "/articles/" } } }
     ) {
-      group(field: frontmatter___category) {
+      group(field: { frontmatter: { category: SELECT } }) {
         fieldValue
       }
     }
