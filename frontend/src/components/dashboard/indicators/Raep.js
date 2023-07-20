@@ -8,6 +8,7 @@ import React, {
 
 import useIndicators from "hooks/useIndicators";
 import ModalContext from "utils/ModalContext";
+import SubscribeButton from "../SubscribeButton";
 
 export default function Raep(props) {
   const { data, isError, isLoading } = useIndicators(
@@ -204,6 +205,7 @@ export default function Raep(props) {
             </>
           )}
         </div>
+        <SubscribeButton place={props.place} indicator="raep" />
       </div>
       {!!data?.raep?.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">

@@ -2,6 +2,7 @@ import React, { useContext, useCallback, useRef, useState } from "react";
 
 import useIndicators from "hooks/useIndicators";
 import ModalContext from "utils/ModalContext";
+import SubscribeButton from "../SubscribeButton";
 
 export default function IndiceAtmo(props) {
   const { data, isError, isLoading } = useIndicators(
@@ -158,6 +159,12 @@ export default function IndiceAtmo(props) {
             </>
           )}
         </div>
+        <SubscribeButton
+          disabled
+          onClick={() => setModal("donneesstatiques")}
+          indicator="potentiel_radon"
+          place={props.place}
+        />
       </div>
       {!!data?.potentiel_radon?.validity?.area && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">

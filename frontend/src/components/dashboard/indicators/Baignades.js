@@ -8,6 +8,7 @@ import React, {
 
 import useBaignades from "hooks/useBaignades";
 import ModalContext from "utils/ModalContext";
+import SubscribeButton from "../SubscribeButton";
 
 export default function Baignades(props) {
   const { data, isError, isLoading } = useBaignades(props.place.code);
@@ -225,6 +226,12 @@ export default function Baignades(props) {
             </>
           )}
         </div>
+        <SubscribeButton
+          disabled
+          onClick={() => setModal("donneesrestreintes")}
+          indicator="baignades"
+          place={props.place}
+        />
       </div>
       {!!data?.baignades?.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">

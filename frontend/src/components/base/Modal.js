@@ -101,7 +101,7 @@ export default React.forwardRef(function Modal(props, ref) {
       >
         <button
           type="button"
-          className="absolute right-6 top-6 z-50 cursor-pointer text-4xl font-light"
+          className="absolute right-4 z-50 cursor-pointer text-4xl font-light"
           onClick={() => props.setOpen(false)}
         >
           {/* multiply in unicode */}

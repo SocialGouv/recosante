@@ -1,7 +1,7 @@
 import FocusTrap from "focus-trap-react";
 import React, { useContext } from "react";
 
-import Indicators from "components/Indicators";
+import SubscriptionIndicators from "components/SubscriptionIndicators";
 import Modal from "components/base/Modal";
 import ModalContext from "utils/ModalContext";
 
@@ -14,7 +14,7 @@ export default function SubscriptionModal() {
       focusTrapOptions={{ allowOutsideClick: true, escapeDeactivates: false }}
     >
       <Modal open={subscription} setOpen={setSubscription} large>
-        {subscription === "indicators" && <Indicators />}
+        {subscription === "indicators" && <SubscriptionIndicators />}
       </Modal>
     </FocusTrap>
   );

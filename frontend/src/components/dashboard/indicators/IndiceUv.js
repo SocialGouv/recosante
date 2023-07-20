@@ -2,6 +2,7 @@ import React, { useContext, useCallback, useRef, useState } from "react";
 
 import useIndicators from "hooks/useIndicators";
 import ModalContext from "utils/ModalContext";
+import SubscribeButton from "../SubscribeButton";
 
 const maxValue = 11;
 export default function IndiceUv(props) {
@@ -171,6 +172,7 @@ export default function IndiceUv(props) {
             </>
           )}
         </div>
+        <SubscribeButton place={props.place} indicator="indice_uv" />
       </div>
       {!!data?.indice_uv?.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
