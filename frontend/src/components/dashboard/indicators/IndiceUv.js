@@ -225,8 +225,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 3}
-        data-value={value}
         d="M15.6553 38.4141L13.0001 43.0529"
       />
       <path // 10
@@ -236,8 +234,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 9}
-        data-value={value}
         d="M35 4.94727L32.3448 9.58602"
       />
       <path // 5
@@ -247,8 +243,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 4}
-        data-value={value}
         d="M9.58691 32.3447L4.94815 34.9999"
       />
       <path // 11
@@ -258,8 +252,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 10}
-        data-value={value}
         d="M43.0527 13L38.414 15.6552"
       />
       <path // 0
@@ -269,8 +261,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 0}
-        data-value={value}
         d="M46 24L40.6896 24"
       />
       <path // 6
@@ -280,8 +270,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 5}
-        data-value={value}
         d="M7.31055 24H2.00019"
       />
       <path // 1
@@ -291,8 +279,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 0}
-        data-value={value}
         d="M43.0527 35L38.414 32.3448"
       />
       <path // 7
@@ -302,8 +288,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 6}
-        data-value={value}
         d="M9.58691 15.6548L4.94815 12.9996"
       />
       <path // 2
@@ -313,8 +297,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 1}
-        data-value={value}
         d="M35 43.0527L32.3448 38.414"
       />
       <path // 8
@@ -324,8 +306,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 7}
-        data-value={value}
         d="M15.6553 9.58594L13.0001 4.94717"
       />
       <path // 9
@@ -335,8 +315,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 8}
-        data-value={value}
         d="M24 7.31055L24 2.00019"
       />
       <path // 3
@@ -346,8 +324,6 @@ function Chart({ value }) {
             ? `stroke-indiceuv-${value} transition-all delay-[2000ms] duration-1000`
             : "stroke-main/10",
         ].join(" ")}
-        visible={value > 2}
-        data-value={value}
         d="M24 46V40.6896"
       />
     </svg>
