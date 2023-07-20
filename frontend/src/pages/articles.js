@@ -12,10 +12,7 @@ export default function Articles({
   console.log({ categories });
   return (
     <Web title={"Nos articles"}>
-      <section
-        className="relative mx-auto flex max-w-sm flex-col px-6 pt-10 md:max-w-6xl xl:pt-20"
-        medium
-      >
+      <section className="relative mx-auto flex max-w-sm flex-col px-6 pt-10 md:max-w-6xl xl:pt-20">
         <h1>
           Nos <strong>articles</strong>
         </h1>
