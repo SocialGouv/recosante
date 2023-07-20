@@ -60,3 +60,8 @@ strong {
   @apply text-main;
   font-weight: inherit;
 }
+
+summary.no-marker::marker,
+summary.no-marker::-webkit-details-marker {
+  display: none;
+}

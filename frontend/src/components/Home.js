@@ -77,7 +77,7 @@ export default function Home() {
           <strong>En savoir plus</strong> sur Recosanté
         </h2>
         <details className="border-b border-main py-2 [&_div]:scale-y-0 [&_div]:open:scale-y-100 [&_h2]:hidden [&_h3]:open:mb-4 [&_svg]:open:rotate-180">
-          <summary className="list-none">
+          <summary className="no-marker list-none">
             <h3 className="mb-0 flex w-full items-center justify-between text-lg font-medium">
               Qui sommes-nous ? <ArrowSummary />
             </h3>
@@ -87,7 +87,7 @@ export default function Home() {
           </div>
         </details>
         <details className="border-b border-main py-2 [&_div]:scale-y-0 [&_div]:open:scale-y-100 [&_h2]:hidden [&_h3]:open:mb-4 [&_svg]:open:rotate-180">
-          <summary className="list-none">
+          <summary className="no-marker list-none">
             <h3 className="mb-0 flex w-full items-center justify-between text-lg font-medium">
               D'où viennent les données Recosanté ?<ArrowSummary />
             </h3>
@@ -97,7 +97,7 @@ export default function Home() {
           </div>
         </details>
         <details className="border-b border-main py-2 [&_div]:scale-y-0 [&_div]:open:scale-y-100 [&_h2]:hidden [&_h3]:open:mb-4 [&_svg]:open:rotate-180">
-          <summary className="list-none">
+          <summary className="no-marker list-none">
             <h3 className="mb-0 flex w-full items-center justify-between text-lg font-medium">
               Nos recommandations
               <ArrowSummary />
