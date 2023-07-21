@@ -6,9 +6,10 @@
   "author": "Fabrique des ministères sociaux",
   "scripts": {
     "build": "yarn iframe && gatsby build",
-    "format": "prettier --write **/*.{js,jsx}",
+    "format": "prettier --write '**/*.{js,jsx}'",
     "iframe": "webpack",
-    "lint": "prettier --check **/*.{js,jsx}",
+    "lint": "prettier --check '**/*.{js,jsx}'",
+    "lint-debug": "prettier --debug-check '**/*.{js,jsx}'",
     "serve": "gatsby serve",
     "start": "gatsby develop",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
