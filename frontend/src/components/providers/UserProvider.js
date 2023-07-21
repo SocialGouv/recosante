@@ -16,7 +16,8 @@ export default function UserProvider(props) {
         user,
         setUser,
         mutateUser: (mutation) => setUser({ ...user, ...mutation }),
-      }}>
+      }}
+    >
       {props.children}
     </UserContext.Provider>
   );

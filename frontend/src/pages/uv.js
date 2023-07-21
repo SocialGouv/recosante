@@ -18,12 +18,7 @@ function Uv() {
 
   return (
     <>
-      <Newsletter
-        data={data}
-        type={"uv"}
-        indicateurs={["indice_uv"]}
-        seo
-      />
+      <Newsletter data={data} type={"uv"} indicateurs={["indice_uv"]} seo />
       <AboutUv />
     </>
   );
