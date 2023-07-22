@@ -1,3 +1,11 @@
+## [1.4.4](https://github.com/SocialGouv/recosante/compare/v1.4.3...v1.4.4) (2023-07-22)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cryptography to v41.0.2 [security] ([#118](https://github.com/SocialGouv/recosante/issues/118)) ([6d00988](https://github.com/SocialGouv/recosante/commit/6d00988aef66cd4947e3c571d6964f7ba420e36e))
+* same cron for push notifs and newsletter? ([#120](https://github.com/SocialGouv/recosante/issues/120)) ([9e9e300](https://github.com/SocialGouv/recosante/commit/9e9e30015ba45cfeb3931b97e75b91faa251b005))
+
 ## [1.4.3](https://github.com/SocialGouv/recosante/compare/v1.4.2...v1.4.3) (2023-07-07)
 
 
