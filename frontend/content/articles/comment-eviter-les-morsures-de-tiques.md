@@ -2,6 +2,7 @@
 title: "Comment éviter les morsures de tiques ?"
 order: 34
 image: ../assets/images/comment-eviter-les-morsures-de-tiques.jpg
+category: "Risque de ouf"
 bon_geste: "En cas de morsure de tique, prendre conseil auprès de son médecin pour choisir un traitement adapté."
 ---
 
