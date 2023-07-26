@@ -106,7 +106,12 @@ def create_app(testing=False):
     db.init_app(app)
     migrate.init_app(app, db)
     assets_env.init_app(app)
-    cors.init_app(app)
+
+    if app.config['ENV'] == "production":
+        cors.init_app(app, resources={r"/*": {"origins": "fabrique.social.gouv.fr"}})
+    else:
+        cors.init_app(app)
+
     sib.configuration.api_key['api-key'] = os.getenv('SIB_APIKEY')
     configure_celery(app)
     configure_cache(app)
