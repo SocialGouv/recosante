@@ -107,7 +107,7 @@ def create_app(testing=False):
     migrate.init_app(app, db)
     assets_env.init_app(app)
 
-    if app.config['ENV'] == "production":
+    if app.config['ENV'] == "production" or app.config['ENV'] == "dev":
         cors.init_app(app, resources={r"/*": {"origins": "fabrique.social.gouv.fr"}})
     else:
         cors.init_app(app)
