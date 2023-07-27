@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 from celery.signals import after_setup_logger, after_setup_task_logger
 from flask import Flask, g
@@ -108,7 +109,9 @@ def create_app(testing=False):
     assets_env.init_app(app)
 
     if app.config['ENV'] == "production" or app.config['ENV'] == "dev":
-        cors.init_app(app, resources={r"/*": {"origins": "fabrique.social.gouv.fr"}})
+        cors.init_app(app, resources={r"/*": {
+            "origins": re.compile(r"^https://([a-z0-9-]+\.)?fabrique\.social\.gouv\.fr$")
+        }})
     else:
         cors.init_app(app)
 
