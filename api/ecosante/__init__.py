@@ -110,7 +110,7 @@ def create_app(testing=False):
 
     if app.config['ENV'] == "production" or app.config['ENV'] == "dev":
         cors.init_app(app, resources={r"/*": {
-            "origins": re.compile(r"^https://([a-z0-9-]+\.)?fabrique\.social\.gouv\.fr$")
+            "origins": re.compile(r"^https://([a-z0-9-]+\.)*fabrique\.social\.gouv\.fr$")
         }})
     else:
         cors.init_app(app)
