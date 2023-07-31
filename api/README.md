@@ -70,6 +70,8 @@ En développement vous pouvez démarrer l’API web avec la commande
 poetry run flask run
 ```
 
+Il faudra toutefois régler le problème des variables d'environnement.
+
 ### Démarrage des workers
 
 Dans une autre fenêtre vous pouvez lancer les workers avec la commande

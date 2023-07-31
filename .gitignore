@@ -8,6 +8,7 @@
 *.egg-info
 .sass-cache
 .webassets-cache
+.DS_Store
 __pycache__
 celerybeat-schedule
 config.json
