@@ -51,7 +51,7 @@ const Error = styled(Alert)`
     font-size: 0.75em;
   }
 `;
-export default function Submit(props) {
+export default function GeolocButton(props) {
   const [position, setPosition] = useState(null);
 
   const [isGeolocating, setIsGeolocating] = useState(null);
@@ -97,7 +97,7 @@ export default function Submit(props) {
           <path d="M23 11H20.941C20.478 6.8355 17.1645 3.522 13 3.059V1C13 0.448 12.552 0 12 0C11.448 0 11 0.448 11 1V3.059C6.8355 3.522 3.522 6.8355 3.059 11H1C0.448 11 0 11.448 0 12C0 12.552 0.448 13 1 13H3.059C3.522 17.1645 6.8355 20.478 11 20.941V23C11 23.552 11.448 24 12 24C12.552 24 13 23.552 13 23V20.941C17.1645 20.478 20.478 17.1645 20.941 13H23C23.552 13 24 12.552 24 12C24 11.448 23.552 11 23 11ZM12 19C8.14 19 5 15.86 5 12C5 8.14 8.14 5 12 5C15.86 5 19 8.14 19 12C19 15.86 15.86 19 12 19Z" />
         </svg>
       </Wrapper>
-      {(isError || error || data === []) && (
+      {(isError || error || !data?.length) && (
         <Error error>
           {error.code === 1 ? (
             <p>

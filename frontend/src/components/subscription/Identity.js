@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Alert from "components/base/Alert";
 import MagicLink from "components/base/MagicLink";
 import TextInput from "components/base/TextInput";
-import SearchBar from "components/search/SearchBar";
+import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
 import { useLocalUser, useUserMutation } from "hooks/useUser";
 import Error from "./identity/Error";
@@ -43,15 +43,7 @@ const SearchBarWrapper = styled.div`
     width: 100%;
   }
 `;
-const StyledSearchBar = styled(SearchBar)`
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  transform: none !important;
-  font-size: 1.25rem;
-  ${(props) => props.error && `border-color: ${props.theme.colors.error}`}
-`;
+
 const StyledAlert = styled(Alert)`
   margin: -2rem 0 1rem;
 `;
@@ -101,12 +93,15 @@ export default function Identity(props) {
     <Wrapper>
       <Label>Je valide mes informations personnelles.</Label>
       <SearchBarWrapper>
-        <StyledSearchBar
+        <SearchInput
           initialValue={user.commune && user.commune.nom}
+          className={[
+            "left-0 right-0 top-0 w-full !transform-none text-[1.125rem]",
+            error && !user.commune ? "border-error" : "",
+          ].join(" ")}
           handlePlaceSelection={(place) => {
             mutateUser({ commune: place });
           }}
-          error={error && !user.commune}
         />
       </SearchBarWrapper>
       {availability && !availability.availability && (

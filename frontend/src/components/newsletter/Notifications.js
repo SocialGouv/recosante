@@ -1,8 +1,6 @@
 import { graphql, useStaticQuery } from "gatsby";
 import React, { useContext, useRef } from "react";
-import styled from "styled-components";
 
-import Button from "components/base/Button";
 import Markdown from "components/base/Markdown";
 import Section from "components/base/Section";
 import { useLocalUser } from "hooks/useUser";
@@ -11,50 +9,6 @@ import Images from "./notifications/Images";
 
 import useOnScreen from "hooks/useOnScreen";
 
-const StyledSection = styled(Section)`
-  display: flex;
-  width: 60.5rem;
-
-  ${(props) => props.theme.mq.medium} {
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-`;
-const Content = styled.div`
-  width: 29.25rem;
-  margin-left: 2rem;
-
-  ${(props) => props.theme.mq.medium} {
-    width: 31rem;
-    margin: 0 0 2rem;
-  }
-  ${(props) => props.theme.mq.small} {
-    width: auto;
-    margin: 0 0 1rem;
-  }
-  p {
-    margin-bottom: 1em;
-  }
-`;
-const MockupWrapper = styled.div`
-  flex: 1;
-  position: relative;
-
-  ${(props) => props.theme.mq.medium} {
-    min-height: 14rem;
-  }
-
-  ${(props) => props.theme.mq.small} {
-    min-height: auto;
-  }
-`;
-const StyledButton = styled(Button)`
-  font-size: 1.125rem;
-
-  ${(props) => props.theme.mq.small} {
-    font-size: 1rem;
-  }
-`;
 export default function Notifications() {
   const data = useStaticQuery(
     graphql`
@@ -73,14 +27,20 @@ export default function Notifications() {
   const isOnScreen = useOnScreen(ref);
 
   return (
-    <StyledSection ref={ref} id="notifications">
-      <MockupWrapper>
+    <Section
+      ref={ref}
+      className="flex w-full max-w-xl flex-col-reverse gap-y-6 p-6 xl:flex-row"
+      id="notifications"
+    >
+      <div className="relative flex-1 sm:h-56 xl:h-auto">
         <Images isOnScreen={isOnScreen} />
-      </MockupWrapper>
-      <Content>
+      </div>
+      <div className="xl:basis-1/2">
         <Markdown>{data.mdx.body}</Markdown>
-        <Button.Wrapper right>
-          <StyledButton
+        <div className="flex w-full justify-center xl:justify-end">
+          <button
+            type="button"
+            className="rounded-full border-2 border-main bg-white px-6 py-2 text-main xl:px-8 xl:py-3 xl:text-xl xl:font-medium"
             onClick={() => {
               mutateUser({
                 indicateurs: ["indice_atmo", "raep"],
@@ -93,12 +53,11 @@ export default function Notifications() {
                 "Tous",
               ]);
             }}
-            hollow
           >
             Choisir mes indicateurs
-          </StyledButton>
-        </Button.Wrapper>
-      </Content>
-    </StyledSection>
+          </button>
+        </div>
+      </div>
+    </Section>
   );
 }

@@ -1,43 +1,30 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
 
-import Button from "components/base/Button";
 import useIndicators from "hooks/useIndicators";
 import ModalContext from "utils/ModalContext";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 18rem;
-  margin: 0 auto 2rem;
-  padding: 1.5rem 2rem 1.5rem;
-  background: ${(props) => props.theme.colors.error};
-  border-radius: 1.5rem;
-  box-shadow: 0.25rem 0.25rem 1rem 0
-    rgba(${(props) => props.theme.colors.backgroundAlpha}, 0.4);
-
-  ${(props) => props.theme.mq.small} {
-    padding: 1.5rem 1rem 1rem;
-  }
-`;
-const Title = styled.p`
-  margin-bottom: 1rem;
-  color: ${(props) => props.theme.colors.background};
-  text-align: center;
-`;
-export default function EpisodePollution(props) {
-  const { data } = useIndicators(props.place.code, props.date);
+export default function EpisodePollution({ place, date }) {
+  const { data } = useIndicators(place.code, date);
 
   const { setEpisodePollution } = useContext(ModalContext);
 
-  return data?.episodes_pollution?.advice ? (
-    <Wrapper>
-      <Title>
-        Un épisode de pollution est prévu{" "}
-        {props.date ? "demain" : "aujourd’hui"}
-      </Title>
-      <Button onClick={() => setEpisodePollution(true)}>En savoir plus</Button>
-    </Wrapper>
-  ) : null;
+  if (!data?.episodes_pollution?.advice) return null;
+
+  return (
+    <div className="mx-auto mb-8 flex max-w-xs flex-col gap-y-6 rounded-lg border-2 border-red-500 bg-white p-6 xl:mx-0">
+      <p className="m-0 rounded-full bg-red-500 text-center text-white">
+        ⚠️ Avertissement
+      </p>
+      <p className="m-0 text-center font-medium">
+        Un épisode de pollution est prévu {date ? "demain" : "aujourd’hui"}
+      </p>
+      <button
+        type="button"
+        className="text-center text-main underline"
+        onClick={() => setEpisodePollution(true)}
+      >
+        En savoir plus
+      </button>
+    </div>
+  );
 }

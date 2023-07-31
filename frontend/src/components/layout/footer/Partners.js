@@ -1,43 +1,7 @@
 import { graphql, useStaticQuery } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import React from "react";
-import styled from "styled-components";
 
-import MagicLink from "components/base/MagicLink";
-
-const Wrapper = styled.div``;
-const Title = styled.div`
-  margin-bottom: 1rem;
-  font-weight: bold;
-
-  ${(props) => props.theme.mq.small} {
-    text-align: center;
-  }
-
-  p {
-    margin: 0;
-    font-size: inherit;
-  }
-`;
-const Logos = styled.ul`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 0 -1rem;
-  padding: 0;
-
-  ${(props) => props.theme.mq.small} {
-    justify-content: center;
-  }
-
-  li {
-    list-style: none;
-  }
-`;
-const Logo = styled(MagicLink)`
-  width: 5rem;
-  margin: 1rem;
-`;
 export default function Partners() {
   const data = useStaticQuery(
     graphql`
@@ -49,7 +13,7 @@ export default function Partners() {
               title
               image {
                 childImageSharp {
-                  gatsbyImageData(width: 108)
+                  gatsbyImageData(width: 80)
                 }
               }
               link
@@ -60,19 +24,27 @@ export default function Partners() {
     `
   );
   return (
-    <Wrapper>
-      <Title>
-        <p>Les données sont fournies par</p>
-      </Title>
-      <Logos>
+    <div>
+      <p className="text-center">Les données sont fournies par:</p>
+      <ul className="-mx-4 flex items-center justify-center overflow-x-hidden p-0">
         {data.mdx.frontmatter.data.map((logo) => (
-          <li key={logo.link}>
-            <Logo to={logo.link} aria-label={logo.title}>
-              <GatsbyImage image={getImage(logo.image)} alt={logo.title} />
-            </Logo>
+          <li key={logo.link} className=" shrink grow basis-8">
+            <a
+              className="flex items-center justify-center p-2"
+              href={logo.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={logo.title}
+            >
+              <GatsbyImage
+                className="shrink"
+                image={getImage(logo.image)}
+                alt={logo.title}
+              />
+            </a>
           </li>
         ))}
-      </Logos>
-    </Wrapper>
+      </ul>
+    </div>
   );
 }

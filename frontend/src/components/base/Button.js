@@ -85,21 +85,33 @@ const Wrapper = styled(MagicLink)`
     text-align: center;
   }
 `;
-export default function Button(props) {
+export default function Button({
+  className,
+  to,
+  onClick,
+  disabled,
+  fetching,
+  hollow,
+  expand,
+  noExpand,
+  color,
+  type,
+  children,
+}) {
   return (
     <Wrapper
-      className={props.className}
-      to={props.to}
-      onClick={props.onClick}
-      disabled={props.disabled}
-      fetching={props.fetching}
-      hollow={props.hollow ? 1 : 0}
-      expand={props.expand ? 1 : 0}
-      noExpand={props.noExpand ? 1 : 0}
-      color={props.color}
-      type={props.type}
+      className={className}
+      to={to}
+      onClick={onClick}
+      disabled={disabled}
+      fetching={fetching}
+      hollow={hollow ? 1 : 0}
+      expand={expand ? 1 : 0}
+      noExpand={noExpand ? 1 : 0}
+      color={color}
+      type={type}
     >
-      <span>{props.children}</span>
+      <span>{children}</span>
     </Wrapper>
   );
 }

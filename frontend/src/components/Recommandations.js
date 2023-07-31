@@ -7,34 +7,10 @@ import IndiceAtmo from "utils/icons/IndiceAtmo";
 import IndiceUv from "utils/icons/IndiceUv";
 import Raep from "utils/icons/Raep";
 import VigilanceMeteo from "utils/icons/VigilanceMeteo";
+import Baignades from "../utils/icons/Baignades";
+import Radon from "../utils/icons/Radon";
+import Pollution from "../utils/icons/Pollution";
 
-const Options = styled.div`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 2rem auto;
-
-  ${(props) => props.theme.mq.small} {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-  }
-`;
-const NoIcon = styled.svg`
-  width: 48px;
-  height: 0rem;
-`;
-const Type = styled.h2`
-  margin-bottom: 2rem;
-`;
-const Critere = styled.h3`
-  margin-bottom: 1.5rem;
-`;
-const SousCritere = styled.h4`
-  margin-bottom: 1rem;
-  color: ${(props) => props.theme.colors.text};
-`;
 const Recommandation = styled.div`
   margin-bottom: 1rem;
   &:not(:last-child):after {
@@ -62,24 +38,23 @@ export default function Recommandations(props) {
     radon: "Potentiel Radon",
   };
   let options = [];
-  Object.keys(types).map((t) =>
+  const icons = {
+    indice_atmo: <IndiceAtmo />,
+    pollens: <Raep />,
+    vigilance_meteo: <VigilanceMeteo />,
+    indice_uv: <IndiceUv />,
+    baignades: <Baignades />,
+    radon: <Radon />,
+    episode_pollution: <Pollution />,
+    // episode_pollution: <svg className="h-0 w-12" />,
+  };
+  for (const type of Object.keys(types)) {
     options.push({
-      value: t,
-      label: types[t],
-      icon:
-        t === "indice_atmo" ? (
-          <IndiceAtmo />
-        ) : t === "pollens" ? (
-          <Raep />
-        ) : t === "vigilance_meteo" ? (
-          <VigilanceMeteo />
-        ) : t === "indice_uv" ? (
-          <IndiceUv />
-        ) : (
-          <NoIcon />
-        ),
-    })
-  );
+      value: type,
+      label: types[type],
+      icon: icons[type],
+    });
+  }
   const { data } = useRecommandations();
   const groupBy = (objectArray, property) => {
     return objectArray.reduce((acc, obj) => {
@@ -182,10 +157,10 @@ export default function Recommandations(props) {
     qa_bonne: [],
     qa_mauvaise: [],
   };
-  const [filters, setFilters] = useState(Object.keys(types));
+  const [filters, setFilters] = useState([]);
   return (
     <>
-      <Options>
+      <div className="relative my-8 flex flex-col items-stretch justify-start overflow-hidden md:flex-row">
         {options.map((option) => (
           <Option
             key={option.value}
@@ -206,43 +181,49 @@ export default function Recommandations(props) {
             }}
           />
         ))}
-      </Options>
-      {Object.keys(types).map((t) => (
-        <section id={t} key={t}>
-          {recommandations[t] && filters.includes(t) && (
-            <>
-              <Type>{types[t]}</Type>
-              {Object.keys(recommandations[t]).map((c) => (
-                <section id={t + "-" + c} key={t + "-" + c}>
-                  {criteres[c] && <Critere>{criteres[c]}</Critere>}
-                  {recommandations[t][c]?.map((r, i) => (
-                    <React.Fragment key={t + "-" + c + "-" + i}>
-                      {t === "indice_atmo" &&
-                        (r.categorie || (r.categorie = "Toute catégorie")) &&
-                        uniqueCategories[c] &&
-                        !uniqueCategories[c].includes(r.categorie) &&
-                        uniqueCategories[c].push(r.categorie) && (
-                          <SousCritere>{r.categorie}</SousCritere>
-                        )}
-                      {t === "vigilance_meteo" &&
-                        phenomenes[r.vigilance_phenomene_ids] && (
-                          <SousCritere>
-                            {phenomenes[r.vigilance_phenomene_ids]}
-                          </SousCritere>
-                        )}
-                      <Recommandation
-                        dangerouslySetInnerHTML={{
-                          __html: r.recommandation,
-                        }}
-                      />
-                    </React.Fragment>
-                  ))}
-                </section>
-              ))}
-            </>
-          )}
-        </section>
-      ))}
+      </div>
+      {filters.map((t) => {
+        return (
+          <details open className="flex flex-col" id={t} key={t}>
+            {recommandations[t] && (
+              <>
+                <summary>
+                  <h2 className="mb-8 mr-auto inline-block rounded bg-main p-4 text-white">
+                    {types[t]}
+                  </h2>
+                </summary>
+                {Object.keys(recommandations[t]).map((c) => (
+                  <section id={t + "-" + c} key={t + "-" + c}>
+                    {criteres[c] && <h3 className="mb-6">{criteres[c]}</h3>}
+                    {recommandations[t][c]?.map((r, i) => (
+                      <React.Fragment key={t + "-" + c + "-" + i}>
+                        {t === "indice_atmo" &&
+                          (r.categorie || (r.categorie = "Toute catégorie")) &&
+                          uniqueCategories[c] &&
+                          !uniqueCategories[c].includes(r.categorie) &&
+                          uniqueCategories[c].push(r.categorie) && (
+                            <h4 className="mb-4 text-text">{r.categorie}</h4>
+                          )}
+                        {t === "vigilance_meteo" &&
+                          phenomenes[r.vigilance_phenomene_ids] && (
+                            <h4 className="mb-4 text-text">
+                              {phenomenes[r.vigilance_phenomene_ids]}
+                            </h4>
+                          )}
+                        <Recommandation
+                          dangerouslySetInnerHTML={{
+                            __html: r.recommandation,
+                          }}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </section>
+                ))}
+              </>
+            )}
+          </details>
+        );
+      })}
     </>
   );
 }

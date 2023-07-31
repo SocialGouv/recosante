@@ -28,18 +28,7 @@ const Open = styled.button`
     transition: opacity 600ms;
   }
 `;
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0 1rem;
-  opacity: ${(props) => (props.open ? 1 : 0)};
-  pointer-events: ${(props) => (props.open ? "inherit" : "none")};
-  visibility: ${(props) => (props.open ? "visible" : "hidden")};
-  transition: opacity 600ms;
-`;
+
 const Close = styled.button`
   position: absolute;
   top: 1.75rem;
@@ -74,12 +63,21 @@ export default function MobileSearch() {
           />
         </svg>
       </Open>
-      <Wrapper open={open}>
+      <div
+        className={[
+          "fixed inset-0 transition-opacity",
+          open
+            ? "pointer-events-auto visible opacity-100"
+            : "pointer-events-none invisible opacity-0",
+        ].join(" ")}
+        open={open}
+      >
         <Search
           handlePlaceSelection={(place) => {
             setOpen(false);
             navigate(formatPlaceUrl(place) + window.location.search);
           }}
+          fullScreen
         />
         <Close onClick={() => setOpen(false)}>
           <svg
@@ -97,7 +95,7 @@ export default function MobileSearch() {
             />
           </svg>
         </Close>
-      </Wrapper>
+      </div>
     </>
   ) : null;
 }

@@ -101,24 +101,12 @@ const le = keyframes`
   }
 `;
 
-const Wrapper = styled.h1`
-  display: flex;
-  flex-wrap: wrap;
-
-  ${(props) => props.theme.mq.medium} {
-    justify-content: center;
-    font-size: 2.5rem;
-  }
-  ${(props) => props.theme.mq.small} {
-    justify-content: center;
-    font-size: 6.5vw;
-  }
-`;
 const Words = styled.span`
   flex-basis: 100%;
   margin-right: 0.3em;
 
   ${(props) => props.theme.mq.medium} {
+    text-align: center;
     flex-basis: auto;
   }
 `;
@@ -167,7 +155,8 @@ const VisuallyHidden = styled.span`
   white-space: nowrap !important;
   border: 0 !important;
 `;
-export default function Title() {
+
+export default function TitleAnimated() {
   const sentences = [
     `pollution de l’air`,
     `risque d’allergie aux pollens`,
@@ -177,7 +166,7 @@ export default function Title() {
     `niveau de risque radon`,
   ];
   return (
-    <Wrapper>
+    <h1 className="flex flex-wrap justify-center max-sm:text-[6.5vw] xl:justify-start">
       <VisuallyHidden>
         Découvrez la pollution de l’air, le risque d’allergie aux pollens, la
         vigilance météo, le rayonnement UV, la qualité des eaux de baignade, le
@@ -205,6 +194,6 @@ export default function Title() {
         ))}
       </Sentences>
       <Words aria-hidden="true">près de chez vous</Words>
-    </Wrapper>
+    </h1>
   );
 }

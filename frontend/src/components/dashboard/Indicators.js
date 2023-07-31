@@ -1,6 +1,4 @@
 import React from "react";
-import Masonry from "react-masonry-css";
-import styled from "styled-components";
 
 import Baignades from "./indicators/Baignades";
 import IndiceAtmo from "./indicators/IndiceAtmo";
@@ -9,30 +7,23 @@ import PotentielRadon from "./indicators/PotentielRadon";
 import Raep from "./indicators/Raep";
 import VigilanceMeteo from "./indicators/VigilanceMeteo";
 
-const StyledMasonry = styled(Masonry)`
-  display: flex;
-  margin-left: -2rem;
-  width: auto;
-
-  .my-masonry-grid_column {
-    padding-left: 2rem;
-  }
-`;
 export default function Indicators(props) {
   return (
-    <StyledMasonry
-      breakpointCols={{
-        default: 2,
-        1200: 1,
-      }}
-      columnClassName="my-masonry-grid_column"
-    >
-      <IndiceAtmo place={props.place} date={props.date} />
-      <Raep place={props.place} date={props.date} />
-      <VigilanceMeteo place={props.place} date={props.date} />
-      <IndiceUv place={props.place} date={props.date} />
-      <Baignades place={props.place} />
-      <PotentielRadon place={props.place} />
-    </StyledMasonry>
+    <section className="mx-auto flex max-w-6xl flex-col gap-y-6">
+      <div className="flex flex-col flex-wrap gap-y-6 md:flex-row [&>*]:w-full [&>*]:md:basis-1/2">
+        <div className="flex flex-col gap-y-6">
+          <IndiceAtmo place={props.place} date={props.date} />
+          <IndiceUv place={props.place} date={props.date} />
+        </div>
+        <Raep place={props.place} date={props.date} />
+      </div>
+      <div className="flex flex-col flex-wrap gap-y-6 md:flex-row [&>*]:w-full [&>*]:md:basis-1/2">
+        <Baignades place={props.place} />
+        <div className="flex flex-col gap-y-6">
+          <VigilanceMeteo place={props.place} date={props.date} />
+          <PotentielRadon place={props.place} />
+        </div>
+      </div>
+    </section>
   );
 }

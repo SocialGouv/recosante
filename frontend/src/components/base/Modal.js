@@ -58,23 +58,7 @@ const Content = styled.div`
   }
   overflow: hidden;
 `;
-const ButtonClose = styled.button`
-  position: absolute;
-  z-index: 10000;
-  top: 0.5em;
-  right: 0.5em;
-  font-size: 2em;
-  font-weight: bold;
-  transform: rotate(45deg);
-  cursor: pointer;
-  line-height: 0.5;
-  border: none;
-  background: none;
 
-  &:focus-visible {
-    outline: none;
-  }
-`;
 const Scroll = styled.div`
   height: 100%;
   overflow-y: auto;
@@ -115,7 +99,14 @@ export default React.forwardRef(function Modal(props, ref) {
         textColor={props.textColor}
         backgroundColor={props.backgroundColor}
       >
-        <ButtonClose onClick={() => props.setOpen(false)}>+</ButtonClose>
+        <button
+          type="button"
+          className="absolute right-4 z-50 cursor-pointer text-4xl font-light"
+          onClick={() => props.setOpen(false)}
+        >
+          {/* multiply in unicode */}
+          &#215;
+        </button>
         <Scroll>{props.children}</Scroll>
       </Content>
     </Wrapper>

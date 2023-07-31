@@ -21,7 +21,7 @@ function Wrapper(props) {
   const ref = useRef();
   const isOnScreen = useOnScreen(ref, "-200px", 0);
   return (
-    <Section ref={ref}>
+    <Section className="px-6" ref={ref}>
       <Columns invert={props.invert} className={isOnScreen ? "onScreen" : null}>
         {props.children}
       </Columns>

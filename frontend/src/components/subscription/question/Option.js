@@ -7,6 +7,9 @@ const Wrapper = styled.div`
   position: relative;
   padding: 0 0.5rem;
   margin-bottom: 1rem;
+  flex-shrink: 1;
+  flex-grow: 1;
+  flex-basis: 100%;
 
   ${(props) => props.theme.mq.smallish} {
     flex-basis: 50%;
@@ -20,7 +23,7 @@ const Button = styled.button`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
-  width: 10rem;
+  width: 100%;
   height: 10rem;
   margin: 0 auto;
   padding: 0.6875rem 0.25rem 0.5rem;
@@ -44,12 +47,16 @@ const Button = styled.button`
   }
 
   ${(props) => props.theme.mq.small} {
-    flex-direction: row-reverse;
+    flex-direction: row;
     width: 100%;
     height: 4.5rem;
     padding: 0.75rem 1rem;
     border: 0.1875rem solid ${(props) => props.theme.colors.main};
     border-radius: 1.5rem;
+  }
+
+  svg {
+    width: 3rem;
   }
 
   .fill {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import SearchBar from "components/search/SearchBar";
+import SearchInput from "components/search/SearchInput";
 import { useUser, useUserMutation } from "hooks/useUser";
 
 const Wrapper = styled.div`
@@ -35,14 +35,7 @@ const SearchBarWrapper = styled.div`
     width: 100%;
   }
 `;
-const StyledSearchBar = styled(SearchBar)`
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  transform: none !important;
-  font-size: 1.125rem;
-`;
+
 export default function Address() {
   const { data } = useUser();
   const mutation = useUserMutation();
@@ -54,7 +47,8 @@ export default function Address() {
       <Title>Ville</Title>
       {active ? (
         <SearchBarWrapper>
-          <StyledSearchBar
+          <SearchInput
+            className="left-0 right-0 top-0 w-full !transform-none text-[1.125rem]"
             initialValue={data.commune && data.commune.nom}
             handlePlaceSelection={(place) => {
               mutation.mutate({ commune: place });

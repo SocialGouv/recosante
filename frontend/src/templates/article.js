@@ -18,11 +18,7 @@ const Title = styled.h1`
     margin: 1.5rem 0;
   }
 `;
-const Category = styled.span`
-  color: #fff;
-  background-color: ${(props) => props.theme.colors.main};
-  padding: 0.5rem 1rem;
-`;
+
 const Thumbnail = styled(GatsbyImage)`
   width: 100%;
   margin-bottom: 2rem;
@@ -57,9 +53,10 @@ export default function Article(props) {
   const iframe = useIframe();
   return (
     <Web title={props.data.mdx.frontmatter.title}>
-      <Section first medium>
+      <Section className="max-w-prose pt-10 xl:pt-20">
         {props.data.mdx.frontmatter.category && (
-          <Category
+          <span
+            className="rounded-full bg-main px-6 py-2 text-white"
             dangerouslySetInnerHTML={{
               __html: props.data.mdx.frontmatter.category,
             }}
@@ -79,7 +76,11 @@ export default function Article(props) {
         {props.data.mdx.frontmatter.bon_geste && (
           <BonGeste>
             <ImageWrapper>
-              <StaticImage src={"./images/bon-geste.png"} alt="" height={128} />
+              <StaticImage
+                src="./images/bon-geste.png"
+                alt="Ampoule pour indiquer une bonne idée ou un bon geste"
+                height={128}
+              />
             </ImageWrapper>
             <Content>
               <h2>

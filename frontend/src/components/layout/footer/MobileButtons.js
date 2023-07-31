@@ -110,7 +110,7 @@ export default function MobileButtons(props) {
           </Icon>
           <Label>Partager</Label>
         </Button>
-        {installPrompt && (
+        {(installPrompt || process.env.NODE_ENV === "development") && (
           <Button onClick={() => installPrompt.prompt()}>
             <Icon>
               <Install x="0px" y="0px" viewBox="0 0 512 512">

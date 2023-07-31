@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import SearchBar from "components/search/SearchBar";
+import SearchInput from "components/search/SearchInput";
 
 const Wrapper = styled.div`
   padding: 1.5rem;
@@ -24,16 +24,14 @@ const SearchBarWrapper = styled.div`
   height: 2.6rem;
   margin: 2rem 0;
 `;
-const StyledSearchBar = styled(SearchBar)`
-  width: 100%;
-  font-size: 1.125rem;
-`;
+
 export default function Options(props) {
   return (
     <Wrapper>
       <Title>Afficher une ville par défaut</Title>
       <SearchBarWrapper>
-        <StyledSearchBar
+        <SearchInput
+          className="w-full text-[1.125rem]"
           handlePlaceSelection={(place) => props.setDefaultPlace(place)}
         />
       </SearchBarWrapper>

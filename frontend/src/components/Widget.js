@@ -8,37 +8,6 @@ import Options from "components/widget/Options";
 import useWindowSize from "hooks/useWindowSize";
 import { formatPlaceUrl } from "utils/formatPlaceUrl";
 
-const StyledSection = styled(Section)`
-  display: flex;
-  justify-content: space-between;
-
-  ${(props) => props.theme.mq.medium} {
-    flex-direction: column;
-    align-items: center;
-  }
-`;
-const Configurator = styled.div`
-  max-width: 25rem;
-  margin-top: 2rem;
-
-  ${(props) => props.theme.mq.medium} {
-    margin-top: 0;
-  }
-`;
-const MainTitle = styled.h1`
-  width: 29.25rem;
-
-  ${(props) => props.theme.mq.medium} {
-    width: auto;
-  }
-`;
-const Title = styled.h2`
-  width: 29.25rem;
-
-  ${(props) => props.theme.mq.medium} {
-    width: auto;
-  }
-`;
 const StyledIframe = styled(IframeResizer)`
   display: block;
   width: 36rem;
@@ -56,23 +25,20 @@ export default function Widget(props) {
 
   const { width } = useWindowSize();
 
-  return !props.home || width > 700 ? (
-    <StyledSection first={props.main}>
-      <Configurator>
-        {props.main ? (
-          <MainTitle>
-            Intégrez <strong>Recosanté</strong>
-            <br /> sur votre site
-          </MainTitle>
-        ) : (
-          <Title large>
-            Intégrez <strong>Recosanté</strong>
-            <br /> sur votre site
-          </Title>
-        )}
+  if (width <= 700 && props.home) return null;
+
+  const Title = props.main ? "h1" : "h2";
+
+  return (
+    <Section className="flex flex-col items-center justify-between pt-16 xl:flex-row xl:items-start xl:pt-32">
+      <div className="max-w-sm xl:mt-8">
+        <Title className="xl:w-96">
+          Intégrez <strong>Recosanté</strong>
+          <br /> sur votre site
+        </Title>
         <Code defaultPlace={defaultPlace} url={url} />
         <Options setDefaultPlace={setDefaultPlace} />
-      </Configurator>
+      </div>
       <StyledIframe
         src={`${url}${
           defaultPlace ? formatPlaceUrl(defaultPlace) : "/"
@@ -80,6 +46,6 @@ export default function Widget(props) {
         allowFullScreen={true}
         allow="geolocation"
       />
-    </StyledSection>
-  ) : null;
+    </Section>
+  );
 }

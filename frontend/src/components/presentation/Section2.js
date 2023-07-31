@@ -63,6 +63,7 @@ export default function Who() {
 
   return (
     <StyledSection
+      className="px-6"
       ref={ref}
       isOnScreen={isOnScreen}
       animationIsOnScreen={animationIsOnScreen}
