@@ -4,7 +4,7 @@ import useIndicators from "hooks/useIndicators";
 import ModalContext from "utils/ModalContext";
 import SubscribeButton from "../SubscribeButton";
 
-export default function IndiceAtmo(props) {
+export default function VigilanceMeteo(props) {
   const { data, isError, isLoading } = useIndicators(
     props.place.code,
     props.date

@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 
 import MagicLink from "components/base/MagicLink";
 
-const fetching = keyframes`
+const fetchingKeyframe = keyframes`
   from {
     transform: translateX(-100%);
   }
@@ -74,7 +74,8 @@ const Wrapper = styled(MagicLink)`
     background-color: ${(props) =>
       props.hollow ? props.theme.colors.main : props.theme.colors.background};
     opacity: ${(props) => (props.fetching ? "0.4" : "0")};
-    animation: ${fetching} ${(props) => (props.fetching ? 600 : 0)}ms infinite;
+    animation: ${fetchingKeyframe} ${(props) => (props.fetching ? 600 : 0)}ms
+      infinite;
   }
 
   ${(props) => props.theme.mq.small} {

@@ -5,7 +5,7 @@ import AboutUv from "components/AboutUv";
 import Web from "components/layout/Web";
 import Newsletter from "../components/Newsletter";
 
-function Uv() {
+function UvWithDataStaticQuery() {
   const data = useStaticQuery(
     graphql`
       query {
@@ -24,10 +24,10 @@ function Uv() {
   );
 }
 
-export default function WrappedUv() {
+export default function Uv() {
   return (
     <Web title={`UV`}>
-      <Uv />
+      <UvWithDataStaticQuery />
     </Web>
   );
 }

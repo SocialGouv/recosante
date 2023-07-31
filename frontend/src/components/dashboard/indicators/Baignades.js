@@ -143,7 +143,7 @@ export default function Baignades(props) {
               </div>
               <ul className="mb-0 mt-2 w-full flex-col justify-between xl:mt-6">
                 {plages
-                  ?.filter((el, index) => {
+                  ?.filter((_el, index) => {
                     if (seeMorePlages) return true;
                     return index < minimumPlagesInView;
                   })

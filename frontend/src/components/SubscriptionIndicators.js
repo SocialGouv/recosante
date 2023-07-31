@@ -14,7 +14,7 @@ import Question from "./subscription/Question";
 import Recommandations from "./subscription/Recommandations";
 
 const Wrapper = styled.div``;
-export default function Indicators(props) {
+export default function SubscriptionIndicators() {
   const { applicationServerKey } = useStaticQuery(
     graphql`
       query {

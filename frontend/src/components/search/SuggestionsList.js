@@ -49,7 +49,7 @@ export default function SuggestionsList({
               fontSize: "clamp(0.875rem, 0.875em, 1rem)",
             }}
             key={result["code"]}
-            onClick={(e) => {
+            onClick={() => {
               handleSuggestionClick(result);
             }}
             onMouseDown={(e) => e.preventDefault()} // prevent losing focus and losing list on click

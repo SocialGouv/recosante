@@ -6,7 +6,7 @@ import React from "react";
 export default function Articles({
   data: {
     allMdx: { edges: articles },
-    categories: { group: categories },
+    categories: { group: _categories },
   },
 }) {
   return (

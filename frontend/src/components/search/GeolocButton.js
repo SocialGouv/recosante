@@ -41,7 +41,7 @@ const Wrapper = styled.button`
     }
   }
 `;
-const Error = styled(Alert)`
+const ErrorStyled = styled(Alert)`
   position: absolute;
   z-index: -1;
   left: 0;
@@ -85,9 +85,9 @@ export default function GeolocButton(props) {
         onClick={() => {
           if (!isFetching && !isGeolocating) setIsGeolocating(true);
           setDone(false);
-          navigator.geolocation.getCurrentPosition((position) => {
+          navigator.geolocation.getCurrentPosition((newPosition) => {
             setIsGeolocating(false);
-            setPosition(position);
+            setPosition(newPosition);
           }, setError);
         }}
         aria-label="Géolocalisation"
@@ -98,7 +98,7 @@ export default function GeolocButton(props) {
         </svg>
       </Wrapper>
       {(isError || error || !data?.length) && (
-        <Error error>
+        <ErrorStyled error>
           {error.code === 1 ? (
             <p>
               Il semblerait que vous n'avez pas activé la géolocalisation sur
@@ -111,7 +111,7 @@ export default function GeolocButton(props) {
           ) : (
             <p>Nous ne parvenons pas à vous localiser :(</p>
           )}
-        </Error>
+        </ErrorStyled>
       )}
     </>
   ) : null;

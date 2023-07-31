@@ -73,7 +73,7 @@ const Ray = styled.path`
   transition: stroke-dashoffset ${(props) => (props.animated ? 1700 : 0)}ms
     ease-out ${(props) => props.index * 50}ms;
 `;
-export default function Cloud() {
+export default function CloudAnimated() {
   const [animated, setAnimated] = useState(false);
   const [animation, setAnimation] = useState(0);
 
