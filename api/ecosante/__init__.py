@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 from celery.signals import after_setup_logger, after_setup_task_logger
 from flask import Flask, g
@@ -106,7 +107,14 @@ def create_app(testing=False):
     db.init_app(app)
     migrate.init_app(app, db)
     assets_env.init_app(app)
-    cors.init_app(app)
+
+    if app.config['ENV'] == "production" or app.config['ENV'] == "dev":
+        cors.init_app(app, resources={r"/*": {
+            "origins": re.compile(r"^https://([a-z0-9-]+\.)*fabrique\.social\.gouv\.fr$")
+        }})
+    else:
+        cors.init_app(app)
+
     sib.configuration.api_key['api-key'] = os.getenv('SIB_APIKEY')
     configure_celery(app)
     configure_cache(app)
