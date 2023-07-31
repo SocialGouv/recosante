@@ -2,7 +2,6 @@
 .cache
 .eggs
 .env
-.DS_Store
 .env.*
 !.env.example
 !.env.docker
