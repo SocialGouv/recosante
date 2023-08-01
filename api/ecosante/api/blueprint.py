@@ -266,3 +266,11 @@ def batch():
 @current_app.route('/healthz')
 def healthz():
     return {"ready": True}
+
+
+@registry.handles(
+    rule='/test-cors',
+    method='GET',
+)
+def test_cors():
+    return {"ready": True}
