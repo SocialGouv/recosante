@@ -2,13 +2,9 @@ import React, { useRef } from "react";
 
 const testimonies = [
   "Je trouve votre newsletter et les informations transmises très claires et très pratiques. Le format court et synthétique est particulièrement pertinent (idem pour les conseils). Merci beaucoup, continuez sur cette voie !",
-  "Je trouve votre newsletter et les informations transmises très claires et très pratiques.",
-  "Je trouve votre newsletter et les informations transmises très claires et très pratiques. Le format court et synthétique est particulièrement pertinent (idem pour les conseils).",
-  "Le format court et synthétique est particulièrement pertinent (idem pour les conseils). Merci beaucoup, continuez sur cette voie !",
-  "Je trouve votre newsletter et les informations transmises très claires et très pratiques. Le format court et synthétique est particulièrement pertinent (idem pour les conseils). Merci beaucoup, continuez sur cette voie !",
-  "Je trouve votre newsletter et les informations transmises très claires et très pratiques.",
-  "Je trouve votre newsletter et les informations transmises très claires et très pratiques. Le format court et synthétique est particulièrement pertinent (idem pour les conseils).",
-  "Le format court et synthétique est particulièrement pertinent (idem pour les conseils). Merci beaucoup, continuez sur cette voie !",
+  "J'adapte mon comportement lors de mes sorties au jour le jour et celle de ma famille",
+  "Les informations quotidiennes sont précises et me sont très utiles. Merci",
+  "Merci pour les informations qui me permette d'organiser mes sorties",
 ];
 
 export default function Testimonies() {
@@ -33,13 +29,13 @@ export default function Testimonies() {
         </button>
         <div
           ref={scrollView}
-          className="flex w-full snap-x snap-proximity items-start gap-x-2 overflow-x-auto px-6"
+          className="flex w-full snap-x snap-proximity items-center gap-x-2 overflow-x-auto px-6"
         >
           {testimonies.map((testimony, index) => {
             return (
               <blockquote
                 key={index}
-                className="snap snap snap my-4 flex max-w-xs shrink-0 basis-11/12 snap-center snap-always items-start gap-x-3 rounded-lg bg-main/5 p-4 text-base text-xs text-neutral-700"
+                className="snap snap snap my-4 flex max-w-xs shrink-0 basis-11/12 snap-center snap-always items-start gap-x-3 rounded-lg bg-main/5 p-4 text-base text-neutral-700 md:max-w-md"
               >
                 <Quote />
                 {testimony}
