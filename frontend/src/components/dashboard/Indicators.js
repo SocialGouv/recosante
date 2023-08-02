@@ -9,17 +9,23 @@ import VigilanceMeteo from "./indicators/VigilanceMeteo";
 
 export default function Indicators(props) {
   return (
-    <section className="mx-auto flex max-w-6xl flex-col gap-y-6">
-      <div className="flex flex-col flex-wrap gap-y-6 md:flex-row [&>*]:w-full [&>*]:md:basis-1/2">
-        <div className="flex flex-col gap-y-6">
+    <section className="mx-auto max-w-6xl">
+      <div className="flex flex-col gap-y-6 md:hidden">
+        <IndiceAtmo place={props.place} date={props.date} />
+        <IndiceUv place={props.place} date={props.date} />
+        <Raep place={props.place} date={props.date} />
+        <Baignades place={props.place} />
+        <VigilanceMeteo place={props.place} date={props.date} />
+        <PotentielRadon place={props.place} />
+      </div>
+      <div className="hidden md:flex">
+        <div className="flex w-1/2 flex-col gap-y-6 pr-3">
           <IndiceAtmo place={props.place} date={props.date} />
           <IndiceUv place={props.place} date={props.date} />
+          <Baignades place={props.place} />
         </div>
-        <Raep place={props.place} date={props.date} />
-      </div>
-      <div className="flex flex-col flex-wrap gap-y-6 md:flex-row [&>*]:w-full [&>*]:md:basis-1/2">
-        <Baignades place={props.place} />
-        <div className="flex flex-col gap-y-6">
+        <div className="flex w-1/2 flex-col gap-y-6 pl-3">
+          <Raep place={props.place} date={props.date} />
           <VigilanceMeteo place={props.place} date={props.date} />
           <PotentielRadon place={props.place} />
         </div>

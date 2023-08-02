@@ -29,7 +29,7 @@ export default function VigilanceMeteo(props) {
   );
 
   return (
-    <article className="relative md:pl-6">
+    <article className="relative">
       <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"

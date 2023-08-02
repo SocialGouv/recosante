@@ -30,7 +30,7 @@ export default function IndiceUv(props) {
   );
 
   return (
-    <article className="relative md:pr-6">
+    <article className="relative">
       <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"
@@ -53,7 +53,7 @@ export default function IndiceUv(props) {
         </button>
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
           {!!isLoading && (
-            <div className="flex flex-col items-center justify-center gap-x-4">
+            <div className="flex flex-col items-center justify-center gap-x-4 md:min-h-[15rem]">
               <Chart />
               <p className="text-center font-medium text-main">Chargement...</p>
             </div>

@@ -60,7 +60,7 @@ export default function Raep(props) {
   }, [allergens?.length]);
 
   return (
-    <article className="relative md:pl-6">
+    <article className="relative">
       <div
         className={[
           "relative flex w-full flex-col overflow-hidden rounded-t-lg bg-white drop-shadow-xl",
@@ -88,13 +88,13 @@ export default function Raep(props) {
         </button>
         <div className="flex grow flex-col items-center justify-center p-3 [&_p]:mb-0">
           {!!isLoading && (
-            <div className="flex grow flex-col items-center justify-center gap-x-4">
+            <div className="flex grow flex-col items-center justify-center gap-x-4 md:min-h-[22rem]">
               <Chart />
               <p className="text-center font-medium text-main">Chargement...</p>
             </div>
           )}
           {!isLoading && !!isError && (
-            <p className="text-center">
+            <p className="items-center text-center md:min-h-[10rem]">
               <span className="mb-4 block text-3xl">Oups 🦔</span>
               Nous ne sommes malheureusement pas en mesure d'afficher le risque
               d'allergie aux pollens pour l'instant. Veuillez réessayer dans

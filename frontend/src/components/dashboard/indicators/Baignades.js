@@ -45,7 +45,7 @@ export default function Baignades(props) {
   }, [plages?.length]);
 
   return (
-    <article className="relative md:pr-6">
+    <article className="relative">
       <div
         className={[
           "relative flex w-full flex-col overflow-hidden rounded-t-lg bg-white drop-shadow-xl",
@@ -88,7 +88,14 @@ export default function Baignades(props) {
           )}
           {!isLoading && !isError && (
             <>
-              <div className="flex w-full items-start justify-center gap-x-4">
+              <div
+                className={[
+                  "flex w-full items-start justify-center gap-x-4",
+                  data?.baignades?.indice?.label === "Pas de sites"
+                    ? "items-center md:min-h-[10rem]"
+                    : "",
+                ].join(" ")}
+              >
                 {!data?.baignades?.advice?.main ? (
                   <>
                     {data?.baignades?.indice?.label === "Hors-saison"
