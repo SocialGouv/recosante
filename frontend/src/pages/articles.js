@@ -11,7 +11,7 @@ export default function Articles({
 }) {
   return (
     <Web title={"Nos articles"}>
-      <section className="relative mx-auto flex max-w-sm flex-col px-6 pt-10 md:max-w-6xl xl:pt-20">
+      <section className="relative mx-auto flex max-w-sm flex-col px-4 pt-10 md:max-w-6xl md:px-6 xl:pt-20">
         <h1>
           Nos <strong>articles</strong>
         </h1>
@@ -19,12 +19,12 @@ export default function Articles({
           return (
             <Link
               to={node.fields.slug}
-              className="mx-auto mb-6 flex w-full max-w-xs flex-col items-stretch overflow-hidden bg-white drop-shadow-lg md:mx-0 md:max-w-full md:flex-row"
+              className="mx-auto mb-6 flex w-full flex-col items-stretch bg-white drop-shadow-lg md:mx-0 md:max-w-full md:flex-row md:items-stretch"
               key={node.fields.slug}
             >
               <div
                 id="image-container"
-                className="flex max-h-fit w-full flex-col items-center justify-center object-cover md:shrink-0 md:basis-1/3"
+                className="flex max-h-fit w-full flex-col items-center justify-center object-cover md:mb-0 md:shrink-0 md:basis-1/3 md:self-stretch"
               >
                 <GatsbyImage
                   image={getImage(node.frontmatter.image)}
