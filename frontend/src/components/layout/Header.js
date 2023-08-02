@@ -17,7 +17,7 @@ export default function Header() {
       <div className="mx-auto flex max-w-6xl items-center	justify-between">
         <Logos className="flex items-center justify-center" />
         {pathname !== "/" && (
-          <div className="relative hidden sm:block">
+          <div className="relative hidden md:block">
             <SearchInput
               className="w-80"
               placeholder="Entrez une ville"

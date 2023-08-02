@@ -48,9 +48,9 @@ export default function Header(props) {
 
   return (
     <>
-      <div className="mx-auto flex max-w-6xl flex-col justify-between xl:flex-row">
+      <div className="mx-auto flex max-w-6xl flex-col justify-between md:flex-row">
         <div className="mb-8 flex-1">
-          <h1 className="mb-1 text-center xl:flex xl:flex-row xl:flex-wrap xl:items-baseline xl:text-left">
+          <h1 className="mb-1 text-center md:flex md:flex-row md:flex-wrap md:items-baseline md:text-left">
             <span className="order-1 text-main">
               {props.place.nom}
               <button
@@ -58,7 +58,7 @@ export default function Header(props) {
                 onClick={() => {
                   setShowSearch(true);
                 }}
-                className="-mb-1 ml-2 inline"
+                className="-mb-1 ml-2 inline md:hidden"
               >
                 <svg
                   width="17"
@@ -74,7 +74,7 @@ export default function Header(props) {
                 </svg>
               </button>
             </span>
-            <p className="order-2 mb-1 block text-center text-base font-light xl:order-3 xl:shrink-0 xl:basis-full  xl:text-left xl:text-xl">
+            <p className="order-2 mb-1 block text-center text-base font-light md:order-3 md:shrink-0 md:basis-full  md:text-left md:text-xl">
               {props.place.codesPostaux.length > 2
                 ? props.place.codesPostaux[0] +
                   " ... " +
@@ -82,8 +82,8 @@ export default function Header(props) {
                 : props.place.codesPostaux.join(", ")}{" "}
               - {props.place.departement.nom}
             </p>
-            <div className="order-3 mx-auto mb-2 mt-1 gap-x-2 text-lg font-light text-text sm:text-xl xl:order-2 xl:inline-flex xl:grow xl:text-[2rem]">
-              <span className="hidden xl:inline-block">, le </span>
+            <div className="order-3 mx-auto mb-2 mt-1 gap-x-2 text-lg font-light text-text sm:text-xl md:order-2 md:inline-flex md:grow md:text-[2rem]">
+              <span className="hidden md:inline-block">, le </span>
               <Select
                 value={date}
                 onChange={(value) => {
