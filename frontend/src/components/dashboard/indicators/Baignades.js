@@ -45,8 +45,13 @@ export default function Baignades(props) {
   }, [plages?.length]);
 
   return (
-    <article className="md:pr-6">
-      <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
+    <article className="relative md:pr-6">
+      <div
+        className={[
+          "relative flex w-full flex-col overflow-hidden rounded-t-lg bg-white drop-shadow-xl",
+          isLoading ? "h-full" : "",
+        ].join(" ")}
+      >
         <button
           type="button"
           className={[
@@ -66,16 +71,24 @@ export default function Baignades(props) {
             ?
           </span>
         </button>
-        <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {isError ? (
-            <p>
+        <div className="flex grow flex-col items-center justify-center p-3 [&_p]:mb-0">
+          {!!isLoading && (
+            <div className="flex grow flex-col items-center justify-center gap-x-4">
+              <Chart />
+              <p className="text-center font-medium text-main">Chargement...</p>
+            </div>
+          )}
+          {!isLoading && !!isError && (
+            <p className="text-center">
+              <span className="mb-4 block text-3xl">Zut 🦙</span>
               Nous ne sommes malheureusement pas en mesure d'afficher la qualité
               des eaux de baignade pour l'instant. Veuillez réessayer dans
               quelques instants.
             </p>
-          ) : (
+          )}
+          {!isLoading && !isError && (
             <>
-              <div className="flex items-start justify-center gap-x-4">
+              <div className="flex w-full items-start justify-center gap-x-4">
                 {!data?.baignades?.advice?.main ? (
                   <>
                     {data?.baignades?.indice?.label === "Hors-saison"
@@ -88,7 +101,7 @@ export default function Baignades(props) {
                   </>
                 ) : (
                   <>
-                    <div>
+                    <div className="flex flex-col items-center">
                       <Chart
                         value={[
                           "Bons résultats",
@@ -109,7 +122,7 @@ export default function Baignades(props) {
                           : data?.baignades.indice?.label}
                       </p>
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex grow flex-col">
                       <div
                         className={[
                           "hyphens-auto text-justify font-light",

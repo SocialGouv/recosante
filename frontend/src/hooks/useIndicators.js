@@ -4,6 +4,7 @@ import axios from "axios";
 import apiUrl from "utils/apiUrl";
 
 export default function useIndicators(code, date) {
+  // return { isLoading: false, isError: true, data: null };
   return useQuery(
     ["indicators", code, date],
     () => {

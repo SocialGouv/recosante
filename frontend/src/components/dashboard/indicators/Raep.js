@@ -52,12 +52,21 @@ export default function Raep(props) {
   const minimumAllergensInView = 3;
 
   useEffect(() => {
-    setShowSeeMoreAllergensButton(allergens?.length > minimumAllergensInView);
+    if (window.innerWidth < 768) {
+      setShowSeeMoreAllergensButton(allergens?.length > minimumAllergensInView);
+    } else {
+      setSeeMoreAllergens(true);
+    }
   }, [allergens?.length]);
 
   return (
-    <article className="md:pl-6">
-      <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
+    <article className="relative md:pl-6">
+      <div
+        className={[
+          "relative flex w-full flex-col overflow-hidden rounded-t-lg bg-white drop-shadow-xl",
+          isLoading ? "h-full" : "",
+        ].join(" ")}
+      >
         <button
           type="button"
           className={[
@@ -77,21 +86,29 @@ export default function Raep(props) {
             ?
           </span>
         </button>
-        <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {isError ? (
-            <p>
+        <div className="flex grow flex-col items-center justify-center p-3 [&_p]:mb-0">
+          {!!isLoading && (
+            <div className="flex grow flex-col items-center justify-center gap-x-4">
+              <Chart />
+              <p className="text-center font-medium text-main">Chargement...</p>
+            </div>
+          )}
+          {!isLoading && !!isError && (
+            <p className="text-center">
+              <span className="mb-4 block text-3xl">Oups 🦔</span>
               Nous ne sommes malheureusement pas en mesure d'afficher le risque
               d'allergie aux pollens pour l'instant. Veuillez réessayer dans
               quelques instants.
             </p>
-          ) : (
+          )}
+          {!isLoading && !isError && (
             <>
-              <div className="flex items-start justify-center gap-x-4">
+              <div className="flex w-full items-start justify-center gap-x-4">
                 {!data?.raep?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
                   <>
-                    <div>
+                    <div className="flex flex-col items-center">
                       <Chart
                         value={data.raep.indice?.value}
                         visible={!!data?.raep?.indice}

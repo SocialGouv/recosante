@@ -41,7 +41,7 @@ export default function SuggestionsList({
           <button
             type="button"
             className={[
-              "inline-flex w-full cursor-pointer gap-x-1 bg-white py-3 pl-4 pr-8 !transition-colors !duration-200 hover:bg-main/20 [&_mark]:bg-transparent [&_mark]:text-text [&_mark]:opacity-80",
+              "w-full cursor-pointer gap-x-1 bg-white py-3 pl-4 pr-8 text-left !transition-colors !duration-200 hover:bg-main/20 [&_mark]:bg-transparent [&_mark]:text-text [&_mark]:opacity-80",
               index === current ? "bg-main/10" : "",
               isFetching ? "opacity-30" : "opacity-100",
             ].join(" ")}
@@ -60,7 +60,7 @@ export default function SuggestionsList({
                 autoEscape={true}
                 textToHighlight={result["nom"]}
               />
-            </span>
+            </span>{" "}
             <span className="shrink-0 opacity-100">
               (
               {result["codesPostaux"].length > 2

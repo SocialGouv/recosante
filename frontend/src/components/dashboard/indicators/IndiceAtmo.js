@@ -30,8 +30,8 @@ export default function IndiceAtmo(props) {
   );
 
   return (
-    <article className="md:pr-6">
-      <div className="w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
+    <article className="relative md:pr-6">
+      <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"
           className={[
@@ -52,20 +52,28 @@ export default function IndiceAtmo(props) {
           </span>
         </button>
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {isError ? (
-            <p>
+          {!!isLoading && (
+            <div className="flex flex-col items-center justify-center gap-x-4">
+              <Chart />
+              <p className="text-center font-medium text-main">Chargement...</p>
+            </div>
+          )}
+          {!isLoading && !!isError && (
+            <p className="text-center">
+              <span className="mb-4 block text-3xl">Oups 🦔</span>
               Nous ne sommes malheureusement pas en mesure d'afficher l'indice
               de qualité de l'air pour l'instant. Veuillez réessayer dans
               quelques instants.
             </p>
-          ) : (
+          )}
+          {!isLoading && !isError && (
             <>
-              <div className="flex items-start justify-center gap-x-4">
+              <div className="flex w-full items-start justify-center gap-x-4">
                 {!data?.indice_atmo?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
                   <>
-                    <div>
+                    <div className="flex flex-col items-center">
                       <Chart value={data.indice_atmo.indice?.value} />
                       <p className="-mt-4 text-center font-medium text-main">
                         {data.indice_atmo.indice?.label}
