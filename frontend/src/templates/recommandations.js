@@ -26,11 +26,11 @@ export default function Recommandations(props) {
         </h1>
         <Introduction>{props.children}</Introduction>
         <Content recommandations={props.pageContext.recommandations} />
-        <div className="mb-8 flex items-center justify-center">
+        {/* <div className="mb-8 flex items-center justify-center">
           <Button to={`${apiUrl}/v1/recommandations.csv`}>
             Télécharger au format CSV
           </Button>
-        </div>
+        </div> */}
       </section>
     </Web>
   );
