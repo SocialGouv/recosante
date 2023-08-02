@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useQueryParams, ArrayParam, withDefault } from "use-query-params";
 
 import Option from "components/subscription/question/Option";
 import useRecommandations from "hooks/useRecommandations";
@@ -10,6 +11,8 @@ import VigilanceMeteo from "utils/icons/VigilanceMeteo";
 import Baignades from "../utils/icons/Baignades";
 import Radon from "../utils/icons/Radon";
 import Pollution from "../utils/icons/Pollution";
+
+const MyFiltersParam = withDefault(ArrayParam, []);
 
 const Recommandation = styled.div`
   margin-bottom: 1rem;
@@ -157,7 +160,10 @@ export default function Recommandations(props) {
     qa_bonne: [],
     qa_mauvaise: [],
   };
-  const [filters, setFilters] = useState([]);
+
+  const [query] = useQueryParams({ selected: MyFiltersParam });
+  const [filters, setFilters] = useState(query.selected || []);
+
   return (
     <>
       <div className="relative my-8 flex flex-col items-stretch justify-start overflow-hidden md:flex-row">

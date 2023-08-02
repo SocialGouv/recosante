@@ -1,4 +1,6 @@
 import { MDXProvider } from "@mdx-js/react";
+import { QueryParamProvider } from "use-query-params";
+import { ReachAdapter } from "use-query-params/adapters/reach";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 
@@ -24,13 +26,15 @@ function Providers({ children }) {
     <IFrameProvider>
       <QueryClientProvider client={queryClient}>
         <UXProvider>
-          <StyleProvider>
-            <MDXProvider>
-              <UserProvider>
-                <ModalProvider>{children}</ModalProvider>
-              </UserProvider>
-            </MDXProvider>
-          </StyleProvider>
+          <QueryParamProvider adapter={ReachAdapter}>
+            <StyleProvider>
+              <MDXProvider>
+                <UserProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </UserProvider>
+              </MDXProvider>
+            </StyleProvider>
+          </QueryParamProvider>
         </UXProvider>
       </QueryClientProvider>
     </IFrameProvider>

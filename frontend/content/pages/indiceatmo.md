@@ -6,4 +6,4 @@ L’indice ATMO est un indicateur journalier de la qualité de l’air calculé 
 qualité de l’air sur une échelle de « bon à extrêmement mauvais » pour informer les citoyens. En cas de données insuffisantes, il affichera « indisponible » ; en cas d’incident engendrant des émissions atmosphériques spécifiques, il affichera « événement ».
 
 [En savoir plus](https://www.atmo-france.org/article/lindice-atmo)  
-[Consulter les recommandations associées](/recommandations#indice_atmo)
+[Consulter les recommandations associées](/recommandations?selected=indice_atmo)  

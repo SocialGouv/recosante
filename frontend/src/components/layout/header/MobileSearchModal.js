@@ -1,7 +1,6 @@
 import { useLocation } from "@reach/router";
 import { navigate } from "gatsby";
-import React, { useState } from "react";
-import styled from "styled-components";
+import React from "react";
 
 import Search from "components/Search";
 import { formatPlaceUrl } from "utils/formatPlaceUrl";

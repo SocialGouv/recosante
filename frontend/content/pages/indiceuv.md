@@ -9,4 +9,4 @@ Pour communiquer sur le niveau de risque d’une exposition au soleil, l’Organ
 Cet indice chiffré (de 1 à 11+) reflète l’intensité du rayonnement ultraviolet et son impact sanitaire sur la peau. En général, l’information communiquée est la valeur maximale de l’indice sur la journée, atteinte dans une tranche de 2 à 4 heures autour du midi solaire. Plus l’indice UV est élevé, plus le risque de lésions cutanées et oculaires est important.
 
 [En savoir plus](https://meteofrance.com/comprendre-la-meteo/atmosphere/les-ultraviolets)  
-[Consulter les recommandations associées](/recommandations#indice_uv)
+[Consulter les recommandations associées](/recommandations?selected=indice_uv)  

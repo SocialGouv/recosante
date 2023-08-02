@@ -21,4 +21,4 @@ Ces communes sont localisées sur des formations géologiques présentant des te
 Ces communes sont celles qui, sur au moins une partie de leur superficie, présentent des formations géologiques dont les teneurs en uranium sont estimées plus élevées comparativement aux autres formations. La probabilité de présence de radon dans les bâtiments de ces communes est plus importante.
 
 [En savoir plus](https://www.irsn.fr/FR/connaissances/Environnement/expertises-radioactivite-naturelle/radon/Pages/5-cartographie-potentiel-radon-commune.aspx#.YZet_vnMK70)  
-[Consulter les recommandations associées](/recommandations#radon)
+[Consulter les recommandations associées](/recommandations?selected=radon)  
