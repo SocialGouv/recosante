@@ -2,6 +2,7 @@
 title: "Comment limiter les effets du bruit sur la santé ?"
 order: 35
 image: ../assets/images/comment-limiter-les-effets-du-bruit-sur-la-sante.jpg
+category: "Santé"
 bon_geste: "Lorsque l’environnement est bruyant, mettre des protections auditives et faire des pauses régulières dans des lieux calmes."
 ---
 
