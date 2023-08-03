@@ -2,7 +2,7 @@
 title: "Comment limiter la présence d’acariens dans son logement ?"
 order: 44
 image: ../assets/images/comment-limiter-la-presence-d-acariens-dans-son-logement.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cas de symptômes allergiques, particulièrement au réveil, demander conseil à votre médecin : il s’agit peut-être d’une allergie aux acariens."
 ---
 
