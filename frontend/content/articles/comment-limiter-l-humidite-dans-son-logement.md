@@ -2,7 +2,7 @@
 title: "­Comment limiter l’humidité dans son logement ?"
 order: 26
 image: ../assets/images/comment-limiter-l-humidite-dans-son-logement.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Pour éviter le développement de moisissures, aérer quotidiennement son logement notamment lors d’activités produisant de l’humidité."
 ---
 
