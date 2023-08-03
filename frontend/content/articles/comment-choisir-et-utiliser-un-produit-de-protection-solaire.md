@@ -2,7 +2,7 @@
 title: "Comment choisir et utiliser un produit de protection solaire ?"
 order: 36
 image: ../assets/images/comment-choisir-et-utiliser-un-produit-de-protection-solaire.jpg
-category: "Phénomènes météorologiques"
+category: "Rayons UV"
 bon_geste: "Pour protéger la peau des rayons UV, privilégier l’ombre dès que possible et appliquer une crème de protection solaire adaptée sur l’ensemble des zones découvertes."
 ---
 
