@@ -2,7 +2,7 @@
 title: "Comment aérer son logement pour améliorer l’air intérieur ?"
 order: 2
 image: ../assets/images/comment-aerer-son-logement-pour-ameliorer-l-air-interieur.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Adapter l’heure d’ouverture des fenêtres en prenant en compte la période de pollinisation ou de pollution extérieure (trafic routier, épandage, etc.)."
 ---
 
