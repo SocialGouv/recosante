@@ -2,7 +2,7 @@
 title: "Les plantes améliorent-elles la qualité de l’air intérieur ?"
 order: 41
 image: ../assets/images/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Pour améliorer l’air intérieur, aérer deux fois par jour pendant au moins 10 minutes et pendant les activités de nettoyage, cuisson et bricolage."
 ---
 
