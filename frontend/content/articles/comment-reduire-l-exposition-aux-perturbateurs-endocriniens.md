@@ -2,6 +2,7 @@
 title: "Comment réduire l’exposition aux perturbateurs endocriniens ?"
 order: 50
 image: ../assets/images/comment-reduire-l-exposition-aux-perturbateurs-endocriniens.jpg
+category: "Santé"
 bon_geste: "Manger de saison, local, et si possible bio."
 ---
 
