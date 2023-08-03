@@ -2,7 +2,7 @@
 title: "Pourquoi faut-il lutter contre l’ambroisie ?"
 order: 30
 image: ../assets/images/pourquoi-faut-il-lutter-contre-l-ambroisie.jpg
-category: "Risque d’allergie aux pollens"
+category: "Allergies aux pollens"
 bon_geste: "Pour lutter contre l’expansion de l’ambroisie, signaler les zones infestées sur <a href=\"http://signalement-ambroisie.fr/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">signalement-ambroisie.fr</a>"
 ---
 
