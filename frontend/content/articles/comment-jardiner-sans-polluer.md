@@ -2,6 +2,7 @@
 title: "Comment jardiner sans polluer ?"
 order: 18
 image: ../assets/images/comment-jardiner-sans-polluer.jpg
+category: "A la maison"
 bon_geste: "Apporter les déchets verts en déchèterie s’il est impossible de les valoriser (paillage ou compost)."
 ---
 
