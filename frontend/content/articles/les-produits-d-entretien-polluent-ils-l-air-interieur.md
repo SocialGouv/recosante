@@ -2,7 +2,7 @@
 title: "Les produits d’entretien polluent-ils l’air intérieur ?"
 order: 15
 image: ../assets/images/les-produits-d-entretien-polluent-ils-l-air-interieur.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Nettoyer le plus souvent possible à l’aide d’un appareil à vapeur d'eau, de chiffons humides ou en microfibres."
 ---
 
