@@ -2,7 +2,7 @@
 title: "Comment améliorer la qualité de l’air chez soi grâce à la ventilation ?"
 order: 5
 image: ../assets/images/comment-ameliorer-la-qualite-de-l-air-chez-soi-grace-a-la-ventilation.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Ne jamais obstruer les bouches d’entrée et d’extraction d’air, ni éteindre le système de ventilation de son logement."
 ---
 
