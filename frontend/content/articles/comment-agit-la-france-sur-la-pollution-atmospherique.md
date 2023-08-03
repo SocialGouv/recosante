@@ -2,7 +2,7 @@
 title: "Comment agit la France sur la pollution atmosphérique ?"
 order: 4
 image: ../assets/images/comment-agit-la-france-sur-la-pollution-atmospherique.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "À pied, préférer les voies piétonnes ou les rues moins encombrées par le trafic."
 ---
 
