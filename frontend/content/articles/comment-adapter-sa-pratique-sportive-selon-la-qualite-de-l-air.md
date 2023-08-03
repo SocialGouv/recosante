@@ -2,7 +2,7 @@
 title: "Comment adapter sa pratique sportive selon la qualité de l’air ?"
 order: 19
 image: ../assets/images/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "Lors d’un épisode de pollution, pour pratiquer une activité sportive en extérieur, privilégier les zones éloignées des sources de pollution (axes routiers) et les moments de la journée où le niveau de pollution est le plus faible."
 ---
 
