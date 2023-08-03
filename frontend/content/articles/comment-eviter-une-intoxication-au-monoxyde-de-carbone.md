@@ -2,7 +2,7 @@
 title: "Comment éviter une intoxication au monoxyde de carbone ?"
 order: 51
 image: ../assets/images/comment-eviter-une-intoxication-au-monoxyde-de-carbone.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cas de suspicion d’intoxication, aérer immédiatement les locaux, arrêter si possible les appareils à combustion, évacuer les locaux et appeler les secours."
 ---
 
