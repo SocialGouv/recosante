@@ -2,7 +2,7 @@
 title: "Comment protéger son enfant des produits chimiques à la maison ?"
 order: 16
 image: ../assets/images/comment-proteger-son-enfant-des-produits-chimiques-a-la-maison.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cas d'ingestion de produit chimique par un enfant, contacter directement le <a href=\"https://centres-antipoison.net/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">centre anti-poison</a> le plus proche."
 ---
 
