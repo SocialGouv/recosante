@@ -2,7 +2,7 @@
 title: "­Comment améliorer l’air de son logement quand on est futurs ou nouveaux parents ?"
 order: 24
 image: ../assets/images/comment-ameliorer-l-air-de-son-logement-quand-on-est-futurs-ou-nouveaux-parents.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Limiter les sources de polluants dans le logement et aérer régulièrement, au moins deux fois par jour."
 ---
 
