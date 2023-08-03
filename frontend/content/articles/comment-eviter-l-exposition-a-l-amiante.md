@@ -2,7 +2,7 @@
 title: "Comment éviter l’exposition à l’amiante ?"
 order: 45
 image: ../assets/images/comment-eviter-l-exposition-a-l-amiante.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Faire réaliser les travaux sur matériaux amiantés uniquement par des professionnels qualifiés."
 ---
 
