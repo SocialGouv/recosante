@@ -2,7 +2,7 @@
 title: "Les microcapteurs de qualité de l’air ambiant sont-ils fiables ?"
 order: 55
 image: ../assets/images/les-microcapteurs-de-qualite-de-l-air-ambiant-sont-ils-fiables.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "Pour connaître la qualité de l’air autour de chez soi, consulter l’indice national de qualité de l’air calculé par Associations agréées de surveillance de la qualité de l’air (AASQA)."
 ---
 
