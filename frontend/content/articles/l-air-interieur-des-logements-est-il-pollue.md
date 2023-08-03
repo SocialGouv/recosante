@@ -2,7 +2,7 @@
 title: "L'air intérieur des logements est-il pollué ?"
 order: 1
 image: ../assets/images/l-air-interieur-des-logements-est-il-pollue.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Aérer au moins 10 minutes deux fois par jour en ouvrant les fenêtres pour créer un courant d'air dans chaque pièce du logement."
 ---
 
