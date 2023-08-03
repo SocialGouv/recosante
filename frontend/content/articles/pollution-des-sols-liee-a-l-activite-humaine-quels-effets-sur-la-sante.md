@@ -2,6 +2,7 @@
 title: "­Pollution des sols liée à l’activité humaine : quels effets sur la santé ?"
 order: 20
 image: ../assets/images/pollution-des-sols-liee-a-l-activite-humaine-quels-effets-sur-la-sante.jpg
+category: "Pollution"
 bon_geste: "Les gestes à adopter pour limiter l’exposition à des sols pollués sont adaptés au type de pollution. Pour connaître les risques près de chez vous dès maintenant, consulter <a href=\"https://www.georisques.gouv.fr/mes-risques/connaitre-les-risques-pres-de-chez-moi\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">Géorisques</a>."
 ---
 
