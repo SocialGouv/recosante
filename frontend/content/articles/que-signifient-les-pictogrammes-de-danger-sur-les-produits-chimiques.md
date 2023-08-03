@@ -2,6 +2,7 @@
 title: "Que signifient les pictogrammes de danger sur les produits chimiques ?"
 order: 52
 image: ../assets/images/que-signifient-les-pictogrammes-de-danger-sur-les-produits-chimiques.jpg
+category: "A la maison"
 bon_geste: "Lors de l’utilisation de produits ménagers ou de bricolage, faire attention aux pictogrammes de danger sur les étiquettes et respecter les consignes d’utilisation."
 ---
 
