@@ -2,7 +2,7 @@
 title: "Comment réduire les effets des pollens sur votre santé ?"
 order: 17
 image: ../assets/images/comment-reduire-les-effets-des-pollens-sur-votre-sante.jpg
-category: "Risque d’allergie aux pollens"
+category: "Allergies aux pollens"
 bon_geste: "En période de pollinisation, il est recommandé de se laver régulièrement le nez avec du sérum physiologique."
 ---
 
