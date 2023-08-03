@@ -2,7 +2,7 @@
 title: "­Comment réduire l’exposition aux polluants pendant les travaux ?"
 order: 27
 image: ../assets/images/comment-reduire-l-exposition-aux-polluants-pendant-les-travaux.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Lors de travaux de bricolage, refermer les récipients pour éviter que leur contenu ne s’évapore et les ranger hors de portée des enfants, dans un endroit aéré."
 ---
 
