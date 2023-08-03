@@ -2,7 +2,7 @@
 title: "Comment chauffer son intérieur en toute sécurité ?"
 order: 6
 image: ../assets/images/comment-chauffer-son-interieur-en-toute-securite.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "Tous les ans, avant l’hiver, faire vérifier son installation de chauffage utilisant un combustible par un·e professionel·le qualifié·e."
 ---
 
