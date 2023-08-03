@@ -2,6 +2,7 @@
 title: "­Comment réduire l’exposition aux ondes de son téléphone portable ?"
 order: 28
 image: ../assets/images/comment-reduire-l-exposition-aux-ondes-de-son-telephone-portable.jpg
+category: "Santé"
 bon_geste: "Utiliser un kit mains libres, surtout pour les longues conversations ou effectuées en déplacement."
 ---
 
