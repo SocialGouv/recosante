@@ -2,6 +2,7 @@
 title: "Covid-19 : quels gestes adopter pour protéger sa santé et son environnement ?"
 order: 11
 image: ../assets/images/covid-19-quels-gestes-adopter-pour-proteger-sa-sante-et-son-environnement.jpg
+category: "Covid-19"
 bon_geste: "Pour limiter la propagation du virus, aérer 10 minutes toutes les heures en ouvrant grand les fenêtres."
 ---
 
