@@ -2,7 +2,7 @@
 title: "Chauffage au bois : comment bien l’utiliser ?"
 order: 12
 image: ../assets/images/chauffage-au-bois-comment-bien-l-utiliser.jpg
-category: "Qualité de l’air extérieur"
+category: "A la maison"
 bon_geste: "Bien choisir son combustible et respecter les consignes d’utilisation pour se chauffer efficacement."
 ---
 
