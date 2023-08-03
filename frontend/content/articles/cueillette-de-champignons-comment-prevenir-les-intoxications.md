@@ -2,6 +2,7 @@
 title: "Cueillette de champignons : comment prévenir les intoxications ?"
 order: 42
 image: ../assets/images/cueillette-de-champignons-comment-prevenir-les-intoxications.jpg
+category: "Santé"
 bon_geste: "En cas d’apparition de symptômes suite à une consommation de champignons (diarrhées, vomissements, nausées, tremblements, vertiges, troubles de la vue, etc.), appeler immédiatement un centre antipoison en mentionnant cette consommation."
 ---
 
