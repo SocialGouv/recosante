@@ -2,6 +2,7 @@
 title: "Quels gestes adopter pour profiter du sapin de Noël en toute sécurité à la maison ?"
 order: 54
 image: ../assets/images/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-a-la-maison.jpg
+category: "A la maison"
 bon_geste: "Veiller à éteindre les guirlandes en cas d’absence ou la nuit pour éviter tout risque d’incendie (chaleur excessive des lampes, court-circuit…)."
 ---
 
