@@ -2,7 +2,7 @@
 title: "Les bougies et l’encens dégradent-ils la qualité de l’air intérieur ?"
 order: 49
 image: ../assets/images/les-bougies-et-l-encens-degradent-ils-la-qualite-de-l-air-interieur.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cas d’utilisation occasionnelle de bougies ou d’encens, aérer la pièce en ouvrant les fenêtres en grand après l’utilisation pendant au moins 10 minutes."
 ---
 
