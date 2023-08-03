@@ -2,7 +2,7 @@
 title: "Pollution de l’air en voiture : comment la limiter ?"
 order: 13
 image: ../assets/images/pollution-de-l-air-en-voiture-comment-la-limiter.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "Pour limiter la pollution de l’air, privilégier la marche, le vélo ou les transports en commun pour les trajets de moins de 2 km car le moteur du véhicule n'a pas le temps de chauffer."
 ---
 
