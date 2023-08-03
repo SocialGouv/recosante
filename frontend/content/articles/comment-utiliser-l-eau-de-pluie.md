@@ -2,6 +2,7 @@
 title: "­Comment utiliser l’eau de pluie ?"
 order: 39
 image: ../assets/images/comment-utiliser-l-eau-de-pluie.jpg
+category: "A la maison"
 bon_geste: "Ne pas boire, cuisiner et laver la vaisselle avec l’eau de pluie récupérée."
 ---
 
