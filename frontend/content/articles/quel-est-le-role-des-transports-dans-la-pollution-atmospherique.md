@@ -2,7 +2,7 @@
 title: "Quel est le rôle des transports dans la pollution atmosphérique ?"
 order: 8
 image: ../assets/images/quel-est-le-role-des-transports-dans-la-pollution-atmospherique.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "À pied, privilégier un itinéraire par des rues peu passantes et éviter les axes routiers durant les heures de pointe (généralement entre 7h et 10h, puis entre 17h et 20h)."
 ---
 
