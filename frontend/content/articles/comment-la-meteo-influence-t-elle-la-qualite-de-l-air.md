@@ -2,7 +2,7 @@
 title: "Comment la météo influence-t-elle la qualité de l'air ?"
 order: 14
 image: ../assets/images/comment-la-meteo-influence-t-elle-la-qualite-de-l-air.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "Lors d’un épisode de pollution, éviter les sorties durant l’après-midi lorsque l’ensoleillement est maximum."
 ---
 
