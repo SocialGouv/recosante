@@ -2,6 +2,7 @@
 title: "Comment se protéger du moustique tigre ?"
 order: 32
 image: ../assets/images/comment-se-proteger-du-moustique-tigre.jpg
+category: "Santé"
 bon_geste: "En cas d’exposition au moustique tigre, prendre conseil auprès de son médecin pour choisir un répulsif adapté."
 ---
 
