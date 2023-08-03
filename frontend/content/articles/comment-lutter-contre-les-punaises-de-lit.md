@@ -2,6 +2,7 @@
 title: "Comment lutter contre les punaises de lit ?"
 order: 48
 image: ../assets/images/comment-lutter-contre-les-punaises-de-lit.jpg
+category: "Santé"
 bon_geste: "Dès les premiers signes de présence de punaises de lit (piqûres, petites taches noires ou traces de sang), procéder à une élimination mécanique de ces nuisibles."
 ---
 
