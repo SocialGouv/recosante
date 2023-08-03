@@ -2,7 +2,7 @@
 title: "Cuisiner en protégeant sa santé : quels gestes adopter ?"
 order: 31
 image: ../assets/images/cuisiner-en-protegeant-sa-sante-quels-gestes-adopter.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cuisine, utiliser des ustensiles en bois, en verre ou en inox, et réchauffer les plats au micro-ondes dans des contenants en verre, afin de réduire l’exposition aux substances chimiques."
 ---
 
