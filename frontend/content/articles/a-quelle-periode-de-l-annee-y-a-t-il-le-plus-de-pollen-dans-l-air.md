@@ -2,7 +2,7 @@
 title: "­À quelle période de l’année y a-t-il le plus de pollen dans l’air ?"
 order: 25
 image: ../assets/images/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air.jpg
-category: "Risque d’allergie aux pollens"
+category: "Allergies aux pollens"
 bon_geste: "En saison pollinique, brosser ou rincer ses cheveux avant de se coucher le soir, car les cheveux retiennent les pollens."
 ---
 
