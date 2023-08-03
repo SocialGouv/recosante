@@ -2,7 +2,7 @@
 title: "À vélo, comment réduire son exposition à la pollution ?"
 order: 23
 image: ../assets/images/a-velo-comment-reduire-son-exposition-a-la-pollution.jpg
-category: "Qualité de l’air extérieur"
+category: "Pollution"
 bon_geste: "À vélo, favoriser les pistes cyclables séparées de la circulation et les axes à faible trafic routier."
 ---
 
