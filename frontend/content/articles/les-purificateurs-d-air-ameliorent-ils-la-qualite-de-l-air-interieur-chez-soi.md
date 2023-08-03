@@ -2,7 +2,7 @@
 title: "Les purificateurs d’air améliorent-ils la qualité de l’air intérieur chez soi ?"
 order: 47
 image: ../assets/images/les-purificateurs-d-air-ameliorent-ils-la-qualite-de-l-air-interieur-chez-soi.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "L’amélioration de la qualité de l’air intérieur passe avant tout par un bon renouvellement de l’air (aération et ventilation)."
 ---
 
