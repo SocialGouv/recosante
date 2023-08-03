@@ -2,7 +2,7 @@
 title: "Comment reconnaître une allergie aux pollens ?"
 order: 17
 image: ../assets/images/comment-reconnaitre-une-allergie-aux-pollens.jpg
-category: "Risque d’allergie aux pollens"
+category: "Allergies aux pollens"
 bon_geste: "En cas de gêne répétitive et saisonnière et dans un contexte de fatigue inhabituelle, demander conseil à un professionnel de santé."
 ---
 
