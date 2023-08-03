@@ -2,7 +2,7 @@
 title: "Les rayons UV, quels effets sur la santé ?"
 order: 22
 image: ../assets/images/les-rayons-uv-quels-effets-sur-la-sante.jpg
-category: "Phénomènes météorologiques"
+category: "Rayons UV"
 bon_geste: "Consulter l’<a href=\"https://recosante.beta.gouv.fr/\" target=\"_blank\" rel=\"nofollow noopener noreferrer\">indice UV</a> avant de rester longtemps en extérieur."
 ---
 
