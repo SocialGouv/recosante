@@ -2,7 +2,7 @@
 title: "­Comment prévenir l’exposition au plomb dans son logement ?"
 order: 40
 image: ../assets/images/comment-prevenir-l-exposition-au-plomb-dans-son-logement.jpg
-category: "Qualité de l’air intérieur"
+category: "A la maison"
 bon_geste: "En cas de doute sur une exposition au plomb, en parler à un médecin."
 ---
 
