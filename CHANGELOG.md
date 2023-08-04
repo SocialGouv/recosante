@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/SocialGouv/recosante/compare/v1.4.4...v1.4.5) (2023-08-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency cryptography to v41.0.3 [security] ([#136](https://github.com/SocialGouv/recosante/issues/136)) ([8da0b5e](https://github.com/SocialGouv/recosante/commit/8da0b5e076da4b422f11ef594573f93e79a585cd))
+
 ## [1.4.4](https://github.com/SocialGouv/recosante/compare/v1.4.3...v1.4.4) (2023-07-22)
 
 
