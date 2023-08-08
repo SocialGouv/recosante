@@ -29,16 +29,16 @@ export default function Home() {
           Nos <strong>articles santé</strong>
         </h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi ipsa
-          aperiam at quod impedit adipisci quae! Qui deleniti itaque
-          consequuntur, beatae perspiciatis voluptatibus deserunt eligendi autem
-          commodi aut porro nulla.
+          Retrouvez tous nos articles d’information afin de mieux agir sur votre
+          santé environnementale. Des conseils pratiques pour chaque
+          situation&nbsp;: risques d’allergies aux pollens, qualité de l’air,
+          pesticides..
         </p>
         <Link
           className="inline font-medium underline decoration-main"
           to="/articles"
         >
-          Consultez le catalogue
+          Tous les articles
           <CircledArrow />
         </Link>
       </section>
