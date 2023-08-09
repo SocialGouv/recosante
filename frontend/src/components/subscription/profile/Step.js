@@ -72,10 +72,11 @@ export default function Step(props) {
       />
       {data && (
         <Options>
-          {props.step.options.map((option) => (
+          {props.step.options.map((option, index) => (
             <Option
               key={option.value}
               option={option}
+              isLast={index === props.step.options.length - 1}
               active={
                 data[props.step.name] &&
                 data[props.step.name].includes(option.value)

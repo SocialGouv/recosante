@@ -17,7 +17,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding-bottom: 3.5rem;
+  padding-top: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  overflow-y: auto;
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
@@ -37,13 +41,12 @@ const ImagesWrapper = styled.div`
   }
 `;
 const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: 1.5rem;
-  right: 2rem;
+  margin-right: 2rem;
+  margin-left: auto;
 
   ${(props) => props.theme.mq.small} {
-    bottom: 1rem;
-    right: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
   }
 `;
 export default React.forwardRef(function Notifications(props, ref) {

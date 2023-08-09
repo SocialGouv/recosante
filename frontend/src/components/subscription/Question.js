@@ -2,26 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 import { useLocalUser } from "hooks/useUser";
-import Disclaimer from "./question/Disclaimer";
-import DisclaimerIos from "./question/DisclaimerIos";
 import Option from "./question/Option";
 
-const Wrapper = styled.div`
-  position: relative;
-  z-index: 2;
-  padding-top: 2rem;
-
-  ${(props) => props.theme.mq.small} {
-    flex: 1;
-    padding-top: 1.5rem;
-  }
-`;
 const Label = styled.h1`
   display: block;
   min-height: 2.75rem;
   margin-bottom: 1.625rem;
   font-weight: 300;
-  text-align: center;
+  text-align: left;
   font-size: inherit;
 
   ${(props) => props.theme.mq.smallish} {
@@ -34,7 +22,8 @@ const Options = styled.div`
   flex-wrap: wrap;
   justify-content: ${(props) =>
     props.options.length === 4 ? "space-between" : "space-around"};
-  margin: 0 -0.5rem 3.5rem;
+  margin-top: 0;
+  margin-bottom: 3.5rem;
 
   ${(props) => props.theme.mq.smallish} {
     justify-content: center;
@@ -49,46 +38,39 @@ const Options = styled.div`
     margin-bottom: 4rem;
   }
 `;
-export default function Question(props) {
-  const { user, mutateUser } = useLocalUser();
+export default function Question({ step, mutateUser, setModal }) {
+  const { user } = useLocalUser();
 
   return (
-    <Wrapper>
+    <div className="relative z-[2] flex-1 pt-6">
       <Label
         dangerouslySetInnerHTML={{
-          __html: props.step.label,
+          __html: step.label,
         }}
       />
-      <Options options={props.step.options}>
-        {props.step.options.map((option) => (
+      <Options options={step.options}>
+        {step.options.map((option, index) => (
           <Option
             key={option.value}
             option={option}
-            active={
-              user[props.step.name] &&
-              user[props.step.name].includes(option.value)
-            }
-            checkbox={!props.step.exclusive}
+            isLast={index === step.options.length - 1}
+            active={user[step.name] && user[step.name].includes(option.value)}
+            checkbox={!step.exclusive}
             onClick={() => {
               mutateUser({
-                [props.step.name]: props.step.exclusive
+                [step.name]: step.exclusive
                   ? [option.value]
-                  : user[props.step.name] &&
-                    user[props.step.name].includes(option.value)
-                  ? user[props.step.name].filter(
+                  : user[step.name] && user[step.name].includes(option.value)
+                  ? user[step.name].filter(
                       (userOption) => userOption !== option.value
                     )
-                  : [...(user[props.step.name] || []), option.value],
+                  : [...(user[step.name] || []), option.value],
               });
             }}
-            setModal={props.setModal}
+            setModal={setModal}
           />
         ))}
-        {props.step.name === "recommandations" && (
-          <Disclaimer setModal={props.setModal} />
-        )}
-        {props.step.name === "indicateurs_media" && <DisclaimerIos />}
       </Options>
-    </Wrapper>
+    </div>
   );
 }

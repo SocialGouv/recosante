@@ -4,32 +4,31 @@ import Alerte from "./icons/Alerte";
 import Email from "./icons/Email";
 import IndiceAtmo from "./icons/IndiceAtmo";
 import IndiceUv from "./icons/IndiceUv";
-import Newsletter from "./icons/Newsletter";
-import NoNewsletter from "./icons/NoNewsletter";
 import Notification from "./icons/Notification";
 import Quotidien from "./icons/Quotidien";
 import Raep from "./icons/Raep";
 import VigilanceMeteo from "./icons/VigilanceMeteo";
 
-const steps = [
-  {
+const steps = {
+  indicateurs: {
+    step: 1,
     name: "indicateurs",
     title: "Indicateurs",
-    label: "Je choisis les indicateurs que je souhaite recevoir.",
+    label: "Je choisis les indicateurs que je souhaite recevoir\u00A0:",
     options: [
       {
         value: "indice_atmo",
-        label: `Indice de qualité de l'air`,
+        label: `Qualité de l'air`,
         icon: <IndiceAtmo />,
       },
       {
         value: "raep",
-        label: `Risque d'allergie aux pollens`,
+        label: `Allergie aux pollens`,
         icon: <Raep />,
       },
       {
         value: "vigilance_meteo",
-        label: `Vigilance météorologique`,
+        label: `Vigilance météo`,
         icon: <VigilanceMeteo />,
       },
       {
@@ -40,23 +39,25 @@ const steps = [
     ],
     mandatory: true,
   },
-  {
+  indicateurs_frequence: {
+    step: 2,
     name: "indicateurs_frequence",
     title: "Fréquence",
     label:
-      "Je choisis à quelle fréquence je souhaite recevoir ces indicateurs.",
+      "Je choisis à quelle fréquence je souhaite recevoir ces indicateurs\u00A0:",
     options: [
       {
         value: "alerte",
-        label: `En cas<br />de vigilance`,
+        label: `En cas de vigilance`,
         icon: <Alerte />,
         detail: {
-          label: `Uniquement les jours où la situation nécessite d'adapter votre comportement.`,
+          label:
+            "Uniquement les jours où la situation nécessite d'adapter votre comportement.",
         },
       },
       {
         value: "quotidien",
-        label: `Tous les<br />jours`,
+        label: `Tous les jours`,
         icon: <Quotidien />,
         detail: {
           label:
@@ -67,10 +68,12 @@ const steps = [
     exclusive: true,
     mandatory: true,
   },
-  {
+  indicateurs_media: {
+    step: 3,
     name: "indicateurs_media",
     title: "Média",
-    label: "Je choisis de quelle façon je souhaite recevoir ces indicateurs.",
+    label:
+      "Je choisis de quelle façon je souhaite recevoir ces indicateurs\u00A0:",
     options: [
       {
         value: "mail",
@@ -90,27 +93,35 @@ const steps = [
     exclusive: true,
     mandatory: true,
   },
-  {
-    name: "recommandations",
-    title: "Recommandations",
+  validation: {
+    step: 4,
+    name: "validation",
+    title: "Validation",
     label:
-      "Je choisis si je souhaite aussi recevoir des conseils adaptés à mes habitudes pour m’aider&#160;à&#160;agir.",
-    options: [
-      {
-        value: "oui",
-        label: `M’abonner à la lettre d'information`,
-        small: true,
-        icon: <Newsletter />,
-      },
-      {
-        value: "non",
-        label: `Peut être<br />plus tard`,
-        icon: <NoNewsletter />,
-      },
-    ],
-    exclusive: true,
+      "Vos choix ont bien été pris en compte\u00A0! Merci de renseigner votre email ci-dessous afin de recevoir vos indicateurs. Vous pouvez également indiquer votre ville si vous le souhaitez.",
     mandatory: true,
   },
-];
+  // {
+  //   name: "recommandations",
+  //   title: "Recommandations",
+  //   label:
+  //     "Je choisis si je souhaite aussi recevoir des conseils adaptés à mes habitudes pour m’aider\u00A0à\u00A0agir\u00A0:",
+  //   options: [
+  //     {
+  //       value: "oui",
+  //       label: `M’abonner à la lettre d'information`,
+  //       small: true,
+  //       icon: <Newsletter />,
+  //     },
+  //     {
+  //       value: "non",
+  //       label: `Peut être plus tard`,
+  //       icon: <NoNewsletter />,
+  //     },
+  //   ],
+  //   exclusive: true,
+  //   mandatory: true,
+  // },
+};
 
 export default steps;

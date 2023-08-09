@@ -15,8 +15,9 @@ import Tec from "./icons/Tec";
 import Velo from "./icons/Velo";
 import Voiture from "./icons/Voiture";
 
-const steps = [
-  {
+const steps = {
+  activites: {
+    step: 1,
     name: "activites",
     title: "Activités",
     label:
@@ -44,7 +45,8 @@ const steps = [
       },
     ],
   },
-  {
+  enfants: {
+    step: 2,
     name: "enfants",
     title: "Enfants",
     label: "Je renseigne si je vis avec des enfants de moins de 6 ans.",
@@ -62,7 +64,8 @@ const steps = [
     ],
     exclusive: true,
   },
-  {
+  chauffage: {
+    step: 3,
     name: "chauffage",
     title: "Chauffage",
     label: "Je renseigne le mode de chauffage de mon logement.",
@@ -84,7 +87,8 @@ const steps = [
       },
     ],
   },
-  {
+  deplacement: {
+    step: 4,
     name: "deplacement",
     title: "Transport",
     label: "Je renseigne les modes de transport que j’utilise.",
@@ -106,7 +110,8 @@ const steps = [
       },
     ],
   },
-  {
+  animaux_domestiques: {
+    step: 5,
     name: "animaux_domestiques",
     title: "Animaux",
     label: "Je renseigne si je vis avec des animaux.",
@@ -123,6 +128,6 @@ const steps = [
       },
     ],
   },
-];
+};
 
 export default steps;

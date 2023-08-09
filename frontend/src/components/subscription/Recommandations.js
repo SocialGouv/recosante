@@ -28,7 +28,7 @@ export default function Recommandations(props) {
 
   return (
     <Wrapper>
-      <Progress currentStep={currentStep} steps={steps} small={props.small} />
+      <Progress currentStep={currentStep} steps={steps} small />
       {steps[currentStep] ? (
         <>
           <Question step={steps[currentStep]} />

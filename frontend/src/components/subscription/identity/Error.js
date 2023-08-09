@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import Button from "components/base/Button";
 import { useLocalUser, useSendProfileLink } from "hooks/useUser";
 
 const Wrapper = styled.div`
@@ -45,20 +44,7 @@ const Text = styled.p`
     font-size: 1rem;
   }
 `;
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
 
-  ${(props) => props.theme.mq.small} {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1rem;
-    background-color: ${(props) => props.theme.colors.background};
-    border-top: 0.25rem solid ${(props) => props.theme.colors.main};
-  }
-`;
 export default function Error(props) {
   const mutation = useSendProfileLink();
   const { user } = useLocalUser();
@@ -71,29 +57,40 @@ export default function Error(props) {
             <Title>Un compte est déjà associé à cet email</Title>
             <Text>
               Vous avez reçu un email contenant un lien pour modifier vos
-              préférences à l'adresse : {user.mail}
+              préférences à l'adresse&nbsp;: {user.mail}
             </Text>
-            <ButtonWrapper></ButtonWrapper>
+            <div
+              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-between gap-x-2 bg-background p-4 shadow-md md:relative md:p-0"
+              style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
+            ></div>
           </>
         ) : (
           <>
             <Title>Un compte est déjà associé à cet email</Title>
             <Text>
               Souhaitez-vous recevoir un email à cette adresse pour vous
-              permettre d'éditer votre compte ?
+              permettre d'éditer votre compte&nbsp;?
             </Text>
-            <ButtonWrapper>
-              <Button onClick={props.reset} hollow noExpand>
+            <div
+              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-between gap-x-2 bg-background p-4 md:relative md:p-0"
+              style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
+            >
+              <button
+                className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-white px-4 py-3 text-main"
+                type="button"
+                onClick={props.reset}
+              >
                 Essayer avec une autre adresse
-              </Button>
-              <Button
+              </button>
+              <button
+                className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
+                type="button"
                 onClick={() => mutation.mutate(user.mail)}
                 fetching={mutation.isLoading}
-                noExpand
               >
                 Recevoir un email
-              </Button>
-            </ButtonWrapper>
+              </button>
+            </div>
           </>
         )
       ) : (
@@ -103,18 +100,24 @@ export default function Error(props) {
             Vous pouvez réessayer dans quelques minutes. Si le problème
             persiste, n'hésitez pas à nous contacter pour nous le signaler.
           </Text>
-          <ButtonWrapper>
-            <Button
+          <div
+            className="absolute bottom-0 left-0 right-0 z-[5] flex justify-between gap-x-2 bg-background p-4 shadow-md md:relative md:p-0"
+            style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
+          >
+            <button
+              className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-white px-4 py-3 text-main"
+              type="button"
               to={"mailto:contact@recosante.beta.gouv.fr"}
-              hollow
-              noExpand
             >
               Nous contacter
-            </Button>
-            <Button onClick={props.reset} noExpand>
+            </button>
+            <button
+              onClick={props.reset}
+              className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
+            >
               Réessayer
-            </Button>
-          </ButtonWrapper>
+            </button>
+          </div>
         </>
       )}
     </Wrapper>
