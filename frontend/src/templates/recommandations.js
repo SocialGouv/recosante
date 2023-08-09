@@ -3,10 +3,10 @@ import React from "react";
 import styled from "styled-components";
 
 import Content from "components/Recommandations";
-import Button from "components/base/Button";
+// import Button from "components/base/Button";
 import Web from "components/layout/Web";
 
-import apiUrl from "utils/apiUrl";
+// import apiUrl from "utils/apiUrl";
 
 const Introduction = styled.div`
   background-color: #eef1f7;
