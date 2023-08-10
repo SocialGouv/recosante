@@ -12,7 +12,7 @@ const Ios = styled.div`
   left: 50%;
   opacity: ${(props) => (props.isOnScreen ? 1 : 0)};
   transform: translate(
-    calc(-50% - 2rem),
+    calc(-${(props) => (props.inModal ? 75 : 50)}% - 2rem),
     ${(props) => (props.isOnScreen ? 0 : 12)}rem
   );
   width: 21.5rem;
@@ -33,8 +33,8 @@ const Macos = styled.div`
   top: 0;
   left: 50%;
   transform: translate(
-    calc(-50% + 2rem),
-    ${(props) => (props.isOnScreen ? 6 : 15)}rem
+    calc(-${(props) => (props.inModal ? 25 : 50)}% + 2rem),
+    ${(props) => (props.isOnScreen ? (props.inModal ? 2 : 6) : 15)}rem
   );
   width: 22.5rem;
   opacity: ${(props) => (props.isOnScreen ? 1 : 0)};
@@ -47,10 +47,10 @@ const Macos = styled.div`
 export default function Images(props) {
   return (
     <Wrapper className={props.className}>
-      <Ios isOnScreen={props.isOnScreen}>
+      <Ios isOnScreen={props.isOnScreen} inModal={props.inModal}>
         <StaticImage src={"./images/ios.png"} alt="" />
       </Ios>
-      <Macos isOnScreen={props.isOnScreen}>
+      <Macos isOnScreen={props.isOnScreen} inModal={props.inModal}>
         <StaticImage src={"./images/macos.png"} alt="" />
       </Macos>
     </Wrapper>

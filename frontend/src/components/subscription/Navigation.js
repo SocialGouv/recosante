@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useUserMutation } from "hooks/useUser";
 
 const Wrapper = styled.div`
   position: relative;
@@ -45,6 +46,7 @@ export default function Navigation({
   promptingForNotifications,
   forceCurrentStep,
 }) {
+  const mutation = useUserMutation();
   return (
     <Wrapper prevButtonVisible={!!prevStepVisible}>
       {!!prevStepVisible && (
@@ -64,12 +66,7 @@ export default function Navigation({
           className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-2.5 text-white disabled:opacity-50"
           type="submit"
           form="subscription-form-email"
-          onClick={onNextStep}
-          // () => {
-          //   window?._paq?.push(["trackEvent", "Subscription", "Validate"]);
-          //   return;
-          // }}
-          disabled={promptingForNotifications}
+          disabled={promptingForNotifications || mutation.isLoading}
         >
           Valider
         </button>
@@ -77,23 +74,8 @@ export default function Navigation({
         <button
           className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-2.5 text-white disabled:opacity-50"
           type="button"
-          // disabled={
-          //   !user[props.steps[props.currentStep].name]?.length &&
-          //   props.steps[props.currentStep].mandatory
-          // }
           disabled={nextStepDisabled}
           onClick={onNextStep}
-          // () => {
-          //   window?._paq?.push([
-          //     "trackEvent",
-          //     "Subscription",
-          //     "Next",
-          //     props.steps[props.currentStep].name,
-          //   ]);
-          //   setTimeout(() => {
-          //     props.setCurrentStep(props.currentStep + 1);
-          //   }, 250);
-          // }}
         >
           Suivant
           <svg
@@ -107,10 +89,7 @@ export default function Navigation({
         </button>
       )}
       {promptingForNotifications && (
-        <Bypass
-          onClick={forceCurrentStep}
-          // onClick={() => props.forceCurrentStep(props.currentStep + 1)}
-        >
+        <Bypass onClick={forceCurrentStep}>
           Passer sans accepter les notifications sur cet appareil
         </Bypass>
       )}

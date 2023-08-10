@@ -41,11 +41,21 @@ export default function SubscriptionIndicators() {
     scrollRef?.current?.scrollTo({ top: 0, behavior: "instant" });
   }, [currentStepName]);
 
-  const { setSubscription } = useContext(ModalContext);
+  const { setSubscription, setNeedConfirmation } = useContext(ModalContext);
   const [modal, setModal] = useState(false);
 
   const localUser = useLocalUser();
   const mutation = useUserMutation();
+
+  useEffect(() => {
+    localUser.mutateUser({
+      uid: mutation?.data?.data?.uid ?? localUser.user.uid,
+      authentication_token:
+        mutation?.data?.data?.authentication_token ??
+        localUser.user.authentication_token,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutation?.data?.data?.uid, mutation?.data?.data?.authentication_token]);
 
   const currentIndicateurStep = indicateursSteps[currentStepName];
   const currentRecommandationStep = recommandationsSteps[currentStepName];
@@ -62,7 +72,12 @@ export default function SubscriptionIndicators() {
             currentStep={currentIndicateurStep}
           />
           {currentStepName === "validation" ? (
-            <Identity />
+            <Identity
+              onNextStep={() => {
+                setNeedConfirmation(false);
+                setCurrentStepName("indicateurs_end");
+              }}
+            />
           ) : (
             <Question
               mutateUser={localUser.mutateUser}
@@ -113,7 +128,6 @@ export default function SubscriptionIndicators() {
                 default:
                   break;
                 case "validation":
-                  console.log("BADABOUUUUUM");
                   setCurrentStepName("indicateurs_end");
                   break;
                 case "indicateurs":
@@ -155,21 +169,48 @@ export default function SubscriptionIndicators() {
       {currentStepName === "indicateurs_end" && (
         <EndIndicateurs
           onClose={() => {
-            mutation.mutate({
-              recommandations: "non",
+            localUser.mutateUser({
+              recommandations: ["non"],
             });
+            mutation.mutate({
+              ...localUser.user,
+              recommandations: ["non"],
+            });
+            window?._paq?.push([
+              "trackEvent",
+              "Subscription",
+              "Success",
+              "indicateurs",
+            ]);
             setSubscription(null);
           }}
           onNextStep={() => {
-            mutation.mutate({
-              recommandations: "oui",
+            localUser.mutateUser({
+              recommandations: ["oui"],
             });
+            mutation.mutate({
+              ...localUser.user,
+              recommandations: ["oui"],
+            });
+            window?._paq?.push([
+              "trackEvent",
+              "Subscription",
+              "Success",
+              "indicateurs",
+            ]);
+            window?._paq?.push([
+              "trackEvent",
+              "Subscription",
+              "Success",
+              "recommandations",
+            ]);
             window?._paq?.push([
               "trackEvent",
               "Subscription",
               "Prev",
               currentStepName,
             ]);
+            setNeedConfirmation(false);
             setCurrentStepName("activites");
           }}
         />
@@ -186,7 +227,7 @@ export default function SubscriptionIndicators() {
           <Question
             step={currentRecommandationStep}
             setModal={setModal}
-            mutateUser={mutation.mutate}
+            mutateUser={localUser.mutateUser}
           />
           <Navigation
             prevStepVisible
@@ -205,6 +246,7 @@ export default function SubscriptionIndicators() {
                 "Prev",
                 currentStepName,
               ]);
+              mutation.mutate(localUser.user);
               switch (currentStepName) {
                 default:
                 case "activites":
@@ -231,6 +273,7 @@ export default function SubscriptionIndicators() {
                 "Prev",
                 currentStepName,
               ]);
+              mutation.mutate(localUser.user);
               switch (currentStepName) {
                 case "activites":
                   setCurrentStepName("enfants");
@@ -246,6 +289,7 @@ export default function SubscriptionIndicators() {
                   break;
                 default:
                 case "animaux_domestiques":
+                  setCurrentStepName("recommandations_end");
                   break;
               }
             }}

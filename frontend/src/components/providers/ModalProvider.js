@@ -30,7 +30,7 @@ export default function ModalProvider(props) {
               )
             ) {
               window?._paq?.push(["trackEvent", "Subscription", "Close"]);
-              setSubscription(value);
+              setSubscription(null);
             }
           }
         },

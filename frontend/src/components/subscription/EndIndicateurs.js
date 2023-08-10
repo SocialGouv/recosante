@@ -5,28 +5,30 @@ export default function EndIndicateurs({ onClose, onNextStep }) {
     <div className="relative z-[2] flex flex-1 flex-col items-center overflow-y-auto pt-6">
       <CheckSvg />
       <h2 className="text-center">
-        Merci / Félicitations ! Votre demande de notification a bien été prise
-        en compte...
+        Félicitations ! Votre demande de notification a bien été prise en
+        compte...
       </h2>
       <p className="text-center">
         Vous pouvez également vous inscrire à l’infolettre afin de recevoir un
         email par semaine contenant des conseils adaptés.
       </p>
-      <button
-        className="mb-4 inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
-        type="submit"
-        form="subscription-form-email"
-        onClick={onNextStep}
-      >
-        S'abonner à l'infolettre
-      </button>
-      <button
-        className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-white px-4 py-3 text-main"
-        type="button"
-        onClick={onClose}
-      >
-        Retourner à l'accueil
-      </button>
+      <div className="flex w-full flex-col items-center justify-around gap-4 md:flex-row-reverse">
+        <button
+          className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
+          type="submit"
+          form="subscription-form-email"
+          onClick={onNextStep}
+        >
+          S'abonner à l'infolettre
+        </button>
+        <button
+          className="inline-flex items-center gap-x-2 rounded-full bg-white px-4 py-3 text-main"
+          type="button"
+          onClick={onClose}
+        >
+          Retourner à l'accueil
+        </button>
+      </div>
     </div>
   );
 }
@@ -34,11 +36,9 @@ export default function EndIndicateurs({ onClose, onNextStep }) {
 function CheckSvg() {
   return (
     <svg
-      width="48"
-      height="48"
       viewBox="0 0 48 48"
       fill="none"
-      className="my-8 shrink-0"
+      className="my-8 h-12 w-12 shrink-0"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Alert from "components/base/Alert";
@@ -8,10 +8,10 @@ import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
 import { useLocalUser, useUserMutation } from "hooks/useUser";
 import Error from "./identity/Error";
-import Success from "./identity/Success";
 
 const StyledAlert = styled(Alert)`
   margin: -2rem 0 1rem;
+  order: 3;
 `;
 const MailInput = styled(TextInput)`
   display: block;
@@ -28,23 +28,57 @@ const MailInput = styled(TextInput)`
   }
 `;
 
-export default function Identity(props) {
+export default function Identity({ onNextStep }) {
   const { user, mutateUser } = useLocalUser();
 
   const { data: availability } = useAvailability(user.commune?.code);
   const mutation = useUserMutation();
 
+  console.log({ mutation });
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      onNextStep();
+    }
+  }, [mutation.isSuccess]);
+
   const [error, setError] = useState(false);
 
   return (
-    <div className="z-[2] flex-1 overflow-y-auto pt-6">
-      <p className="font-light">
+    <div className="z-[2] flex flex-1 flex-col overflow-y-auto pt-6">
+      <p className="order-1 font-light">
         Vos choix ont bien été pris en compte&nbsp;! Merci de renseigner votre
-        email ci-dessous afin de recevoir vos indicateurs. Vous pouvez également
-        indiquer votre ville si vous le souhaitez.
+        email et votre ville ci-dessous afin de recevoir vos indicateurs.
       </p>
-      <div className="relative mx-auto mb-4 w-full max-w-2xl">
+      <form
+        id="subscription-form-email"
+        className="order-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!user.commune) {
+            setError(true);
+          } else {
+            setError(false);
+            mutation.mutate(user);
+          }
+        }}
+      >
+        <MailInput
+          type="email"
+          name="email"
+          className="mx-auto max-w-xs xl:max-w-2xl"
+          title="Entrez votre email (obligatoire)"
+          placeholder="Entrez votre email (obligatoire)"
+          value={user.mail}
+          onChange={({ value }) => mutateUser({ mail: value })}
+          required
+          autoComplete="email"
+        />
+      </form>
+      <div className="relative order-2 mx-auto mb-4 w-full max-w-2xl">
         <SearchInput
+          numberOfSuggestions={4}
           initialValue={user.commune && user.commune.nom}
           className={[
             "left-0 right-0 top-0 mx-auto w-full !transform-none text-[1.125rem]",
@@ -62,32 +96,8 @@ export default function Identity(props) {
           vous le souhaitez
         </StyledAlert>
       )}
-      <form
-        id="subscription-form-email"
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!user.commune) {
-            setError(true);
-          } else {
-            setError(false);
-            mutation.mutate(user);
-          }
-        }}
-      >
-        <MailInput
-          type="email"
-          name="email"
-          className="mx-auto max-w-2xl"
-          title="Entrez votre email (obligatoire)"
-          placeholder="Entrez votre email (obligatoire)"
-          value={user.mail}
-          onChange={({ value }) => mutateUser({ mail: value })}
-          required
-          autoComplete="email"
-        />
-      </form>
-      <p className="mb-12 pb-8 text-xs font-light text-footer">
+
+      <p className="order-5 mb-12 pb-8 text-xs font-light text-footer">
         Les{" "}
         <MagicLink to="https://recosante.beta.gouv.fr/donnees-personnelles">
           données collectées
@@ -99,7 +109,6 @@ export default function Identity(props) {
         désinscrivant.
       </p>
       <Error error={mutation.error} reset={mutation.reset} />
-      <Success data={mutation.data} />
     </div>
   );
 }

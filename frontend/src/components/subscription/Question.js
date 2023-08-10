@@ -26,12 +26,6 @@ const Options = styled.div`
   margin-bottom: 3.5rem;
 
   ${(props) => props.theme.mq.smallish} {
-    justify-content: center;
-    align-items: center;
-    min-height: 22rem;
-    margin-bottom: 1.5rem;
-  }
-  ${(props) => props.theme.mq.small} {
     flex-direction: column;
     justify-content: flex-start;
     align-items: stretch;

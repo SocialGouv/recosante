@@ -6,8 +6,12 @@ export default function EndRecommandations({ onClose }) {
       <CheckSvg />
       <h2 className="text-center">
         Félicitations ! Votre inscription à l’infolettre a bien été prise en
-        compte...
+        compte.
       </h2>
+      <p className="text-center">
+        Vous pourrez modifier vos préférences une fois le mail de confirmation
+        reçu.
+      </p>
       <button
         className="mb-4 inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
         type="button"
@@ -22,7 +26,7 @@ export default function EndRecommandations({ onClose }) {
 function CheckSvg() {
   return (
     <svg
-      className="my-8 shrink-0"
+      className="my-8 h-20 w-20 shrink-0"
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -6,7 +6,15 @@ export default function Progress({ steps, currentStep }) {
       <ul className="hidden md:flex">
         {steps.map((step, index) => {
           return (
-            <li key={step.name} className="shrink-0 grow basis-0 text-center">
+            <li
+              key={step.name}
+              className={[
+                "shrink-0 grow basis-0 text-center",
+                step.title === currentStep.title
+                  ? "text-main font-medium"
+                  : "text-main/30 font-normal",
+              ].join(" ")}
+            >
               {step.title}
             </li>
           );

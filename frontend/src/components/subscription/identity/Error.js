@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-
+import ModalContext from "utils/ModalContext";
 import { useLocalUser, useSendProfileLink } from "hooks/useUser";
 
 const Wrapper = styled.div`
@@ -48,7 +48,7 @@ const Text = styled.p`
 export default function Error(props) {
   const mutation = useSendProfileLink();
   const { user } = useLocalUser();
-
+  const { setSubscription, setNeedConfirmation } = useContext(ModalContext);
   return (
     <Wrapper visible={props.error}>
       {props?.error?.response?.data?.errors?.mail === "mail already used" ? (
@@ -60,9 +60,19 @@ export default function Error(props) {
               préférences à l'adresse&nbsp;: {user.mail}
             </Text>
             <div
-              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-between gap-x-2 bg-background p-4 shadow-md md:relative md:p-0"
+              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-end gap-x-2 bg-background p-4 md:relative md:p-0"
               style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
-            ></div>
+            >
+              <button
+                className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
+                type="button"
+                onClick={() => {
+                  setSubscription(null);
+                }}
+              >
+                Retourner à l'accueil
+              </button>
+            </div>
           </>
         ) : (
           <>
@@ -85,7 +95,10 @@ export default function Error(props) {
               <button
                 className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
                 type="button"
-                onClick={() => mutation.mutate(user.mail)}
+                onClick={() => {
+                  setNeedConfirmation(false);
+                  mutation.mutate(user.mail);
+                }}
                 fetching={mutation.isLoading}
               >
                 Recevoir un email

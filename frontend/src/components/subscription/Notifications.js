@@ -34,7 +34,8 @@ const Wrapper = styled.div`
   }
 `;
 const ImagesWrapper = styled.div`
-  height: 15.1rem;
+  height: 10.1rem;
+  flex-shrink: 0;
 
   ${(props) => props.theme.mq.small} {
     height: 8.5rem;
@@ -43,6 +44,7 @@ const ImagesWrapper = styled.div`
 const StyledButton = styled(Button)`
   margin-right: 2rem;
   margin-left: auto;
+  flex-shrink: 0;
 
   ${(props) => props.theme.mq.small} {
     margin-right: 1rem;
@@ -71,7 +73,7 @@ export default React.forwardRef(function Notifications(props, ref) {
     >
       <Wrapper visible={visible}>
         <ImagesWrapper>
-          <Images isOnScreen={true} />
+          <Images isOnScreen inModal />
         </ImagesWrapper>
         <Markdown ref={ref}>{data.mdx.body}</Markdown>
         <StyledButton onClick={() => props.setModal(false)} noExpand>
