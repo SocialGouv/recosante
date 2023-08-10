@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   right: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: stretch;
   padding: 2.5rem 2rem 1.5rem;
   background: ${(props) => props.theme.colors.background};
@@ -20,20 +20,15 @@ const Wrapper = styled.div`
   opacity: ${(props) => (props.visible ? 1 : 0)};
   pointer-events: ${(props) => (props.visible ? "inherit" : "none")};
   transition: opacity ${(props) => (props.visible ? 300 : 0)}ms;
-
-  ${(props) => props.theme.mq.smallish} {
-    justify-content: flex-start;
-  }
 `;
 const Title = styled.h3`
   max-width: 31.5rem;
-  margin: 0 auto;
+  margin: 0 auto 1rem;
   font-size: 2.5rem;
   text-align: center;
 
   ${(props) => props.theme.mq.smallish} {
     font-size: 1.5rem;
-    margin: 0 auto 1rem;
   }
 `;
 const Text = styled.p`
@@ -60,7 +55,7 @@ export default function Error(props) {
               préférences à l'adresse&nbsp;: {user.mail}
             </Text>
             <div
-              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-end gap-x-2 bg-background p-4 md:relative md:p-0"
+              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-end gap-x-2 bg-background p-4"
               style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
             >
               <button
@@ -82,7 +77,7 @@ export default function Error(props) {
               permettre d'éditer votre compte&nbsp;?
             </Text>
             <div
-              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-between gap-x-2 bg-background p-4 md:relative md:p-0"
+              className="absolute bottom-0 left-0 right-0 z-[4] flex justify-between gap-x-2 bg-background p-4"
               style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
             >
               <button
@@ -114,7 +109,7 @@ export default function Error(props) {
             persiste, n'hésitez pas à nous contacter pour nous le signaler.
           </Text>
           <div
-            className="absolute bottom-0 left-0 right-0 z-[5] flex justify-between gap-x-2 bg-background p-4 shadow-md md:relative md:p-0"
+            className="absolute bottom-0 left-0 right-0 z-[5] flex justify-between gap-x-2 bg-background p-4 shadow-md"
             style={{ boxShadow: "0 -0.25rem 0.5rem rgba(0, 0, 0, 0.1)" }}
           >
             <button
