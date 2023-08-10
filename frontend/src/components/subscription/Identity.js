@@ -34,12 +34,11 @@ export default function Identity({ onNextStep }) {
   const { data: availability } = useAvailability(user.commune?.code);
   const mutation = useUserMutation();
 
-  console.log({ mutation });
-
   useEffect(() => {
     if (mutation.isSuccess) {
       onNextStep();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutation.isSuccess]);
 
   const [error, setError] = useState(false);
