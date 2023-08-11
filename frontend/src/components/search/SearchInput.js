@@ -10,6 +10,7 @@ export default function SearchInput({
   handlePlaceSelection,
   className = "",
   placeholder,
+  numberOfSuggestions = 7,
 }) {
   const [search, setSearch] = useState(initialValue || "");
 
@@ -117,7 +118,7 @@ export default function SearchInput({
         <div className="relative sm:absolute sm:top-full">
           <SuggestionsList
             search={debouncedSearch}
-            results={data?.filter((_, i) => i < 7)}
+            results={data?.filter((_, i) => i < numberOfSuggestions)}
             focus
             current={current}
             isFetching={isFetching}

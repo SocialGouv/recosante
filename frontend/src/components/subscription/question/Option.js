@@ -3,19 +3,6 @@ import styled from "styled-components";
 
 import Checkbox from "./option/Checkbox";
 
-const Wrapper = styled.div`
-  position: relative;
-  padding: 0 0.5rem;
-  margin-bottom: 1rem;
-  flex-shrink: 1;
-  flex-grow: 1;
-  flex-basis: 100%;
-
-  ${(props) => props.theme.mq.smallish} {
-    flex-basis: 50%;
-    margin-bottom: 1.5rem;
-  }
-`;
 const Button = styled.button`
   position: relative;
   display: flex;
@@ -24,9 +11,9 @@ const Button = styled.button`
   align-items: center;
   overflow: hidden;
   width: 100%;
-  height: 10rem;
   margin: 0 auto;
-  padding: 0.6875rem 0.25rem 0.5rem;
+  height: 100%;
+  padding: 0.6875rem 0.25rem;
   color: ${(props) => props.theme.colors[props.active ? "background" : "main"]};
   border: 0.25rem solid ${(props) => props.theme.colors.main};
   border-radius: 2rem;
@@ -46,13 +33,12 @@ const Button = styled.button`
     }
   }
 
-  ${(props) => props.theme.mq.small} {
+  ${(props) => props.theme.mq.smallish} {
     flex-direction: row;
     width: 100%;
-    height: 4.5rem;
-    padding: 0.75rem 1rem;
-    border: 0.1875rem solid ${(props) => props.theme.colors.main};
-    border-radius: 1.5rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid ${(props) => props.theme.colors.main};
+    border-radius: 0.75rem;
   }
 
   svg {
@@ -78,13 +64,18 @@ const Button = styled.button`
 `;
 const Label = styled.span`
   display: block;
-  font-size: ${(props) => (props.small ? 0.875 : 1)}rem;
+  font-size: ${(props) => (props.smallish ? 0.875 : 1)}rem;
   text-align: center;
   line-height: 1.2;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 
-  ${(props) => props.theme.mq.small} {
+  ${(props) => props.theme.mq.smallish} {
     flex: 1;
-    margin: 0 1rem;
+    margin-top: 0rem;
+    margin-bottom: 0rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     text-align: left;
   }
 `;
@@ -100,21 +91,22 @@ const Detail = styled.div`
   text-decoration: ${(props) => (props.modal ? "underline" : "none")};
   cursor: ${(props) => (props.modal ? "pointer" : "default")};
 
-  ${(props) => props.theme.mq.small} {
+  ${(props) => props.theme.mq.smallish} {
     position: relative;
-    top: 0.125rem;
     left: 0;
     right: 0;
-  }
-
-  p {
-    margin: 0;
-    font-size: inherit;
+    margin-top: 0.25rem;
   }
 `;
+
 export default function Option(props) {
   return (
-    <Wrapper>
+    <div
+      className={[
+        "relative mb-4 shrink md:mb-0 md:max-w-[200px] md:grow md:basis-0 md:self-stretch",
+        props.isLast ? "md:mr-0" : "md:mr-4",
+      ].join(" ")}
+    >
       <Button
         active={props.active}
         onClick={props.onClick}
@@ -143,9 +135,11 @@ export default function Option(props) {
             }
           }}
         >
-          <p>{props.option.detail.label}</p>
+          <p className="m-0 px-2 text-left text-xs md:text-center">
+            {props.option.detail.label}
+          </p>
         </Detail>
       )}
-    </Wrapper>
+    </div>
   );
 }

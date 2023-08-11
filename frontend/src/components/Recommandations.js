@@ -167,10 +167,11 @@ export default function Recommandations(props) {
   return (
     <>
       <div className="relative my-8 flex flex-col items-stretch justify-start overflow-hidden md:flex-row">
-        {options.map((option) => (
+        {options.map((option, index) => (
           <Option
             key={option.value}
             option={option}
+            isLast={index === options.length - 1}
             active={filters.includes(option.value)}
             onClick={() => {
               let newFilters = filters;

@@ -64,9 +64,9 @@ export const themes = {
     },
     fonts: '"Marianne", Arial, sans-serif',
     mq: {
-      small: `@media screen and (max-width: ${40}rem)`, // 640px - sm
-      smallish: `@media screen and (max-width: ${49}rem)`, // 768px - md
-      medium: `@media screen and (max-width: ${75}rem)`, // 1200px - xl
+      small: `@media screen and (max-width: ${640}px)`, // 640px - sm
+      smallish: `@media screen and (max-width: ${768}px)`, // 768px - md
+      medium: `@media screen and (max-width: ${1200}px)`, // 1200px - xl
     },
   },
   /* night: {
@@ -108,9 +108,9 @@ export const themes = {
     },
     fonts: '"Marianne", Arial, sans-serif',
     mq: {
-      small: `@media screen and (max-width: ${40}rem)`,
-      smallish: `@media screen and (max-width: ${49}rem)`,
-      medium: `@media screen and (max-width: ${75}rem)`,
+      small: `@media screen and (max-width: ${640}px)`,
+      smallish: `@media screen and (max-width: ${768}px)`,
+      medium: `@media screen and (max-width: ${1200}px)`,
     },
   },*/
 };
