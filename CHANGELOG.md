@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/SocialGouv/recosante/compare/v1.4.5...v1.5.0) (2023-08-11)
+
+
+### Features
+
+* frontend design change ([#127](https://github.com/SocialGouv/recosante/issues/127)) ([e135283](https://github.com/SocialGouv/recosante/commit/e13528306c1307440b86732943182da108ce0e34))
+
 ## [1.4.5](https://github.com/SocialGouv/recosante/compare/v1.4.4...v1.4.5) (2023-08-04)
 
 
