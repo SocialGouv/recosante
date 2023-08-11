@@ -27,10 +27,12 @@ from ecosante.utils.send_log_mail import send_log_mail
 # 7. every 1000 newsletter "template", save it in `NewsletterDB.__table__.insert`
 # 8. update the contacts in sendinblue in `import_contacts_in_sb` with the new `mail_list_id`
 # 9. create the campaign in sendinblue in `create_campaign` for each `mail_list_id` and `template_id` associated
-#      (it seems that it's only one template_id and one mail_list_id per task `import_send_and_report`... but not 100% sure)
+#      (it seems that it's only one template_id and one mail_list_id
+#        per task `import_send_and_report`... but not 100% sure)
 # 10. send the campaign in sendinblue in `send_email_campaign_now`
 # 11. repeat the process every hour, to see if t=some indicators are now ready
-# 12. the last repetition will have `force_send=True` and `report=True`, so that it's sent even if all the indicators are not ready
+# 12. the last repetition will have `force_send=True` and `report=True`,
+#         so that it's sent even if all the indicators are not ready
 
 
 

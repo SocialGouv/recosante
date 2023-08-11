@@ -22,7 +22,7 @@ export default function AboutQa() {
   );
 
   return (
-    <Section id="about-qa" small>
+    <Section className="max-w-prose px-6" id="about-qa">
       <Markdown>{data.mdx.body}</Markdown>
       <Button.Wrapper center>
         <StyledButton hollow to="/">

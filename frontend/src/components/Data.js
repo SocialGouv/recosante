@@ -2,13 +2,12 @@ import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 
 import Markdown from "components/base/Markdown";
-import Section from "components/base/Section";
 
 export default function Data() {
-  const data = useStaticQuery(
+  const dataSource = useStaticQuery(
     graphql`
       query {
-        mdx(fields: { slug: { eq: "data" } }) {
+        mdx(fields: { slug: { eq: "data-source" } }) {
           body
         }
       }
@@ -16,8 +15,8 @@ export default function Data() {
   );
 
   return (
-    <Section id="data" small>
-      <Markdown>{data.mdx.body}</Markdown>
-    </Section>
+    <section className="mx-auto my-20 max-w-prose px-6" id="data-source">
+      <Markdown>{dataSource.mdx.body}</Markdown>
+    </section>
   );
 }

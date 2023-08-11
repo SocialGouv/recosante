@@ -13,7 +13,7 @@ const StyledSection = styled(Section)`
 export default function NotFound() {
   return (
     <Web title={"404"}>
-      <StyledSection first small>
+      <StyledSection className="px-6 pt-20" small>
         <h1>404</h1>
         <p>Cette page n’existe pas (ou plus).</p>
         <Button to="/">Retourner à l'accueil</Button>

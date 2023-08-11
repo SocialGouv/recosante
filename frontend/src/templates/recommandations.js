@@ -3,22 +3,11 @@ import React from "react";
 import styled from "styled-components";
 
 import Content from "components/Recommandations";
-import Button from "components/base/Button";
-import Section from "components/base/Section";
+// import Button from "components/base/Button";
 import Web from "components/layout/Web";
 
-import apiUrl from "utils/apiUrl";
+// import apiUrl from "utils/apiUrl";
 
-const Title = styled.h1`
-  color: ${(props) => props.theme.colors.main};
-  font-size: 3.25rem;
-  margin: 2rem 0;
-
-  ${(props) => props.theme.mq.small} {
-    font-size: 1.5rem;
-    margin: 1.5rem 0;
-  }
-`;
 const Introduction = styled.div`
   background-color: #eef1f7;
   padding: 2rem;
@@ -31,16 +20,18 @@ const Introduction = styled.div`
 export default function Recommandations(props) {
   return (
     <Web title={props.data.mdx.frontmatter.title}>
-      <Section first medium>
-        <Title>{props.data.mdx.frontmatter.title}</Title>
+      <section className="relative mx-auto flex max-w-sm flex-col px-6 pt-10 md:max-w-6xl xl:pt-20">
+        <h1 className="max-sm:text-[6.5vw]">
+          Nos <strong>Recommandations</strong>
+        </h1>
         <Introduction>{props.children}</Introduction>
         <Content recommandations={props.pageContext.recommandations} />
-        <Button.Wrapper center>
+        {/* <div className="mb-8 flex items-center justify-center">
           <Button to={`${apiUrl}/v1/recommandations.csv`}>
             Télécharger au format CSV
           </Button>
-        </Button.Wrapper>
-      </Section>
+        </div> */}
+      </section>
     </Web>
   );
 }

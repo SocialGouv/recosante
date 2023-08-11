@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 
 import MagicLink from "components/base/MagicLink";
 
-const fetching = keyframes`
+const fetchingKeyframe = keyframes`
   from {
     transform: translateX(-100%);
   }
@@ -74,7 +74,8 @@ const Wrapper = styled(MagicLink)`
     background-color: ${(props) =>
       props.hollow ? props.theme.colors.main : props.theme.colors.background};
     opacity: ${(props) => (props.fetching ? "0.4" : "0")};
-    animation: ${fetching} ${(props) => (props.fetching ? 600 : 0)}ms infinite;
+    animation: ${fetchingKeyframe} ${(props) => (props.fetching ? 600 : 0)}ms
+      infinite;
   }
 
   ${(props) => props.theme.mq.small} {
@@ -85,21 +86,33 @@ const Wrapper = styled(MagicLink)`
     text-align: center;
   }
 `;
-export default function Button(props) {
+export default function Button({
+  className,
+  to,
+  onClick,
+  disabled,
+  fetching,
+  hollow,
+  expand,
+  noExpand,
+  color,
+  type,
+  children,
+}) {
   return (
     <Wrapper
-      className={props.className}
-      to={props.to}
-      onClick={props.onClick}
-      disabled={props.disabled}
-      fetching={props.fetching}
-      hollow={props.hollow ? 1 : 0}
-      expand={props.expand ? 1 : 0}
-      noExpand={props.noExpand ? 1 : 0}
-      color={props.color}
-      type={props.type}
+      className={className}
+      to={to}
+      onClick={onClick}
+      disabled={disabled}
+      fetching={fetching}
+      hollow={hollow ? 1 : 0}
+      expand={expand ? 1 : 0}
+      noExpand={noExpand ? 1 : 0}
+      color={color}
+      type={type}
     >
-      <span>{props.children}</span>
+      <span>{children}</span>
     </Wrapper>
   );
 }

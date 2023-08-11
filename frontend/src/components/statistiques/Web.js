@@ -67,7 +67,7 @@ export default function Website(props) {
     }).format(num);
   const colors = [themes[theme].colors.main, "#6a6af4", "#cacafb"];
   return (
-    <Section first>
+    <Section className="px-6 pt-20">
       <MainTitle>Le tableau de bord des indicateurs</MainTitle>
       <Subsection>
         <Section.Title center>

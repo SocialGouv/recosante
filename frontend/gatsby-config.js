@@ -21,6 +21,7 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-use-query-params`,
     `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-plugin-mdx`,
@@ -40,7 +41,12 @@ module.exports = {
     },
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-root-import`,
-    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        // excludes: [`/place/*/*`],
+      },
+    },
     `gatsby-transformer-json`,
     {
       resolve: "gatsby-plugin-web-font-loader",
@@ -112,5 +118,6 @@ module.exports = {
         appendScript: `static/sw-push.js`,
       },
     },
+    `gatsby-plugin-postcss`,
   ],
 };

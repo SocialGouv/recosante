@@ -232,12 +232,15 @@ export default function WrapperModal() {
       <Modal open={modal} setOpen={setModal}>
         {modal && data[modal.replaceAll(".", "")] && (
           <>
-            <h3
-              dangerouslySetInnerHTML={{
-                __html: data[modal.replaceAll(".", "")].frontmatter.title,
-              }}
-            />
-            <Markdown>{data[modal.replaceAll(".", "")].body}</Markdown>
+            <div>
+              <h3
+                dangerouslySetInnerHTML={{
+                  __html: data[modal.replaceAll(".", "")].frontmatter.title,
+                }}
+                className="inline-block rounded bg-main px-2 py-1 text-left text-base font-medium text-white [&_strong]:text-white"
+              />
+              <Markdown>{data[modal.replaceAll(".", "")].body}</Markdown>
+            </div>
           </>
         )}
       </Modal>

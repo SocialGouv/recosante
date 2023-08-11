@@ -1,76 +1,9 @@
 import { useLocation } from "@reach/router";
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
 
-import Button from "components/base/Button";
 import Select from "components/base/FancySelect";
 import EpisodePollution from "./header/EpisodePollution";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  ${(props) => props.theme.mq.medium} {
-    flex-direction: column;
-  }
-`;
-const TitleWrapper = styled.div`
-  flex: 1;
-  margin-bottom: 2rem;
-`;
-const Title = styled.h1`
-  margin: 0 0 0 -0.15rem;
-
-  ${(props) => props.theme.mq.medium} {
-    text-align: center;
-  }
-`;
-const Name = styled.span`
-  color: ${(props) => props.theme.colors.main};
-`;
-const DateWrapper = styled.span`
-  font-size: 2rem;
-  font-weight: 300;
-  color: ${(props) => props.theme.colors.text};
-
-  ${(props) => props.theme.mq.medium} {
-    display: block;
-    margin: 0.2rem 0 0.4rem;
-    font-size: 1.25rem;
-  }
-  ${(props) => props.theme.mq.small} {
-    font-size: 1.125rem;
-  }
-`;
-const Intro = styled.span`
-  ${(props) => props.theme.mq.medium} {
-    display: none;
-  }
-`;
-const Details = styled.div`
-  font-size: 1.25rem;
-  font-weight: 300;
-  margin-bottom: 1rem;
-
-  ${(props) => props.theme.mq.medium} {
-    display: block;
-    font-size: 1rem;
-    text-align: center;
-  }
-  ${(props) => props.theme.mq.medium} {
-    font-size: 0.875rem;
-  }
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: 0 -0.5rem;
-  > * {
-    margin: 0 0.5rem 0;
-  }
-`;
+import MobileSearchModal from "../layout/header/MobileSearchModal";
 
 export default function Header(props) {
   const location = useLocation();
@@ -111,52 +44,90 @@ export default function Header(props) {
     props.setDate(date);
     window?._paq?.push(["trackEvent", "Search", "DateChange"]);
   };
+  const [showSearch, setShowSearch] = useState(false);
+
   return (
-    <Wrapper>
-      <TitleWrapper>
-        <Title>
-          <Name>{props.place.nom}</Name>
-          <DateWrapper>
-            <Intro>, le </Intro>
-            <Select
-              fancy
-              value={date}
-              onChange={(value) => {
-                changeDate((dateParam || value !== todayValue) && value);
+    <>
+      <div className="mx-auto flex max-w-6xl flex-col justify-between md:flex-row">
+        <div className="mb-8 flex-1">
+          <h1 className="mb-1 text-center md:flex md:flex-row md:flex-wrap md:items-baseline md:text-left">
+            <span className="order-1 text-main">
+              {props.place.nom}
+              <button
+                aria-label="Modifier la ville"
+                onClick={() => {
+                  setShowSearch(true);
+                }}
+                className="-mb-1 ml-2 inline md:hidden"
+              >
+                <svg
+                  width="17"
+                  height="16"
+                  viewBox="0 0 17 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10.9853 6.38419L10.0425 5.44138L3.83333 11.6505V12.5933H4.77614L10.9853 6.38419ZM11.9281 5.44138L12.8709 4.49857L11.9281 3.55577L10.9853 4.49857L11.9281 5.44138ZM5.32843 13.9267H2.5V11.0983L11.4567 2.14155C11.7171 1.8812 12.1391 1.8812 12.3995 2.14155L14.2851 4.02717C14.5455 4.28752 14.5455 4.70963 14.2851 4.96998L5.32843 13.9267Z"
+                    className="fill-main"
+                  />
+                </svg>
+              </button>
+            </span>
+            <p className="order-2 mb-1 block text-center text-base font-light md:order-3 md:shrink-0 md:basis-full  md:text-left md:text-xl">
+              {props.place.codesPostaux.length > 2
+                ? props.place.codesPostaux[0] +
+                  " ... " +
+                  props.place.codesPostaux[props.place.codesPostaux.length - 1]
+                : props.place.codesPostaux.join(", ")}{" "}
+              - {props.place.departement.nom}
+            </p>
+            <div className="order-3 mx-auto mb-2 mt-1 gap-x-2 text-lg font-light text-text sm:text-xl md:order-2 md:inline-flex md:grow md:text-[2rem]">
+              <span className="hidden md:inline-block">, le </span>
+              <Select
+                value={date}
+                onChange={(value) => {
+                  changeDate((dateParam || value !== todayValue) && value);
+                }}
+                options={options}
+                title="Changer la date"
+              />
+            </div>
+          </h1>
+          <div className="my-8 flex flex-row items-center justify-center">
+            <button
+              type="button"
+              className={[
+                "inline-flex flex-shrink-0 flex-grow-0 items-center justify-center border-2 border-transparent px-4 py-2 text-base font-medium shadow-sm first-of-type:rounded-l-lg  last-of-type:rounded-r-lg hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2",
+                date === todayValue
+                  ? "bg-main text-white"
+                  : "border-main bg-white text-main ",
+              ].join(" ")}
+              onClick={() => {
+                changeDate(dateParam && todayValue);
               }}
-              options={options}
-              title="Changer la date"
-            />
-          </DateWrapper>
-        </Title>
-        <Details>
-          {props.place.codesPostaux.length > 2
-            ? props.place.codesPostaux[0] +
-              " ... " +
-              props.place.codesPostaux[props.place.codesPostaux.length - 1]
-            : props.place.codesPostaux.join(", ")}{" "}
-          - {props.place.departement.nom}
-        </Details>
-        <ButtonWrapper>
-          <Button
-            hollow={date !== todayValue}
-            onClick={() => {
-              changeDate(dateParam && todayValue);
-            }}
-          >
-            Aujourd’hui
-          </Button>
-          <Button
-            hollow={date !== tomorrowValue}
-            onClick={() => {
-              changeDate(tomorrowValue);
-            }}
-          >
-            Demain
-          </Button>
-        </ButtonWrapper>
-      </TitleWrapper>
-      <EpisodePollution place={props.place} date={props.date} />
-    </Wrapper>
+            >
+              Aujourd’hui
+            </button>
+            <button
+              type="button"
+              className={[
+                "inline-flex flex-shrink-0 flex-grow-0 items-center justify-center border-2 border-transparent px-4 py-2 text-base font-medium shadow-sm first-of-type:rounded-l-lg  last-of-type:rounded-r-lg hover:bg-main hover:text-white focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2",
+                date === tomorrowValue
+                  ? "bg-main text-white"
+                  : "border-main bg-white text-main",
+              ].join(" ")}
+              onClick={() => {
+                changeDate(tomorrowValue);
+              }}
+            >
+              Demain
+            </button>
+          </div>
+        </div>
+        <EpisodePollution place={props.place} date={props.date} />
+      </div>
+      <MobileSearchModal open={showSearch} setOpen={setShowSearch} />
+    </>
   );
 }

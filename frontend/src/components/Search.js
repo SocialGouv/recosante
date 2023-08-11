@@ -1,81 +1,53 @@
 import MagicLink from "components/base/MagicLink";
-import Section from "components/base/Section";
-import Background from "components/misc/Background";
-import Cloud from "components/search/Cloud";
-import SearchBar from "components/search/SearchBar";
-import Title from "components/search/Title";
+import CloudAnimated from "components/search/CloudAnimated";
+import SearchInput from "components/search/SearchInput";
+import TitleAnimated from "components/search/TitleAnimated";
 import { navigate } from "gatsby";
 import React from "react";
-import styled from "styled-components";
 import { formatPlaceUrl } from "utils/formatPlaceUrl";
-import Suggestions from "./search/Suggestions";
+import useIframe from "hooks/useIframe";
+import SuggestionsButtons from "./search/SuggestionsButtons";
 
-const Wrapper = styled.div`
-  position: relative;
-  margin: 0 auto 10rem;
-  padding: 0 0 6.5rem;
+export default function Search({ handlePlaceSelection, fullScreen }) {
+  const iframe = useIframe();
 
-  ${(props) => props.theme.mq.medium} {
-    min-height: ${(props) => (props.iframe ? "50rem" : "100vh")};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-  }
-  ${(props) => props.theme.mq.small} {
-    margin-bottom: 5rem;
-  }
-`;
-const StyledSection = styled(Section)`
-  position: relative;
-  margin: 0 auto;
-  ${(props) => props.theme.mq.medium} {
-    padding: 0;
-  }
-`;
-const SearchBarSizer = styled.div`
-  position: relative;
-  height: 4.5rem;
-  margin-bottom: 2.5rem;
-`;
-const WidgetFooter = styled.div`
-  position: absolute;
-  bottom: 1rem;
-  width: 100%;
-  text-align: center;
-`;
-const WidgetLink = styled(MagicLink)`
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.colors.footer};
-  text-decoration: none;
-`;
-
-export default function Search(props) {
   return (
-    <Wrapper iframe={props.iframe} className={props.className}>
-      <Background />
-      <StyledSection first>
-        <Cloud />
-        <Title />
-        <SearchBarSizer>
-          <SearchBar
-            handlePlaceSelection={
-              props.handlePlaceSelection ||
-              ((place) => {
+    <div
+      iframe={iframe.toString()}
+      className={[
+        "relative box-border flex w-full flex-col items-center justify-start bg-gradient-to-r from-[#d1edff] via-[#f8fafd] to-[#d6eeff]",
+        // iframe ? "min-h-[50rem]" : "min-h-screen",
+        fullScreen ? "min-h-screen" : "",
+      ].join(" ")}
+    >
+      <section className="relative mx-auto flex w-full max-w-6xl flex-col pb-6 xl:pt-24">
+        <div className="flex flex-col px-6 xl:flex-row-reverse xl:items-start xl:justify-center xl:px-0">
+          <CloudAnimated />
+          <TitleAnimated />
+        </div>
+        <div className="relative mb-4 px-6 xl:my-8 xl:px-0">
+          <SearchInput
+            handlePlaceSelection={(place) => {
+              if (handlePlaceSelection) {
+                handlePlaceSelection(place);
+              } else {
                 navigate(formatPlaceUrl(place) + window.location.search);
-              })
-            }
+              }
+            }}
           />
-        </SearchBarSizer>
-        <Suggestions />
-      </StyledSection>
-      {props.iframe && (
-        <WidgetFooter>
-          <WidgetLink to="https://recosante.beta.gouv.fr/donnees-personnelles">
+        </div>
+        <SuggestionsButtons />
+      </section>
+      {!!iframe && (
+        <div className="mt-auto w-full text-center">
+          <MagicLink
+            className="text-xs text-footer no-underline"
+            to="https://recosante.beta.gouv.fr/donnees-personnelles"
+          >
             En savoir plus sur la gestion de vos données personnelles
-          </WidgetLink>
-        </WidgetFooter>
+          </MagicLink>
+        </div>
       )}
-    </Wrapper>
+    </div>
   );
 }

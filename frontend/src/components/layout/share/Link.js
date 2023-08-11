@@ -43,7 +43,7 @@ const Check = styled.svg`
     fill: ${(props) => props.theme.colors.background};
   }
 `;
-export default function Code(props) {
+export default function Link(props) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {

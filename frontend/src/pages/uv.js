@@ -5,7 +5,7 @@ import AboutUv from "components/AboutUv";
 import Web from "components/layout/Web";
 import Newsletter from "../components/Newsletter";
 
-export default function Uv() {
+function UvWithDataStaticQuery() {
   const data = useStaticQuery(
     graphql`
       query {
@@ -17,15 +17,17 @@ export default function Uv() {
   );
 
   return (
-    <Web title={`UV`}>
-      <Newsletter
-        first
-        data={data}
-        type={"uv"}
-        indicateurs={["indice_uv"]}
-        seo
-      />
+    <>
+      <Newsletter data={data} type={"uv"} indicateurs={["indice_uv"]} seo />
       <AboutUv />
+    </>
+  );
+}
+
+export default function Uv() {
+  return (
+    <Web title={`UV`}>
+      <UvWithDataStaticQuery />
     </Web>
   );
 }

@@ -1,7 +1,7 @@
 ---
 title: Qualité des eaux de baignade
 ---
-	
+
 Connaître la qualité de l’eau de baignade en eau de mer ou en eau douce est un moyen pour prévenir tout risque pour la santé des baigneurs.
 
 Dans l’évaluation de cette qualité, il convient de distinguer :
@@ -13,4 +13,4 @@ Dans l’évaluation de cette qualité, il convient de distinguer :
 Des mesures de gestion telles que des interdictions de baignades temporaires ou permanentes peuvent être prises de manière à éviter que les baigneurs soient exposés à une pollution.
 
 [En savoir plus](https://baignades.sante.gouv.fr/baignades/editorial/fr/controle/organisation.html)  
-[Consulter les recommandations associées](/recommandations#baignades)
+[Consulter les recommandations associées](/recommandations?selected=baignades)  

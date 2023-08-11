@@ -2,35 +2,48 @@ import { useLocation } from "@reach/router";
 import { Link } from "gatsby";
 import React from "react";
 
-export default function MagicLink(props) {
+export default function MagicLink({
+  to,
+  className,
+  onClick,
+  children,
+  ...props
+}) {
   const { search } = useLocation();
-  return !props.to ? (
-    <button
-      className={props.className}
-      onClick={props.onClick}
-      aria-label={props["aria-label"]}
-    >
-      {props.children}
-    </button>
-  ) : props.to.includes(":") || props.to.includes(".") ? (
-    <a
-      className={props.className}
-      href={props.to}
-      onClick={props.onClick || null}
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label={props["aria-label"]}
-    >
-      {props.children}
-    </a>
-  ) : (
+  if (!to) {
+    return (
+      <button
+        className={className}
+        onClick={onClick}
+        aria-label={props["aria-label"]}
+      >
+        {children}
+      </button>
+    );
+  }
+  const isExternalLink = to.includes("://") || to.includes(".");
+  if (isExternalLink) {
+    return (
+      <a
+        className={className}
+        href={to}
+        onClick={onClick || null}
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label={props["aria-label"]}
+      >
+        {children}
+      </a>
+    );
+  }
+  return (
     <Link
-      className={props.className}
-      to={props.to + (!props.to.includes("?") ? search : "")}
-      onClick={props.onClick || null}
+      className={className}
+      to={to + (!to.includes("?") ? search : "")}
+      onClick={onClick || null}
       aria-label={props["aria-label"]}
     >
-      {props.children}
+      {children}
     </Link>
   );
 }

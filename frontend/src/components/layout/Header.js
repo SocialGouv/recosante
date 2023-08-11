@@ -1,64 +1,56 @@
 import { useLocation } from "@reach/router";
-import SearchBar from "components/search/SearchBar";
+import SearchInput from "components/search/SearchInput";
 import { navigate } from "gatsby";
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { formatPlaceUrl } from "utils/formatPlaceUrl";
 import Logos from "./header/Logos";
-import MobileSearch from "./header/MobileSearch";
+import MobileSearchModal from "./header/MobileSearchModal";
 
-const Wrapper = styled.header`
-  position: absolute;
-  width: 100%;
-  padding: 0 1rem;
-  z-index: 1000;
-  background: rgba(${(props) => props.theme.colors.backgroundAlpha}, 1);
-`;
-const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 73rem;
-  margin: 0 auto;
-`;
-const Search = styled.div`
-  position: relative;
-
-  ${(props) => props.theme.mq.small} {
-    display: none;
-  }
-`;
-const StyledSearchBar = styled(SearchBar)`
-  top: -1rem;
-  left: auto;
-  right: 0;
-  font-size: 1rem;
-
-  ${(props) => props.theme.mq.medium} {
-    max-width: none;
-    transform: none;
-  }
-`;
 export default function Header() {
   const { pathname } = useLocation();
-
+  const [openMobileSearchModal, setOpenMobileSearchModal] = useState(false);
   return (
-    <Wrapper role="banner">
-      <Content>
-        <Logos />
+    <header
+      className="relative z-[1000] w-full bg-white px-4 py-0"
+      role="banner"
+    >
+      <div className="mx-auto flex max-w-6xl items-center	justify-between">
+        <Logos className="flex items-center justify-center" />
         {pathname !== "/" && (
-          <Search>
-            <StyledSearchBar
+          <div className="relative hidden md:block">
+            <SearchInput
+              className="w-80"
               placeholder="Entrez une ville"
               handlePlaceSelection={(place) => {
                 navigate(formatPlaceUrl(place) + window.location.search);
               }}
             />
-          </Search>
+          </div>
         )}
-        <MobileSearch />
-      </Content>
-    </Wrapper>
+        <MobileSearchModal
+          open={openMobileSearchModal}
+          setOpen={setOpenMobileSearchModal}
+        >
+          <button
+            className={[
+              "block border-none bg-none transition-opacity md:hidden",
+              openMobileSearchModal
+                ? "pointer-events-none opacity-0"
+                : "opacity-100",
+            ].join(" ")}
+            onClick={() => setOpenMobileSearchModal(true)}
+          >
+            <svg viewBox="0 0 512.005 512.005" className="h-auto w-8 fill-main">
+              <path
+                d="M505.749,475.587l-145.6-145.6c28.203-34.837,45.184-79.104,45.184-127.317c0-111.744-90.923-202.667-202.667-202.667
+			S0,90.925,0,202.669s90.923,202.667,202.667,202.667c48.213,0,92.48-16.981,127.317-45.184l145.6,145.6
+			c4.16,4.16,9.621,6.251,15.083,6.251s10.923-2.091,15.083-6.251C514.091,497.411,514.091,483.928,505.749,475.587z
+			 M202.667,362.669c-88.235,0-160-71.765-160-160s71.765-160,160-160s160,71.765,160,160S290.901,362.669,202.667,362.669z"
+              />
+            </svg>
+          </button>
+        </MobileSearchModal>
+      </div>
+    </header>
   );
 }

@@ -11,4 +11,4 @@ Il existe 4 niveaux de risque, traduit par une couleur du vert (pas de vigilance
 Pour déterminer ce niveau de risque, des critères de choix ont été définis pour chaque phénomène et pour chaque département. Ils tiennent compte de la sensibilité locale aux phénomènes météorologiques, en se basant sur les événements passés, les conséquences observées et le niveau d’acclimatation du département. Ainsi, quelques centimètres de neige peuvent suffire à perturber le trafic routier et le réseau de transports en commun à Marseille ou Paris, alors qu’ils n’ont que peu de conséquences dans les zones de montagne plus accoutumées.
 
 [En savoir plus](https://vigilance.meteofrance.fr/fr/guide-vigilance-meteo)  
-[Consulter les recommandations associées](/recommandations#vigilance_meteo)
+[Consulter les recommandations associées](/recommandations?selected=vigilance_meteo)  

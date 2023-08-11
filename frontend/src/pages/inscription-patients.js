@@ -1,15 +1,10 @@
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
-import styled from "styled-components";
 
 import Referral from "components/Referral";
 import Markdown from "components/base/Markdown";
-import Section from "components/base/Section";
 import Web from "components/layout/Web";
 
-const StyledSection = styled(Section)`
-  font-size: 1.125rem;
-`;
 export default function InscriptionPatients() {
   const data = useStaticQuery(
     graphql`
@@ -23,10 +18,10 @@ export default function InscriptionPatients() {
 
   return (
     <Web title={"Recommander Recosanté"}>
-      <StyledSection small first>
+      <section className="mx-auto max-w-prose px-6 py-10 text-lg xl:py-20">
         <Markdown>{data.mdx.body}</Markdown>
         <Referral />
-      </StyledSection>
+      </section>
     </Web>
   );
 }

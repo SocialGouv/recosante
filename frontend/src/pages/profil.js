@@ -9,7 +9,7 @@ const StyledSection = styled(Section)``;
 export default function Profil(props) {
   return (
     <Web title={"Profil"}>
-      <StyledSection first medium>
+      <StyledSection className="px-6 pt-20" medium>
         <Profile />
       </StyledSection>
     </Web>

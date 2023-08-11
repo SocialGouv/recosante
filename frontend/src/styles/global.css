@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  box-sizing: border-box;
+  font-family: "Marianne", Arial, sans-serif;
+}
+
+body {
+  @apply bg-white text-text;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+*,
+*:before,
+*:after {
+  margin-top: 0;
+  box-sizing: inherit;
+}
+
+h1 {
+  @apply mb-6 text-[2rem] sm:mb-8 sm:text-4xl xl:text-6xl xl:font-bold;
+}
+
+h2 {
+  @apply mb-4 text-2xl sm:mb-6 sm:text-4xl;
+}
+
+h3 {
+  @apply mb-4 text-2xl sm:text-3xl;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply mt-0 font-bold text-title;
+  line-height: 1.1;
+}
+p,
+ul {
+  @apply mb-7 text-base sm:text-lg;
+}
+
+a {
+  @apply text-main;
+}
+
+input,
+select,
+textarea {
+  @apply text-text;
+}
+
+strong {
+  @apply text-main;
+  font-weight: inherit;
+}
+
+summary.no-marker::marker,
+summary.no-marker::-webkit-details-marker {
+  display: none;
+}

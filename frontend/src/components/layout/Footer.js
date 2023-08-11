@@ -1,53 +1,26 @@
 import React from "react";
-import styled from "styled-components";
 
 import Links from "./footer/Links";
 import MobileButtons from "./footer/MobileButtons";
 import Partners from "./footer/Partners";
 import Logos from "./header/Logos";
 
-const Wrapper = styled.footer`
-  position: relative;
-  padding-top: 2rem;
-  background-color: ${(props) => props.theme.colors.background};
-  border-top: 2px solid ${(props) => props.theme.colors.main};
-`;
-const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  max-width: 75em;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
-
-  ${(props) => props.theme.mq.medium} {
-    flex-direction: column;
-  }
-`;
-const Right = styled.div`
-  max-width: 42.75rem;
-`;
-const Description = styled.p`
-  ${(props) => props.theme.mq.medium} {
-    margin-top: 1rem;
-  }
-`;
-
 export default function Footer() {
   return (
-    <Wrapper role="contentinfo">
-      <Content>
+    <footer
+      className="relative border-t-2 border-main bg-background pt-8"
+      role="contentinfo"
+    >
+      <div className="mx-auto mb-8 flex max-w-6xl flex-col items-start justify-between px-4 py-0 xl:flex-row xl:items-center xl:gap-x-6">
+        <Partners />
+        <p className="my-8 max-w-2xl text-center xl:mt-0">
+          Recosanté est un service public qui vous aide à connaître votre
+          environnement et à agir pour protéger votre santé.
+        </p>
         <MobileButtons iframe={false} />
-        <Logos />
-        <Right>
-          <Description>
-            Recosanté est un service public qui vous aide à connaître votre
-            environnement et à agir pour protéger votre santé.
-          </Description>
-          <Partners />
-        </Right>
-      </Content>
+        <Logos className="mx-auto flex items-center justify-center" />
+      </div>
       <Links />
-    </Wrapper>
+    </footer>
   );
 }
