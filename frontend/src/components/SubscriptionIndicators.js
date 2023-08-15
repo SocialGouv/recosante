@@ -50,6 +50,12 @@ export default function SubscriptionIndicators() {
   const currentIndicateurStep = indicateursSteps[currentStepName];
   const currentRecommandationStep = recommandationsSteps[currentStepName];
 
+  console.log({
+    currentStepName,
+    currentIndicateurStep,
+    currentRecommandationStep,
+  });
+
   return (
     <div
       ref={(ref) => (scrollRef.current = ref?.parentElement)}
@@ -224,10 +230,6 @@ export default function SubscriptionIndicators() {
             nextStepDisabled={
               !localUser.user[currentStepName]?.length &&
               currentRecommandationStep.mandatory
-            }
-            isLastButton={
-              currentStepName ===
-              recommandationsStepsOrder[recommandationsStepsOrder.length - 1]
             }
             onPrevStep={() => {
               window?._paq?.push([
