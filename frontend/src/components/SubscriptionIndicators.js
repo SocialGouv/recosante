@@ -47,16 +47,6 @@ export default function SubscriptionIndicators() {
   const localUser = useLocalUser();
   const mutation = useUserMutation();
 
-  useEffect(() => {
-    localUser.mutateUser({
-      uid: mutation?.data?.data?.uid ?? localUser.user.uid,
-      authentication_token:
-        mutation?.data?.data?.authentication_token ??
-        localUser.user.authentication_token,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mutation?.data?.data?.uid, mutation?.data?.data?.authentication_token]);
-
   const currentIndicateurStep = indicateursSteps[currentStepName];
   const currentRecommandationStep = recommandationsSteps[currentStepName];
 

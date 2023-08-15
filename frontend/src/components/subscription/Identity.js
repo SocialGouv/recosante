@@ -7,6 +7,7 @@ import TextInput from "components/base/TextInput";
 import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
 import { useLocalUser, useUserMutation } from "hooks/useUser";
+import { useQueryParam } from "hooks/useQueryParam";
 import Error from "./identity/Error";
 
 const StyledAlert = styled(Alert)`
@@ -30,12 +31,18 @@ const MailInput = styled(TextInput)`
 
 export default function Identity({ onNextStep }) {
   const { user, mutateUser } = useLocalUser();
-
+  const setUid = useQueryParam("user")[1];
+  const setToken = useQueryParam("token")[1];
   const { data: availability } = useAvailability(user.commune?.code);
   const mutation = useUserMutation();
 
   useEffect(() => {
     if (mutation.isSuccess) {
+      const newUid = mutation.data.data.uid;
+      const newToken = mutation.data.data.authentication_token;
+      mutation.mutate({ uid: newUid, authentication_token: newToken });
+      setUid(newUid);
+      setToken(newToken);
       onNextStep();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
