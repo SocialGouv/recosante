@@ -16,7 +16,6 @@ import EndIndicateurs from "./subscription/EndIndicateurs";
 import EndRecommandations from "./subscription/EndRecommandations";
 
 const indicateursStepsOrder = Object.keys(indicateursSteps);
-const recommandationsStepsOrder = Object.keys(recommandationsSteps);
 
 export default function SubscriptionIndicators() {
   const { applicationServerKey } = useStaticQuery(
