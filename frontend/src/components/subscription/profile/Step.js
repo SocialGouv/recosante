@@ -40,7 +40,7 @@ export default function Step(props) {
     `
   );
   const notifications = useNotificationsPrompt(
-    "/sw.js",
+    "/sw-push.js",
     applicationServerKey.application_server_key
   );
 

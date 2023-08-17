@@ -28,7 +28,7 @@ export default function SubscriptionIndicators() {
     `
   );
   const notifications = useNotificationsPrompt(
-    "/sw.js",
+    "/sw-push.js",
     applicationServerKey.application_server_key
   );
 
