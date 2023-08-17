@@ -11,6 +11,7 @@ const iframe = document.createElement("iframe");
 
 const iframeAttributes = {
   src,
+  id: "recosante-iframe",
   style: "border: none; width: 100%; display: block; margin: 0 auto;",
   allowfullscreen: true,
   webkitallowfullscreen: true,
@@ -23,3 +24,14 @@ for (var key in iframeAttributes) {
 iframeResize({}, iframe);
 
 script.parentNode.insertBefore(iframe, script);
+const widget = document.getElementById("recosante-iframe");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      window._paq?.push(["trackEvent", "Widget", "OnScreen", "yes"]);
+    } else {
+      window._paq?.push(["trackEvent", "Widget", "OnScreen", "no"]);
+    }
+  });
+});
+observer.observe(widget);
