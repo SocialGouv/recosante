@@ -1,3 +1,10 @@
+## [1.5.2](https://github.com/SocialGouv/recosante/compare/v1.5.1...v1.5.2) (2023-08-17)
+
+
+### Bug Fixes
+
+* iframe event when visible/invisible ([#195](https://github.com/SocialGouv/recosante/issues/195)) ([3af927e](https://github.com/SocialGouv/recosante/commit/3af927e9dcc3a31fcf42f8f36e075313e6c4ffad))
+
 ## [1.5.1](https://github.com/SocialGouv/recosante/compare/v1.5.0...v1.5.1) (2023-08-17)
 
 
