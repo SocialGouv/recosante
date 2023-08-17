@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 `;
 const PreviousButton = styled(Button)`
   padding-left: 2.25rem;
-
+  z-index: 10;
   svg {
     position: absolute;
     top: 50%;
@@ -35,7 +35,7 @@ const PreviousButton = styled(Button)`
 `;
 const NextButton = styled(Button)`
   padding-right: 2.25rem;
-
+  z-index: 10;
   svg {
     position: absolute;
     top: 50%;
