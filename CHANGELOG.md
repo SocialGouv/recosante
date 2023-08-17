@@ -1,3 +1,10 @@
+## [1.5.3](https://github.com/SocialGouv/recosante/compare/v1.5.2...v1.5.3) (2023-08-17)
+
+
+### Bug Fixes
+
+* iframe matomo event ([#196](https://github.com/SocialGouv/recosante/issues/196)) ([7905073](https://github.com/SocialGouv/recosante/commit/7905073ff1c33a03993fdf7916b75305a6c04fdb))
+
 ## [1.5.2](https://github.com/SocialGouv/recosante/compare/v1.5.1...v1.5.2) (2023-08-17)
 
 
