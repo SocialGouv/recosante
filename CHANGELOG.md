@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/SocialGouv/recosante/compare/v1.5.0...v1.5.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* butttons z-index ([cbcf801](https://github.com/SocialGouv/recosante/commit/cbcf801a70a1115f338883ad973464c1543b694c))
+
 # [1.5.0](https://github.com/SocialGouv/recosante/compare/v1.4.5...v1.5.0) (2023-08-11)
 
 
