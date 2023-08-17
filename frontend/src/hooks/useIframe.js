@@ -6,6 +6,17 @@ export function IFrameProvider(props) {
   const [iframe, setIframe] = useState(false);
   useEffect(() => {
     setIframe(window.location.search.includes("iframe"));
+    if (window.self !== window.top) {
+      window.addEventListener("message", function (e) {
+        var data = e.data;
+        if (data === "onScreen") {
+          window?._paq?.push(["trackEvent", "Widget", "OnScreen", "yes"]);
+        }
+        if (data === "offScreen") {
+          window?._paq?.push(["trackEvent", "Widget", "OnScreen", "no"]);
+        }
+      });
+    }
   }, []);
   return (
     <IFrameContext.Provider value={iframe}>

@@ -28,9 +28,9 @@ const widget = document.getElementById("recosante-iframe");
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
-      window._paq?.push(["trackEvent", "Widget", "OnScreen", "yes"]);
+      widget.contentWindow.postMessage("onScreen", "*");
     } else {
-      window._paq?.push(["trackEvent", "Widget", "OnScreen", "no"]);
+      widget.contentWindow.postMessage("offScreen", "*");
     }
   });
 });
