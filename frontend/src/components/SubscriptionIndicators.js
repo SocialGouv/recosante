@@ -49,12 +49,6 @@ export default function SubscriptionIndicators() {
   const currentIndicateurStep = indicateursSteps[currentStepName];
   const currentRecommandationStep = recommandationsSteps[currentStepName];
 
-  console.log({
-    currentStepName,
-    currentIndicateurStep,
-    currentRecommandationStep,
-  });
-
   return (
     <div
       ref={(ref) => (scrollRef.current = ref?.parentElement)}
@@ -69,6 +63,12 @@ export default function SubscriptionIndicators() {
           {currentStepName === "validation" ? (
             <Identity
               onNextStep={() => {
+                window?._paq?.push([
+                  "trackEvent",
+                  "Subscription",
+                  "Next",
+                  currentStepName,
+                ]);
                 setNeedConfirmation(false);
                 setCurrentStepName("indicateurs_end");
               }}
@@ -116,7 +116,7 @@ export default function SubscriptionIndicators() {
               window?._paq?.push([
                 "trackEvent",
                 "Subscription",
-                "Prev",
+                "Next",
                 currentStepName,
               ]);
               switch (currentStepName) {
@@ -177,6 +177,12 @@ export default function SubscriptionIndicators() {
               "Success",
               "indicateurs",
             ]);
+            window?._paq?.push([
+              "trackEvent",
+              "Subscription",
+              "EndIndicateurs",
+              "backToHome",
+            ]);
             setSubscription(null);
           }}
           onNextStep={() => {
@@ -202,8 +208,8 @@ export default function SubscriptionIndicators() {
             window?._paq?.push([
               "trackEvent",
               "Subscription",
-              "Prev",
-              currentStepName,
+              "EndIndicateurs",
+              "subscribeToRecommandations",
             ]);
             setNeedConfirmation(false);
             setCurrentStepName("activites");
@@ -211,7 +217,17 @@ export default function SubscriptionIndicators() {
         />
       )}
       {currentStepName === "recommandations_end" && (
-        <EndRecommandations onClose={() => setSubscription(null)} />
+        <EndRecommandations
+          onClose={() => {
+            setSubscription(null);
+            window?._paq?.push([
+              "trackEvent",
+              "Subscription",
+              "EndRecommandations",
+              "close",
+            ]);
+          }}
+        />
       )}
       {!!currentRecommandationStep && (
         <>
@@ -261,7 +277,7 @@ export default function SubscriptionIndicators() {
               window?._paq?.push([
                 "trackEvent",
                 "Subscription",
-                "Prev",
+                "Next",
                 currentStepName,
               ]);
               mutation.mutate(localUser.user);
