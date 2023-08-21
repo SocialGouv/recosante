@@ -7,3 +7,9 @@ dependencies:
       ifEnv: [dev,preprod]
     - name: buildkit-service
       ifEnv: [dev,preprod]
+  contrib:
+    preDeploy:
+      importSecrets:
+        options:
+          secrets:
+            recosante-dev-backups-access-key:
