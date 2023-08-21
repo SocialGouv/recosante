@@ -1,3 +1,9 @@
+global:
+  pgSecretName: pg-app
+
+pg:
+  ~chart: pg
+
 api:
   ~needs: [build-api, seed-db]
 
@@ -6,12 +12,8 @@ indice:
 
 jobs:
   runs:
-    create-db:
-      use: create-db
-      with:
-        useAzureFlex: "true"
     seed-db:
       use: seed-db
-      ~needs: [create-db]
+      ~needs: [pg]
       with:
         seedPath: ./seeds.sql
