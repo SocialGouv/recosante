@@ -5,15 +5,15 @@ pg:
   ~chart: pg
 
 api:
-  ~needs: [build-api, seed-db]
+  ~needs: [build-api]
 
 indice:
-  ~needs: [build-indice, seed-db]
+  ~needs: [build-indice, api]
 
-jobs:
-  runs:
-    seed-db:
-      use: seed-db
-      ~needs: [pg]
-      with:
-        seedPath: ./seeds.sql
+# jobs:
+#   runs:
+#     seed-db:
+#       use: seed-db
+#       ~needs: [pg]
+#       with:
+#         seedPath: ./seeds.sql
