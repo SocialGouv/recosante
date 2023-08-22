@@ -9,6 +9,10 @@ api:
 
 indice:
   ~needs: [build-indice, api]
+  startupProbe:
+    initialDelaySeconds: 900
+    failureThreshold: 50
+    periodSeconds: 10
 
 # jobs:
 #   runs:
