@@ -5,7 +5,7 @@ pg:
   ~chart: pg
 
 api:
-  ~needs: [build-api]
+  ~needs: [build-api, pg]
 
 indice:
   ~needs: [build-indice, api]
