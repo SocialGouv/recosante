@@ -5,7 +5,7 @@ pg:
   ~chart: pg
 
 api:
-  ~needs: [build-api, pg]
+  ~needs: [build-api, seed-db]
 
 indice:
   ~needs: [build-indice, api]
@@ -14,10 +14,10 @@ indice:
     failureThreshold: 50
     periodSeconds: 10
 
-# jobs:
-#   runs:
-#     seed-db:
-#       use: seed-db
-#       ~needs: [pg]
-#       with:
-#         seedPath: ./seeds.sql
+jobs:
+  runs:
+    seed-db:
+      use: seed-db
+      ~needs: [pg]
+      with:
+        seedPath: ./seeds.sql
