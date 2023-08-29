@@ -16,7 +16,7 @@ api:
   ~needs: [build-api, seed-db]
 
 indice:
-  ~needs: [build-indice, api]ts
+  ~needs: [build-indice, api]
 
 jobs:
   runs:
