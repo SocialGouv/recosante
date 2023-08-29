@@ -17,7 +17,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 2rem;
+  padding-bottom: 3.5rem;
+  padding-top: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  overflow-y: auto;
   background: ${(props) => props.theme.colors.background};
   border-radius: 2rem;
   opacity: ${(props) => (props.visible ? 1 : 0)};
@@ -30,20 +34,21 @@ const Wrapper = styled.div`
   }
 `;
 const ImagesWrapper = styled.div`
-  height: 15.1rem;
+  height: 10.1rem;
+  flex-shrink: 0;
 
   ${(props) => props.theme.mq.small} {
     height: 8.5rem;
   }
 `;
 const StyledButton = styled(Button)`
-  position: absolute;
-  bottom: 1.5rem;
-  right: 2rem;
+  margin-right: 2rem;
+  margin-left: auto;
+  flex-shrink: 0;
 
   ${(props) => props.theme.mq.small} {
-    bottom: 1rem;
-    right: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
   }
 `;
 export default React.forwardRef(function Notifications(props, ref) {
@@ -68,7 +73,7 @@ export default React.forwardRef(function Notifications(props, ref) {
     >
       <Wrapper visible={visible}>
         <ImagesWrapper>
-          <Images isOnScreen={true} />
+          <Images isOnScreen inModal />
         </ImagesWrapper>
         <Markdown ref={ref}>{data.mdx.body}</Markdown>
         <StyledButton onClick={() => props.setModal(false)} noExpand>

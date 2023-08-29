@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Alert from "components/base/Alert";
@@ -7,55 +7,18 @@ import TextInput from "components/base/TextInput";
 import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
 import { useLocalUser, useUserMutation } from "hooks/useUser";
+import { useQueryParam } from "hooks/useQueryParam";
 import Error from "./identity/Error";
-import NavigationIdentity from "./identity/NavigationIdentity";
-import Success from "./identity/Success";
-
-const Wrapper = styled.div`
-  padding-top: 2rem;
-
-  ${(props) => props.theme.mq.small} {
-    padding-top: 1.5rem;
-  }
-`;
-const Label = styled.h1`
-  display: block;
-  margin-bottom: 3rem;
-  font-weight: 300;
-  text-align: center;
-  font-size: inherit;
-
-  ${(props) => props.theme.mq.smallish} {
-    margin-bottom: 6rem;
-  }
-`;
-
-const SearchBarWrapper = styled.div`
-  position: relative;
-  width: 22.25rem;
-  height: 3rem;
-  margin: 0 auto 3rem;
-
-  ${(props) => props.theme.mq.smallish} {
-    margin-bottom: 6rem;
-  }
-  ${(props) => props.theme.mq.small} {
-    width: 100%;
-  }
-`;
 
 const StyledAlert = styled(Alert)`
   margin: -2rem 0 1rem;
+  order: 3;
 `;
 const MailInput = styled(TextInput)`
   display: block;
-  width: 22.25rem;
-  margin: 0 auto 5.5rem;
-  font-size: 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
 
-  ${(props) => props.theme.mq.smallish} {
-    margin-bottom: 7rem;
-  }
   ${(props) => props.theme.mq.small} {
     width: 100%;
   }
@@ -65,94 +28,95 @@ const MailInput = styled(TextInput)`
     opacity: 0.8;
   }
 `;
-const DataDisclaimer = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 22.25rem;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: lighter;
-  color: ${(props) => props.theme.colors.footer};
 
-  p {
-    margin: 0;
-    font-size: inherit;
-  }
-`;
-
-export default function Identity(props) {
+export default function Identity({ onNextStep }) {
   const { user, mutateUser } = useLocalUser();
-
+  const setUid = useQueryParam("user")[1];
+  const setToken = useQueryParam("token")[1];
   const { data: availability } = useAvailability(user.commune?.code);
   const mutation = useUserMutation();
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      const newUid = mutation.data.data.uid;
+      const newToken = mutation.data.data.authentication_token;
+      mutation.mutate({ uid: newUid, authentication_token: newToken });
+      setUid(newUid);
+      setToken(newToken);
+      onNextStep();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutation.isSuccess]);
 
   const [error, setError] = useState(false);
 
   return (
-    <Wrapper>
-      <Label>Je valide mes informations personnelles.</Label>
-      <SearchBarWrapper>
-        <SearchInput
-          initialValue={user.commune && user.commune.nom}
-          className={[
-            "left-0 right-0 top-0 w-full !transform-none text-[1.125rem]",
-            error && !user.commune ? "border-error" : "",
-          ].join(" ")}
-          handlePlaceSelection={(place) => {
-            mutateUser({ commune: place });
+    <>
+      <div className="z-[2] flex flex-1 flex-col overflow-y-auto pt-6">
+        <p className="order-1 font-light">
+          Vos choix ont bien été pris en compte&nbsp;! Merci de renseigner votre
+          email et votre ville ci-dessous afin de recevoir vos indicateurs.
+        </p>
+        <form
+          id="subscription-form-email"
+          className="order-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!user.commune) {
+              setError(true);
+            } else {
+              setError(false);
+              mutation.mutate(user);
+            }
           }}
-        />
-      </SearchBarWrapper>
-      {availability && !availability.availability && (
-        <StyledAlert error>
-          Les indicateurs de cette commune ne sont pas disponibles. Vous pouvez
-          quand même vous inscrire à la lettre d'information hebdomadaire si
-          vous le souhaitez
-        </StyledAlert>
-      )}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!user.commune) {
-            setError(true);
-          } else {
-            setError(false);
-            mutation.mutate(user);
-          }
-        }}
-      >
-        <MailInput
-          type="email"
-          name="email"
-          title="Entrez votre email (obligatoire)"
-          placeholder="Entrez votre email (obligatoire)"
-          value={user.mail}
-          onChange={({ value }) => mutateUser({ mail: value })}
-          required
-          autoComplete="email"
-        />
-        <DataDisclaimer>
-          <p>
-            Les{" "}
-            <MagicLink to="https://recosante.beta.gouv.fr/donnees-personnelles">
-              données collectées
-            </MagicLink>{" "}
-            lors de votre inscription sont utilisées dans le cadre d’une mission
-            de service public dont les responsables de traitement sont la DGS et
-            la DGPR. Recosanté suit l’ouverture et les interactions avec les
-            emails reçus. Vous pouvez à tout moment vous opposer à ces
-            traitements en vous désinscrivant.
-          </p>
-        </DataDisclaimer>
-        <NavigationIdentity
-          setPreviousStep={props.setPreviousStep}
-          fetching={mutation.isLoading}
-        />
-      </form>
+        >
+          <MailInput
+            type="email"
+            name="email"
+            className="mx-auto max-w-xs xl:max-w-2xl"
+            title="Entrez votre email (obligatoire)"
+            placeholder="Entrez votre email (obligatoire)"
+            value={user.mail}
+            onChange={({ value }) => mutateUser({ mail: value })}
+            required
+            autoComplete="email"
+          />
+        </form>
+        <div className="relative order-2 mx-auto mb-4 w-full max-w-2xl">
+          <SearchInput
+            numberOfSuggestions={4}
+            initialValue={user.commune && user.commune.nom}
+            className={[
+              "left-0 right-0 top-0 mx-auto w-full !transform-none text-[1.125rem]",
+              error && !user.commune ? "!border-error" : "",
+            ].join(" ")}
+            handlePlaceSelection={(place) => {
+              mutateUser({ commune: place });
+            }}
+          />
+        </div>
+        {availability && !availability.availability && (
+          <StyledAlert error>
+            Les indicateurs de cette commune ne sont pas disponibles. Vous
+            pouvez quand même vous inscrire à la lettre d'information
+            hebdomadaire si vous le souhaitez
+          </StyledAlert>
+        )}
+
+        <p className="order-5 mb-12 pb-8 text-xs font-light text-footer">
+          Les{" "}
+          <MagicLink to="https://recosante.beta.gouv.fr/donnees-personnelles">
+            données collectées
+          </MagicLink>{" "}
+          lors de votre inscription sont utilisées dans le cadre d’une mission
+          de service public dont les responsables de traitement sont la DGS et
+          la DGPR. Recosanté suit l’ouverture et les interactions avec les
+          emails reçus. Vous pouvez à tout moment vous opposer à ces traitements
+          en vous désinscrivant.
+        </p>
+      </div>
       <Error error={mutation.error} reset={mutation.reset} />
-      <Success data={mutation.data} />
-    </Wrapper>
+    </>
   );
 }

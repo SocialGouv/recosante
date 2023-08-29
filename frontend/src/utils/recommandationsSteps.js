@@ -15,12 +15,13 @@ import Tec from "./icons/Tec";
 import Velo from "./icons/Velo";
 import Voiture from "./icons/Voiture";
 
-const steps = [
-  {
+const steps = {
+  activites: {
+    step: 1,
     name: "activites",
     title: "Activités",
     label:
-      "Je renseigne les activités que je pratique au moins 2h par semaine.",
+      "Je renseigne les activités que je pratique au moins 2h par semaine\u00a0:",
     options: [
       {
         value: "jardinage",
@@ -44,10 +45,11 @@ const steps = [
       },
     ],
   },
-  {
+  enfants: {
+    step: 2,
     name: "enfants",
     title: "Enfants",
-    label: "Je renseigne si je vis avec des enfants de moins de 6 ans.",
+    label: "Je renseigne si je vis avec des enfants de moins de 6 ans\u00a0:",
     options: [
       {
         value: "oui",
@@ -62,10 +64,11 @@ const steps = [
     ],
     exclusive: true,
   },
-  {
+  chauffage: {
+    step: 3,
     name: "chauffage",
     title: "Chauffage",
-    label: "Je renseigne le mode de chauffage de mon logement.",
+    label: "Je renseigne le mode de chauffage de mon logement\u00a0:",
     options: [
       {
         value: "bois",
@@ -84,10 +87,11 @@ const steps = [
       },
     ],
   },
-  {
+  deplacement: {
+    step: 4,
     name: "deplacement",
     title: "Transport",
-    label: "Je renseigne les modes de transport que j’utilise.",
+    label: "Je renseigne les modes de transport que j’utilise\u00a0:",
     options: [
       {
         value: "velo",
@@ -106,10 +110,11 @@ const steps = [
       },
     ],
   },
-  {
+  animaux_domestiques: {
+    step: 5,
     name: "animaux_domestiques",
     title: "Animaux",
-    label: "Je renseigne si je vis avec des animaux.",
+    label: "Je renseigne si je vis avec des animaux\u00a0:",
     options: [
       {
         value: "chat",
@@ -123,6 +128,6 @@ const steps = [
       },
     ],
   },
-];
+};
 
 export default steps;

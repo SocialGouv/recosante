@@ -25,12 +25,12 @@ export function useUser() {
 }
 
 export function useUserMutation() {
-  let [uid] = useQueryParam("user");
-  let [token] = useQueryParam("token");
   const queryClient = useQueryClient();
   return useMutation(
     (user) => {
       let url = `${apiUrl}/users/`;
+      let uid = new URLSearchParams(window.location.search).get("user");
+      let token = new URLSearchParams(window.location.search).get("token");
       const {
         uid: newUid,
         authentication_token: newToken,
@@ -47,6 +47,8 @@ export function useUserMutation() {
     },
     {
       onSettled: () => {
+        let uid = new URLSearchParams(window.location.search).get("user");
+        let token = new URLSearchParams(window.location.search).get("token");
         queryClient.invalidateQueries(["user", uid, token]);
       },
     }

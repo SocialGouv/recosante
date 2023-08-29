@@ -22,22 +22,16 @@ const wink = keyframes`
   }
 `;
 
-const Wrapper = styled.svg`
-  width: auto;
-  height: 3rem;
-  margin-bottom: -0.25rem;
-`;
 const Eye = styled.path`
   transform-origin: 50.5px 236px;
   animation: ${wink} 6000ms linear infinite;
 `;
 export default function Bois() {
   return (
-    <Wrapper
-      width="512"
-      height="512"
-      viewBox="0 0 512 512"
+    <svg
       fill="none"
+      className="-mb-1 !h-9 !w-9"
+      viewBox="0 0 512 512"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
@@ -48,6 +42,6 @@ export default function Bois() {
         d="M224.996 235.992C224.996 249.801 213.801 260.992 199.996 260.992C186.188 260.992 174.996 249.801 174.996 235.992C174.996 222.187 186.188 210.996 199.996 210.996C213.801 210.996 224.996 222.187 224.996 235.992Z"
         className="fill"
       />
-    </Wrapper>
+    </svg>
   );
 }

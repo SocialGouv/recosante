@@ -21,7 +21,7 @@ export default function TestNotifications() {
     data.applicationServerKey.application_server_key
   );
 
-  const notifications = useNotificationsPrompt("/sw.js", publicKey);
+  const notifications = useNotificationsPrompt("/sw-push.js", publicKey);
 
   return (
     <Web title={"Test"}>

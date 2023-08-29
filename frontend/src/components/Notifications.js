@@ -6,13 +6,10 @@ import Alert from "components/base/Alert";
 import Button from "components/base/Button";
 import Section from "components/base/Section";
 import UnloggedForm from "components/misc/UnloggedForm";
-import useIos from "hooks/useIos";
 import useNotificationsPrompt from "hooks/useNotificationsPrompt";
 import { useUser, useUserMutation } from "hooks/useUser";
 
 export default function Notifications() {
-  const ios = useIos();
-
   const { applicationServerKey } = useStaticQuery(
     graphql`
       query {
@@ -23,7 +20,7 @@ export default function Notifications() {
     `
   );
   const notifications = useNotificationsPrompt(
-    "/sw.js",
+    "/sw-push.js",
     applicationServerKey.application_server_key
   );
 
@@ -48,19 +45,10 @@ export default function Notifications() {
                 Vous recevez pour l'instant les{" "}
                 <strong>indicateurs par mail</strong>.
               </p>
-              {ios ? (
-                <p>
-                  Malheureusement les notifications ne sont pas disponibles sur
-                  iOS (iPhone et iPad). Vous pouvez ouvrir cette page sur un
-                  autre appareil si vous le souhaitez.
-                </p>
-              ) : (
-                <p>
-                  Si vous souhaitez changer pour activer les notifications sur
-                  cet appareil, cliquez ci-dessous (vous ne recevrez plus de
-                  mail).
-                </p>
-              )}
+              <p>
+                Si vous souhaitez changer pour activer les notifications sur cet
+                appareil, cliquez ci-dessous (vous ne recevrez plus de mail).
+              </p>
             </>
           ) : success ? (
             <p>
@@ -73,24 +61,15 @@ export default function Notifications() {
                 Vous recevez pour l'instant les{" "}
                 <strong>indicateurs par notifications.</strong>
               </p>
-              {ios ? (
-                <p>
-                  Malheureusement les notifications ne sont pas disponibles sur
-                  iOS (iPhone et iPad). Vous pouvez ouvrir cette page sur un
-                  autre appareil ou modifier votre profil pour choisir de les
-                  recevoir par mail.
-                </p>
-              ) : (
-                <p>
-                  Si vous souhaitez les recevoir sur cet appareil en
-                  particulier, cliquez ci-dessous (vous continuerez de les
-                  recevoir sur vos autres appareils)
-                </p>
-              )}
+              <p>
+                Si vous souhaitez les recevoir sur cet appareil en particulier,
+                cliquez ci-dessous (vous continuerez de les recevoir sur vos
+                autres appareils)
+              </p>
             </>
           )}
           <Button.Wrapper vertical>
-            {!success && !ios && (
+            {!success && (
               <Button
                 fetching={notifications.prompting}
                 onClick={() => {

@@ -30,7 +30,12 @@ export default function ModalProvider(props) {
               )
             ) {
               window?._paq?.push(["trackEvent", "Subscription", "Close"]);
-              setSubscription(value);
+              // delete user and token query param
+              const url = new URL(window.location);
+              url.searchParams.delete("user");
+              url.searchParams.delete("token");
+              window.history.replaceState({}, "", url);
+              setSubscription(null);
             }
           }
         },
