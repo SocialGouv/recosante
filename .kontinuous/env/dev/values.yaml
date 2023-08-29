@@ -3,6 +3,9 @@ global:
 
 pg:
   ~chart: pg
+  cnpg-cluster:
+    postgresqlParameters:
+      work_mem: 512MB
 
 api:
   ~needs: [build-api, seed-db]
