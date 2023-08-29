@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/SocialGouv/recosante/compare/v1.6.0...v1.7.0) (2023-08-29)
+
+
+### Features
+
+* google-site-verification meta tag ([#199](https://github.com/SocialGouv/recosante/issues/199)) ([01822db](https://github.com/SocialGouv/recosante/commit/01822db2eb3b774d5e54092452ee63478a16ac9b))
+
 # [1.6.0](https://github.com/SocialGouv/recosante/compare/v1.5.3...v1.6.0) (2023-08-29)
 
 
