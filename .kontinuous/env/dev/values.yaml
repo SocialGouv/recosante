@@ -6,6 +6,9 @@ pg:
   cnpg-cluster:
     postgresqlParameters:
       work_mem: 512MB
+    monitoring:
+      ~tpl~enablePodMonitor: "true"
+
 
 api:
   ~needs: [build-api, seed-db]
