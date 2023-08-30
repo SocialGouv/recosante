@@ -62,7 +62,7 @@ Notre stack technique est principalement composée de :
 - back-end : Python, Flask, Celery / Redis, PostgreSQL.
 - hébergement et autres services : Docker, Kubernetes, Brevo (ex Sendinblue).
 
-### shema simplifié d'architecture
+### Schéma simplifié d'architecture
 
 ```mermaid
 flowchart TD
@@ -113,6 +113,90 @@ flowchart TD
     indiceSchema-->|requêtes|indiceLib
     indiceLib-->|requêtes|api
 ```
+
+## Récolte des données pour les indicateurs
+
+### Baignades
+
+1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
+2. de ce code INSEE on requête notre base de données (table indice_schema/commune) qui contient 35096 communes, afin de récupérer le code du département (01, 02, 03...)
+3. de ce code département on récupère aussi un `idCarte` (`fra`, `reu`, `may`, `guy`, `mar`...)
+4. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/siteList.do?idCarte={0}&insee_com={1}&code_dept={2}&f=json` avec les paramètres récupérés précédemment afin de récupérer la liste des sites de baignades concernés
+5. on crée un code département `dptddass` (le code département en 3 chiffres, précédés de 0 si nécessaire)
+6. on extrait de la requête effectuée en 4 un `isite` grâce auquel on compose un nouvel id de site `idSite` (`{dptddass}{isite}`)
+7. on calcule l'année concernée, différente selon les hémisphères
+8. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass={0}&site={1}&annee={2}` qui renvoie un html
+9. on parse ce html afin de retrouver les informations que l'on souhaite: Début de la saison, Fin de la saison, Interdictions le cas échéant, Observations, Échantillons, Rang.
+10. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/baignades.py#L65) l'ensemble des informations disponibles
+
+### Potentiel Radon
+
+Le Potentiel Radon n'est pas une donnée dynamique
+
+1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
+2. de ce code INSEE on requête notre base de données (table indice_schema/potentiel_radon) qui contient 35002 communes, afin de récupérer le potentiel (entre 1 et 3)
+3. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L89)
+
+### Indice UV
+
+1. chaque matin à 7h un fichier `YYYYMMDD.csv` contenant les indices UV de la journée est déposé par une tierce partie sur un bucket Clever Cloud. Ce fichier est structuré de cette manière pour quelques 36608 communes: `Code insee`, `Commune`, `Date`, `UV_J0`, `UV_J1`, `UV_J2`, `UV_J3`.
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#148) est exécuté toute les heures pour se connecter via FTP au bucket et [récupérer les indices UV](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/indice_uv.py#L30).
+3. toutes les données sont enregistrées en base de données dans la table `indice_schema/indice_uv` (19 millions de lignes fin août 2023)
+4. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L130)
+
+### RAEP (Risque d'allergie lié à l'exposition aux pollens)
+
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#143) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/raep.py#L81) non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données à une date précise pour chaque département de France métropolitaine
+3. on parse ce CSV et on alimente notre base de données dans la table `indice_schema/raep`
+4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
+5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L120)
+
+### Vigilance météo
+
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#145) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/vigilance_meteo.py#L77) authentifiée vers `https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours` qui renvoie un JSON avec touts les données à la date d'aujourd'hui
+3. ce json est parsé et on alimente notre base de données dans la table `indice_schema/vigilance_meteo`, avec des données par département
+4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
+5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#106)
+
+### Indices ATMO
+
+Cette partie est la plus délicate :) puisqu'elle nécessite de récupérer des données de beaucoup de sources différentes, par région
+
+#### Auvergne-Rhône-Alpes
+
+#### Bourgogne-Franche-Comté
+
+#### Bretagne
+
+#### Centre-Val de Loire
+
+#### Corse
+
+#### Grand Est
+
+#### Guadeloupe
+
+#### Guyane
+
+#### Hauts-de-France
+
+#### Île-de-France
+
+#### Martinique
+
+#### Mayotte
+
+#### Normandie
+
+#### Nouvelle-Aquitaine
+
+#### Occitanie
+
+#### Pays de la Loire
+
+#### Réunion
+
+#### Sud
 
 ## Développement
 
@@ -225,12 +309,7 @@ Il faut que les `.venv` des projets soient installés avec `poetry` pour que `vs
 
 ```json
 {
-  "isort.args": [
-    "--known-local-folder",
-    "ecosante",
-    "--known-local-folder",
-    "tests"
-  ]
+  "isort.args": ["--known-local-folder", "ecosante", "--known-local-folder", "tests"]
 }
 ```
 
