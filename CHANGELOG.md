@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/SocialGouv/recosante/compare/v1.7.0...v1.7.1) (2023-08-31)
+
+
+### Bug Fixes
+
+* **front:** web notifs ios ([#202](https://github.com/SocialGouv/recosante/issues/202)) ([91975fa](https://github.com/SocialGouv/recosante/commit/91975fa47b7e12e32a84436e16838f3162d10199))
+
 # [1.7.0](https://github.com/SocialGouv/recosante/compare/v1.6.0...v1.7.0) (2023-08-29)
 
 
