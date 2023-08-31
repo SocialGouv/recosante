@@ -9,7 +9,6 @@ pg:
     monitoring:
       ~tpl~enablePodMonitor: "true"
 
-
 api:
   ~needs: [build-api, seed-db]
 
