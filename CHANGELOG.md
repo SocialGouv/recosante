@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/SocialGouv/recosante/compare/v1.7.1...v1.7.2) (2023-08-31)
+
+
+### Bug Fixes
+
+* **frontend:** background color pwa ([1170353](https://github.com/SocialGouv/recosante/commit/1170353036aefc2284920d75af13f29045ae46b7))
+
 ## [1.7.1](https://github.com/SocialGouv/recosante/compare/v1.7.0...v1.7.1) (2023-08-31)
 
 
