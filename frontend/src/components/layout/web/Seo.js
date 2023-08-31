@@ -70,6 +70,10 @@ const SEO = (props) => {
         name="google-site-verification"
         content="B5n63rvRKk7tboZXL2L6x56_O4gbl8NQbD_lNhzih0M"
       />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="#000091" />
+      <link rel="manifest" href="/recosante.webmanifest" />
     </Helmet>
   );
 };

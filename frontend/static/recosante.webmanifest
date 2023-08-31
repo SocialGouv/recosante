@@ -1,0 +1,9 @@
+{
+  "name": "Recosanté",
+  "short_name": "Recosanté",
+  "theme_color": "#000091",
+  "background_color": "#ffffff",
+  "display": "fullscreen",
+  "scope": "./",
+  "start_url": "./"
+}
