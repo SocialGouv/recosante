@@ -46,7 +46,7 @@
     "node-sass": "^9.0.0",
     "panini": "^1.7.2",
     "postcss": "^8.4.24",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.0",
     "siphon-media-query": "^1.0.0",
     "stylelint": "^15.6.2",
     "stylelint-config-standard-scss": "^9.0.0",
