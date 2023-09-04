@@ -25,4 +25,3 @@ jobs:
       with:
         seedPath: ./seeds.sql
         #pgSecretName: pg-superuser
-
