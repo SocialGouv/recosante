@@ -24,4 +24,5 @@ jobs:
       ~needs: [pg]
       with:
         seedPath: ./seeds.sql
+        pgSecretName: pg-superuser
 
