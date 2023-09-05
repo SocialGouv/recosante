@@ -62,7 +62,7 @@ Notre stack technique est principalement composée de :
 - back-end : Python, Flask, Celery / Redis, PostgreSQL.
 - hébergement et autres services : Docker, Kubernetes, Brevo (ex Sendinblue).
 
-### shema simplifié d'architecture
+### Schéma simplifié d'architecture
 
 ```mermaid
 flowchart TD
@@ -113,6 +113,154 @@ flowchart TD
     indiceSchema-->|requêtes|indiceLib
     indiceLib-->|requêtes|api
 ```
+
+## Récolte des données pour les indicateurs
+
+### Baignades
+
+1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
+2. de ce code INSEE on requête notre base de données (table indice_schema/commune) qui contient 35096 communes, afin de récupérer le code du département (01, 02, 03...)
+3. de ce code département on récupère aussi un `idCarte` (`fra`, `reu`, `may`, `guy`, `mar`...)
+4. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/siteList.do?idCarte={0}&insee_com={1}&code_dept={2}&f=json` avec les paramètres récupérés précédemment afin de récupérer la liste des sites de baignades concernés
+5. on crée un code département `dptddass` (le code département en 3 chiffres, précédés de 0 si nécessaire)
+6. on extrait de la requête effectuée en 4 un `isite` grâce auquel on compose un nouvel id de site `idSite` (`{dptddass}{isite}`)
+7. on calcule l'année concernée, différente selon les hémisphères
+8. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass={0}&site={1}&annee={2}` qui renvoie un html
+9. on parse ce html afin de retrouver les informations que l'on souhaite: Début de la saison, Fin de la saison, Interdictions le cas échéant, Observations, Échantillons, Rang.
+10. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/baignades.py#L65) l'ensemble des informations disponibles
+
+### Potentiel Radon
+
+Le Potentiel Radon n'est pas une donnée dynamique
+
+1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
+2. de ce code INSEE on requête notre base de données (table indice_schema/potentiel_radon) qui contient 35002 communes, afin de récupérer le potentiel (entre 1 et 3)
+3. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L89)
+
+### Indice UV
+
+1. chaque matin à 7h un fichier `YYYYMMDD.csv` contenant les indices UV de la journée est déposé par une tierce partie sur un bucket Clever Cloud. Ce fichier est structuré de cette manière pour quelques 36608 communes: `Code insee`, `Commune`, `Date`, `UV_J0`, `UV_J1`, `UV_J2`, `UV_J3`.
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#148) est exécuté toute les heures pour se connecter via FTP au bucket et [récupérer les indices UV](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/indice_uv.py#L30).
+3. toutes les données sont enregistrées en base de données dans la table `indice_schema/indice_uv` (19 millions de lignes fin août 2023)
+4. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L130)
+
+### RAEP (Risque d'allergie lié à l'exposition aux pollens)
+
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#143) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/raep.py#L81) non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données à une date précise pour chaque département de France métropolitaine
+3. on parse ce CSV et on alimente notre base de données dans la table `indice_schema/raep`
+4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
+5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L120)
+
+### Vigilance météo
+
+2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#145) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/vigilance_meteo.py#L77) authentifiée vers `https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours` qui renvoie un JSON avec touts les données à la date d'aujourd'hui
+3. ce json est parsé et on alimente notre base de données dans la table `indice_schema/vigilance_meteo`, avec des données par département
+4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
+5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#106)
+
+### Indices ATMO
+
+Cette partie est la plus délicate :) puisqu'elle nécessite de récupérer des données de beaucoup de sources différentes, par région
+
+1. Un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#138) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/b2c828cedb065b57c7d151377418b9dcf348edb0/libs/indice_pollution/indice_pollution/regions/__init__.py#L172) vers une API ou un site sur lequel on peut scrapper les données et les récupérer en format JSON. Si les données sont récupérées par une API alors les formats sont généralement identiques (format normalisé) même si les données peuvent être récupérées sur différents sites selon les régions.
+2. Pour chaque code insee(zone_id), on associe les données `no2`, `so2`, `o3`, `pm10`, `pm25`, `valeur`, `date_ech` (date de la journée prédite) et `date_diff`(date lorsque la prédiction a été effectuée) pour ensuite alimenter la base de données `indice_schema/IndiceATMO`, en mettant à jour les données existantes s'il y en a.
+3. Le frontend fait une requête avec le code INSEE de la commune, et le backend trouve la zone associée dans la base de données.
+4. Ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#85)
+
+Pour chaque région, voici le détail concernant la récupération des données avec l'API ou le scrapping :
+
+#### Auvergne-Rhône-Alpes
+
+Scrapping (mais en réalité simple requête API) : Requête authentifiée vers `https://api.atmo-aura.fr/api/v1/communes/{insee}/indices/atmo?api_token={api_key}&date_debut_echeance={date_}` qui renvoie un JSON avec toutes les données à partir de la date du jour.
+
+#### Bourgogne-Franche-Comté
+
+Requête API non authentifiée vers `https://atmo-bfc.iad-informatique.com/geoserver/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
+
+#### Bretagne
+
+Requête API non authentifiée vers `https://data.airbreizh.asso.fr/geoserver/ind_bretagne/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
+
+#### Centre-Val de Loire
+
+Requête API non authentifiée vers `https://geo.api.gouv.fr/communes/{insee}` pour récupérer le code postal de la ville, puis requête vers `http://www.ligair.fr/ville/city` pour récupérer le nom de la ville dans le bon format pour ensuite scrapper `http://www.ligair.fr/commune/{ville_bon_format}` pour récupérer les polluants responsables des dégradations de la qualité de l'air.
+
+#### Corse
+
+Requête API non authentifiée vers `https://services9.arcgis.com/VQopoXNvUqHYZHjY/arcgis/rest/services/indice_atmo_communal_corse/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
+
+#### Grand Est
+
+Requête API non authentifiée vers `https://opendata.arcgis.com/api/v3/datasets/b0d57e8f0d5e4cb786cb554eb15c3bcb_0/downloads/data?format=geojson&spatialRefId=4326` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Guadeloupe
+
+[À PRÉCISER]
+Requête sur `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query`: il s'agit d'une page où il faudrait faire du scrapping - mais aucun signe de scrapping dans la codebase 🧐.
+
+#### Guyane
+
+Requête API non authentifiée vers `https://dservices8.arcgis.com/5JImMrIjAqUJnR3H/arcgis/services/ind_guyane_nouvel_indice/WFSServer?service=wfs&version=2.0.0&request=getfeature&typeName=ind_guyane_nouvel_indice:ind_guyane_agglo&outputFormat=GEOJSON` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Hauts-de-France
+
+Requête sur `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query`: il s'agit d'une page où il faudrait faire du scrapping - mais aucun signe de scrapping dans la codebase 🧐.
+
+#### Île-de-France
+
+Requête API authentifiée vers `https://api.airparif.asso.fr/indices/prevision/commune?insee={insee}` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Martinique
+
+Requête API non authentifiée vers `https://services1.arcgis.com/y8pKCLYeLI1K2217/arcgis/rest/services/Indice_QA/FeatureServer/0/query?where=1=1&f=json&returnGeometry=False&orderByFields=ESRI_OID&outFields=*` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Mayotte
+
+Pas de données récupérées.
+
+#### Normandie
+
+Requête API non authentifiée vers `https://api.atmonormandie.fr/index.php/lizmap/service/?project=flux_indice_atmo_normandie&repository=dindice&OUTPUTFORMAT=GeoJSON&SERVICE=WFS&REQUEST=GetFeature&dl=1&TYPENAME=ind_normandie_3jours&VERSION=1.0.0` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Nouvelle-Aquitaine
+
+Requête API non authentifiée vers `https://opendata.atmo-na.org/geoserver/alrt3j_nouvelle_aquitaine/wfs?service=wfs&request=getfeature&typeName=alrt3j_nouvelle_aquitaine:alrt3j_nouvelle_aquitaine&outputFormat=json&PropertyName=code_zone,lib_zone,date_ech,date_dif,code_pol,lib_pol,etat,couleur,com_court,com_long` qui renvoie un GeoJSON du type suivant, que l'on mappe ensuite avec notre schéma de données:
+
+```
+{
+    "type": "Feature",
+    "id": "alrt3j_nouvelle_aquitaine.26",
+    "geometry": null,
+    "properties": {
+        "code_zone": "17",
+        "lib_zone": "CHARENTE-MARITIME",
+        "date_ech": "2023-09-05T10:00:00Z",
+        "date_dif": "2023-09-04T16:16:34.233Z",
+        "code_pol": "1",
+        "lib_pol": "Dioxyde de soufre",
+        "etat": "PAS DE DEPASSEMENT",
+        "couleur": "#19ff19",
+        "com_court": null,
+        "com_long": null
+    }
+}
+```
+
+#### Occitanie
+
+Requête API non authentifiée vers `https://geo.api.gouv.fr/communes/{insee}` pour récupérer le nom de la ville dans son bon format pour ensuite scrapper `https://www.atmo-occitanie.org/{ville_bon_format}`.
+
+#### Pays de la Loire
+
+Requête API non authentifiée vers `https://data.airpl.org/geoserver/ind_pays_de_la_loire/wfs?version=2.0.0&typeName=ind_pays_de_la_loire:ind_pays_de_la_loire&service=WFS&outputFormat=application/json&request=GetFeature&CQL_FILTER=date_ech >= '2023-09-04T00:00:00Z'` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
+
+#### Réunion
+
+Pas de données récupérées.
+
+#### Sud
+
+Requête API non authentifiée vers `https://geoservices.atmosud.org/geoserver/ind_sudpaca/ows?service=WFS&version=1.1.0&request=GetFeature&typeName=ind_sudpaca:ind_sudpaca&CQL_FILTER=date_ech >= '2023-09-04T00:00:00Z'&outputFormat=json` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
 
 ## Développement
 
@@ -225,12 +373,7 @@ Il faut que les `.venv` des projets soient installés avec `poetry` pour que `vs
 
 ```json
 {
-  "isort.args": [
-    "--known-local-folder",
-    "ecosante",
-    "--known-local-folder",
-    "tests"
-  ]
+  "isort.args": ["--known-local-folder", "ecosante", "--known-local-folder", "tests"]
 }
 ```
 
