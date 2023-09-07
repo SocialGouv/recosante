@@ -73,7 +73,7 @@ def configure_celery(flask_app=None):
         database is closed on task completion"""
         abstract = True
 
-        def after_return(self):
+        def after_return(self, *args, **kwargs):
             db.session.remove()
 
     celery.Task = SqlAlchemyTask
