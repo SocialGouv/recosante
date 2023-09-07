@@ -33,7 +33,7 @@ jobs:
             echo "Data already loaded"
         else
             echo "Init database"
-            psql -b /workspace/seeds.sql
+            psql -b < /workspace/seeds.sql
         fi
         
 
