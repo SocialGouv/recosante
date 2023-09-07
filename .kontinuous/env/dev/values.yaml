@@ -20,9 +20,20 @@ indice:
 jobs:
   runs:
     seed-db:
-      use: seed-db
       ~needs: [pg]
-      with:
-        seedPath: ./seeds.sql
-        #pgSecretName: pg-superuser
+      retry: 3
+      checkout: true
+      image: ghcr.io/socialgouv/docker/psql:7.0.0
+      envFrom:
+        - secretRef:
+            name: "{{ $.Values.global.pgSecretName }}"
+      run: |
+        if [[ $(psql -c "\dt public.alembic_version") ]]
+        then
+            echo "Data already loaded"
+        else
+            echo "Init database"
+            psql -b /workspace/seeds.sql
+        fi
+        
 
