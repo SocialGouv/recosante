@@ -160,6 +160,8 @@ def all_tasks():
 
     tasks.append(save_all_indices.s(
         "indice_pollution.history.models.indice_uv", "IndiceUv", scheduled_datetime))
+    
+    return tasks
 
 
 def init_app(app):
