@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/SocialGouv/recosante/compare/v1.7.2...v1.8.0) (2023-09-11)
+
+
+### Features
+
+* test new cron schedule for newsletter ([5c7abdb](https://github.com/SocialGouv/recosante/commit/5c7abdbab247c367a9ac2e14b899f3d9b8d562c4))
+
 ## [1.7.2](https://github.com/SocialGouv/recosante/compare/v1.7.1...v1.7.2) (2023-08-31)
 
 
