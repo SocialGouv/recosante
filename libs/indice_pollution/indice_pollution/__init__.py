@@ -73,6 +73,7 @@ def configure_celery(flask_app=None):
         database is closed on task completion"""
         abstract = True
 
+        # pylint: disable-next=unused-argument
         def after_return(self, *args, **kwargs):
             db.session.remove()
 
@@ -160,7 +161,7 @@ def all_tasks():
 
     tasks.append(save_all_indices.s(
         "indice_pollution.history.models.indice_uv", "IndiceUv", scheduled_datetime))
-    
+
     return tasks
 
 
