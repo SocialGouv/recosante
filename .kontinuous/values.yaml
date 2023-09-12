@@ -32,7 +32,7 @@ api:
         name: celery-configmap
   env:
     - name: SQLALCHEMY_DATABASE_URI
-      value: "postgresql://$(PGUSER):$(PGPASSWORD)@$(PGHOST):$(PGPORT)/$(PGDATABASE)?sslmode=disable"
+      value: "postgresql://$(PGUSER):$(PGPASSWORD)@$(PGHOST):$(PGPORT)/$(PGDATABASE)?sslmode=require"
     - name: ROOT_URL
       value: "https://{{ tpl .Values.global.apiHost . }}"
     - name: FRONTEND_URL
@@ -88,7 +88,7 @@ indice:
         name: celery-configmap
   env:
     - name: SQLALCHEMY_DATABASE_URI
-      value: "postgresql://$(PGUSER):$(PGPASSWORD)@$(PGHOST):$(PGPORT)/$(PGDATABASE)?sslmode=disable"
+      value: "postgresql://$(PGUSER):$(PGPASSWORD)@$(PGHOST):$(PGPORT)/$(PGDATABASE)?sslmode=require"
     - name: FS_BUCKET_URL
       valueFrom:
         secretKeyRef:
