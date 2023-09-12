@@ -40,6 +40,6 @@ jobs:
       kubernetes: true
       image: bitnami/kubectl
       run: |
-        indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep indice)
-        kubectl exec $indice_pod -- .venv/bin/python call_all_tasks.py
+        indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
+        kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
 
