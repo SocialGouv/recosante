@@ -37,7 +37,7 @@ jobs:
       # and not wait for the hourly cron
       ~needs: [indice]
       checkout: false
-      kube: true
+      kubernetes: true
       image: bitnami/kubectl
       run: |
         indice_pod=$(kubectl get pods -o name  | grep indice)
