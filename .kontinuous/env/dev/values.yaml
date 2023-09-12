@@ -31,5 +31,15 @@ jobs:
             echo "Init database"
             psql -b < /workspace/seeds.sql
         fi
-        
+
+    launch-celery-tasks:
+      # launch all celery tasks immediately in dev to start refreshing data
+      # and not wait for the hourly cron
+      ~needs: [indice]
+      checkout: false
+      kube: true
+      image: bitnami/kubectl
+      run: |
+        indice_pod=$(kubectl get pods -o name  | grep indice)
+        kubectl exec $pod -- .venv/bin/python call_all_tasks.py
 
