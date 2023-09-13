@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/SocialGouv/recosante/compare/v1.8.0...v1.9.0) (2023-09-13)
+
+
+### Features
+
+* **frontend:** filter articles by category ([#203](https://github.com/SocialGouv/recosante/issues/203)) ([04021fc](https://github.com/SocialGouv/recosante/commit/04021fcfed86d36a49bb3c97a5f00b4f66937503))
+
 # [1.8.0](https://github.com/SocialGouv/recosante/compare/v1.7.2...v1.8.0) (2023-09-11)
 
 
