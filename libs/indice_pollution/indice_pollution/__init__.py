@@ -73,7 +73,8 @@ def configure_celery(flask_app=None):
         database is closed on task completion"""
         abstract = True
 
-        def after_return(self):
+        # pylint: disable-next=unused-argument
+        def after_return(self, *args, **kwargs):
             db.session.remove()
 
     celery.Task = SqlAlchemyTask
@@ -113,6 +114,16 @@ def setup_periodic_tasks(sender, **kwargs):
         routing_key='save_indices.save_all'
     )
 
+    for task in all_tasks():
+        add_periodic_task(sig=task)
+
+
+def call_tasks_now():
+    for task in all_tasks():
+        task.apply_async(queue='save_indices', routing_key='save_indices.save_all')
+
+
+def all_tasks():
     regions = [
         'Auvergne-Rhône-Alpes',
         'Bourgogne-Franche-Comté',
@@ -133,20 +144,25 @@ def setup_periodic_tasks(sender, **kwargs):
         "Réunion",
         "Sud"
     ]
+
     scheduled_datetime = datetime.now().isoformat()
+    tasks = []
+
     for region in regions:
-        add_periodic_task(sig=save_all_indices.s(
+        tasks.append(save_all_indices.s(
             f"indice_pollution.regions.{region}", "Forecast", scheduled_datetime))
-        add_periodic_task(sig=save_all_indices.s(
+        tasks.append(save_all_indices.s(
             f"indice_pollution.regions.{region}", "Episode", scheduled_datetime))
 
-    add_periodic_task(sig=save_all_indices.s(
+    tasks.append(save_all_indices.s(
         "indice_pollution.history.models.raep", "RAEP", scheduled_datetime))
-    add_periodic_task(sig=save_all_indices.s(
+    tasks.append(save_all_indices.s(
         "indice_pollution.history.models.vigilance_meteo", "VigilanceMeteo", scheduled_datetime))
 
-    add_periodic_task(sig=save_all_indices.s(
+    tasks.append(save_all_indices.s(
         "indice_pollution.history.models.indice_uv", "IndiceUv", scheduled_datetime))
+
+    return tasks
 
 
 def init_app(app):

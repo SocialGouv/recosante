@@ -1,17 +1,45 @@
+global:
+  pgSecretName: pg-app
+
+pg:
+  ~chart: pg
+  cnpg-cluster:
+    postgresqlParameters:
+      work_mem: 512MB
+
 api:
   ~needs: [build-api, seed-db]
 
 indice:
-  ~needs: [build-indice, seed-db]
+  ~needs: [build-indice, api]
 
 jobs:
   runs:
-    create-db:
-      use: create-db
-      with:
-        useAzureFlex: "true"
     seed-db:
-      use: seed-db
-      ~needs: [create-db]
-      with:
-        seedPath: ./seeds.sql
+      ~needs: [pg]
+      retry: 3
+      checkout: true
+      image: ghcr.io/socialgouv/docker/psql:7.0.0
+      envFrom:
+        - secretRef:
+            name: "{{ $.Values.global.pgSecretName }}"
+      run: |
+        if [[ $(psql -c "\dt public.alembic_version") ]]
+        then
+            echo "Data already loaded"
+        else
+            echo "Init database"
+            psql -b < /workspace/seeds.sql
+        fi
+
+    launch-celery-tasks:
+      # launch all celery tasks immediately in dev to start refreshing data
+      # and not wait for the hourly cron
+      ~needs: [indice]
+      checkout: false
+      kubernetes: true
+      image: bitnami/kubectl
+      run: |
+        indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
+        kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
+
