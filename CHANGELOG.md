@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/SocialGouv/recosante/compare/v1.9.0...v1.9.1) (2023-09-15)
+
+
+### Bug Fixes
+
+* newsletter cron schedule back to early ([09f58d5](https://github.com/SocialGouv/recosante/commit/09f58d557a756e61a03cf7e413bc41765e8ff7e3))
+
 # [1.9.0](https://github.com/SocialGouv/recosante/compare/v1.8.0...v1.9.0) (2023-09-13)
 
 
