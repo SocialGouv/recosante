@@ -4,9 +4,9 @@ dependencies:
   fabrique:
     extends:
       - name: ovh
-        ifEnv: [dev,preprod]
+        ifEnv: [dev]
       - name: buildkit-service
-        ifEnv: [dev,preprod]
+        ifEnv: [dev]
     dependencies:
       contrib:
         preDeploy:
