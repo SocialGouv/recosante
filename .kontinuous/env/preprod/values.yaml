@@ -1,5 +1,6 @@
 global:
   pgSecretName: pg-app
+  projectName: recosante
 
 pg:
   ~chart: pg
