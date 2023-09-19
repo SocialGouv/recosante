@@ -143,3 +143,5 @@ def create_app(testing=False):
     rebar.init_app(app)
 
     return app
+
+app = create_app()

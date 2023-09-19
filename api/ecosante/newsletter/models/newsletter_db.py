@@ -24,6 +24,7 @@ from ecosante.utils.funcs import generate_line
 class NewsletterDB(db.Model, Newsletter):
     __tablename__ = "newsletter"
 
+    print('######### 1')
     # pylint: disable-next=invalid-name
     id: int = db.Column(db.Integer, primary_key=True)
     short_id: str = db.Column(
@@ -184,10 +185,13 @@ class NewsletterDB(db.Model, Newsletter):
                              IndiceUv.zone_id, IndiceUv.date]),
     )
 
+    print('######### 2')
     # pylint: disable-next=too-many-statements
     def __init__(self, newsletter: Newsletter, mail_list_id=None):
         # pylint: disable=line-too-long
+        print('######### 3')
         super().__init__()
+        print('######### 4')
         self.inscription = newsletter.inscription
         self.inscription_id = newsletter.inscription.id
         self.lien_aasqa = newsletter.inscription.commune.departement.region.aasqa_website if newsletter.inscription.commune.departement else ""
@@ -240,10 +244,14 @@ class NewsletterDB(db.Model, Newsletter):
         self.vigilance_globale_id = newsletter.vigilance_globale.id if self.vigilance_globale else None
         self.vigilance_globale_recommandation = newsletter.vigilance_globale_recommandation
         self.vigilance_globale_recommandation_id = newsletter.vigilance_globale_recommandation.id if self.vigilance_globale_recommandation else None
+        self.forecast = {}
+        self.validite_raep = {}
+        print('######### 5')
         # pylint: enable=line-too-long
 
     @property
     def vigilances_dict(self):
+        print('######### 6')
         max_couleur = VigilanceMeteo.make_max_couleur(
             list(filter(None, map(lambda ph: getattr(
                 self, f"vigilance_{ph}"), self.phenomenes_sib.values())))
@@ -266,9 +274,11 @@ class NewsletterDB(db.Model, Newsletter):
         if self.vigilance_globale_recommandation:
             # pylint: disable-next=line-too-long
             to_return['VIGILANCE_GLOBALE_RECOMMANDATION'] = self.vigilance_globale_recommandation.recommandation_sanitized
+        print('######### 7')
         return to_return
 
     def attributes(self):
+        print('######### 8')
         noms_sous_indices = ['no2', 'so2', 'o3', 'pm10', 'pm25']
 
         def get_sous_indice(nom):
@@ -278,6 +288,7 @@ class NewsletterDB(db.Model, Newsletter):
                 return next(filter(lambda s: s.get('polluant_name', '').lower() == nom.lower(), self.sous_indices))
             except StopIteration:
                 return {}
+        print('######### 9')
         return {
             # pylint: disable=line-too-long
             **{
@@ -327,6 +338,7 @@ class NewsletterDB(db.Model, Newsletter):
             # pylint: enable=line-too-long
         }
 
+    print('######### 10')
     header = [
         'EMAIL', 'RECOMMANDATION', 'LIEN_AASQA', 'NOM_AASQA', 'PRECISIONS', 'QUALITE_AIR', 'VILLE', 'VILLE_CODE',
         'VILLE_SLUG', 'BACKGROUND_COLOR', 'SHORT_ID', 'POLLUANT', 'LIEN_RECOMMANDATIONS_ALERTE', 'SHOW_RAEP', 'RAEP',
@@ -351,6 +363,7 @@ class NewsletterDB(db.Model, Newsletter):
 
     @property
     def webpush_data(self):
+        print('######### 11')
         commune = self.inscription.commune
         with different_locale('fr_FR.utf8'):
             title = f'{commune.nom.capitalize()}, le {date.today().strftime("%A %d %B")}'
