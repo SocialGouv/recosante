@@ -1,3 +1,14 @@
+## [1.9.2](https://github.com/SocialGouv/recosante/compare/v1.9.1...v1.9.2) (2023-09-19)
+
+
+### Bug Fixes
+
+* keep preprod on azure ([b63b11d](https://github.com/SocialGouv/recosante/commit/b63b11d8ae8ff87be440933d62ded531ced29e62))
+* Move projectName to config ([17e296a](https://github.com/SocialGouv/recosante/commit/17e296a07ca8522ef094e0fa4074c35bf61aa71d))
+* projectName empty ([daf4d02](https://github.com/SocialGouv/recosante/commit/daf4d0274c2b56b706c912d998558ad2638a447f))
+* use cnpg + ovh in dev ([#197](https://github.com/SocialGouv/recosante/issues/197)) ([13616e9](https://github.com/SocialGouv/recosante/commit/13616e94d2a884876bcc8c307f3eb233514367f7))
+* use cnpg for preprod ([d617909](https://github.com/SocialGouv/recosante/commit/d6179094b644efbe62c8b1a171cbc78fed3d7562))
+
 ## [1.9.1](https://github.com/SocialGouv/recosante/compare/v1.9.0...v1.9.1) (2023-09-15)
 
 
