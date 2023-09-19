@@ -299,7 +299,7 @@ class Inscription(db.Model):
         return db.session.query(cls)\
             .filter(
                 # pylint: disable-next=singleton-comparison
-                (Inscription.deactivation_date == None) | (Inscription.deactivation_date > date.today()))\
+                (Inscription.deactivation_date.is_(None)) | (Inscription.deactivation_date > date.today()))\
             .filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None))\
             .filter(Inscription.mail != "", Inscription.mail.isnot(None))
 
@@ -427,31 +427,31 @@ class Inscription(db.Model):
             if type_ == 'quotidien':
                 query_nl = query_nl.filter(
                     # pylint: disable-next=singleton-comparison
-                    NewsletterDB.newsletter_hebdo_template_id == None,
+                    NewsletterDB.newsletter_hebdo_template_id.isnot(None),
                     or_(
                         and_(
                             NewsletterDB.inscription.has(
                                 Inscription.indicateurs.contains(['indice_atmo'])),
-                            NewsletterDB.label is not None,
+                            NewsletterDB.label.isnot(None),
                             NewsletterDB.label != ""
                         ),
                         and_(
                             NewsletterDB.inscription.has(
                                 Inscription.indicateurs.contains(['raep'])),
-                            NewsletterDB.raep is not None
+                            NewsletterDB.raep.isnot(None)
                         )
                     )
                 )
             elif type_ == 'hebdomadaire':
                 query_nl = query_nl.filter(
-                    NewsletterDB.newsletter_hebdo_template_id is not None)
+                    NewsletterDB.newsletter_hebdo_template_id.isnot(None))
             query = query.filter(Inscription.id.notin_(query_nl))
         query = query\
             .filter(or_(
-                Inscription.indicateurs_frequence is None,
+                Inscription.indicateurs_frequence.is_(None),
                 ~Inscription.indicateurs_frequence.contains(["hebdomadaire"]))
             )\
-            .filter(Inscription.commune_id is not None)\
+            .filter(Inscription.commune_id.isnot(None))\
             .filter(Inscription.date_inscription < str(date.today()))
 
         if type_ == 'hebdomadaire':

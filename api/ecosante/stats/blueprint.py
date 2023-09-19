@@ -258,7 +258,7 @@ def stats_email():
             ) - Inscription.date_inscription
         ) / func.count(Inscription.id)
     ).filter(
-        Inscription.date_inscription is not None
+        Inscription.date_inscription.isnot(None)
     ).one_or_none()
     to_return = {
         "active_users": json.dumps(active_users),
