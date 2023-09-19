@@ -14,12 +14,31 @@ from ecosante.utils.cache import cache_lock, cache_unlock
 from ecosante.utils.healthchecksio import ping
 from ecosante.utils.send_log_mail import send_log_mail
 
+
+
 def get_all_contacts(limit=100):
-    current_app.logger.info(f"Faking get_all_contacts with limit={limit}")
     return []
+    # contacts_api = sib_api_v3_sdk.ContactsApi(sib)
+    # contacts = []
+    # offset = 0
+    # while True:
+    #     try:
+    #         result = contacts_api.get_contacts(limit=100, offset=offset)
+    #     # Le SDK raise cette exception s’il n’y a pas de contacts,
+    #     # par exemple si on a une 100aine pile,
+    #     # on ne le catch pas deux lignes en dessous
+    #     except ValueError:
+    #         break
+    #     contacts += result.contacts
+    #     if len(result.contacts) < limit:
+    #         break
+    #     offset += limit
+    # return contacts
+
 
 def get_blacklisted_contacts(contacts):
     return [c for c in contacts if c['emailBlacklisted']]
+
 
 def deactivate_contacts(contacts):
     for contact in get_blacklisted_contacts(contacts):
@@ -29,35 +48,61 @@ def deactivate_contacts(contacts):
             continue
         db_contact.unsubscribe()
 
-def delete_lists():
-    return
+
+
 
 def import_and_send(type_='quotidien', force_send=False):
     send_in_blue_contacts = get_all_contacts()
     deactivate_contacts(send_in_blue_contacts)
-    delete_lists()
     result = import_(type_=type_, force_send=force_send,
                      send_in_blue_contacts=send_in_blue_contacts)
     result['progress'] = 100
-    if current_app.config['ENV'] == 'production':
-        db.session.commit()
+    # if current_app.config['ENV'] == 'production':
+    db.session.commit()
     return result
 
+
 def send(campaign_id, type_, test=False):
+    # if current_app.config['ENV'] == 'production' or test:
     current_app.logger.info(
-            f"Envoi en cours de la campagne: {campaign_id}")
+        f"Envoi en cours de la campagne: {campaign_id}")
+    # send_email_api = sib_api_v3_sdk.EmailCampaignsApi(sib)
+    # try:
+    #     send_email_api.send_email_campaign_now(campaign_id=campaign_id)
+    # except ApiException as exception:
+    #     current_app.logger.error(
+    #         "Impossible d’envoyer la campagne %s\n", exception)
+    #     ping(make_nom_ping(type_), "fail")
+    #     raise exception
+    current_app.logger.info(f"Envoi terminé de la campagne: {campaign_id}")
+
 
 def create_mail_list(now, test):
-    return 123456789
+    # lists_api = ListsApi(sib)
+    # liste = lists_api.create_list(
+    #     sib_api_v3_sdk.CreateList(
+    #         name=f'{now} - mail',
+    #         folder_id=int(os.getenv('SIB_FOLDERID', "5")) if not test else int(
+    #             os.getenv('SIB_FOLDERID', "1653"))
+    #     )
+    # )
+    # current_app.logger.info(f"Création de la liste send in blue '{liste.id}'")
+    # return liste.id
+    return 71573 # read LISTE
 
 
 def get_mail_list_id(newsletter, template_id_mail_list_id, now, test):
     template_sib_id = newsletter.newsletter_hebdo_template.sib_id if newsletter.newsletter_hebdo_template else None
     if not template_sib_id in template_id_mail_list_id:
         template_id_mail_list_id[template_sib_id] = create_mail_list(now, test)
+    # basically, for the daily newsletter, template_id_mail_list_id is a dictionary with a unique key/value
+    # we'll have
+    # key: template_id == None
+    # value: mail_list_id == 1234 (the id of the mail list in sendinblue)
     return template_id_mail_list_id[template_sib_id]
 
 
+# pylint: disable-next=too-many-arguments
 def import_(
         type_='quotidien',
         force_send=False,
@@ -72,7 +117,6 @@ def import_(
         send_in_blue_contacts = []
 
     now = datetime.now()
-    current_app.logger.info(f"Import en cours {now}, type={type_}, force_send={force_send}, test={test}, mail_list_id={mail_list_id}, activate_webhook={activate_webhook}, filter_already_sent={filter_already_sent}")
     errors, template_id_mail_list_id = import_in_db(
         now, type_, force_send, test, mail_list_id, newsletters, filter_already_sent)
     import_contacts_in_sb_all(template_id_mail_list_id,
@@ -86,6 +130,7 @@ def import_(
     }
 
 
+# pylint: disable-next=too-many-arguments
 def import_in_db(
         now,
         type_='quotidien',
@@ -99,34 +144,77 @@ def import_in_db(
     template_id_mail_list_id = {}
     if mail_list_id:
         template_id_mail_list_id[None] = mail_list_id
-
     def row2dict(row):
         return {
             c.name: getattr(row, c.name) for c in row.__table__.columns if not c.name in ["id", "short_id"]
         }
 
     to_add = []
+    # pylint: disable-next=line-too-long
     for newsletter in (newsletters or Newsletter.export(type_=type_, force_send=force_send, filter_already_sent=filter_already_sent)):
-        current_app.logger.info('Newsletter?')
-        print(newsletter)
         nldb = NewsletterDB(newsletter, get_mail_list_id(
             newsletter, template_id_mail_list_id, now, test))
+
         errors.extend(newsletter.errors)
-        current_app.logger.info(
-                f"Création de l’objet NewsletterDB pour {nldb.inscription_id}, template: {nldb.newsletter_hebdo_template_id}, mail_list_id: {nldb.mail_list_id}")
+        # if current_app.config['ENV'] == 'production':
         to_add.append(nldb)
-        current_app.logger.info(
-            f"Création de l’objet NewsletterDB pour {nldb.inscription_id}, template: {nldb.newsletter_hebdo_template_id}, mail_list_id: {nldb.mail_list_id} ")
-    current_app.logger.info('to_add?')
+        print(nldb.inscription_id)
+        if (nldb.inscription_id == 4226):
+            current_app.logger.info(
+                # pylint: disable-next=line-too-long
+                f"Création de l’objet NewsletterDB pour {nldb.inscription_id}, template: {nldb.newsletter_hebdo_template_id}, mail_list_id: {nldb.mail_list_id} ")
+        if len(to_add) % 1000 == 0:
+            db.engine.execute(NewsletterDB.__table__.insert(),
+                                list(map(row2dict, to_add)))
+            to_add = []
 
-    print(list(map(row2dict, to_add)))
-
+    # if current_app.config['ENV'] == 'production' or test:
     db.engine.execute(NewsletterDB.__table__.insert(),
                         list(map(row2dict, to_add)))
     current_app.logger.info(
         "Commit des newsletters dans la base de données")
     return errors, template_id_mail_list_id
 
+
+def import_contacts_in_sb(mail_list_id, send_in_blue_contacts, type_):
+    # contact_api = sib_api_v3_sdk.ContactsApi(sib)
+    window_size = 100  # or whatever limit you like
+    window_idx = 0
+    send_in_blue_mails = {c['email'] for c in send_in_blue_contacts}
+    while True:
+        start, stop = window_size*window_idx, window_size*(window_idx+1)
+        attributes = [
+            nl.attributes()
+            for nl in NewsletterDB.query.filter_by(mail_list_id=mail_list_id).slice(start, stop).all()
+            if nl.inscription.mail in send_in_blue_mails
+        ]
+        if attributes is None or len(attributes) == 0:
+            break
+        window_idx += 1
+        # update_batch_contacts = sib_api_v3_sdk.UpdateBatchContacts(
+        #     [
+        #         sib_api_v3_sdk.UpdateBatchContactsContacts(
+        #             email=a['EMAIL'],
+        #             list_ids=[mail_list_id],
+        #             attributes=a,
+        #             email_blacklisted=False,
+        #             sms_blacklisted=False
+        #         )
+        #         for a in attributes
+        #     ]
+        # )
+        current_app.logger.info("About to update contacts with params")
+        try:
+            # contact_api.update_batch_contacts(update_batch_contacts)
+            current_app.logger.info("contacts updated")
+        except ApiException as exception:
+            current_app.logger.error(
+                "Exception when calling ContactsApi->import_contacts: %s\n", exception)
+            ping(make_nom_ping(type_), "fail")
+            raise exception
+
+
+# pylint: disable-next=too-many-arguments
 def import_contacts_in_sb_all(
         template_id_mail_list_id,
         now,
@@ -135,12 +223,17 @@ def import_contacts_in_sb_all(
         activate_webhook,
         send_in_blue_contacts):
 
-    _ = activate_webhook
-    if current_app.config['ENV'] == 'production' or test:
-        for template_id, mail_list_id in template_id_mail_list_id.items():
-            campaign_id = create_campaign(
-                now, mail_list_id=mail_list_id, template_id=template_id, type_=type_)
-            send(campaign_id, type_)
+    # _ = activate_webhook
+    # if current_app.config['ENV'] == 'production' or test:
+    for template_id, mail_list_id in template_id_mail_list_id.items():
+        # basically, for the daily newsletter, template_id_mail_list_id is a dictionary with a unique key/value
+        # template_id == None
+        # mail_list_id == 1234 (the id of the mail list in sendinblue)
+        import_contacts_in_sb(mail_list_id,
+                                send_in_blue_contacts, type_)
+        campaign_id = create_campaign(
+            now, mail_list_id=mail_list_id, template_id=template_id, type_=type_)
+        send(campaign_id, type_)
 
 
 def check_campaign_already_sent(email_campaign_api, mail_list_id):
@@ -160,7 +253,37 @@ def create_campaign(now, mail_list_id, template_id=None, type_='quotidien', test
             return "newsletter_hebdo"
         return "newsletter"
 
-    email_campaign_id = 0
+    template_id = template_id or int(
+        os.getenv('SIB_EMAIL_TEMPLATE_ID', "526"))
+    current_app.logger.info(
+        # pylint: disable-next=line-too-long
+        f"Appel à Send in blue pour l’envoi de la campagne avec la liste {mail_list_id}, now: {now}, template_id:{template_id}")
+    # try:
+    #     campagne = email_campaign_api.create_email_campaign(
+    #         sib_api_v3_sdk.CreateEmailCampaign(
+    #             sender=sib_api_v3_sdk.CreateEmailCampaignSender(
+    #                 email=template.sender.email,
+    #                 name=template.sender.name
+    #             ),
+    #             name=f'{now}',
+    #             template_id=template_id,
+    #             subject=template.subject,
+    #             reply_to="newsletter@recosante.beta.gouv.fr",
+    #             recipients=sib_api_v3_sdk.CreateEmailCampaignRecipients(
+    #                 list_ids=[mail_list_id]
+    #             ),
+    #             # pylint: disable-next=line-too-long
+    #             header="Aujourd’hui, la qualité de l’air autour de chez vous est…" if type_ == 'quotidien' else "Découvrez les bons gestes de Recosanté",
+    #             tag=get_tag(test, type_)
+    #         )
+    #     )
+    # except ApiException as exception:
+    #     ping(make_nom_ping(type_), "fail")
+    #     current_app.logger.error(
+    #         f"Impossible de créer la campagne {exception}")
+    #     raise exception
+    # email_campaign_id = campagne.id
+    email_campaign_id = 647 # read CAMPAGNE
     current_app.logger.info(
         f"Campagne créée {email_campaign_id} avec la liste {mail_list_id}, now: {now}, template_id:{template_id}")
     return email_campaign_id
@@ -179,8 +302,10 @@ def format_errors(errors):
     }
     for error in errors:
         if error['type'] == 'no_template_weekly_nl':
+            # pylint: disable-next=line-too-long
             response += f"Pas de template de newsletter hebdomadaire pour {error['mail']} (Inscription[{error['inscription_id']})"
             continue
+        # pylint: disable-next=line-too-long
         response += f"{errors_types.get(error['type'], error['type'])} pour la ville de {error['ville']} ({error['insee']}) région: '{error['region']}'\n"
         response_2 += f"{error['ville']}, {error['insee']}, {error['region']}\n"
         regions.setdefault(error['region'], 0)
@@ -201,8 +326,7 @@ def make_nom_ping(type_):
 def import_send_and_report(type_='quotidien', force_send=False, report=False):
     nom_ping = make_nom_ping(type_)
     ping(nom_ping, "start")
-    current_app.logger.info(f"Début ! type={type_}, force_send={force_send}, report={report}")
-
+    current_app.logger.info("Début !")
     lock_id = f"type={type_}"
     result = import_and_send(type_=type_, force_send=force_send)
     if report:
@@ -226,5 +350,22 @@ Bonne journée
 
 
 def get_lists_ids_to_delete():
-    api_instance = sib_api_v3_sdk.ContactsApi(sib)
-    return []
+    # api_instance = sib_api_v3_sdk.ContactsApi(sib)
+    offset = 0
+    # api_response = api_instance.get_lists(limit=10, offset=offset)
+    ids = []
+    the_day_before_yesterday = datetime.today() - timedelta(days=2)
+    # while True:
+    #     for liste in api_response.lists:
+    #         try:
+    #             date_time = datetime.fromisoformat(liste['name'][:26])
+    #         except ValueError:
+    #             # We don't have a datetime, we use min as a default one to be able to compare
+    #             date_time = datetime.max
+    #         if date_time <= the_day_before_yesterday:
+    #             ids.append(liste['id'])
+    #     if not api_response.lists:
+    #         break
+    #     offset += 10
+    #     api_response = api_instance.get_lists(limit=10, offset=offset)
+    return ids
