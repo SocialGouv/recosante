@@ -2,6 +2,12 @@ global:
   host: "recosante.beta.gouv.fr"
   apiHost: "api.recosante.beta.gouv.fr"
 
+pg:
+  ~chart: pg
+  cnpg-cluster:
+    postgresqlParameters:
+      work_mem: 512MB
+
 flower:
   replicas: 1
   host: "flower-recosante.fabrique.social.gouv.fr"
