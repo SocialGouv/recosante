@@ -1,7 +1,6 @@
 import { graphql, useStaticQuery } from "gatsby";
 import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
-import styled from "styled-components";
 
 import Option from "components/subscription/question/Option";
 import useNotificationsPrompt from "hooks/useNotificationsPrompt";
