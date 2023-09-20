@@ -1,3 +1,10 @@
+## [1.9.3](https://github.com/SocialGouv/recosante/compare/v1.9.2...v1.9.3) (2023-09-20)
+
+
+### Bug Fixes
+
+* isnot(None) instead of is not None for sql query ([#219](https://github.com/SocialGouv/recosante/issues/219)) ([7a4746e](https://github.com/SocialGouv/recosante/commit/7a4746e0c24b0062c17c0a82b13c3d234b270b14))
+
 ## [1.9.2](https://github.com/SocialGouv/recosante/compare/v1.9.1...v1.9.2) (2023-09-19)
 
 
