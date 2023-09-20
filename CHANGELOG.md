@@ -1,3 +1,10 @@
+## [1.9.5](https://github.com/SocialGouv/recosante/compare/v1.9.4...v1.9.5) (2023-09-20)
+
+
+### Bug Fixes
+
+* very small screens ([#222](https://github.com/SocialGouv/recosante/issues/222)) ([1822a64](https://github.com/SocialGouv/recosante/commit/1822a6487d05179bececaa0526be4bcba62676fb))
+
 ## [1.9.4](https://github.com/SocialGouv/recosante/compare/v1.9.3...v1.9.4) (2023-09-20)
 
 
