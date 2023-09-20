@@ -31,7 +31,7 @@ export default function Profile() {
           <>
             <Mail />
             <Address />
-            {indicateursSteps.map((step) => (
+            {Object.values(indicateursSteps).map((step) => (
               <Step
                 step={step}
                 key={step.name}
