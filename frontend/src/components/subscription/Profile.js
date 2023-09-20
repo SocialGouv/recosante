@@ -38,15 +38,16 @@ export default function Profile() {
                 <Step
                   step={step}
                   key={step.name}
-                  large={
-                    step.name === "indicateurs" ||
-                    step.name === "recommandations"
-                  }
+                  large={step.name === "indicateurs"}
                 />
               ))}
-            {data && data["recommandations"] && (
+            {!!data?.recommandations && (
               <>
                 <hr className="mt-12 border-t border-t-main10 pt-12" />
+                <h2>Recommandations</h2>
+                <p className="mb-12">
+                  Je choisis les recommandations que je souhaite recevoir :
+                </p>
                 {Object.values(recommandationsSteps)
                   .filter((step) => !!step?.options?.length)
                   .map((step) => (

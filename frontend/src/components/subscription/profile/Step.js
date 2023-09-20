@@ -41,13 +41,6 @@ export default function Step({ large, step }) {
     }
   }, [mutation.isError]);
 
-  //     const Wrapper = styled.div`
-  //   margin-top: ${(props) => (props.large ? 3 : 0)}rem;
-  //   padding-top: ${(props) => (props.large ? 3 : 0)}rem;
-  //   border-top: ${(props) => (props.large ? 0.25 : 0)}rem solid
-  //     rgba(${(props) => props.theme.colors.mainAlpha}, 0.2);
-  // `;
-
   const SectionTag = large ? "h2" : "h3";
 
   return (
