@@ -114,11 +114,11 @@ export default function VigilanceMeteo(props) {
                   </>
                 )}
               </div>
-              <ul className="mb-0 mt-2 flex w-full justify-between">
+              <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("vigilancemeteo")}
                   >
                     <div
@@ -131,7 +131,7 @@ export default function VigilanceMeteo(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("vigilancemeteo")}
                   >
                     <div
@@ -144,7 +144,7 @@ export default function VigilanceMeteo(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("vigilancemeteo")}
                   >
                     <div
@@ -157,7 +157,7 @@ export default function VigilanceMeteo(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("vigilancemeteo")}
                   >
                     <div

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -54,6 +55,10 @@ module.exports = {
     "w-5/5",
   ],
   theme: {
+    screens: {
+      xs: "300px",
+      ...defaultTheme.screens,
+    },
     extend: {
       animation: {
         flash: "flash 4s infinite",
