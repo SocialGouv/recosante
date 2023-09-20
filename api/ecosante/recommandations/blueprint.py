@@ -103,7 +103,7 @@ def make_query(form):
     else:
         query = query.filter(
             or_(
-                Recommandation.status is None,
+                Recommandation.status.is_(None),
                 Recommandation.status != 'deleted'
             )
         )
