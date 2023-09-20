@@ -8,28 +8,7 @@ import useNotificationsPrompt from "hooks/useNotificationsPrompt";
 import { useUser, useUserMutation } from "hooks/useUser";
 import ModalContext from "utils/ModalContext";
 
-const Wrapper = styled.div`
-  margin-top: ${(props) => (props.large ? 3 : 0)}rem;
-  padding-top: ${(props) => (props.large ? 3 : 0)}rem;
-  border-top: ${(props) => (props.large ? 0.25 : 0)}rem solid
-    rgba(${(props) => props.theme.colors.mainAlpha}, 0.2);
-`;
-const Title = styled.h3``;
-const Text = styled.p``;
-const Options = styled.div`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0 -0.5rem 2rem;
-
-  ${(props) => props.theme.mq.small} {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-  }
-`;
-export default function Step(props) {
+export default function Step({ large, step }) {
   const { applicationServerKey } = useStaticQuery(
     graphql`
       query {
@@ -62,35 +41,40 @@ export default function Step(props) {
     }
   }, [mutation.isError]);
 
+  //     const Wrapper = styled.div`
+  //   margin-top: ${(props) => (props.large ? 3 : 0)}rem;
+  //   padding-top: ${(props) => (props.large ? 3 : 0)}rem;
+  //   border-top: ${(props) => (props.large ? 0.25 : 0)}rem solid
+  //     rgba(${(props) => props.theme.colors.mainAlpha}, 0.2);
+  // `;
+
+  const SectionTag = large ? "h2" : "h3";
+
   return (
-    <Wrapper large={props.large} id={props.step.name}>
-      <Title as={props.large ? "h2" : "h3"}>{props.step.title}</Title>
-      <Text
+    <div className="mb-8 md:mb-20">
+      <SectionTag>{step.title}</SectionTag>
+      <p
         dangerouslySetInnerHTML={{
-          __html: props.step.label,
+          __html: step.label,
         }}
       />
       {data && (
-        <Options>
-          {props.step.options.map((option, index) => (
+        <div className="relative flex flex-col flex-wrap items-stretch justify-start md:flex-row md:items-start">
+          {step.options.map((option, index) => (
             <Option
               key={option.value}
               option={option}
-              isLast={index === props.step.options.length - 1}
-              active={
-                data[props.step.name] &&
-                data[props.step.name].includes(option.value)
-              }
+              isLast={index === step.options.length - 1}
+              active={data[step.name] && data[step.name].includes(option.value)}
               onClick={() => {
                 mutation.mutate({
-                  [props.step.name]: props.step.exclusive
+                  [step.name]: step.exclusive
                     ? [option.value]
-                    : data[props.step.name] &&
-                      data[props.step.name].includes(option.value)
-                    ? data[props.step.name].filter(
+                    : data[step.name] && data[step.name].includes(option.value)
+                    ? data[step.name].filter(
                         (userOption) => userOption !== option.value
                       )
-                    : [...(data[props.step.name] || []), option.value],
+                    : [...(data[step.name] || []), option.value],
                 });
                 if (option.value === "notifications_web") {
                   notifications.subscribe().then((pushSubscription) => {
@@ -103,11 +87,11 @@ export default function Step(props) {
                 }
               }}
               setModal={setModal}
-              checkbox={!props.step.exclusive}
+              checkbox={!step.exclusive}
             />
           ))}
-        </Options>
+        </div>
       )}
-    </Wrapper>
+    </div>
   );
 }

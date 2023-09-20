@@ -80,10 +80,6 @@ const Label = styled.span`
   }
 `;
 const Detail = styled.div`
-  position: absolute;
-  top: calc(100% + 0.25rem);
-  left: 0;
-  right: 0;
   font-size: 0.75rem;
   font-weight: 300;
   text-align: center;
@@ -95,7 +91,6 @@ const Detail = styled.div`
     position: relative;
     left: 0;
     right: 0;
-    margin-top: 0.25rem;
   }
 `;
 
@@ -123,6 +118,7 @@ export default function Option(props) {
       </Button>
       {props.option.detail && (
         <Detail
+          className="detail"
           tabIndex={props.option.detail.modal ? 0 : -1}
           onClick={() => {
             props.option.detail.modal &&

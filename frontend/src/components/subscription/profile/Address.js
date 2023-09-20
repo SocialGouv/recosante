@@ -4,12 +4,6 @@ import styled from "styled-components";
 import SearchInput from "components/search/SearchInput";
 import { useUser, useUserMutation } from "hooks/useUser";
 
-const Wrapper = styled.div`
-  height: 5.5rem;
-  margin-bottom: 3rem;
-`;
-const Title = styled.h3``;
-
 const Email = styled.p`
   position: relative;
   color: ${(props) => props.theme.colors.main};
@@ -42,9 +36,10 @@ export default function Address() {
 
   const [active, setActive] = useState(false);
 
-  return data ? (
-    <Wrapper>
-      <Title>Ville</Title>
+  if (!data) return null;
+  return (
+    <div className="mb-12 h-14 md:mb-20">
+      <h3>Ville</h3>
       {active ? (
         <SearchBarWrapper>
           <SearchInput
@@ -70,6 +65,6 @@ export default function Address() {
           {data.commune && data.commune.departement.nom})
         </Email>
       )}
-    </Wrapper>
-  ) : null;
+    </div>
+  );
 }

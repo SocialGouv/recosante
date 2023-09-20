@@ -31,21 +31,29 @@ export default function Profile() {
           <>
             <Mail />
             <Address />
-            {Object.values(indicateursSteps).map((step) => (
-              <Step
-                step={step}
-                key={step.name}
-                large={
-                  step.name === "indicateurs" || step.name === "recommandations"
-                }
-              />
-            ))}
-            {data &&
-              data["recommandations"] &&
-              recommandationsSteps.map((step) => (
-                <Step step={step} key={step.name} />
+            <hr className="mt-12 border-t border-t-main10 pt-12" />
+            {Object.values(indicateursSteps)
+              .filter((step) => !!step?.options?.length)
+              .map((step) => (
+                <Step
+                  step={step}
+                  key={step.name}
+                  large={
+                    step.name === "indicateurs" ||
+                    step.name === "recommandations"
+                  }
+                />
               ))}
-
+            {data && data["recommandations"] && (
+              <>
+                <hr className="mt-12 border-t border-t-main10 pt-12" />
+                {Object.values(recommandationsSteps)
+                  .filter((step) => !!step?.options?.length)
+                  .map((step) => (
+                    <Step step={step} key={step.name} />
+                  ))}
+              </>
+            )}
             <Delete />
           </>
         ) : (
