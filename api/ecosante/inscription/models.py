@@ -427,7 +427,7 @@ class Inscription(db.Model):
             if type_ == 'quotidien':
                 query_nl = query_nl.filter(
                     # pylint: disable-next=singleton-comparison
-                    NewsletterDB.newsletter_hebdo_template_id.isnot(None),
+                    NewsletterDB.newsletter_hebdo_template_id.is_(None),
                     or_(
                         and_(
                             NewsletterDB.inscription.has(
