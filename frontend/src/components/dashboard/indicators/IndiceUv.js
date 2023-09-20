@@ -42,7 +42,7 @@ export default function IndiceUv(props) {
           onClick={() => setModal("indice_uv")}
         >
           <h2 className="m-0 basis-3/4 text-left text-base font-medium text-main">
-            Indice UV (de 1 à {maxValue})
+            Indice UV (de&nbsp;1&nbsp;à&nbsp;{maxValue})
           </h2>
           <span
             aria-label="Plus d'informations sur l'indice ATMO"
@@ -67,7 +67,7 @@ export default function IndiceUv(props) {
           )}
           {!isLoading && !isError && (
             <>
-              <div className="flex w-full items-start justify-center gap-x-4">
+              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
                 {!data?.indice_uv?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
@@ -110,11 +110,11 @@ export default function IndiceUv(props) {
                   </>
                 )}
               </div>
-              <ul className="mb-0 mt-2 flex w-full justify-between">
+              <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("indice_uv")}
                   >
                     <div
@@ -127,7 +127,7 @@ export default function IndiceUv(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("indice_uv")}
                   >
                     <div
@@ -140,7 +140,7 @@ export default function IndiceUv(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("indice_uv")}
                   >
                     <div
@@ -153,7 +153,7 @@ export default function IndiceUv(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("indice_uv")}
                   >
                     <div
@@ -166,7 +166,7 @@ export default function IndiceUv(props) {
                 <li className="flex shrink-0 grow basis-0">
                   <button
                     type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                    className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
                     onClick={() => setModal("indice_uv")}
                   >
                     <div

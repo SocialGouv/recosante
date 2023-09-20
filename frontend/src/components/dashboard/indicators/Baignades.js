@@ -90,7 +90,7 @@ export default function Baignades(props) {
             <>
               <div
                 className={[
-                  "flex w-full items-start justify-center gap-x-4",
+                  "flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start",
                   data?.baignades?.indice?.label === "Pas de sites"
                     ? "items-center md:min-h-[10rem]"
                     : "",

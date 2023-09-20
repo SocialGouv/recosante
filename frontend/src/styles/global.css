@@ -5,12 +5,14 @@
 html {
   box-sizing: border-box;
   font-family: "Marianne", Arial, sans-serif;
+  color-scheme: light;
 }
 
 body {
   @apply bg-white text-text;
   line-height: 1.4;
   overflow-x: hidden;
+  color-scheme: light;
 }
 
 *,
