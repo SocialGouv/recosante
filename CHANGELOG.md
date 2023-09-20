@@ -1,3 +1,11 @@
+## [1.9.4](https://github.com/SocialGouv/recosante/compare/v1.9.3...v1.9.4) (2023-09-20)
+
+
+### Bug Fixes
+
+* **app:** profile blank page ([#221](https://github.com/SocialGouv/recosante/issues/221)) ([d5952ad](https://github.com/SocialGouv/recosante/commit/d5952ada908238c73994a5d316769801298d300c))
+* lint ([5af9876](https://github.com/SocialGouv/recosante/commit/5af9876cf84e132ef53f8bb762b5939d90ca6578))
+
 ## [1.9.3](https://github.com/SocialGouv/recosante/compare/v1.9.2...v1.9.3) (2023-09-20)
 
 
