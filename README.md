@@ -146,7 +146,8 @@ Le Potentiel Radon n'est pas une donnée dynamique
 
 ### RAEP (Risque d'allergie lié à l'exposition aux pollens)
 
-2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#143) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/raep.py#L81) non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données à une date précise pour chaque département de France métropolitaine
+1. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#143) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/raep.py#L81) non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données pour chaque département de France métropolitaine
+2. ces données sont valables pour une semaine, de mercredi à mercredi.
 3. on parse ce CSV et on alimente notre base de données dans la table `indice_schema/raep`
 4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
 5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L120)
