@@ -5,11 +5,6 @@ import Button from "components/base/Button";
 import TextInput from "components/base/TextInput";
 import { useUser, useUserMutation } from "hooks/useUser";
 
-const Wrapper = styled.div`
-  height: 3.5rem;
-  margin-bottom: 6rem;
-`;
-const Title = styled.h3``;
 const Email = styled.p`
   position: relative;
   color: ${(props) => props.theme.colors.main};
@@ -45,9 +40,10 @@ export default function Mail() {
     setAnswer(data && (data.mail ? data.mail : ""));
   }, [data]);
 
-  return data ? (
-    <Wrapper>
-      <Title>Email</Title>
+  if (!data) return null;
+  return (
+    <div className="mb-12 h-14 md:mb-20">
+      <h3>Email</h3>
       {active ? (
         <Form
           onSubmit={(e) => {
@@ -69,7 +65,7 @@ export default function Mail() {
         <Email
           tabIndex={0}
           onClick={() => setActive(true)}
-          onKeyPress={(e) => {
+          onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.currentTarget.click();
             }
@@ -78,6 +74,6 @@ export default function Mail() {
           {data.mail}
         </Email>
       )}
-    </Wrapper>
-  ) : null;
+    </div>
+  );
 }
