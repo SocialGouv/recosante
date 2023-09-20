@@ -103,7 +103,7 @@ export default function Raep(props) {
           )}
           {!isLoading && !isError && (
             <>
-              <div className="flex w-full items-start justify-center gap-x-4">
+              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
                 {!data?.raep?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (

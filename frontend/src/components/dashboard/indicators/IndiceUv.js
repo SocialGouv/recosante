@@ -42,7 +42,7 @@ export default function IndiceUv(props) {
           onClick={() => setModal("indice_uv")}
         >
           <h2 className="m-0 basis-3/4 text-left text-base font-medium text-main">
-            Indice UV (de 1 à {maxValue})
+            Indice UV (de&nbsp;1&nbsp;à&nbsp;{maxValue})
           </h2>
           <span
             aria-label="Plus d'informations sur l'indice ATMO"
@@ -67,7 +67,7 @@ export default function IndiceUv(props) {
           )}
           {!isLoading && !isError && (
             <>
-              <div className="flex w-full items-start justify-center gap-x-4">
+              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
                 {!data?.indice_uv?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (

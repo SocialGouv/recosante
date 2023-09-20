@@ -56,8 +56,13 @@ module.exports = {
   ],
   theme: {
     screens: {
-      xs: "300px",
-      ...defaultTheme.screens,
+      // in em
+      xs: "19em", // 304px
+      sm: "40em", // 640px
+      md: "48em", // 768px
+      lg: "64em", // 1024px
+      xl: "80em", // 1280px
+      "2xl": "96em", // 1536px
     },
     extend: {
       animation: {
