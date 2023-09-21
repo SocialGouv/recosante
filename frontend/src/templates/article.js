@@ -51,6 +51,7 @@ const Content = styled.div`
 
 export default function Article(props) {
   const iframe = useIframe();
+
   return (
     <Web title={props.data.mdx.frontmatter.title}>
       <Section className="max-w-prose pt-10 xl:pt-20">
