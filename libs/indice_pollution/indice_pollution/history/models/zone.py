@@ -1,7 +1,7 @@
 from functools import cached_property
 from importlib import import_module
 
-from sqlalchemy import Column, Integer, String, select
+from sqlalchemy import Column, DateTime, func, Integer, String, select
 
 from indice_pollution import db
 
@@ -12,6 +12,8 @@ class Zone(db.Base):
     id = Column(Integer, primary_key=True)
     type = Column(String)
     code = Column(String)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     libtypes = {
         "region": {

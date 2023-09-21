@@ -4,7 +4,7 @@ import unicodedata
 from functools import lru_cache
 
 import requests
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, select
+from sqlalchemy import Boolean, Column, DateTime, func, ForeignKey, Integer, String, select
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import joinedload, relationship
 
@@ -38,6 +38,8 @@ class Commune(db.Base, TNCC):
         "indice_pollution.history.models.zone.Zone", foreign_keys=zone_pollution_id)
     pollinarium_sentinelle = Column(Boolean)
     codes_postaux = Column(postgresql.ARRAY(String))
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def __init__(self, **kwargs):
         if 'code' in kwargs:

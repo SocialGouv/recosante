@@ -7,7 +7,7 @@ from datetime import date, datetime, timedelta
 
 import requests
 from psycopg2.extras import DateRange
-from sqlalchemy import (Column, ForeignKey, Index, Integer, UniqueConstraint,
+from sqlalchemy import (Column, ForeignKey, Index, Integer, DateTime, UniqueConstraint,
                         func, select)
 from sqlalchemy.dialects.postgresql import DATERANGE
 from sqlalchemy.dialects.postgresql import insert as pg_insert
@@ -49,6 +49,8 @@ class RAEP(db.Base):
     armoises: int = Column(Integer)
     ambroisies: int = Column(Integer)
     total: int = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     __table_args__ = (
         Index('raep_zone_validity_idx', zone_id, validity),

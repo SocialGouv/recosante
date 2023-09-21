@@ -1,5 +1,5 @@
 import requests
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, func, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from indice_pollution import db
@@ -16,6 +16,8 @@ class Region(db.Base, TNCC):
     aasqa_nom = Column(String)
     zone_id = Column(Integer, ForeignKey("indice_schema.zone.id"))
     zone = relationship("indice_pollution.history.models.zone.Zone")
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def get(cls, code):
