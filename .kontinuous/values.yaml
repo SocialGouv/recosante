@@ -4,9 +4,9 @@ global:
 api:
   ingress:
     annotations:
-      nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
-      nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: 30
+      nginx.ingress.kubernetes.io/proxy-read-timeout: 1800
+      nginx.ingress.kubernetes.io/proxy-send-timeout: 1800
       nginx.ingress.kubernetes.io/proxy-body-size: 8m
   ~chart: app
   ~needs: [build-api, indice]
@@ -105,7 +105,6 @@ indice:
           name: ftp-clever-sealed-secret
           key: PASSWORD
 
-
 redis:
   ~chart: redis
   enabled: true
@@ -119,6 +118,10 @@ flower:
   image: mher/flower:1.2
   containerPort: 5555
   probesPath: /healthcheck
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
   ingress:
     enabled: true
   envFrom:

@@ -59,7 +59,11 @@ ENV PRODUCTION $PRODUCTION
 ENV NODE_ENV production
 RUN yarn install --production && yarn cache clean
 
-# USER 1001
+RUN mkdir /.config
+RUN chown -R node:node /.config
+RUN chown -R node:node /app
+
+USER 1000
 
 WORKDIR /app/frontend
 CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
