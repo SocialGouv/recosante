@@ -129,35 +129,37 @@ export default function Baignades(props) {
                           : data?.baignades.indice?.label}
                       </p>
                     </div>
-                    <div className="flex grow flex-col">
-                      <div
-                        className={[
-                          "hyphens-auto text-justify font-light",
-                          seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-                        ].join(" ")}
-                        ref={onRefChange}
-                        dangerouslySetInnerHTML={{
-                          __html: data?.baignades.advice.main,
-                        }}
-                      />
-                      {!!showSeeMoreAdviceButton && (
-                        <button
-                          onClick={() => {
-                            setSeeMoreAdvice(!seeMoreAdvice);
-                          }}
-                          type="button"
+                    {plages?.length > 0 && (
+                      <div className="flex grow flex-col">
+                        <div
                           className={[
-                            "ml-auto block font-light",
-                            !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
+                            "hyphens-auto text-justify font-light",
+                            seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
                           ].join(" ")}
-                        >
-                          {!seeMoreAdvice ? "..." : ""}
-                          <span className="ml-3 text-xs underline">
-                            {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-                          </span>
-                        </button>
-                      )}
-                    </div>
+                          ref={onRefChange}
+                          dangerouslySetInnerHTML={{
+                            __html: data?.baignades.advice.main,
+                          }}
+                        />
+                        {!!showSeeMoreAdviceButton && (
+                          <button
+                            onClick={() => {
+                              setSeeMoreAdvice(!seeMoreAdvice);
+                            }}
+                            type="button"
+                            className={[
+                              "ml-auto block font-light",
+                              !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
+                            ].join(" ")}
+                          >
+                            {!seeMoreAdvice ? "..." : ""}
+                            <span className="ml-3 text-xs underline">
+                              {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
+                            </span>
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </>
                 )}
               </div>

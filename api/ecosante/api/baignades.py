@@ -384,10 +384,10 @@ def make_main_label(
         nb_mauvais_resultats,
         nb_resultats_moyens,
         nb_bons_resultats):
-    if now < start_dt or now > end_dt:  # en dehors des dates de début et de fin de saison
-        label = "Hors-saison"
-    elif commune_nb_sites == 0:
+    if commune_nb_sites == 0:
         label = "Pas de sites"
+    elif now < start_dt or now > end_dt:  # en dehors des dates de début et de fin de saison
+        label = "Hors-saison"
     elif nb_mauvais_resultats == 0 and nb_resultats_moyens == 0 and nb_bons_resultats == 0:
         label = "Pas de résultats"
     elif nb_mauvais_resultats > 0 and nb_resultats_moyens == 0 and nb_bons_resultats == 0:
