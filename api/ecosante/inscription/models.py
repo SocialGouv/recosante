@@ -411,6 +411,8 @@ class Inscription(db.Model):
     def export_query(cls, only_to=None, filter_already_sent=True, media='mail', type_='quotidien', date_=None):
         # This is to avoid circular import
         # pylint: disable-next=import-outside-toplevel
+        print('CHECK #0')
+        print(only_to, filter_already_sent, media, type_, date_)
         from ecosante.newsletter.models import NewsletterDB
         date_ = date_ or date.today()
         query = Inscription.active_query()

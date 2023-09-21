@@ -21,7 +21,7 @@ def main():
 
     # Set up an application context to run your task
     with app.app_context():
-        import_send_and_report(type_='hebdomadaire', force_send=True, report=False)
+        import_send_and_report(type_='quotidien', force_send=True, report=False)
 
 if __name__ == "__main__":
     main()

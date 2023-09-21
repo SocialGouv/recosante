@@ -294,6 +294,18 @@ class Newsletter:
     @classmethod
     # pylint: disable-next=line-too-long,too-many-arguments,too-many-branches,too-many-locals
     def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
+        print("CHECK export")
+        # log all the parameters
+        print("preferred_reco: ", preferred_reco)
+        print("user_seed: ", user_seed)
+        print("remove_reco: ", remove_reco)
+        print("only_to: ", only_to)
+        print("date_: ", date_)
+        print("media: ", media)
+        print("filter_already_sent: ", filter_already_sent)
+        print("type_: ", type_)
+        print("force_send: ", force_send)
+        # end of log
         if remove_reco is None:
             remove_reco = []
         recommandations = Recommandation.shuffled(
