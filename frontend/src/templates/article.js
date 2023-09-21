@@ -49,12 +49,20 @@ const Content = styled.div`
   }
 `;
 
+const ArticleSection = styled(Section)`
+  li {
+    margin-left: 1rem;
+    list-style: disc;
+    list-style-position: outside;
+  }
+`;
+
 export default function Article(props) {
   const iframe = useIframe();
 
   return (
     <Web title={props.data.mdx.frontmatter.title}>
-      <Section className="max-w-prose pt-10 xl:pt-20">
+      <ArticleSection className="max-w-prose pt-10 xl:pt-20">
         {props.data.mdx.frontmatter.category && (
           <span
             className="rounded-full bg-main px-6 py-2 text-white"
@@ -96,7 +104,7 @@ export default function Article(props) {
           </BonGeste>
         )}
         {props.children}
-      </Section>
+      </ArticleSection>
       {!iframe && (
         <>
           <Search />
