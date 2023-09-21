@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 
 import requests
 from psycopg2.extras import DateTimeTZRange
-from sqlalchemy import (Column, DateTime, func, ForeignKey, Index, Integer,
+from sqlalchemy import (Column, DateTime, ForeignKey, Index, Integer,
                         UniqueConstraint)
 from sqlalchemy.dialects.postgresql import TSTZRANGE
 from sqlalchemy.sql import func

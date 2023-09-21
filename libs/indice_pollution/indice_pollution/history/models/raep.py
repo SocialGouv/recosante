@@ -7,8 +7,8 @@ from datetime import date, datetime, timedelta
 
 import requests
 from psycopg2.extras import DateRange
-from sqlalchemy import (Column, ForeignKey, Index, Integer, DateTime, UniqueConstraint,
-                        func, select)
+from sqlalchemy import (Column, ForeignKey, Index, Integer, UniqueConstraint,
+                        func, select, DateTime)
 from sqlalchemy.dialects.postgresql import DATERANGE
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.engine.row import Row
