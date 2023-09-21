@@ -1,3 +1,11 @@
+## [1.9.6](https://github.com/SocialGouv/recosante/compare/v1.9.5...v1.9.6) (2023-09-21)
+
+
+### Bug Fixes
+
+* article vigilance météo ([#224](https://github.com/SocialGouv/recosante/issues/224)) ([e26fd7e](https://github.com/SocialGouv/recosante/commit/e26fd7e06622bff0db35f4d638532ac17f1e6991))
+* return no site when no site ([#223](https://github.com/SocialGouv/recosante/issues/223)) ([42693c8](https://github.com/SocialGouv/recosante/commit/42693c869606962284bb473c1968699bb8abde81))
+
 ## [1.9.5](https://github.com/SocialGouv/recosante/compare/v1.9.4...v1.9.5) (2023-09-20)
 
 
