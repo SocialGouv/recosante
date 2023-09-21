@@ -300,6 +300,8 @@ class Newsletter:
         print("user_seed: ", user_seed)
         print("remove_reco: ", remove_reco)
         print("only_to: ", only_to)
+        # transform date_ to remove time
+        date_ = date_.date()
         print("date_: ", date_)
         print("media: ", media)
         print("filter_already_sent: ", filter_already_sent)
@@ -316,24 +318,45 @@ class Newsletter:
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
         }
+        print('CHECK RECOS')
+        # print("vigilances_recommandations: ", vigilances_recommandations)
+        print('CHECK indices_uv')
+        print(indices_uv.items())
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        print('CHECK indices_uv again')
+        print(indices_uv)
         templates = NewsletterHebdoTemplate.get_templates()
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
+            print('CHECK #1')
+            print("inscription: ", inscription)
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
+                print('CHECK #2')
+                print("indice: ", indice)
                 episodes = all_episodes.get(
                     inscription.commune.zone_pollution_id)
+                print('CHECK #3')
+                print("episodes: ", episodes)
                 if inscription.commune.departement:
                     raep = allergenes.get(
                         inscription.commune.departement.zone_id, None)
+                    print('CHECK #4')
+                    print("raep: ", raep)
                     vigilances_recommandations_dep = vigilances_recommandations.get(
                         inscription.commune.departement.zone_id, {})
+                    print('CHECK #5')
+                    print("vigilances_recommandations_dep: ",
+                            vigilances_recommandations_dep)
                 else:
                     raep = None
                     vigilances_recommandations_dep = {}
                 raep_dict = raep.to_dict() if raep else {}
+                print('CHECK #6')
+                print("raep_dict: ", raep_dict)
                 indice_uv = indices_uv.get(inscription.commune_id)
+                print('CHECK #7')
+                print("indice_uv: ", indice_uv)
                 init_dict.update({
                     "inscription": inscription,
                     "recommandations": recommandations,
@@ -345,6 +368,8 @@ class Newsletter:
                     "vigilances": vigilances_recommandations_dep,
                     "indice_uv": indice_uv
                 })
+                # print('CHECK #8')
+                # print("init_dict: ", init_dict)
                 if date_:
                     init_dict['date'] = date_
             elif type_ == 'hebdomadaire':

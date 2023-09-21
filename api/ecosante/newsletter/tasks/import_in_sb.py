@@ -116,9 +116,10 @@ def import_(
     if send_in_blue_contacts is None:
         send_in_blue_contacts = []
 
-    # today is 2023-09-21 but I want now to ALWAYS be is 2023-09-06
-    now = datetime.fromisoformat("2021-09-06 10:00:00.000000")
-    print(f"now: {now}")
+    # now = datetime.now() # output: 2021-09-30 10:00:00.000000
+    # now is 2023-09-06 4pm
+    now = datetime(2023, 9, 6, 7, 0, 0, 0)
+    print(now)
     errors, template_id_mail_list_id = import_in_db(
         now, type_, force_send, test, mail_list_id, newsletters, filter_already_sent)
     import_contacts_in_sb_all(template_id_mail_list_id,

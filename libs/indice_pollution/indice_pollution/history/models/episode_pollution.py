@@ -27,7 +27,7 @@ class EpisodePollution(db.Base):
         _ = code_epci
         table_ = cls.__table__
         commune_table = Commune.__table__
-        date_ = date_ or today()
+        date_ = date_ or date(2023, 9, 6)
         statement = select(table_)
         if insee:
             statement = statement.join(

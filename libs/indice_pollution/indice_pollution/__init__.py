@@ -248,9 +248,13 @@ def chunks(lst, count):
 
 
 def get_all(date_):
+    print('# CHECK INSIDE GET ALL INDICES')
     date_ = date_ or today()
+    print(f'# DATE: {date_}')
     indices = IndiceATMO.get_all(date_)
+    # print(f'# INDICES: {indices}')
     episodes_pollution = EpisodePollution.get_all(date_)
+    # print(f'# EPISODES POLLUTION: {episodes_pollution}')
     allergenes_par_departement = {
         r.zone_id: r
         for r in RAEP.get_all()
@@ -265,7 +269,9 @@ def get_all(date_):
             lambda v: v.zone_id
         )
     }
+    # print(f'# VIGILANCES PAR DEPARTEMENT: {vigilances_par_departement}')
     indices_uv = IndiceUv.get_all(date_)
+    # print(f'# INDICES UV: {indices_uv}')
     return (indices, episodes_pollution, allergenes_par_departement, vigilances_par_departement, indices_uv)
 
 

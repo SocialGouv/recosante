@@ -111,18 +111,25 @@ class IndiceUv(db.Base):
 
     @classmethod
     def get(cls, insee, date_=None):
+        print('# CHECK INSIDE GET INDICE UV')
         date_ = date_ or today()
+        print(f'# DATE: {date_}')
         stmt = select(cls).join(Commune, Commune.zone_id == cls.zone_id).where(
             Commune.insee == insee, IndiceUv.date == date_)
+        print(f'# STMT: {stmt}')
         if result := db.session.execute(stmt).first():
+            print(f'# RESULT: {result}')
             return result[0]
         min_date = date_ - timedelta(days=3)
+        print(f'# MIN DATE: {min_date}')
         stmt = select(cls).join(Commune, Commune.zone_id == cls.zone_id).where(
             Commune.insee == insee, IndiceUv.date <= date_, IndiceUv.date >= min_date).order_by(IndiceUv.date.desc())
         if result := db.session.execute(stmt).first():
             result = result[0]
+            print(f'# RESULT2: {result}')
             delta = (date_ - result.date).days
             return cls(zone_id=result.zone_id, date=date_, uv_j0=getattr(result, f"uv_j{delta}"))
+        print('# NO RESULT')
         return None
 
     @classmethod
@@ -137,6 +144,8 @@ class IndiceUv(db.Base):
     @classmethod
     def get_all(cls, date_=None):
         date_ = date_ or today()
+        print(f'# DATE: {date_}')
+        print(f'# TODAY: {today()}')
         return dict(db.session.execute(cls.get_all_query(date_)).all())
 
     @property

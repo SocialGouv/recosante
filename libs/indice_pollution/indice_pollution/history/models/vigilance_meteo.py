@@ -200,6 +200,8 @@ class VigilanceMeteo(db.Base):
 
     @classmethod
     def get_all(cls, date_=None, time_=None):
+        print(f'# DATE: {date_}')
+        print(f'# TIME: {time_}')
         orms_obj = select(cls).from_statement(
             cls.get_query(None, None, date_, time_))
         return list(db.session.execute(orms_obj).scalars())

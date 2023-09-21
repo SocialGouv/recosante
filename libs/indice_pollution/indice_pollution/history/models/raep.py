@@ -146,7 +146,7 @@ class RAEP(db.Base):
     @classmethod
     def get_all(cls):
         stmt = select(cls).where(
-            cls.validity.contains(date.today())
+            cls.validity.contains(date(2023, 9, 6))
         ).distinct(cls.zone_id
                    ).order_by(
             cls.zone_id,
