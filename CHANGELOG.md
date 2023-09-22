@@ -1,3 +1,15 @@
+## [1.10.2](https://github.com/SocialGouv/recosante/compare/v1.10.1...v1.10.2) (2023-09-22)
+
+
+### Bug Fixes
+
+* increase cnpg prod volume size ([a9ba0d7](https://github.com/SocialGouv/recosante/commit/a9ba0d7f3bb7e7af1f0a459045d6f74be382ca9f))
+
+
+### Reverts
+
+* Revert "feat: `created_at` and `update_at` in every indice table (#227)" ([50dffb9](https://github.com/SocialGouv/recosante/commit/50dffb9bdf86c36cbc9c58c518d96953cc36c4df)), closes [#227](https://github.com/SocialGouv/recosante/issues/227)
+
 ## [1.10.1](https://github.com/SocialGouv/recosante/compare/v1.10.0...v1.10.1) (2023-09-22)
 
 
