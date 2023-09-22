@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/SocialGouv/recosante/compare/v1.9.6...v1.10.0) (2023-09-22)
+
+
+### Bug Fixes
+
+* **k8s:** fix security context ([#226](https://github.com/SocialGouv/recosante/issues/226)) ([af7cbba](https://github.com/SocialGouv/recosante/commit/af7cbbafa929e2b187d02afec340e8fb60c7d124))
+
+
+### Features
+
+* `created_at` and `update_at` in every indice table ([#227](https://github.com/SocialGouv/recosante/issues/227)) ([38e7a71](https://github.com/SocialGouv/recosante/commit/38e7a713455dc51290a3644f81aba0b1185db043))
+* adjust xs screen size to 336 px ([7447004](https://github.com/SocialGouv/recosante/commit/744700472b8b9594723e8ffcb74db4d4ea28a059))
+
 ## [1.9.6](https://github.com/SocialGouv/recosante/compare/v1.9.5...v1.9.6) (2023-09-21)
 
 
