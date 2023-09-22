@@ -101,7 +101,7 @@ class Inscription(db.Model):
     _cache_api_commune = db.Column("cache_api_commune", db.JSON())
 
     def __init__(self, **kwargs):
-        kwargs.setdefault("date_inscription", date.today())
+        kwargs.setdefault("date_inscription", date(2023, 9, 6))
         super().__init__(**kwargs)
 
     def has_deplacement(self, deplacement):
@@ -292,14 +292,14 @@ class Inscription(db.Model):
 
     @property
     def is_active(self):
-        return self.deactivation_date is None or self.deactivation_date > date.today()
+        return self.deactivation_date is None or self.deactivation_date > date(2023, 9, 6)
 
     @classmethod
     def active_query(cls):
         return db.session.query(cls)\
             .filter(
                 # pylint: disable-next=singleton-comparison
-                (Inscription.deactivation_date.is_(None)) | (Inscription.deactivation_date > date.today()))\
+                (Inscription.deactivation_date.is_(None)) | (Inscription.deactivation_date > date(2023, 9, 6)))\
             .filter(Inscription.ville_insee.isnot(None) | Inscription.commune_id.isnot(None))\
             .filter(Inscription.mail != "", Inscription.mail.isnot(None))
 
@@ -321,7 +321,7 @@ class Inscription(db.Model):
             queue='send_email',
             routing_key='send_email.unsubscribe_sib'
         )
-        self.deactivation_date = date.today()
+        self.deactivation_date = date(2023, 9, 6)
         self.mail = None
         db.session.add(self)
         db.session.commit()
@@ -414,7 +414,7 @@ class Inscription(db.Model):
         print('CHECK #0')
         print(only_to, filter_already_sent, media, type_, date_)
         from ecosante.newsletter.models import NewsletterDB
-        date_ = date_ or date.today()
+        date_ = date_ or date(2023, 9, 6)
         query = Inscription.active_query()
         if only_to:
             query = query.filter(Inscription.mail.in_(only_to))
@@ -454,7 +454,7 @@ class Inscription(db.Model):
                 ~Inscription.indicateurs_frequence.contains(["hebdomadaire"]))
             )\
             .filter(Inscription.commune_id.isnot(None))\
-            .filter(Inscription.date_inscription < str(date.today()))
+            .filter(Inscription.date_inscription < str(date(2023, 9, 6)))
 
         if type_ == 'hebdomadaire':
             query = query.filter(

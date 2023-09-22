@@ -44,7 +44,7 @@ class Forecast(Service, ForecastMixin):
             'request': 'GetFeature',
             'typeName': 'DIDON:indice_atmo_2020',
             'outputFormat': 'application/json',
-            'CQL_FILTER': f'(date_dif >= {date.today()}) OR (date_ech >= {date.today()})'
+            'CQL_FILTER': f'(date_dif >= {date(2023, 9, 6)}) OR (date_ech >= {date(2023, 9, 6)})'
         }
 
     @classmethod
@@ -108,7 +108,7 @@ class Episode(Service, EpisodeMixin):
         except ValueError as exception:
             logger.error(exception)
             return []
-        for k, datetime in [('jour', date.today()), ('demain', date.today() + timedelta(days=1))]:
+        for k, datetime in [('jour', date(2023, 9, 6)), ('demain', date(2023, 9, 6) + timedelta(days=1))]:
             for polluant in request.json()[k]['polluants']:
                 to_return += [{
                     'code_pol': polluant_code_pol.get(polluant['nom']),

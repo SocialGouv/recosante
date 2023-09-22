@@ -84,7 +84,7 @@ class Forecast(Service, ForecastMixin):
     @classmethod
     def params_fetch_all(cls):
         # pylint: disable-next=line-too-long
-        filter_date_ech = f'<PropertyIsGreaterThanOrEqualTo><PropertyName>date_ech</PropertyName><Literal>{date.today()}T00:00:00Z</Literal></PropertyIsGreaterThanOrEqualTo>'
+        filter_date_ech = f'<PropertyIsGreaterThanOrEqualTo><PropertyName>date_ech</PropertyName><Literal>{date(2023, 9, 6)}T00:00:00Z</Literal></PropertyIsGreaterThanOrEqualTo>'
         return {
             'service': 'wfs',
             'request': 'getfeature',

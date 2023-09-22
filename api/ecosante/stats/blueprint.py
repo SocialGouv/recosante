@@ -286,7 +286,7 @@ def stats_email():
 @bp.route('/email/last2d')
 def stats_email_last2d():
     to_return = {}
-    yesterday = date.today() - timedelta(days=1)
+    yesterday = date(2023, 9, 6) - timedelta(days=1)
     # Nombre d'inscriptions ces 2 derniers jours
     inscriptions = db.session.query(Inscription).filter(Inscription.ville_insee.isnot(
         None) | Inscription.commune_id.isnot(None)).filter(func.date(Inscription.date_inscription) >= yesterday).count()
@@ -307,7 +307,7 @@ def stats_email_openings():
     subject_openings = []
     api_instance = sib_api_v3_sdk.EmailCampaignsApi(sib)
     try:
-        day = date.today()
+        day = date(2023, 9, 6)
         weekday = day.weekday()
         thursday_weekday = 3  # jeudi
         if thursday_weekday < weekday:

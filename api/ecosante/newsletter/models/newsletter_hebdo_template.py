@@ -96,7 +96,7 @@ class NewsletterHebdoTemplate(db.Model):
             [
                 t
                 for t in templates
-                if t.filtre_date(date.today())
+                if t.filtre_date(date(2023, 9, 6))
                 and t.ordre not in already_sent_templates_ordres
                 and t.filtre_criteres(inscription)
             ],
@@ -109,7 +109,7 @@ class NewsletterHebdoTemplate(db.Model):
 
     @property
     def periode_validite(self) -> DateRange:
-        current_year = datetime.today().year
+        current_year = date(2023, 9, 6).year
         # pylint: disable-next=line-too-long
         if self._periode_validite.lower.replace(year=current_year) <= self._periode_validite.upper.replace(year=current_year):
             year_lower = current_year

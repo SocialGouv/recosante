@@ -83,6 +83,9 @@ class IndiceATMO(db.Base):
     def get_all_query(cls, date_):
         commune_alias = aliased(Commune)
         commune_id = coalesce(Commune.id, commune_alias.id)
+        print(f'# INDICE ATMO DATE: {date_}')
+        print(f'# commune_alias: {commune_alias}')
+        print(f'# commune_id: {commune_id}')
         return db.session.query(
             commune_id, IndiceATMO
         ).select_from(
@@ -204,6 +207,8 @@ class IndiceATMO(db.Base):
         getter = itemgetter if isinstance(indice, dict) else attrgetter
         return {
             **{
+                'date_ech': getter('date_ech'),
+                'date_dif': getter('date_dif'),
                 'sous_indices': [
                     cls.make_sous_indice_dict(k, getter(k)(indice)) for k in ['pm25', 'pm10', 'no2', 'o3', 'so2']
                 ],

@@ -11,7 +11,7 @@ THRESHOLD = 1000
 
 if __name__ == "__main__":
     errors = []
-    if (count := NewsletterDB.query.filter(NewsletterDB.date==date.today()).count()) < THRESHOLD:
+    if (count := NewsletterDB.query.filter(NewsletterDB.date==date(2023, 9, 6)).count()) < THRESHOLD:
         errors.append(f"Il y a eu {count} newsletters crées en base de données aujourd’hui")
 
     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     today_lists = [
         l
         for l in api_response.lists
-        if l['name'].endswith(' - mail') and datetime.fromisoformat(l['name'][:len(' - mail')]).date() == date.today()
+        if l['name'].endswith(' - mail') and datetime.fromisoformat(l['name'][:len(' - mail')]).date() == date(2023, 9, 6)
     ]
     if (count_contacts := sum([l['uniqueSubscribers'] for l in today_lists])) < THRESHOLD:
         errors.append(f"Il y a eu {len(today_lists)} créées aujourd’hui contenant {count_contacts} contacts")
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     campaigns_api = sib_api_v3_sdk.EmailCampaignsApi(sib)
     try:
         campaigns = campaigns_api.get_email_campaigns(
-            start_date=str(date.today())+'T00:00:00.000Z',
+            start_date=str(date(2023, 9, 6))+'T00:00:00.000Z',
             end_date=str(datetime.now())
         )
     except ApiException:

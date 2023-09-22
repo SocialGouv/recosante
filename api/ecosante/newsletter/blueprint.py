@@ -47,8 +47,8 @@ def avis(short_id):
 @bp.route('/avis/liste')
 @admin_authenticator.route
 def liste_avis():
-    offset = (date.today().weekday() - THURSDAY) % 7
-    last_thursday = date.today() - timedelta(days=offset)
+    offset = (date(2023, 9, 6).weekday() - THURSDAY) % 7
+    last_thursday = date(2023, 9, 6) - timedelta(days=offset)
     liste_avis_hebdos = db.session.query(
         NewsletterDB.newsletter_hebdo_template_id,
         NewsletterHebdoTemplate.sib_id,
@@ -99,14 +99,14 @@ def test():
     for media in inscription.indicateurs_media:
         newsletter = Newsletter(
             inscription=inscription,
-            forecast={"data": [{"date": str(today()), "label": IndiceATMO.label_from_valeur(
+            forecast={"data": [{"date": str(date(2023, 9, 6)), "label": IndiceATMO.label_from_valeur(
                 indice_atmo), "couleur": IndiceATMO.couleur_from_valeur(indice_atmo)}]},
             raep=int(request.form.get("raep")),
             allergenes=dict(zip(request.form.getlist(
                 'allergene_nom[]'), request.form.getlist('allergene_value[]'))),
             validite_raep={
-                "debut": today().strftime("%d/%m/%Y"),
-                "fin": (today()+timedelta(days=7)).strftime("%d/%m/%Y")
+                "debut": date(2023, 9, 6).strftime("%d/%m/%Y"),
+                "fin": (date(2023, 9, 6)+timedelta(days=7)).strftime("%d/%m/%Y")
             },
             vigilances=Newsletter.get_vigilances_recommandations(
                 [

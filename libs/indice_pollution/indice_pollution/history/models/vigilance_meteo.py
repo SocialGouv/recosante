@@ -146,9 +146,9 @@ class VigilanceMeteo(db.Base):
     @classmethod
     def get_query(cls, departement_code, insee, date_, time_):
         if not isinstance(date_, date):
-            datetime_ = datetime.now()
+            datetime_ = datetime(2023, 9, 6, 7, 0, 0)
         else:
-            datetime_ = datetime.combine(date_, datetime.now().time())
+            datetime_ = datetime.combine(date_, datetime(2023, 9, 6, 7, 0, 0).time())
         if isinstance(time_, time):
             datetime_ = datetime.combine(date_, time_)
 

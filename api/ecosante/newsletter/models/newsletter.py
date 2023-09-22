@@ -171,8 +171,8 @@ class Newsletter:
                     # pylint: disable-next=cell-var-from-loop
                                       "dashboard"], vigilances=[vigilance]), recommandations))
             except StopIteration:
-                current_app.logger.info(
-                    f"Impossible de trouver une recommandation pour {vigilance.id}")
+                # current_app.logger.info(
+                #     f"Impossible de trouver une recommandation pour {vigilance.id}")
                 recommandation = None
             to_return[phenomene] = {
                 "vigilance": db.session.merge(vigilance),
@@ -321,10 +321,10 @@ class Newsletter:
         print('CHECK RECOS')
         # print("vigilances_recommandations: ", vigilances_recommandations)
         print('CHECK indices_uv')
-        print(indices_uv.items())
+        # print(indices_uv.items())
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
         print('CHECK indices_uv again')
-        print(indices_uv)
+        # print(indices_uv)
         templates = NewsletterHebdoTemplate.get_templates()
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
             print('CHECK #1')
@@ -334,6 +334,7 @@ class Newsletter:
                 indice = indices.get(inscription.commune_id)
                 print('CHECK #2')
                 print("indice: ", indice)
+                print("indice: ", indice.dict())
                 episodes = all_episodes.get(
                     inscription.commune.zone_pollution_id)
                 print('CHECK #3')
@@ -441,6 +442,8 @@ class Newsletter:
         return errors
 
     def eligible_recommandations(self, recommandations: Dict[int, Recommandation], types=None):
+        print("CHECK eligible_recommandations")
+        print("types: ", types)
         if types is None:
             types = ["indice_atmo", "episode_pollution",
                      "pollens", "indice_uv"]
@@ -486,6 +489,9 @@ class Newsletter:
                 yield recommandations[recommandation[1]]
 
     def get_recommandation(self, recommandations: List[Recommandation], types=None):
+        print("CHECK get_recommandation")
+        print("recommandations: ", recommandations)
+        print("types: ", types)
         if types is None:
             types = ["indice_atmo", "episode_pollution",
                      "pollens", "indice_uv"]

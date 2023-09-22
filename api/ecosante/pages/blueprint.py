@@ -30,12 +30,12 @@ def admin():
     count_avis_hier = NewsletterDB.query\
         .filter(
             NewsletterDB.avis.isnot(None),
-            NewsletterDB.date == date.today() - timedelta(days=1))\
+            NewsletterDB.date == date(2023, 9, 6) - timedelta(days=1))\
         .count()
     count_avis_aujourdhui = NewsletterDB.query\
         .filter(
             NewsletterDB.avis.isnot(None),
-            NewsletterDB.date == date.today())\
+            NewsletterDB.date == date(2023, 9, 6))\
         .count()
     return render_template("admin.html", count_avis_hier=count_avis_hier, count_avis_aujourdhui=count_avis_aujourdhui)
 

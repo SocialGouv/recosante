@@ -226,7 +226,7 @@ def recommandations_csv():
     hidden=True
 )
 def batch():
-    date_ = rebar.validated_args.get('date', date.today())
+    date_ = rebar.validated_args.get('date', date(2023, 9, 6))
 
     def iterate():
         indices = IndiceATMO.get_all_query(

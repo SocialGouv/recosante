@@ -234,7 +234,7 @@ class Forecast(Service, ForecastMixin):
         'request': 'GetFeature',
         'typeName': 'ind_bretagne:ind_bretagne',
         'outputFormat': 'application/json',
-        'CQL_FILTER': f"date_ech>='{date.today()}'"
+        'CQL_FILTER': f"date_ech>='{date(2023, 9, 6)}'"
     }
 
 

@@ -37,7 +37,7 @@ class Forecast(Service, ForecastMixin):
             'request': 'GetFeature',
             'typeName': 'indice:ind_bfc',
             'outputFormat': 'application/json',
-            'CQL_FILTER': f"date_ech >= {date.today() - timedelta(days=2)}"
+            'CQL_FILTER': f"date_ech >= {date(2023, 9, 6) - timedelta(days=2)}"
         }
 
 
@@ -73,5 +73,5 @@ class Episode(Service, EpisodeMixin):
             'request': 'GetFeature',
             'typeName': 'alerte:alrt3j_bfc',
             'outputFormat': 'application/json',
-            'CQL_FILTER': f"date_ech >= {date.today() - timedelta(days=2)}"
+            'CQL_FILTER': f"date_ech >= {date(2023, 9, 6) - timedelta(days=2)}"
         }

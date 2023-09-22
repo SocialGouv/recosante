@@ -357,7 +357,7 @@ def get_lists_ids_to_delete():
     offset = 0
     # api_response = api_instance.get_lists(limit=10, offset=offset)
     ids = []
-    the_day_before_yesterday = datetime.today() - timedelta(days=2)
+    the_day_before_yesterday = date(2023, 9, 6) - timedelta(days=2)
     # while True:
     #     for liste in api_response.lists:
     #         try:

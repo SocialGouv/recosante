@@ -355,7 +355,7 @@ class NewsletterDB(db.Model, Newsletter):
     def webpush_data(self):
         commune = self.inscription.commune
         with different_locale('fr_FR.utf8'):
-            title = f'{commune.nom.capitalize()}, le {date.today().strftime("%A %d %B")}'
+            title = f'{commune.nom.capitalize()}, le {date(2023, 9, 6).strftime("%A %d %B")}'
         body = ""
         first_line = []
         if self.inscription.has_indicateur("indice_atmo") and self.label:

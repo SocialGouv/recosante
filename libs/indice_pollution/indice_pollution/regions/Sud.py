@@ -33,7 +33,7 @@ class Episode(Service, EpisodeMixin):
 
     @classmethod
     def params_fetch_all(cls):
-        date_ = date.today()
+        date_ = date(2023, 9, 6)
         tomorrow_date = date_ + timedelta(days=1)
 
         fr_date = date_.strftime(cls.fr_date_format)
@@ -75,7 +75,7 @@ class Forecast(Service, ForecastMixin):
 
     @classmethod
     def params_fetch_all(cls):
-        date_ = date.today()
+        date_ = date(2023, 9, 6)
         tomorrow_date = date_ + timedelta(days=1)
 
         fr_date = date_.strftime(cls.fr_date_format)

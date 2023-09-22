@@ -123,7 +123,7 @@ class RAEP(db.Base):
 
     @classmethod
     def get(cls, insee=None, zone_id=None, date_=None):
-        date_ = date_ or date.today()
+        date_ = date_ or date(2023, 9, 6)
         if insee:
             if len(insee) == 5:
                 zone_id = Commune.get(insee).departement.zone_id

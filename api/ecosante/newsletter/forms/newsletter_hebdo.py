@@ -11,9 +11,9 @@ class FormTemplateAdd(BaseForm):
     sib_id = IntegerField("ID send in blue")
     ordre = IntegerField("Ordre d’envoi")
     debut_periode_validite = DateField(
-        "Début de la période de validité", default=date.today().replace(month=1, day=1))
+        "Début de la période de validité", default=date(2023, 9, 6).replace(month=1, day=1))
     fin_periode_validite = DateField("Fin de la période de validité", default=date.today(
-    ).replace(month=1, day=1, year=date.today().year+1))
+    ).replace(month=1, day=1, year=date(2023, 9, 6).year+1))
 
     activites = FormEdit.activites
     enfants = OuiNonField("Enfants (de moins de 6 ans) ?")

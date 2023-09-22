@@ -67,7 +67,7 @@ class Forecast(Service, ForecastMixin):
             "service": "WFS",
             "outputFormat": "application/json",
             "request": "GetFeature",
-            "CQL_FILTER": f"date_ech >= {date.today()}T00:00:00Z AND type_zone='EPCI'"
+            "CQL_FILTER": f"date_ech >= {date(2023, 9, 6)}T00:00:00Z AND type_zone='EPCI'"
         }
 
     @classmethod
