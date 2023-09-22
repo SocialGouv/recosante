@@ -7,6 +7,8 @@ pg:
   cnpg-cluster:
     postgresqlParameters:
       work_mem: 512MB
+    persistence:
+      size: "50Gi"
 
 flower:
   replicas: 1
