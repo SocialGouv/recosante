@@ -1,5 +1,5 @@
 import requests
-from sqlalchemy import Column, func, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from indice_pollution import db
