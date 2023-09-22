@@ -25,8 +25,6 @@ class VigilanceMeteo(db.Base):
 
     couleur_id = Column(Integer)
     validity = Column(TSTZRANGE(), nullable=False)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     __table_args__ = (
         Index('vigilance_zone_phenomene_date_export_idx',

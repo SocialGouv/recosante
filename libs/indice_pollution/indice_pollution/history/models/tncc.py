@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, func, Integer, String
+from sqlalchemy import Column, Integer, String
 
 
 class TNCC:
@@ -15,8 +15,6 @@ class TNCC:
         7: {"article": "las ", "charniere": "de las "},
         8: {"article": "los ", "charniere": "de los "}
     }
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @property
     def charniere(self):

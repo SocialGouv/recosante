@@ -21,8 +21,6 @@ class EpisodePollution(db.Base):
     etat: str = Column(String)
     com_court: str = Column(String)
     com_long: str = Column(String)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def get_query(cls, insee=None, code_epci=None, date_=None):
