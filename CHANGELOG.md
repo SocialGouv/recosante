@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/SocialGouv/recosante/compare/v1.10.0...v1.10.1) (2023-09-22)
+
+
+### Bug Fixes
+
+* try increase indice startup probe for long migrations ([4f53333](https://github.com/SocialGouv/recosante/commit/4f53333728ce66fd9174521d2a568216d1ef1a91))
+
 # [1.10.0](https://github.com/SocialGouv/recosante/compare/v1.9.6...v1.10.0) (2023-09-22)
 
 
