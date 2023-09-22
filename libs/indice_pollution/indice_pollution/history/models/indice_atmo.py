@@ -33,6 +33,8 @@ class IndiceATMO(db.Base):
     pm10: int = Column(Integer)
     pm25: int = Column(Integer)
     valeur: int = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def get(cls, insee=None, code_epci=None, date_=None):
