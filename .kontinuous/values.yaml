@@ -75,7 +75,7 @@ indice:
       memory: 4Gi
   startupProbe:
     initialDelaySeconds: 30
-    failureThreshold: 50
+    failureThreshold: 500  # for very long migrations
     periodSeconds: 10
   ingress:
     enabled: false
