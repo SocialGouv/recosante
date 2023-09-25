@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/SocialGouv/recosante/compare/v1.10.3...v1.10.4) (2023-09-25)
+
+
+### Bug Fixes
+
+* **k8s:** buildkit service in prod ([15371cb](https://github.com/SocialGouv/recosante/commit/15371cb60e5c860929718b1f2ad2607cc5fcabd2))
+
 ## [1.10.3](https://github.com/SocialGouv/recosante/compare/v1.10.2...v1.10.3) (2023-09-25)
 
 
