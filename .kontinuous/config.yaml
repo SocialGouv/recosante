@@ -7,7 +7,6 @@ dependencies:
       - name: ovh
         ifEnv: [dev]
       - name: buildkit-service
-        ifEnv: [dev]
     dependencies:
       contrib:
         preDeploy:
