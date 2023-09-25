@@ -5,10 +5,13 @@ global:
 pg:
   ~chart: pg
   cnpg-cluster:
-    postgresqlParameters:
-      work_mem: 512MB
     persistence:
       size: "50Gi"
+    resources:
+      requests:
+        memory: 10Gi
+      limits:
+        memory: 10Gi
 
 flower:
   replicas: 1
