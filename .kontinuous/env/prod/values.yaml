@@ -9,9 +9,7 @@ pg:
       size: "50Gi"
     resources:
       requests:
-        memory: 10Gi
-      limits:
-        memory: 10Gi
+        memory: 512Mi
 
 flower:
   replicas: 1
