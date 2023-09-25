@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/SocialGouv/recosante/compare/v1.10.2...v1.10.3) (2023-09-25)
+
+
+### Bug Fixes
+
+* **cnpg:** default work_mem, increase memory req/limits ([#232](https://github.com/SocialGouv/recosante/issues/232)) ([bf02b7b](https://github.com/SocialGouv/recosante/commit/bf02b7ba1970f3efdbd586db0a658808154ec7a8))
+
 ## [1.10.2](https://github.com/SocialGouv/recosante/compare/v1.10.1...v1.10.2) (2023-09-22)
 
 
