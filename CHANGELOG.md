@@ -1,3 +1,11 @@
+## [1.10.5](https://github.com/SocialGouv/recosante/compare/v1.10.4...v1.10.5) (2023-09-25)
+
+
+### Bug Fixes
+
+* **build:** disable builtkit for now ([e7c014b](https://github.com/SocialGouv/recosante/commit/e7c014b64efc0bb2b3c084230d687849ea0b53bd))
+* **cnpg:** reduce cnpg request ([9d20a05](https://github.com/SocialGouv/recosante/commit/9d20a0564183bc1a8e9561ac85620a50770d1ba2))
+
 ## [1.10.4](https://github.com/SocialGouv/recosante/compare/v1.10.3...v1.10.4) (2023-09-25)
 
 
