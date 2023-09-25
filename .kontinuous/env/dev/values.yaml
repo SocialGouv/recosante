@@ -3,9 +3,6 @@ global:
 
 pg:
   ~chart: pg
-  cnpg-cluster:
-    postgresqlParameters:
-      work_mem: 512MB
 
 api:
   ~needs: [build-api, seed-db]
@@ -42,4 +39,3 @@ jobs:
       run: |
         indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
         kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
-
