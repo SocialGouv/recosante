@@ -1,3 +1,10 @@
+## [1.10.6](https://github.com/SocialGouv/recosante/compare/v1.10.5...v1.10.6) (2023-09-26)
+
+
+### Bug Fixes
+
+* back to buildkit service ([e4f2d55](https://github.com/SocialGouv/recosante/commit/e4f2d55e8b720c04d2daf4808d035e860e0fc6d9))
+
 ## [1.10.5](https://github.com/SocialGouv/recosante/compare/v1.10.4...v1.10.5) (2023-09-25)
 
 
