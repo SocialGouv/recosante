@@ -1,3 +1,10 @@
+## [1.10.9](https://github.com/SocialGouv/recosante/compare/v1.10.8...v1.10.9) (2023-09-26)
+
+
+### Bug Fixes
+
+* use cnpg in prod ([37f33a2](https://github.com/SocialGouv/recosante/commit/37f33a23649223e536913f9adc0068001438073c))
+
 ## [1.10.8](https://github.com/SocialGouv/recosante/compare/v1.10.7...v1.10.8) (2023-09-26)
 
 
