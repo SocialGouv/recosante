@@ -10,6 +10,8 @@ pg:
     resources:
       requests:
         memory: 512Mi
+      limits:
+        memory: 6Gi
 
 flower:
   replicas: 1
