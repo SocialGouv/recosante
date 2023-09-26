@@ -1,6 +1,7 @@
 global:
   host: "recosante.beta.gouv.fr"
   apiHost: "api.recosante.beta.gouv.fr"
+  pgSecretName: pg-app
 
 pg:
   ~chart: pg
