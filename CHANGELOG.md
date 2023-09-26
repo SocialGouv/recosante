@@ -1,3 +1,10 @@
+## [1.10.7](https://github.com/SocialGouv/recosante/compare/v1.10.6...v1.10.7) (2023-09-26)
+
+
+### Bug Fixes
+
+* **cnpg:** limit pg RAM ([0b8e95b](https://github.com/SocialGouv/recosante/commit/0b8e95b196f2ed42b2703a44015c38f5cb16cc76))
+
 ## [1.10.6](https://github.com/SocialGouv/recosante/compare/v1.10.5...v1.10.6) (2023-09-26)
 
 
