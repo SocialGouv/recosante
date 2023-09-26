@@ -1,3 +1,10 @@
+## [1.10.8](https://github.com/SocialGouv/recosante/compare/v1.10.7...v1.10.8) (2023-09-26)
+
+
+### Bug Fixes
+
+* **cnpg:** try 3GB pg memory ([ec0d30a](https://github.com/SocialGouv/recosante/commit/ec0d30ae1b4a0ddfdcacefa4ce91b5a4a28f9c2c))
+
 ## [1.10.7](https://github.com/SocialGouv/recosante/compare/v1.10.6...v1.10.7) (2023-09-26)
 
 
