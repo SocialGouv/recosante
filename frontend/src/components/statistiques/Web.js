@@ -28,6 +28,7 @@ export default function Website(props) {
     all: props.monthly_visits[key],
     place: props.place_monthly_visits[key],
   }));
+  console.log({ props });
   const totalIntegration = props.integration_widget + props.integration_website;
   const otherChannels =
     props.channel_campaign + props.channel_website + props.channel_social;
