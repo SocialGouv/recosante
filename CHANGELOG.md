@@ -1,3 +1,10 @@
+## [1.10.10](https://github.com/SocialGouv/recosante/compare/v1.10.9...v1.10.10) (2023-09-29)
+
+
+### Bug Fixes
+
+* newsletter token available 30d ([#236](https://github.com/SocialGouv/recosante/issues/236)) ([c47b69e](https://github.com/SocialGouv/recosante/commit/c47b69e21e5bf76e98b5f6b684799dd261f785f0))
+
 ## [1.10.9](https://github.com/SocialGouv/recosante/compare/v1.10.8...v1.10.9) (2023-09-26)
 
 
