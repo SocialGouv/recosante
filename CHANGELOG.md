@@ -1,3 +1,11 @@
+## [1.10.11](https://github.com/SocialGouv/recosante/compare/v1.10.10...v1.10.11) (2023-09-29)
+
+
+### Bug Fixes
+
+* **indice:** fix vigilance meteo index error ([3b99b3e](https://github.com/SocialGouv/recosante/commit/3b99b3e818792bdf6d9d93ca48058d467d4be07e))
+* **indice:** improve exception logging in celery tasks ([b63cb2a](https://github.com/SocialGouv/recosante/commit/b63cb2adddaa233b64cd7ba87ef1c463224adb39))
+
 ## [1.10.10](https://github.com/SocialGouv/recosante/compare/v1.10.9...v1.10.10) (2023-09-29)
 
 
