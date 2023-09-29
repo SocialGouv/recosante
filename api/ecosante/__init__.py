@@ -99,7 +99,7 @@ def create_app(testing=False):
     app.config['APPLICATION_SERVER_KEY'] = os.getenv('APPLICATION_SERVER_KEY')
     app.config['VAPID_PRIVATE_KEY'] = os.getenv('VAPID_PRIVATE_KEY')
     app.config['TEMP_AUTHENTICATOR_EXP_TIME'] = os.getenv(
-        'TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 30
+        'TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 60 * 24 * 30 # 30 days
     app.logger.setLevel(logging.INFO)
 
     init_app(app)
