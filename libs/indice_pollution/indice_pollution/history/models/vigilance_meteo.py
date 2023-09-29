@@ -123,18 +123,19 @@ class VigilanceMeteo(db.Base):
                 continue
 
             for phenomene in domain['phenomenon_items']:
-                timelaps_items = phenomene['timelaps_items'][0]
-                debut = convert_datetime(
-                    timelaps_items['begin_time'][:19])
-                fin = convert_datetime(timelaps_items['end_time'])
-                obj = cls(
-                    zone_id=departement.zone_id,
-                    phenomene_id=int(phenomene['phenomenon_id']),
-                    date_export=date_export,
-                    couleur_id=int(phenomene['phenomenon_max_color_id']),
-                    validity=DateTimeTZRange(debut, fin),
-                )
-                db.session.add(obj)
+                if len(phenomene['timelaps_items']) > 0:
+                    timelaps_items = phenomene['timelaps_items'][0]
+                    debut = convert_datetime(
+                        timelaps_items['begin_time'][:19])
+                    fin = convert_datetime(timelaps_items['end_time'])
+                    obj = cls(
+                        zone_id=departement.zone_id,
+                        phenomene_id=int(phenomene['phenomenon_id']),
+                        date_export=date_export,
+                        couleur_id=int(phenomene['phenomenon_max_color_id']),
+                        validity=DateTimeTZRange(debut, fin),
+                    )
+                    db.session.add(obj)
         db.session.commit()
 
     # Cette requête selectionne les vigilances météo du dernier export fait avant date_ & time_
