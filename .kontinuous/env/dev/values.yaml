@@ -16,7 +16,7 @@ jobs:
       ~needs: [pg]
       retry: 3
       checkout: true
-      image: ghcr.io/socialgouv/docker/psql:7.0.0
+      image: ghcr.io/socialgouv/docker/psql:7.7.2
       envFrom:
         - secretRef:
             name: "{{ $.Values.global.pgSecretName }}"
