@@ -1,3 +1,10 @@
+## [1.10.12](https://github.com/SocialGouv/recosante/compare/v1.10.11...v1.10.12) (2023-10-02)
+
+
+### Bug Fixes
+
+* lint saveall ([#247](https://github.com/SocialGouv/recosante/issues/247)) ([230044b](https://github.com/SocialGouv/recosante/commit/230044b9017eff445447c6eec8b0643f70fcaad3))
+
 ## [1.10.11](https://github.com/SocialGouv/recosante/compare/v1.10.10...v1.10.11) (2023-09-29)
 
 
