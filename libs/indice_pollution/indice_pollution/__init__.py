@@ -95,10 +95,8 @@ def save_all_indices(self, module_name, class_name, scheduled_datetime=None):
     ping(cls_, "start", scheduled_datetime, launch_datetime)
     try:
         cls_.save_all()
-    except Exception as exception:
-        logger.exception("Error while running %r.save_all()", repr(cls_))
-        logger.exception(exception)
-        ping(cls_, "fail", scheduled_datetime, launch_datetime)
+    except Exception:
+        logger.exception("Error while running %r.save_all()", cls_)
     self.update_state(f"{module_name}.{class_name} saved")
     ping(cls_, "success", scheduled_datetime, launch_datetime)
     return f"{module_name}.{class_name} saved"
