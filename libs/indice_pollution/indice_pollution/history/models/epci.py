@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, select
+from sqlalchemy import Column, ForeignKey, DateTime, func, Integer, String, select
 from sqlalchemy.orm import relationship
 
 from indice_pollution import db
@@ -17,6 +17,8 @@ class EPCI(db.Base):
         "indice_pollution.history.models.departement.Departement")
     zone_id = Column(Integer, ForeignKey("indice_schema.zone.id"))
     zone = relationship("indice_pollution.history.models.zone.Zone")
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def get(cls, code=None, insee=None):

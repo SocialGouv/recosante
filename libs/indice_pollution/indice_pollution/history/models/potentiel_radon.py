@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from sqlalchemy import Column, ForeignKey, Integer, select
+from sqlalchemy import Column, ForeignKey, Integer, DateTime, func, select
 
 from indice_pollution import db
 from indice_pollution.history.models.commune import Commune
@@ -13,6 +13,8 @@ class PotentielRadon(db.Base):
     zone_id: int = Column(Integer, ForeignKey(
         'indice_schema.zone.id'), primary_key=True)
     classe_potentiel: int = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def get(cls, insee):
