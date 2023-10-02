@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from ftplib import FTP
 
-from sqlalchemy import Column, Date, ForeignKey, Integer, select
+from sqlalchemy import Column, Date, DateTime, func, ForeignKey, Integer, select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from indice_pollution import db
@@ -25,6 +25,8 @@ class IndiceUv(db.Base):
     uv_j1: int = Column(Integer)
     uv_j2: int = Column(Integer)
     uv_j3: int = Column(Integer)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     @classmethod
     def save_all(cls):
