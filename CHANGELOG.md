@@ -1,3 +1,11 @@
+## [1.10.13](https://github.com/SocialGouv/recosante/compare/v1.10.12...v1.10.13) (2023-10-03)
+
+
+### Bug Fixes
+
+* remove duplicate logging of exception ([568491d](https://github.com/SocialGouv/recosante/commit/568491d458e1ae0dce5ae4b7cb918b6fc7b8b001))
+* remove updated_at from tncc ([#253](https://github.com/SocialGouv/recosante/issues/253)) ([273652e](https://github.com/SocialGouv/recosante/commit/273652e0e982f5b495516a37dbbb52c726eafc95))
+
 ## [1.10.12](https://github.com/SocialGouv/recosante/compare/v1.10.11...v1.10.12) (2023-10-02)
 
 
