@@ -40,7 +40,7 @@ class NewsletterHebdoTemplate(db.Model):
         "periode_validite",
         DATERANGE(),
         nullable=False,
-        default=lambda: DateRange('2022-01-01', '2023-01-01')
+        default=lambda: DateRange('2022-01-01', '2122-01-01')
     )
 
     @classmethod
@@ -48,10 +48,6 @@ class NewsletterHebdoTemplate(db.Model):
         return cls.query.order_by(cls.ordre).all()
 
     def filtre_date(self, date_):
-        periode_validite = self.periode_validite
-        if periode_validite.lower.year != periode_validite.upper.year:
-            return date(date_.year, 1, 1) <= date_ <= periode_validite.upper.replace(year=date_.year)\
-                or periode_validite.lower.replace(year=date_.year) <= date_ <= date(date_.year, 12, 31)
         return date_ in self.periode_validite
 
      # pylint: disable-next=too-many-return-statements
@@ -109,17 +105,7 @@ class NewsletterHebdoTemplate(db.Model):
 
     @property
     def periode_validite(self) -> DateRange:
-        current_year = datetime.today().year
-        # pylint: disable-next=line-too-long
-        if self._periode_validite.lower.replace(year=current_year) <= self._periode_validite.upper.replace(year=current_year):
-            year_lower = current_year
-        else:
-            year_lower = current_year - 1
-        # Si les dates sont sur deux années différentes ont veut conserver le saut d’année
-        year_upper = year_lower + \
-            (self._periode_validite.upper.year - self._periode_validite.lower.year)
-        # pylint: disable-next=line-too-long
-        return DateRange(self._periode_validite.lower.replace(year=year_lower), self._periode_validite.upper.replace(year=year_upper))
+        return self._periode_validite
 
     @property
     def debut_periode_validite(self):
