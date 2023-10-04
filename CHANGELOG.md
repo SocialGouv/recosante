@@ -1,3 +1,10 @@
+## [1.10.14](https://github.com/SocialGouv/recosante/compare/v1.10.13...v1.10.14) (2023-10-04)
+
+
+### Bug Fixes
+
+* periode validite simpler ([#254](https://github.com/SocialGouv/recosante/issues/254)) ([532d61f](https://github.com/SocialGouv/recosante/commit/532d61f815ed9368f02636bde5bde615264f4c49))
+
 ## [1.10.13](https://github.com/SocialGouv/recosante/compare/v1.10.12...v1.10.13) (2023-10-03)
 
 
