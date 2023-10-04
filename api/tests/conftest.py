@@ -289,7 +289,7 @@ def raep_nul(db_session, commune_commited):
 
 @pytest.fixture(scope='function')
 def template():
-    return NewsletterHebdoTemplate(ordre=1, sib_id=1, _periode_validite=DateRange(date(2022, 1, 1), date(2023, 1, 1)))
+    return NewsletterHebdoTemplate(ordre=1, sib_id=1, _periode_validite=DateRange(date(2022, 1, 1), date(2123, 1, 1)))
 
 
 @pytest.fixture(scope='function')
@@ -297,25 +297,25 @@ def template():
 def templates(db_session):
     _templates = [
         NewsletterHebdoTemplate(ordre=12, sib_id=14, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1)), indicateurs=['indice_atmo', 'raep']),
+            date(2022, 1, 1), date(2123, 1, 1)), indicateurs=['indice_atmo', 'raep']),
         NewsletterHebdoTemplate(ordre=12, sib_id=13, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1)), indicateurs=['indice_atmo']),
+            date(2022, 1, 1), date(2123, 1, 1)), indicateurs=['indice_atmo']),
         # pylint: disable-next=unexpected-keyword-arg
         NewsletterHebdoTemplate(ordre=11, sib_id=12, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1)), enfants=True),
+            date(2022, 1, 1), date(2123, 1, 1)), enfants=True),
         # pylint: disable-next=unexpected-keyword-arg
         NewsletterHebdoTemplate(ordre=11, sib_id=11, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1)), enfants=False),
+            date(2022, 1, 1), date(2123, 1, 1)), enfants=False),
         NewsletterHebdoTemplate(ordre=10, sib_id=10, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1))),
+            date(2022, 1, 1), date(2123, 1, 1))),
         NewsletterHebdoTemplate(ordre=7, sib_id=7, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1))),
+            date(2022, 1, 1), date(2123, 1, 1))),
         NewsletterHebdoTemplate(ordre=9, sib_id=9, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1))),
+            date(2022, 1, 1), date(2123, 1, 1))),
         NewsletterHebdoTemplate(ordre=5, sib_id=5, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1))),
+            date(2022, 1, 1), date(2123, 1, 1))),
         NewsletterHebdoTemplate(ordre=1, sib_id=1, _periode_validite=DateRange(
-            date(2022, 1, 1), date(2023, 1, 1)))
+            date(2022, 1, 1), date(2123, 1, 1)))
     ]
     db_session.add_all(_templates)
     return _templates

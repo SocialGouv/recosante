@@ -18,7 +18,7 @@ depends_on = None
 
 def upgrade():
     op.add_column('newsletter_hebdo_template', sa.Column('periode_validite', postgresql.DATERANGE(), nullable=True))
-    op.execute("UPDATE newsletter_hebdo_template SET periode_validite = daterange('2022-01-01', '2022-12-31', '[]')")
+    op.execute("UPDATE newsletter_hebdo_template SET periode_validite = daterange('2022-01-01', '2123-01-01', '[]')")
     op.alter_column('newsletter_hebdo_template', 'periode_validite', nullable=False)
 
 

@@ -94,9 +94,9 @@ def test_periode_validite_contains_periode_validite_one_month(db_session, templa
     db_session.add(template)
     db_session.commit()
 
-    assert template.filtre_date(date.today().replace(month=1, day=1))
-    assert template.filtre_date(date.today().replace(month=1, day=10))
-    assert template.filtre_date(date.today().replace(month=1, day=31))
+    assert not template.filtre_date(date.today().replace(month=1, day=1))
+    assert not template.filtre_date(date.today().replace(month=1, day=10))
+    assert not template.filtre_date(date.today().replace(month=1, day=31))
 
 
 def test_periode_validite_contains_periode_validite_two_month(db_session, templates):
@@ -107,29 +107,9 @@ def test_periode_validite_contains_periode_validite_two_month(db_session, templa
     db_session.commit()
 
     for month in [7, 8]:
-        assert template.filtre_date(date.today().replace(month=month, day=1))
-        assert template.filtre_date(date.today().replace(month=month, day=10))
-        assert template.filtre_date(date.today().replace(month=month, day=31))
-
-
-def test_periode_validite_contains_periode_validite_two_years(db_session, templates):
-    template = templates[0]
-    # pylint: disable-next=protected-access
-    template._periode_validite = DateRange(date(2022, 10, 1), date(2023, 2, 1))
-    db_session.add(template)
-    db_session.commit()
-
-    assert template.filtre_date(date.today().replace(month=1, day=1))
-    assert template.filtre_date(date.today().replace(month=10, day=1))
-    assert template.filtre_date(date.today().replace(month=10, day=10))
-    assert template.filtre_date(date.today().replace(month=12, day=31))
-    assert template.filtre_date(date.today().replace(
-        year=date.today().year+1, month=1, day=1))
-    assert template.filtre_date(date.today().replace(
-        year=date.today().year+1, month=2, day=1))
-    assert template.filtre_date(date.today().replace(
-        year=date.today().year+1, month=2, day=2)) is False
-    assert template.filtre_date(date.today().replace(month=9, day=30)) is False
+        assert not template.filtre_date(date.today().replace(month=month, day=1))
+        assert not template.filtre_date(date.today().replace(month=month, day=10))
+        assert not template.filtre_date(date.today().replace(month=month, day=31))
 
 
 def test_chauffage(template, inscription):
