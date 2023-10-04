@@ -24,7 +24,7 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.31",
     "rollup": "^3.23.0",
     "rollup-plugin-postcss": "^4.0.2"
   }
