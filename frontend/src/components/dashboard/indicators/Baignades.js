@@ -92,7 +92,7 @@ export default function Baignades(props) {
                 className={[
                   "flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start",
                   data?.baignades?.indice?.label === "Pas de sites"
-                    ? "items-center md:min-h-[10rem]"
+                    ? "items-center"
                     : "",
                 ].join(" ")}
               >
@@ -163,70 +163,73 @@ export default function Baignades(props) {
                   </>
                 )}
               </div>
-              <ul className="mb-0 mt-2 w-full flex-col justify-between xl:mt-6">
-                {plages
-                  ?.filter((_el, index) => {
-                    if (seeMorePlages) return true;
-                    return index < minimumPlagesInView;
-                  })
-                  .map((element) => {
-                    const sampleValue = [
-                      "Bon résultat",
-                      "Résultat moyen",
-                      "Mauvais résultat",
-                    ].indexOf(element?.sample?.label);
-                    return (
-                      <li
-                        key={element?.label}
-                        className="mb-2 flex shrink-0 grow basis-0 flex-col"
-                      >
-                        <div className="relative flex w-full items-center justify-between gap-x-2">
-                          <div className="relative">
-                            {element.url ? (
-                              <a
-                                href={element.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline"
-                              >
-                                {element.label}
-                              </a>
+
+              {data?.baignades?.indice?.label !== "Pas de sites" && (
+                <ul className="mb-0 mt-2 w-full flex-col justify-between xl:mt-6">
+                  {plages
+                    ?.filter((_el, index) => {
+                      if (seeMorePlages) return true;
+                      return index < minimumPlagesInView;
+                    })
+                    .map((element) => {
+                      const sampleValue = [
+                        "Bon résultat",
+                        "Résultat moyen",
+                        "Mauvais résultat",
+                      ].indexOf(element?.sample?.label);
+                      return (
+                        <li
+                          key={element?.label}
+                          className="mb-2 flex shrink-0 grow basis-0 flex-col"
+                        >
+                          <div className="relative flex w-full items-center justify-between gap-x-2">
+                            <div className="relative">
+                              {element.url ? (
+                                <a
+                                  href={element.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="underline"
+                                >
+                                  {element.label}
+                                </a>
+                              ) : (
+                                <p className="m-0">{element.label}</p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-x-3 pb-1">
+                            {!element.sample.label ? (
+                              <p className="mb-0 text-start text-xs">
+                                Pas de résultats de prélèvements
+                              </p>
                             ) : (
-                              <p className="m-0">{element.label}</p>
+                              <>
+                                <div
+                                  aria-hidden="true"
+                                  className={[
+                                    "h-4 w-4 shrink-0 rounded-sm transition-colors",
+                                    sampleValue >= 0
+                                      ? `opacity-100 bg-baignades-${sampleValue}`
+                                      : "opacity-15 bg-main",
+                                  ].join(" ")}
+                                />
+                                <p className="mb-0 text-start text-xs">
+                                  {element.sample.label}{" "}
+                                  {element.sample.date && (
+                                    <span className="font-light">
+                                      (prélèvement du {element.sample.date})
+                                    </span>
+                                  )}
+                                </p>
+                              </>
                             )}
                           </div>
-                        </div>
-                        <div className="flex items-center gap-x-3 pb-1">
-                          {!element.sample.label ? (
-                            <p className="mb-0 text-start text-xs">
-                              Pas de résultats de prélèvements
-                            </p>
-                          ) : (
-                            <>
-                              <div
-                                aria-hidden="true"
-                                className={[
-                                  "h-4 w-4 shrink-0 rounded-sm transition-colors",
-                                  sampleValue >= 0
-                                    ? `opacity-100 bg-baignades-${sampleValue}`
-                                    : "opacity-15 bg-main",
-                                ].join(" ")}
-                              />
-                              <p className="mb-0 text-start text-xs">
-                                {element.sample.label}{" "}
-                                {element.sample.date && (
-                                  <span className="font-light">
-                                    (prélèvement du {element.sample.date})
-                                  </span>
-                                )}
-                              </p>
-                            </>
-                          )}
-                        </div>
-                      </li>
-                    );
-                  })}
-              </ul>
+                        </li>
+                      );
+                    })}
+                </ul>
+              )}
               {!!showSeeMorePlagesButton && (
                 <button
                   onClick={() => {
