@@ -6,12 +6,12 @@ from sentry_sdk.integrations.redis import RedisIntegration
 
 from . import create_app
 
-if os.getenv('SENTRY_DSN'):
+if os.getenv("SENTRY_DSN"):
     sentry_sdk.init(
-        dsn=os.getenv('SENTRY_DSN'),
+        dsn=os.getenv("SENTRY_DSN"),
         integrations=[CeleryIntegration(), RedisIntegration()],
-        traces_sample_rate=1.0,
-        environment=os.getenv('ENVIRONMENT'),
+        traces_sample_rate=0.2,
+        environment=os.getenv("ENVIRONMENT"),
         attach_stacktrace=True,
     )
 app = create_app()
