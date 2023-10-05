@@ -8,14 +8,14 @@ import os
 
 logging.basicConfig(level=logging.DEBUG)
 
-if os.getenv('SENTRY_DSN'):
+if os.getenv("SENTRY_DSN"):
     sentry_sdk.init(
-        dsn=os.getenv('SENTRY_DSN'),
+        dsn=os.getenv("SENTRY_DSN"),
         integrations=[FlaskIntegration(), RedisIntegration()],
-        traces_sample_rate=1.0,
-        environment=os.getenv('ENVIRONMENT'),
+        traces_sample_rate=0.2,
+        environment=os.getenv("ENVIRONMENT"),
     )
-    logging.getLogger(__name__).info('SENTRY SDK SET')
+    logging.getLogger(__name__).info("SENTRY SDK SET")
 
 
 app = create_app()
