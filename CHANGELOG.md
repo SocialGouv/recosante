@@ -1,3 +1,12 @@
+## [1.10.15](https://github.com/SocialGouv/recosante/compare/v1.10.14...v1.10.15) (2023-10-17)
+
+
+### Bug Fixes
+
+* **frontend:** space in pas de baignade ([c2efeaf](https://github.com/SocialGouv/recosante/commit/c2efeaf77f7ee474bb68a4035302ca1de1fda1fc))
+* **frontend:** stats display ([#259](https://github.com/SocialGouv/recosante/issues/259)) ([cfdce74](https://github.com/SocialGouv/recosante/commit/cfdce74c1610f062096b27d446f2b2bbd7635cea))
+* **sentry:** reduce sampleRate ([#257](https://github.com/SocialGouv/recosante/issues/257)) ([9980097](https://github.com/SocialGouv/recosante/commit/99800976b4dc76d65e2cc0e5a7f61fa38064d949))
+
 ## [1.10.14](https://github.com/SocialGouv/recosante/compare/v1.10.13...v1.10.14) (2023-10-04)
 
 
