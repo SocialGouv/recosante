@@ -36,21 +36,21 @@ export default function Email(props) {
   const frequenceData = [
     {
       name: "Tous les jours",
-      value: props.frequence_quotidien / props.total_actifs,
+      value: props.frequence_quotidien,
     },
     {
       name: "En cas de vigilance",
-      value: props.frequence_alerte / props.total_actifs,
+      value: props.frequence_alerte,
     },
   ];
   const mediaData = [
     {
       name: "Par email",
-      value: props.media_mail / props.total_actifs,
+      value: props.media_mail,
     },
     {
       name: "Par notification",
-      value: props.media_notifications_web / props.total_actifs,
+      value: props.media_notifications_web,
     },
   ];
   const formatAsDecimal = (num) =>
@@ -102,6 +102,75 @@ export default function Email(props) {
         </Subsection>
         <Subsection>
           <Section.Title center>
+            À quelle fréquence et de quelle façon les reçoivent-ils ?
+          </Section.Title>
+          <StyledSection>
+            <Wrapper>
+              <ResponsiveContainer>
+                <PieChart width={700} height={600}>
+                  <Pie
+                    dataKey="value"
+                    data={frequenceData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={"66%"}
+                    label={(entry) => {
+                      return `${formatAsDecimal(
+                        entry.value
+                      )} (${formatAsPercent(
+                        entry.value / props.total_actifs
+                      )})`;
+                    }}
+                    isAnimationActive={false}
+                  >
+                    {frequenceData.map((entry, index) => (
+                      <Cell key={entry.name} fill={colors[index]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => formatAsPercent(value)} />
+                  <Legend
+                    layout="vertical"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </Wrapper>
+            <Wrapper>
+              <ResponsiveContainer>
+                <PieChart width={700} height={600}>
+                  <Pie
+                    dataKey="value"
+                    data={mediaData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={"66%"}
+                    label={(entry) => {
+                      return `${formatAsDecimal(
+                        entry.value
+                      )} (${formatAsPercent(
+                        entry.value / props.total_actifs
+                      )})`;
+                    }}
+                    isAnimationActive={false}
+                  >
+                    {mediaData.map((entry, index) => (
+                      <Cell key={entry.name} fill={colors[index]} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => formatAsPercent(value)} />
+                  <Legend
+                    layout="vertical"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </Wrapper>
+          </StyledSection>
+        </Subsection>
+        <Subsection>
+          <Section.Title center>
             À quels indicateurs sont abonnés nos utilisateurs ?
           </Section.Title>
           <StyledSection>
@@ -137,63 +206,7 @@ export default function Email(props) {
             </Text>
           </StyledSection>
         </Subsection>
-        <Subsection>
-          <Section.Title center>
-            À quelle fréquence et de quelle façon les reçoivent-ils ?
-          </Section.Title>
-          <StyledSection>
-            <Wrapper>
-              <ResponsiveContainer>
-                <PieChart width={700} height={600}>
-                  <Pie
-                    dataKey="value"
-                    data={frequenceData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={"66%"}
-                    label={(entry) => formatAsPercent(entry.value)}
-                    isAnimationActive={false}
-                  >
-                    {frequenceData.map((entry, index) => (
-                      <Cell key={entry.name} fill={colors[index]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => formatAsPercent(value)} />
-                  <Legend
-                    layout="vertical"
-                    align="center"
-                    verticalAlign="bottom"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </Wrapper>
-            <Wrapper>
-              <ResponsiveContainer>
-                <PieChart width={700} height={600}>
-                  <Pie
-                    dataKey="value"
-                    data={mediaData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={"66%"}
-                    label={(entry) => formatAsPercent(entry.value)}
-                    isAnimationActive={false}
-                  >
-                    {mediaData.map((entry, index) => (
-                      <Cell key={entry.name} fill={colors[index]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => formatAsPercent(value)} />
-                  <Legend
-                    layout="vertical"
-                    align="center"
-                    verticalAlign="bottom"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </Wrapper>
-          </StyledSection>
-        </Subsection>
+
         <Subsection>
           <Section.Title center>
             Quelle proportion se désabonne chaque mois ?
