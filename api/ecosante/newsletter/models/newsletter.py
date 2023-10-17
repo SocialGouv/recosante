@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from itertools import chain, groupby
 from math import inf
 from typing import Dict, List
+import pytz
 
 from flask import current_app, url_for
 from indice_pollution import get_all
@@ -20,6 +21,9 @@ from ecosante.utils.funcs import (convert_boolean_to_oui_non, generate_line,
 
 FR_DATE_FORMAT = '%d/%m/%Y'
 
+def tomorrow():
+    zone = pytz.timezone('Europe/Paris')
+    return datetime.now(tz=zone).date() + timedelta(days=1)
 
 @dataclass
 # pylint: disable-next=too-many-instance-attributes,too-many-public-methods
@@ -299,7 +303,7 @@ class Newsletter:
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            date_)
+            tomorrow() if type_ == 'quotidien' else date_)
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
