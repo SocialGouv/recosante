@@ -207,7 +207,7 @@ def make_episode_tomorrow(code_pol, _commune):
     episode = EpisodePollution(
         code_pol=code_pol,
         etat="INFORMATION ET RECOMMANDATION",
-        date_ech=datetime.now() + timedelta(days=1),
+        date_ech=datetime.now(),
         date_dif=datetime.now(),
         zone_id=_commune.zone_pollution_id,
         zone=_commune.zone_pollution

@@ -50,6 +50,7 @@ def test_formatted_polluants_indice_atmo_pm10(db_session, inscription, episode_p
         episodes={"data": [episode_pm10.dict()]},
         recommandations=recommandations
     )
+    print(f'test_formatted_polluants_indice_atmo_pm10: {newsletter}')
     assert newsletter.polluants_formatted == "aux particules fines"
     assert newsletter.polluants_symbols == ['pm10']
     # pylint: disable-next=line-too-long
