@@ -304,7 +304,8 @@ class Newsletter:
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
             tomorrow())
-        print(f'indices: {indices}')
+        print(f'all_episodes: {all_episodes}')
+        print(f'indices_uv: {indices_uv}')
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
