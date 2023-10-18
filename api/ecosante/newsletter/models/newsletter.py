@@ -317,6 +317,8 @@ class Newsletter:
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
+                print('indice')
+                print(indice)
                 episodes = all_episodes.get(
                     inscription.commune.zone_pollution_id)
                 if inscription.commune.departement:
@@ -369,6 +371,9 @@ class Newsletter:
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
         print('to send')
+        print(self.date)
+        print(self.forecast)
+        print(self.today_forecast)
         if type_ == 'hebdomadaire':
             return self.newsletter_hebdo_template is not None
         if force_send and self.inscription.has_frequence("quotidien"):
