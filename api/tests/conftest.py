@@ -249,7 +249,7 @@ def make_raep(_commune, raep):
     # pylint: disable-next=unexpected-keyword-arg
     return RAEP(
         zone_id=_commune.departement.zone_id,
-        validity=DateRange(date.today() + timedelta(days=1), date.today() + timedelta(days=1) + timedelta(weeks=1)),
+        validity=DateRange(date.today(), date.today() + timedelta(weeks=1)),
         cypres=raep,
         noisetier=raep,
         aulne=raep,
