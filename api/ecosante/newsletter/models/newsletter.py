@@ -7,6 +7,7 @@ from typing import Dict, List
 from flask import current_app, url_for
 from indice_pollution import get_all
 from indice_pollution import raep as get_raep
+from indice_pollution.helpers import tomorrow
 from indice_pollution import today
 from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 
@@ -299,7 +300,7 @@ class Newsletter:
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            date_)
+            tomorrow())
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
