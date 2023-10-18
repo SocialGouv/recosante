@@ -146,9 +146,10 @@ class RAEP(db.Base):
         return None
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, date_=None):
+        date_ = date_ or date.today()
         stmt = select(cls).where(
-            cls.validity.contains(date.today())
+            cls.validity.contains(date_)
         ).distinct(cls.zone_id
                    ).order_by(
             cls.zone_id,

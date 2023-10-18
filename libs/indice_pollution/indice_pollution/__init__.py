@@ -252,7 +252,7 @@ def get_all(date_):
     episodes_pollution = EpisodePollution.get_all(date_)
     allergenes_par_departement = {
         r.zone_id: r
-        for r in RAEP.get_all()
+        for r in RAEP.get_all(date_)
     }
     vigilances_par_departement = {
         zone_id: list(vigilances)
