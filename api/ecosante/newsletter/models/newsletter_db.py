@@ -203,7 +203,6 @@ class NewsletterDB(db.Model, Newsletter):
         self.recommandation_indice_uv = newsletter.recommandation_indice_uv
         self.recommandation_indice_uv_id = newsletter.recommandation_indice_uv.id if newsletter.recommandation_indice_uv else None
         self.date = newsletter.date
-        self.date_prediction = newsletter.date_prediction
         self.qualif = newsletter.qualif
         self.label = newsletter.label
         self.couleur = newsletter.couleur
@@ -302,8 +301,8 @@ class NewsletterDB(db.Model, Newsletter):
                 'DEPARTEMENT_PREPOSITION': self.departement_preposition or "",
                 "RAEP_DEBUT_VALIDITE": self.raep_debut_validite,
                 "RAEP_FIN_VALIDITE": self.raep_fin_validite,
-                'QUALITE_AIR_VALIDITE': self.date_prediction.strftime('%d/%m/%Y'),
-                'INDICE_UV_VALIDITE': self.date_prediction.strftime('%d/%m/%Y'),
+                'QUALITE_AIR_VALIDITE': self.date.strftime('%d/%m/%Y'),
+                'INDICE_UV_VALIDITE': self.date.strftime('%d/%m/%Y'),
                 'POLLINARIUM_SENTINELLE': self.inscription.commune and self.inscription.commune.pollinarium_sentinelle,
                 'INDICE_UV_LABEL': self.indice_uv_label or "",
                 'INDICE_UV_VALUE': self.indice_uv_value or "",

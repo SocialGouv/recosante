@@ -30,8 +30,7 @@ def tomorrow():
 class Newsletter:
     webpush_subscription_info_id: int = None
     webpush_subscription_info: dict = None
-    date: datetime = field(default_factory=today, init=True)
-    date_prediction: datetime = field(default_factory=tomorrow, init=True)
+    date: datetime = field(default_factory=tomorrow, init=True)
     recommandation: Recommandation = field(default=None, init=True)
     recommandation_qa: Recommandation = field(default=None, init=True)
     recommandation_raep: Recommandation = field(default=None, init=True)
@@ -111,7 +110,7 @@ class Newsletter:
                 for e in self.episodes
                 if e['etat'] != 'PAS DE DEPASSEMENT'
                 and 'date' in e
-                and e['date'] == str(self.date_prediction)
+                and e['date'] == str(self.date)
             ]
         else:
             self.polluants = []
@@ -236,7 +235,7 @@ class Newsletter:
             )
             return {}
         try:
-            return next(iter([v for v in data if v['date'] == str(self.date_prediction)]), {})
+            return next(iter([v for v in data if v['date'] == str(self.date)]), {})
         except (TypeError, ValueError, StopIteration) as exception:
             current_app.logger.error(
                 'Unable to get forecast for inscription: id: %s insee: %s',
@@ -250,7 +249,7 @@ class Newsletter:
     def today_episodes(self):
         data = self.episodes['data']
         try:
-            return [v for v in data if v['date'] == str(self.date_prediction)]
+            return [v for v in data if v['date'] == str(self.date)]
         except (TypeError, ValueError, StopIteration) as exception:
             current_app.logger.error(
                 'Unable to get episodes for inscription: id: %s insee: %s',
@@ -343,7 +342,7 @@ class Newsletter:
                     "vigilances": vigilances_recommandations_dep,
                     "indice_uv": indice_uv,
                     "date": today(),
-                    "date_prediction": tomorrow()
+                    "date": tomorrow()
                 })
             elif type_ == 'hebdomadaire':
                 next_template = NewsletterHebdoTemplate.next_template(
@@ -374,7 +373,7 @@ class Newsletter:
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
         print('to send')
-        print(f"self.date_prediction: {self.date_prediction}")
+        print(f"self.date: {self.date}")
         print(f"self.forecast: {self.forecast}")
         print(f"self.today_forecast: {self.today_forecast}")
         if type_ == 'hebdomadaire':
@@ -461,7 +460,7 @@ class Newsletter:
                 qualif=self.qualif,
                 polluants=self.polluants,
                 raep=self.raep,
-                date_=self.date_prediction,
+                date_=self.date,
                 indice_uv=self.indice_uv_value,
                 media='mail',
                 types=types
