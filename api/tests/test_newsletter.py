@@ -294,7 +294,7 @@ def test_show_indice_uv(inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
@@ -424,7 +424,7 @@ def test_indice_nul(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=date.today(),
+        date_ech=tomorrow(),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=0)
@@ -442,7 +442,7 @@ def test_indice_sept(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=date.today(),
+        date_ech=tomorrow(),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=7)
@@ -662,6 +662,15 @@ def test_vigilance(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=1,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 1
@@ -672,6 +681,7 @@ def test_vigilance(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul
         assert attributes[f'{key}_COULEUR'] == attributes['VIGILANCE_GLOBALE_COULEUR']
 
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
 
@@ -693,10 +703,20 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air_tomorrow, r
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=1,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 0
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
     for phenomene_id in VigilanceMeteo.phenomenes:
@@ -709,6 +729,15 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air_tomorrow, r
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=3,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 1
@@ -719,6 +748,7 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air_tomorrow, r
         assert attributes[f'{key}_COULEUR'] == attributes['VIGILANCE_GLOBALE_COULEUR']
 
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
 
@@ -747,7 +777,7 @@ def test_no_indice_uv(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=None,
+        uv_j1=None,
     )
     db_session.add(indice_uv)
     db_session.commit()
@@ -772,7 +802,7 @@ def test_indice_uv(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     db_session.commit()
@@ -798,20 +828,20 @@ def test_indice_uv_alerte(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
     assert len(newsletters) == 0
 
-    indice_uv.uv_j0 = 3
+    indice_uv.uv_j1 = 3
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
     assert len(newsletters) == 0
 
-    indice_uv.uv_j0 = 8
+    indice_uv.uv_j1 = 8
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
@@ -822,7 +852,7 @@ def test_indice_uv_alerte(db_session, inscription):
     assert 'INDICE_UV_LABEL' in attributes
     assert attributes['INDICE_UV_LABEL'] == "Très\u00a0fort (UV\u00a08)"
 
-    indice_uv.uv_j0 = 3
+    indice_uv.uv_j1 = 3
     inscription.enfants = "oui"
     db_session.add_all([indice_uv, inscription])
     db_session.commit()
@@ -845,7 +875,7 @@ def test_indice_uv_recommandation(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=3,
+        uv_j1=3,
     )
     db_session.add(indice_uv)
     db_session.commit()

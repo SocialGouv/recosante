@@ -83,7 +83,7 @@ def test_indice_uv(inscription, valeur):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=valeur,
+        uv_j1=valeur,
     )
     newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv, inscription=inscription)
     assert newsletter.show_indice_uv is True

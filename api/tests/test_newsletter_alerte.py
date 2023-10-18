@@ -108,7 +108,7 @@ def test_indice_uv(inscription_alerte, valeur, enfants, expected):
     indice_uv = IndiceUv(
         zone_id=inscription_alerte.commune.zone_id,
         date=date.today(),
-        uv_j0=valeur,
+        uv_j1=valeur,
     )
     newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv,
                             inscription=inscription_alerte)

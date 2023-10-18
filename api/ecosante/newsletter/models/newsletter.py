@@ -285,7 +285,7 @@ class Newsletter:
 
     @property
     def indice_uv_value(self):
-        return self.indice_uv.uv_j0 if self.indice_uv else None
+        return self.indice_uv.uv_j1 if self.indice_uv else None
 
     @property
     def has_depassement(self):
@@ -298,8 +298,7 @@ class Newsletter:
             remove_reco = []
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
-        indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            tomorrow())
+        indices, all_episodes, allergenes, vigilances, indices_uv = get_all()
         print(f'all_episodes: {all_episodes}')
         print(f'indices_uv: {indices_uv}')
         vigilances_recommandations = {
@@ -592,7 +591,7 @@ class Newsletter:
 
     @property
     def is_init_indice_uv(self):
-        return self.indice_uv is not None and isinstance(self.indice_uv.uv_j0, int)
+        return self.indice_uv is not None and isinstance(self.indice_uv.uv_j1, int)
 
     @property
     def show_indice_uv(self):
@@ -601,9 +600,9 @@ class Newsletter:
         if not self.is_init_indice_uv:
             return self.force_send
         if self.inscription.has_frequence("alerte"):
-            if self.indice_uv.uv_j0 <= 2:
+            if self.indice_uv.uv_j1 <= 2:
                 return False
-            if 3 <= self.indice_uv.uv_j0 <= 5:
+            if 3 <= self.indice_uv.uv_j1 <= 5:
                 return self.inscription.has_enfants
             return True  # >= 8
         return True

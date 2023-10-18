@@ -71,7 +71,7 @@ def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_a
     indice_uv = IndiceUv(
         zone_id=inscription_notifications.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     vigilance_meteo = VigilanceMeteo(
@@ -83,6 +83,15 @@ def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_a
             date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
     )
     db_session.add(vigilance_meteo)
+    vigilance_meteo_tomorrow = VigilanceMeteo(
+        zone_id=inscription_notifications.commune.departement.zone_id,
+        phenomene_id=1,
+        couleur_id=1,
+        date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+        validity=DateTimeTZRange(
+            date.today(), date.today() + timedelta(days=2)),
+    )
+    db_session.add(vigilance_meteo_tomorrow)
     inscription_notifications.indicateurs = inscription_notifications.indicateurs + \
         ["indice_uv"] + ["vigilance_meteo"]
     db_session.commit()
