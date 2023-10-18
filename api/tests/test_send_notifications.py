@@ -28,8 +28,8 @@ def test_cas_send_wepush_notification(inscription_notifications, recommandation,
 
 
 @requests_mock.Mocker(kw='mock')
-def test_cas_send_wepush_notifications(inscription_notifications, recommandation, bonne_qualite_air, raep_eleve, **kw):
-    _ = (recommandation, bonne_qualite_air, raep_eleve)
+def test_cas_send_wepush_notifications(inscription_notifications, recommandation, bonne_qualite_air_tomorrow, raep_eleve, **kw):
+    _ = (recommandation, bonne_qualite_air_tomorrow, raep_eleve)
     mock = kw['mock']
     mock.post(
         'https://updates.push.services.mozilla.com/wpush/v2/pouet', text='data')
@@ -65,8 +65,8 @@ def test_cas_send_wepush_notifications_pas_de_donnee(inscription_notifications, 
     assert len(nls) == 0
 
 
-def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_air, raep_eleve, db_session):
-    _ = (recommandation, bonne_qualite_air, raep_eleve)
+def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_air_tomorrow, raep_eleve, db_session):
+    _ = (recommandation, bonne_qualite_air_tomorrow, raep_eleve)
     indice_uv = IndiceUv(
         zone_id=inscription_notifications.commune.zone_id,
         date=date.today(),

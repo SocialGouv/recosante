@@ -232,11 +232,11 @@ def test_pollens(db_session, inscription, episodes, raep, delta, indice, request
     assert newsletter.show_raep == (raep > 0)
 
 
-def test_show_qa(inscription, bonne_qualite_air):
+def test_show_qa(inscription, bonne_qualite_air_tomorrow):
     inscription.indicateurs = ['indice_atmo']
     newsletter = Newsletter(
         inscription=inscription,
-        forecast={"data": [bonne_qualite_air.dict()]},
+        forecast={"data": [bonne_qualite_air_tomorrow.dict()]},
         episodes={"data": []},
         raep=0,
         recommandations=[]
@@ -406,8 +406,8 @@ def test_sous_indice(db_session, inscription):
             f'SS_INDICE_{sous_indice.upper()}_COULEUR'], str)
 
 
-def test_export_simple(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = (bonne_qualite_air, raep_nul)
+def test_export_simple(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = (bonne_qualite_air_tomorrow, raep_nul)
     db_session.add(published_recommandation())
     db_session.add(inscription)
     db_session.commit()
@@ -452,8 +452,8 @@ def test_indice_sept(db_session, inscription):
     assert len(newsletters) == 1
 
 
-def test_ville_slug(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = bonne_qualite_air, raep_nul
+def test_ville_slug(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = bonne_qualite_air_tomorrow, raep_nul
     # Lowercase
     inscription.commune.nom = "Paris"
     db_session.add(inscription)
@@ -545,8 +545,8 @@ def test_export_user_hebdo_ordre(db_session, inscription, templates):
     assert nl2.newsletter_hebdo_template.ordre > nl1.newsletter_hebdo_template.ordre
 
 
-def test_export_user_hebdo_quotidien(db_session, inscription, templates, bonne_qualite_air, raep_eleve):
-    _ = (templates, bonne_qualite_air, raep_eleve)
+def test_export_user_hebdo_quotidien(db_session, inscription, templates, bonne_qualite_air_tomorrow, raep_eleve):
+    _ = (templates, bonne_qualite_air_tomorrow, raep_eleve)
     db_session.add(inscription)
     db_session.commit()
     newsletters_hebdo = list(Newsletter.export(type_='hebdomadaire'))
@@ -578,8 +578,8 @@ def test_export_user_hebdo_alerte(db_session, inscription, templates):
     ]
 )
 # pylint: disable-next=too-many-arguments
-def test_export(db_session, recommandation, bonne_qualite_air, inscription, episode, raep, nb_nls, request):
-    _ = (recommandation, bonne_qualite_air)
+def test_export(db_session, recommandation, bonne_qualite_air_tomorrow, inscription, episode, raep, nb_nls, request):
+    _ = (recommandation, bonne_qualite_air_tomorrow)
     inscription = request.getfixturevalue(inscription)
     db_session.add(inscription)
     raep = request.getfixturevalue(raep)
@@ -645,8 +645,8 @@ def test_get_recommandation_par_type(inscription, db_session):
     assert all([r.type_ == "indice_atmo"] for r in eligible_recommandations)
 
 
-def test_vigilance(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = (bonne_qualite_air, raep_nul)
+def test_vigilance(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = (bonne_qualite_air_tomorrow, raep_nul)
     db_session.add(published_recommandation())
     db_session.add(inscription)
     db_session.commit()
@@ -674,8 +674,8 @@ def test_vigilance(db_session, inscription, bonne_qualite_air, raep_nul):
         db_session.commit()
 
 
-def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = bonne_qualite_air, raep_nul
+def test_vigilance_alerte(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = bonne_qualite_air_tomorrow, raep_nul
     db_session.add(published_recommandation())
     inscription.indicateurs_frequence = ['alerte']
     inscription.indicateurs = ['vigilance_meteo']
@@ -721,8 +721,8 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
         db_session.commit()
 
 
-def test_no_indice_uv_data(db_session, inscription, bonne_qualite_air):
-    _ = bonne_qualite_air
+def test_no_indice_uv_data(db_session, inscription, bonne_qualite_air_tomorrow):
+    _ = bonne_qualite_air_tomorrow
     db_session.add(published_recommandation())
     inscription.indicateurs = ['indice_atmo', 'indice_uv']
     db_session.add(inscription)

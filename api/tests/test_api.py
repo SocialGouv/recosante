@@ -22,10 +22,10 @@ def test_commune(client, commune_commited):
     assert response.json['commune']['nom'] == commune_commited.nom
 
 
-def test_indice_atmo(client, commune_commited, bonne_qualite_air):
+def test_indice_atmo(client, commune_commited, bonne_qualite_air_today):
     response = client.get(f"/v1/?insee={commune_commited.code}")
     assert response.status_code == 200
-    helper_test(response, 'indice_atmo', bonne_qualite_air.label,
+    helper_test(response, 'indice_atmo', bonne_qualite_air_today.label,
                 "la commune de Laval", "de ", "53130")
 
 
