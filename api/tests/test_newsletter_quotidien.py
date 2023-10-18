@@ -1,10 +1,10 @@
 from datetime import date, datetime, timedelta
 
 import pytest
+from indice_pollution.helpers import tomorrow
 from indice_pollution.history.models import (Commune, IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
 from psycopg2.extras import DateTimeTZRange
-from indice_pollution.helpers import tomorrow
 
 from ecosante.inscription.models import Inscription
 from ecosante.newsletter.models import Newsletter
@@ -87,3 +87,4 @@ def test_indice_uv(inscription, valeur):
     )
     newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv, inscription=inscription)
     assert newsletter.show_indice_uv is True
+

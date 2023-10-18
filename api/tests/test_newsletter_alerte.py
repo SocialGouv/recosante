@@ -1,10 +1,10 @@
 from datetime import date, datetime, timedelta
 
 import pytest
+from indice_pollution.helpers import tomorrow
 from indice_pollution.history.models import (IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
 from psycopg2.extras import DateTimeTZRange
-from indice_pollution.helpers import tomorrow
 
 from ecosante.newsletter.models.newsletter import Newsletter
 

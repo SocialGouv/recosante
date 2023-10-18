@@ -1,9 +1,9 @@
 import os
 from datetime import date, datetime, timedelta
+from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 from indice_pollution.helpers import tomorrow
 
 import requests_mock
-from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 from psycopg2.extras import DateTimeTZRange
 
 from ecosante.newsletter.models import Newsletter, NewsletterDB
@@ -29,7 +29,11 @@ def test_cas_send_wepush_notification(inscription_notifications, recommandation,
 
 
 @requests_mock.Mocker(kw='mock')
-def test_cas_send_wepush_notifications(inscription_notifications, recommandation, bonne_qualite_air_tomorrow, raep_eleve, **kw):
+def test_cas_send_wepush_notifications(
+    inscription_notifications,
+    recommandation,
+    bonne_qualite_air_tomorrow,
+    raep_eleve, **kw):
     _ = (recommandation, bonne_qualite_air_tomorrow, raep_eleve)
     mock = kw['mock']
     mock.post(

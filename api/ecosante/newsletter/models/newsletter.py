@@ -1,9 +1,8 @@
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from itertools import chain, groupby
 from math import inf
 from typing import Dict, List
-import pytz
 
 from flask import current_app, url_for
 from indice_pollution import get_all
@@ -306,6 +305,7 @@ class Newsletter:
             for dep_code, v in vigilances.items()
         }
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        print(f'indices_uv map: {indices_uv}')
         templates = NewsletterHebdoTemplate.get_templates()
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_).yield_per(100):
             print(f'inscription.id: {inscription.id}')
@@ -605,4 +605,5 @@ class Newsletter:
             if 3 <= self.indice_uv.uv_j1 <= 5:
                 return self.inscription.has_enfants
             return True  # >= 8
+
         return True
