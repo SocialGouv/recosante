@@ -297,7 +297,7 @@ class Newsletter:
 
     @classmethod
     # pylint: disable-next=line-too-long,too-many-arguments,too-many-branches,too-many-locals
-    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
+    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
         if remove_reco is None:
             remove_reco = []
         recommandations = Recommandation.shuffled(
@@ -311,8 +311,8 @@ class Newsletter:
         }
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
         templates = NewsletterHebdoTemplate.get_templates()
-        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
-            print(inscription.id)
+        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_).yield_per(100):
+            print(f'inscription.id: {inscription.id}')
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
@@ -339,10 +339,9 @@ class Newsletter:
                     "allergenes": raep_dict.get("allergenes"),
                     "validite_raep": raep_dict.get("periode_validite", {}),
                     "vigilances": vigilances_recommandations_dep,
-                    "indice_uv": indice_uv
+                    "indice_uv": indice_uv,
+                    "date": tomorrow()
                 })
-                if date_:
-                    init_dict['date'] = date_
             elif type_ == 'hebdomadaire':
                 next_template = NewsletterHebdoTemplate.next_template(
                     inscription, templates)
@@ -370,9 +369,9 @@ class Newsletter:
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
         print('to send')
-        print(self.date)
-        print(self.forecast)
-        print(self.today_forecast)
+        print(f"self.date: {self.date}")
+        print(f"self.forecast: {self.forecast}")
+        print(f"self.today_forecast: {self.today_forecast}")
         if type_ == 'hebdomadaire':
             return self.newsletter_hebdo_template is not None
         if force_send and self.inscription.has_frequence("quotidien"):
