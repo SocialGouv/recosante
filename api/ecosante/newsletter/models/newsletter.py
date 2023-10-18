@@ -302,8 +302,10 @@ class Newsletter:
             remove_reco = []
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
+        if type_ == 'quotidien':
+            date_ = tomorrow()
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            tomorrow() if type_ == 'quotidien' else date_)
+            date_)
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
