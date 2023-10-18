@@ -424,7 +424,7 @@ def test_indice_nul(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=tomorrow(),
+        date_ech=date.today() + timedelta(days=1),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=0)
@@ -442,7 +442,7 @@ def test_indice_sept(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=tomorrow(),
+        date_ech=date.today() + timedelta(days=1),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=7)

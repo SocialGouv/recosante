@@ -18,7 +18,7 @@ def test_indice(commune: Commune, inscription: Inscription, valeur):
     inscription.indicateurs = ['indice_atmo']
     indice = IndiceATMO(
         zone_id=commune.zone_id,
-        date_ech=tomorrow(),
+        date_ech=datetime.today() + timedelta(days=1),
         date_dif=datetime.today(),
         no2=valeur,
         so2=valeur,
