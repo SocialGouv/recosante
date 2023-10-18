@@ -358,10 +358,12 @@ class Newsletter:
                         'webpush_subscription_info': webpush_subscription
                     }
                     )
+                    print(f'webpush_subscription init_dict: {init_dict}')
                     newsletter = cls(**init_dict)
                     if newsletter.to_send(type_, force_send):
                         yield newsletter
             else:
+                print(f'newsletter init_dict: {init_dict}')
                 newsletter = cls(**init_dict)
                 if newsletter.to_send(type_, force_send):
                     yield newsletter
