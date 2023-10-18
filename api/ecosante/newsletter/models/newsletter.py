@@ -313,6 +313,7 @@ class Newsletter:
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
         templates = NewsletterHebdoTemplate.get_templates()
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
+            print(inscription.id)
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
@@ -367,17 +368,22 @@ class Newsletter:
 
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
+        print('to send')
         if type_ == 'hebdomadaire':
             return self.newsletter_hebdo_template is not None
         if force_send and self.inscription.has_frequence("quotidien"):
             return True
         if not self.is_init_qa and self.inscription.has_indicateur("indice_atmo"):
+            print('not init qa')
             return False
         if not self.is_init_raep and self.inscription.has_indicateur("raep"):
+            print('not init raep')
             return False
         if not self.is_init_vigilance and self.inscription.has_indicateur("vigilance_meteo"):
+            print('not init vigilance')
             return False
         if not self.is_init_indice_uv and self.inscription.has_indicateur("indice_uv"):
+            print('not init indice uv')
             return False
         return self.show_qa or self.show_raep or self.show_vigilance or self.show_indice_uv
 
