@@ -18,7 +18,7 @@ def test_indice(commune: Commune, inscription: Inscription, valeur):
     inscription.indicateurs = ['indice_atmo']
     indice = IndiceATMO(
         zone_id=commune.zone_id,
-        date_ech=datetime.today(),
+        date_ech=tomorrow(),
         date_dif=datetime.today(),
         no2=valeur,
         so2=valeur,
@@ -87,4 +87,3 @@ def test_indice_uv(inscription, valeur):
     )
     newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv, inscription=inscription)
     assert newsletter.show_indice_uv is True
-

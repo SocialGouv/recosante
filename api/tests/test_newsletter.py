@@ -890,4 +890,3 @@ def test_indice_uv_recommandation(db_session, inscription):
 
     db_session.delete(indice_uv)
     db_session.commit()
-
