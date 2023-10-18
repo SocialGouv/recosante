@@ -98,7 +98,7 @@ class IndiceATMO(db.Base):
         ).join(
             commune_alias, commune_alias.epci_id == EPCI.id, isouter=True
         ).filter(
-            func.date(IndiceATMO.date_ech) == date_
+            IndiceATMO.date_ech.cast(Date) == date_
         ).order_by(
             commune_id, IndiceATMO.date_dif.desc()
         ).distinct(

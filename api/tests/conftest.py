@@ -148,23 +148,15 @@ def inscription_notifications(db_session, inscription: Inscription) -> Inscripti
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def mauvaise_qualite_air(commune_commited, db_session) -> IndiceATMO:
-    indice = IndiceATMO(
-        zone_id=commune_commited.zone_id,
-        date_ech=datetime.now(),
-        date_dif=datetime.now(),
-        no2=4, so2=4, o3=4, pm10=5, pm25=6,
-        valeur=6)
-    db_session.add(indice)
-    return indice
-
+def date_ech() -> datetime:
+    return datetime.now() + timedelta(days=1)
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def bonne_qualite_air(commune_commited, db_session) -> IndiceATMO:
+def bonne_qualite_air(commune_commited, db_session, date_ech) -> IndiceATMO:
     indice = IndiceATMO(
         zone_id=commune_commited.zone_id,
-        date_ech=datetime.now(),
+        date_ech=date_ech,
         date_dif=datetime.now(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=1)
@@ -174,10 +166,10 @@ def bonne_qualite_air(commune_commited, db_session) -> IndiceATMO:
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def evenement_qualite_air(commune_commited, db_session) -> IndiceATMO:
+def evenement_qualite_air(commune_commited, db_session, date_ech=datetime.now()) -> IndiceATMO:
     indice = IndiceATMO(
         zone_id=commune_commited.zone_id,
-        date_ech=datetime.now(),
+        date_ech=date_ech,
         date_dif=datetime.now(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=7)
