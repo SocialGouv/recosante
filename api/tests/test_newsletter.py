@@ -78,7 +78,7 @@ def test_formatted_polluants_indice_atmo_pm10_no2(db_session, inscription, episo
 
 
 # pylint: disable-next=line-too-long
-def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
+def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_soufre_tomorrow, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
@@ -86,7 +86,7 @@ def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_s
     newsletter = Newsletter(
         inscription=inscription,
         forecast={"data": []},
-        episodes={"data": [episode_soufre.dict(), episode_pm10.dict(
+        episodes={"data": [episode_soufre_tomorrow.dict(), episode_pm10.dict(
         ), episode_ozone.dict(), episode_azote.dict()]},
         recommandations=recommandations
     )
@@ -98,12 +98,12 @@ def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_s
 
 
 # pylint: disable-next=line-too-long
-def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
+def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, episode_soufre_tomorrow, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    episode_dict = episode_soufre.dict()
+    episode_dict = episode_soufre_tomorrow.dict()
     episode_dict['etat'] = 'PAS DE DEPASSEMENT'
     newsletter = Newsletter(
         inscription=inscription,
@@ -571,9 +571,9 @@ def test_export_user_hebdo_alerte(db_session, inscription, templates):
 @pytest.mark.parametrize(
     "inscription, episode, raep, nb_nls",
     [
-        ("inscription_alerte", "episode_soufre", "raep_nul", 0),
+        ("inscription_alerte", "episode_soufre_tomorrow", "raep_nul", 0),
         ("inscription_alerte", "", "raep_nul", 0),
-        ("inscription_alerte", "episode_soufre", "raep_eleve", 1),
+        ("inscription_alerte", "episode_soufre_tomorrow", "raep_eleve", 1),
         ("inscription_alerte", "", "raep_eleve", 1)
     ]
 )

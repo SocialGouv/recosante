@@ -35,9 +35,9 @@ def test_indice_atmo(inscription_alerte, commune, valeur, expected):
         assert newsletter.to_send('quotidien', False) is False
 
 
-def test_episode_pollution(inscription_alerte, episode_soufre):
+def test_episode_pollution(inscription_alerte, episode_soufre_tomorrow):
     inscription_alerte.indicateurs = ['episode_pollution']
-    newsletter = Newsletter(episodes=[episode_soufre.dict()],
+    newsletter = Newsletter(episodes=[episode_soufre_tomorrow.dict()],
                             inscription=inscription_alerte)
     # TODO: Fix me
     # pylint: disable-next=pointless-statement

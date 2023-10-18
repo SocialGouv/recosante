@@ -31,10 +31,10 @@ def test_indice(commune: Commune, inscription: Inscription, valeur):
     assert newsletter.show_qa is True
 
 
-def test_episode_pollution(inscription, episode_soufre):
+def test_episode_pollution(inscription, episode_soufre_tomorrow):
     inscription.indicateurs = ['episode_pollution']
     newsletter = Newsletter(
-        episodes=[episode_soufre.dict()], inscription=inscription)
+        episodes=[episode_soufre_tomorrow.dict()], inscription=inscription)
     # TODO: Fix me
     # pylint: disable-next=pointless-statement
     newsletter.show_vigilance is True

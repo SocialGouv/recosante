@@ -55,8 +55,8 @@ def test_potentiel_radon(client, commune_commited, db_session):
                 "la commune de Laval", "de ", "53130")
 
 
-def test_episodes_pollution(client, commune_commited, episode_soufre, db_session):
-    db_session.add(episode_soufre)
+def test_episodes_pollution(client, commune_commited, episode_soufre_today, db_session):
+    db_session.add(episode_soufre_today)
     db_session.commit()
     response = client.get(f"/v1/?insee={commune_commited.code}")
     assert response.status_code == 200

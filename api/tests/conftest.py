@@ -173,10 +173,10 @@ def bonne_qualite_air_today(commune_commited, db_session) -> IndiceATMO:
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def evenement_qualite_air(commune_commited, db_session, date_ech=datetime.now()) -> IndiceATMO:
+def evenement_qualite_air(commune_commited, db_session) -> IndiceATMO:
     indice = IndiceATMO(
         zone_id=commune_commited.zone_id,
-        date_ech=date_ech,
+        date_ech=datetime.now() + timedelta(days=1),
         date_dif=datetime.now(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=7)
@@ -192,7 +192,7 @@ def recommandation(db_session) -> Recommandation:
     return _recommandation
 
 
-def make_episode(code_pol, _commune):
+def make_episode_today(code_pol, _commune):
     episode = EpisodePollution(
         code_pol=code_pol,
         etat="INFORMATION ET RECOMMANDATION",
@@ -203,42 +203,53 @@ def make_episode(code_pol, _commune):
     )
     return episode
 
+def make_episode_tomorrow(code_pol, _commune):
+    episode = EpisodePollution(
+        code_pol=code_pol,
+        etat="INFORMATION ET RECOMMANDATION",
+        date_ech=datetime.now() + timedelta(days=1),
+        date_dif=datetime.now(),
+        zone_id=_commune.zone_pollution_id,
+        zone=_commune.zone_pollution
+    )
+    return episode
+
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def episode_soufre(commune_commited):
-    return make_episode(1, commune_commited)
+def episode_soufre_today(commune_commited):
+    return make_episode_today(1, commune_commited)
 
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
-def episode_carbone(commune_commited):
-    return make_episode(4, commune_commited)
+def episode_soufre_tomorrow(commune_commited):
+    return make_episode_tomorrow(1, commune_commited)
 
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
 def episode_pm10(commune_commited):
-    return make_episode(5, commune_commited)
+    return make_episode_tomorrow(5, commune_commited)
 
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
 def episode_ozone(commune_commited):
-    return make_episode(7, commune_commited)
+    return make_episode_tomorrow(7, commune_commited)
 
 
 @pytest.fixture(scope='function')
 # pylint: disable-next=redefined-outer-name
 def episode_azote(commune_commited):
-    return make_episode(8, commune_commited)
+    return make_episode_tomorrow(8, commune_commited)
 
 
 def make_raep(_commune, raep):
     # pylint: disable-next=unexpected-keyword-arg
     return RAEP(
         zone_id=_commune.departement.zone_id,
-        validity=DateRange(date.today(), date.today() + timedelta(weeks=1)),
+        validity=DateRange(date.today() + timedelta(days=1), date.today() + timedelta(days=1) + timedelta(weeks=1)),
         cypres=raep,
         noisetier=raep,
         aulne=raep,
