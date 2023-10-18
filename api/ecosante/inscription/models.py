@@ -408,11 +408,10 @@ class Inscription(db.Model):
         return isinstance(self.indicateurs_frequence, list) and frequence in self.indicateurs_frequence
 
     @classmethod
-    def export_query(cls, only_to=None, filter_already_sent=True, media='mail', type_='quotidien'):
+    def export_query(cls, only_to=None, filter_already_sent=True, media='mail', type_='quotidien', date_=date.today()):
         # This is to avoid circular import
         # pylint: disable-next=import-outside-toplevel
         from ecosante.newsletter.models import NewsletterDB
-        date_ = date.today()
         query = Inscription.active_query()
         if only_to:
             query = query.filter(Inscription.mail.in_(only_to))
