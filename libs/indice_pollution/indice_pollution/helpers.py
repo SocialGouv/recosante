@@ -10,9 +10,7 @@ from .extensions import logger
 
 def today():
     zone = pytz.timezone('Europe/Paris')
-    today = datetime.now(tz=zone).date()
-    print(f"TODAY: {today}")
-    return today
+    return datetime.now(tz=zone).date()
 
 
 def oxford_comma(items):

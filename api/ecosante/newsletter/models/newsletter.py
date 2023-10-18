@@ -23,9 +23,7 @@ FR_DATE_FORMAT = '%d/%m/%Y'
 
 def tomorrow():
     zone = pytz.timezone('Europe/Paris')
-    tomorrow = datetime.now(tz=zone).date() + timedelta(days=1)
-    print(f"TOMORROW: {tomorrow}")
-    return tomorrow
+    return datetime.now(tz=zone).date() + timedelta(days=1)
 
 @dataclass
 # pylint: disable-next=too-many-instance-attributes,too-many-public-methods
@@ -33,7 +31,6 @@ class Newsletter:
     webpush_subscription_info_id: int = None
     webpush_subscription_info: dict = None
     date: datetime = field(default_factory=today, init=True)
-    date_prediction: datetime = field(default_factory=today, init=True)
     recommandation: Recommandation = field(default=None, init=True)
     recommandation_qa: Recommandation = field(default=None, init=True)
     recommandation_raep: Recommandation = field(default=None, init=True)
@@ -238,7 +235,7 @@ class Newsletter:
             )
             return {}
         try:
-            return next(iter([v for v in data if v['date'] == str(self.date_prediction)]), {})
+            return next(iter([v for v in data if v['date'] == str(self.date)]), {})
         except (TypeError, ValueError, StopIteration) as exception:
             current_app.logger.error(
                 'Unable to get forecast for inscription: id: %s insee: %s',
@@ -300,17 +297,15 @@ class Newsletter:
 
     @classmethod
     # pylint: disable-next=line-too-long,too-many-arguments,too-many-branches,too-many-locals
-    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, date_prediction=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
+    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
         if remove_reco is None:
             remove_reco = []
-        if type_ == 'quotidien':
-            date_prediction = tomorrow()
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
+        if type_ == 'quotidien':
+            date_ = tomorrow()
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            date_prediction)
-        print('indices')
-        print(indices)
+            date_)
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
@@ -319,7 +314,6 @@ class Newsletter:
         templates = NewsletterHebdoTemplate.get_templates()
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
             print(inscription.id)
-            print(inscription)
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
@@ -348,8 +342,6 @@ class Newsletter:
                     "vigilances": vigilances_recommandations_dep,
                     "indice_uv": indice_uv
                 })
-                if date_prediction:
-                    init_dict['date_prediction'] = date_prediction
                 if date_:
                     init_dict['date'] = date_
             elif type_ == 'hebdomadaire':
