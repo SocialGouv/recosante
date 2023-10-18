@@ -247,7 +247,9 @@ def chunks(lst, count):
 
 
 def get_all(date_):
+    print('get_all')
     date_ = date_ or today()
+    print(date_)
     indices = IndiceATMO.get_all(date_)
     episodes_pollution = EpisodePollution.get_all(date_)
     allergenes_par_departement = {
