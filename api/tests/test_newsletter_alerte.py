@@ -4,6 +4,7 @@ import pytest
 from indice_pollution.history.models import (IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
 from psycopg2.extras import DateTimeTZRange
+from indice_pollution.helpers import tomorrow
 
 from ecosante.newsletter.models.newsletter import Newsletter
 
@@ -25,24 +26,24 @@ def test_indice_atmo(inscription_alerte, commune, valeur, expected):
         pm25=valeur,
         valeur=valeur,
     )
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         forecast={"data": [indice.dict()]}, inscription=inscription_alerte, type_="")
     assert newsletter.show_qa == expected
     if expected:
         assert newsletter.to_send('quotidien', False) is True
-        newsletter = Newsletter(forecast={"data": []},
+        newsletter = Newsletter(date=tomorrow(),forecast={"data": []},
                                 inscription=inscription_alerte, type_="")
         assert newsletter.to_send('quotidien', False) is False
 
 
 def test_episode_pollution(inscription_alerte, episode_soufre_tomorrow):
     inscription_alerte.indicateurs = ['episode_pollution']
-    newsletter = Newsletter(episodes=[episode_soufre_tomorrow.dict()],
+    newsletter = Newsletter(date=tomorrow(),episodes=[episode_soufre_tomorrow.dict()],
                             inscription=inscription_alerte)
     # TODO: Fix me
     # pylint: disable-next=pointless-statement
     newsletter.show_vigilance is True
-    newsletter = Newsletter(episodes=[], inscription=inscription_alerte)
+    newsletter = Newsletter(date=tomorrow(),episodes=[], inscription=inscription_alerte)
     # pylint: disable-next=pointless-statement
     newsletter.show_vigilance is False
 
@@ -53,11 +54,11 @@ def test_episode_pollution(inscription_alerte, episode_soufre_tomorrow):
 )
 def test_raep(inscription_alerte, raep, expected):
     inscription_alerte.indicateurs = ["raep"]
-    newsletter = Newsletter(raep=raep, inscription=inscription_alerte)
+    newsletter = Newsletter(date=tomorrow(),raep=raep, inscription=inscription_alerte)
     assert newsletter.show_raep == expected
     if expected:
         assert newsletter.to_send('quotidien', False) is True
-        newsletter = Newsletter(raep=None, inscription=inscription_alerte)
+        newsletter = Newsletter(date=tomorrow(),raep=None, inscription=inscription_alerte)
         assert newsletter.to_send('quotidien', False) is False
 
 
@@ -76,12 +77,12 @@ def test_vigilance(inscription_alerte, couleur_id, expected):
         validity=DateTimeTZRange(
             date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
     )
-    newsletter = Newsletter(vigilances={'globale': {
+    newsletter = Newsletter(date=tomorrow(),vigilances={'globale': {
         'vigilance': vigilance_meteo, 'recommandation': None}}, inscription=inscription_alerte)
     assert newsletter.show_vigilance == expected
     if expected:
         assert newsletter.to_send('quotidien', False) is True
-        newsletter = Newsletter(vigilances={'globale': {
+        newsletter = Newsletter(date=tomorrow(),vigilances={'globale': {
             'vigilance': None, 'recommandation': None}}, inscription=inscription_alerte)
         assert newsletter.to_send('quotidien', False) is False
 
@@ -109,6 +110,6 @@ def test_indice_uv(inscription_alerte, valeur, enfants, expected):
         date=date.today(),
         uv_j0=valeur,
     )
-    newsletter = Newsletter(indice_uv=indice_uv,
+    newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv,
                             inscription=inscription_alerte)
     assert newsletter.show_indice_uv == expected

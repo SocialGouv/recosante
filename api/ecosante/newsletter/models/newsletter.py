@@ -8,7 +8,7 @@ import pytz
 from flask import current_app, url_for
 from indice_pollution import get_all
 from indice_pollution import raep as get_raep
-from indice_pollution import today
+from indice_pollution.helpers import today, tomorrow
 from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 
 from ecosante.extensions import db
@@ -20,10 +20,6 @@ from ecosante.utils.funcs import (convert_boolean_to_oui_non, generate_line,
                                   oxford_comma)
 
 FR_DATE_FORMAT = '%d/%m/%Y'
-
-def tomorrow():
-    zone = pytz.timezone('Europe/Paris')
-    return datetime.now(tz=zone).date() + timedelta(days=1)
 
 @dataclass
 # pylint: disable-next=too-many-instance-attributes,too-many-public-methods

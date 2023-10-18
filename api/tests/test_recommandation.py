@@ -3,6 +3,7 @@ from itertools import product
 
 import pytest
 from indice_pollution.history.models.vigilance_meteo import VigilanceMeteo
+from indice_pollution.helpers import tomorrow
 
 from ecosante.inscription.models import Inscription
 from ecosante.newsletter.models import Newsletter, NewsletterDB
@@ -301,7 +302,7 @@ def test_get_relevant_recent(db_session, inscription):
     recommandation_2 = published_recommandation(ordre=0)
     db_session.add_all([recommandation_1, recommandation_2, inscription])
     db_session.commit()
-    newsletter_1 = NewsletterDB(Newsletter(
+    newsletter_1 = NewsletterDB(Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -310,7 +311,7 @@ def test_get_relevant_recent(db_session, inscription):
     assert newsletter_1.recommandation.ordre == 0
     db_session.add(newsletter_1)
     db_session.commit()
-    newsletter_2 = NewsletterDB(Newsletter(
+    newsletter_2 = NewsletterDB(Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -329,7 +330,7 @@ def test_get_relevant_last_criteres(db_session, inscription):
     db_session.add_all([recommandation_1, recommandation_2,
                        recommandation_3, inscription])
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -338,7 +339,7 @@ def test_get_relevant_last_criteres(db_session, inscription):
     mewsletter_db_1 = NewsletterDB(newsletter)
     db_session.add(mewsletter_db_1)
     db_session.commit()
-    mewsletter_db_2 = NewsletterDB(Newsletter(
+    mewsletter_db_2 = NewsletterDB(Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},

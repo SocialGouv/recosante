@@ -4,6 +4,7 @@ import pytest
 from indice_pollution.history.models import (Commune, IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
 from psycopg2.extras import DateTimeTZRange
+from indice_pollution.helpers import tomorrow
 
 from ecosante.inscription.models import Inscription
 from ecosante.newsletter.models import Newsletter
@@ -26,19 +27,19 @@ def test_indice(commune: Commune, inscription: Inscription, valeur):
         pm25=valeur,
         valeur=valeur,
     )
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         forecast={"data": [indice.dict()]}, inscription=inscription)
     assert newsletter.show_qa is True
 
 
 def test_episode_pollution(inscription, episode_soufre_tomorrow):
     inscription.indicateurs = ['episode_pollution']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         episodes=[episode_soufre_tomorrow.dict()], inscription=inscription)
     # TODO: Fix me
     # pylint: disable-next=pointless-statement
     newsletter.show_vigilance is True
-    newsletter = Newsletter(episodes=[], inscription=inscription)
+    newsletter = Newsletter(date=tomorrow(),episodes=[], inscription=inscription)
     # pylint: disable-next=pointless-statement
     newsletter.show_vigilance is False
 
@@ -49,7 +50,7 @@ def test_episode_pollution(inscription, episode_soufre_tomorrow):
 )
 def test_raep(inscription, raep, expected):
     inscription.indicateurs = ["raep"]
-    newsletter = Newsletter(raep=raep, inscription=inscription)
+    newsletter = Newsletter(date=tomorrow(),raep=raep, inscription=inscription)
     assert newsletter.show_raep == expected
 
 
@@ -68,7 +69,7 @@ def test_vigilance(inscription, couleur_id):
         validity=DateTimeTZRange(
             date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
     )
-    newsletter = Newsletter(vigilances={'globale': {
+    newsletter = Newsletter(date=tomorrow(),vigilances={'globale': {
         'vigilance': vigilance_meteo, 'recommandation': None}}, inscription=inscription)
     assert newsletter.show_vigilance is True
 
@@ -84,5 +85,5 @@ def test_indice_uv(inscription, valeur):
         date=date.today(),
         uv_j0=valeur,
     )
-    newsletter = Newsletter(indice_uv=indice_uv, inscription=inscription)
+    newsletter = Newsletter(date=tomorrow(),indice_uv=indice_uv, inscription=inscription)
     assert newsletter.show_indice_uv is True

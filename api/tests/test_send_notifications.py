@@ -1,5 +1,6 @@
 import os
 from datetime import date, datetime, timedelta
+from indice_pollution.helpers import tomorrow
 
 import requests_mock
 from indice_pollution.history.models import IndiceUv, VigilanceMeteo
@@ -16,7 +17,7 @@ def test_cas_send_wepush_notification(inscription_notifications, recommandation,
     mock.post(
         'https://updates.push.services.mozilla.com/wpush/v2/pouet', text='data')
 
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription_notifications,
         forecast={"data": []},
         episodes={"data": []},

@@ -4,6 +4,7 @@ from itertools import product
 import pytest
 from indice_pollution.history.models import (IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
+from indice_pollution.helpers import tomorrow
 from psycopg2.extras import DateTimeTZRange
 
 from ecosante.newsletter.models import Newsletter, NewsletterDB
@@ -21,7 +22,7 @@ def test_episode_passe(db_session, inscription):
     ]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [
@@ -44,7 +45,7 @@ def test_formatted_polluants_indice_atmo_pm10(db_session, inscription, episode_p
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_pm10.dict()]},
@@ -64,7 +65,7 @@ def test_formatted_polluants_indice_atmo_pm10_no2(db_session, inscription, episo
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_pm10.dict(), episode_azote.dict()]},
@@ -84,7 +85,7 @@ def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_s
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_soufre_tomorrow.dict(), episode_pm10.dict(
@@ -106,7 +107,7 @@ def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, ep
     db_session.commit()
     episode_dict = episode_soufre_tomorrow.dict()
     episode_dict['etat'] = 'PAS DE DEPASSEMENT'
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_dict, episode_pm10.dict(
@@ -129,7 +130,7 @@ def test_formatted_polluants_indice_atmo_no2(db_session, inscription, episode_az
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -150,7 +151,7 @@ def test_avis_oui(db_session, client, inscription, episode_azote):
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -176,7 +177,7 @@ def test_avis_non(db_session, client, inscription, episode_azote):
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -221,7 +222,7 @@ def test_pollens(db_session, inscription, episodes, raep, delta, indice, request
     else:
         episode = []
     inscription.indicateurs = ['raep']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [{"date": date_, "indice": indice}]},
         episodes={"data": episode},
@@ -235,7 +236,7 @@ def test_pollens(db_session, inscription, episodes, raep, delta, indice, request
 
 def test_show_qa(inscription, bonne_qualite_air_tomorrow):
     inscription.indicateurs = ['indice_atmo']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [bonne_qualite_air_tomorrow.dict()]},
         episodes={"data": []},
@@ -245,9 +246,9 @@ def test_show_qa(inscription, bonne_qualite_air_tomorrow):
     assert newsletter.show_qa is True
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
-        forecast={"data": [{"date": str(date.today()), "indice": "bon"}]},
+        forecast={"data": [{"date": str(tomorrow()), "indice": "bon"}]},
         episodes={"data": []},
         raep=0,
         recommandations=[]
@@ -257,7 +258,7 @@ def test_show_qa(inscription, bonne_qualite_air_tomorrow):
 
 def test_show_qa_evenement(inscription, evenement_qualite_air):
     inscription.indicateurs = ['indice_atmo']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [evenement_qualite_air.dict()]},
         episodes={"data": []},
@@ -278,7 +279,7 @@ def test_show_qa_evenement(inscription, evenement_qualite_air):
         'RECOMMANDATION']
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [evenement_qualite_air.dict()]},
         episodes={"data": []},
@@ -295,7 +296,7 @@ def test_show_indice_uv(inscription):
         date=date.today(),
         uv_j0=1,
     )
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -306,7 +307,7 @@ def test_show_indice_uv(inscription):
     assert newsletter.show_indice_uv is True
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -328,11 +329,10 @@ def test_sous_indice(db_session, inscription):
     ]
     db_session.add_all(recommandations)
     db_session.commit()
-    today_date = date.today()
     inscription.allergie_pollens = False
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
-        forecast={"data": [{"date": str(today_date), "indice": "bon"}]},
+        forecast={"data": [{"date": str(tomorrow()), "indice": "bon"}]},
         episodes={"data": []},
         raep=0,
         recommandations=recommandations,
@@ -348,7 +348,7 @@ def test_sous_indice(db_session, inscription):
 
     forecast = {
         'couleur': '#50CCAA',
-        'date': str(today_date),
+        'date': str(tomorrow()),
         'indice': 'moyen',
         'label': 'Moyen',
         'sous_indices': [
@@ -386,7 +386,7 @@ def test_sous_indice(db_session, inscription):
         'valeur': 2
     }
 
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [forecast]},
         episodes={"data": []},
@@ -594,7 +594,7 @@ def test_export(db_session, recommandation, bonne_qualite_air_tomorrow, inscript
 
 
 def test_get_recommandation_simple_case(inscription, recommandation):
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -635,7 +635,7 @@ def test_get_recommandation_par_type(inscription, db_session):
         published_recommandation(type_="raep")
     ]
     db_session.add_all(recommandations)
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
