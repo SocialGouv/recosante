@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 import requests
@@ -11,6 +11,10 @@ from .extensions import logger
 def today():
     zone = pytz.timezone('Europe/Paris')
     return datetime.now(tz=zone).date()
+
+def tomorrow():
+    zone = pytz.timezone('Europe/Paris')
+    return datetime.now(tz=zone).date() + timedelta(days=1)
 
 
 def oxford_comma(items):
