@@ -30,7 +30,7 @@ def tomorrow():
 class Newsletter:
     webpush_subscription_info_id: int = None
     webpush_subscription_info: dict = None
-    date: datetime = field(default_factory=tomorrow, init=True)
+    date: datetime = field(default_factory=today, init=True)
     recommandation: Recommandation = field(default=None, init=True)
     recommandation_qa: Recommandation = field(default=None, init=True)
     recommandation_raep: Recommandation = field(default=None, init=True)
@@ -341,7 +341,6 @@ class Newsletter:
                     "validite_raep": raep_dict.get("periode_validite", {}),
                     "vigilances": vigilances_recommandations_dep,
                     "indice_uv": indice_uv,
-                    "date": today(),
                     "date": tomorrow()
                 })
             elif type_ == 'hebdomadaire':
