@@ -222,7 +222,7 @@ def test_pollens(db_session, inscription, episodes, raep, delta, indice, request
     else:
         episode = []
     inscription.indicateurs = ['raep']
-    newsletter = Newsletter(date=tomorrow(),
+    newsletter = Newsletter(
         inscription=inscription,
         forecast={"data": [{"date": date_, "indice": indice}]},
         episodes={"data": episode},
