@@ -109,8 +109,6 @@ class Newsletter:
                 e['lib_pol_normalized']
                 for e in self.episodes
                 if e['etat'] != 'PAS DE DEPASSEMENT'
-                and 'date' in e
-                and e['date'] == str(self.date)
             ]
         else:
             self.polluants = []
