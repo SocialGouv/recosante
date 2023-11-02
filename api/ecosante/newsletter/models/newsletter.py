@@ -307,7 +307,7 @@ class Newsletter:
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
         print(f'indices_uv map: {indices_uv}')
         templates = NewsletterHebdoTemplate.get_templates()
-        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_ = tomorrow() if 'quotidien' else today()).yield_per(100):
+        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_ = tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
             print(f'inscription.id: {inscription.id}')
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
