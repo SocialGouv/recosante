@@ -35,7 +35,6 @@ from ecosante.utils.send_log_mail import send_log_mail
 #         so that it's sent even if all the indicators are not ready
 
 
-
 def get_all_contacts(limit=100):
     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
     contacts = []
