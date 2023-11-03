@@ -20,6 +20,7 @@ from ecosante.utils.funcs import (convert_boolean_to_oui_non, generate_line,
 
 FR_DATE_FORMAT = '%d/%m/%Y'
 
+
 @dataclass
 # pylint: disable-next=too-many-instance-attributes,too-many-public-methods
 class Newsletter:
@@ -298,22 +299,16 @@ class Newsletter:
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all()
-        print(f'all_episodes: {all_episodes}')
-        print(f'indices_uv: {indices_uv}')
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
         }
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
-        print(f'indices_uv map: {indices_uv}')
         templates = NewsletterHebdoTemplate.get_templates()
-        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_ = tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
-            print(f'inscription.id: {inscription.id}')
+        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_=tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
-                print('indice')
-                print(indice)
                 episodes = all_episodes.get(
                     inscription.commune.zone_pollution_id)
                 if inscription.commune.departement:
@@ -352,39 +347,28 @@ class Newsletter:
                     init_dict.update({
                         'webpush_subscription_info_id': webpush_subscription.id,
                         'webpush_subscription_info': webpush_subscription
-                    }
-                    )
-                    print(f'webpush_subscription init_dict: {init_dict}')
+                    })
                     newsletter = cls(**init_dict)
                     if newsletter.to_send(type_, force_send):
                         yield newsletter
             else:
-                print(f'newsletter init_dict: {init_dict}')
                 newsletter = cls(**init_dict)
                 if newsletter.to_send(type_, force_send):
                     yield newsletter
 
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
-        print('to send')
-        print(f"self.date: {self.date}")
-        print(f"self.forecast: {self.forecast}")
-        print(f"self.today_forecast: {self.today_forecast}")
         if type_ == 'hebdomadaire':
             return self.newsletter_hebdo_template is not None
         if force_send and self.inscription.has_frequence("quotidien"):
             return True
         if not self.is_init_qa and self.inscription.has_indicateur("indice_atmo"):
-            print('not init qa')
             return False
         if not self.is_init_raep and self.inscription.has_indicateur("raep"):
-            print('not init raep')
             return False
         if not self.is_init_vigilance and self.inscription.has_indicateur("vigilance_meteo"):
-            print('not init vigilance')
             return False
         if not self.is_init_indice_uv and self.inscription.has_indicateur("indice_uv"):
-            print('not init indice uv')
             return False
         return self.show_qa or self.show_raep or self.show_vigilance or self.show_indice_uv
 
