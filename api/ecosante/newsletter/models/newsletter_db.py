@@ -281,6 +281,7 @@ class NewsletterDB(db.Model, Newsletter):
         return {
             # pylint: disable=line-too-long
             **{
+                'INDICATEURS_DATE': self.date.strftime('%d/%m/%Y'),
                 'EMAIL': self.inscription.mail,
                 'RECOMMANDATION': (self.recommandation.format(self.inscription.commune) or "") if self.recommandation else "",
                 'LIEN_AASQA': self.lien_aasqa,
