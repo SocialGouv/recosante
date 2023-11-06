@@ -1,13 +1,12 @@
 {
-  "name": "recosante-frontend",
+  "name": "@recosante/frontend",
   "version": "1.0.0",
   "license": "SEE LICENSE in ../LICENSE",
   "private": true,
   "author": "Fabrique des ministères sociaux",
   "scripts": {
-    "build": "yarn iframe && gatsby build",
+    "build": "gatsby build",
     "format": "prettier --write '**/*.{js,jsx}'",
-    "iframe": "webpack",
     "lint": "prettier --check '**/*.{js,jsx}'",
     "lint-debug": "prettier --debug-check '**/*.{js,jsx}'",
     "serve": "gatsby serve",
