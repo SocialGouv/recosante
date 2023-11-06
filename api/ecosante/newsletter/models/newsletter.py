@@ -7,7 +7,7 @@ from typing import Dict, List
 from flask import current_app, url_for
 from indice_pollution import get_all
 from indice_pollution import raep as get_raep
-from indice_pollution import today
+from indice_pollution.helpers import today, tomorrow
 from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 
 from ecosante.extensions import db
@@ -285,7 +285,7 @@ class Newsletter:
 
     @property
     def indice_uv_value(self):
-        return self.indice_uv.uv_j0 if self.indice_uv else None
+        return self.indice_uv.uv_j1 if self.indice_uv else None
 
     @property
     def has_depassement(self):
@@ -293,20 +293,19 @@ class Newsletter:
 
     @classmethod
     # pylint: disable-next=line-too-long,too-many-arguments,too-many-branches,too-many-locals
-    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, date_=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
+    def export(cls, preferred_reco=None, user_seed=None, remove_reco=None, only_to=None, media='mail', filter_already_sent=True, type_='quotidien', force_send=False):
         if remove_reco is None:
             remove_reco = []
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
-        indices, all_episodes, allergenes, vigilances, indices_uv = get_all(
-            date_)
+        indices, all_episodes, allergenes, vigilances, indices_uv = get_all()
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
         }
         indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
         templates = NewsletterHebdoTemplate.get_templates()
-        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_).yield_per(100):
+        for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_=tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
                 indice = indices.get(inscription.commune_id)
@@ -331,10 +330,9 @@ class Newsletter:
                     "allergenes": raep_dict.get("allergenes"),
                     "validite_raep": raep_dict.get("periode_validite", {}),
                     "vigilances": vigilances_recommandations_dep,
-                    "indice_uv": indice_uv
+                    "indice_uv": indice_uv,
+                    "date": tomorrow()
                 })
-                if date_:
-                    init_dict['date'] = date_
             elif type_ == 'hebdomadaire':
                 next_template = NewsletterHebdoTemplate.next_template(
                     inscription, templates)
@@ -349,8 +347,7 @@ class Newsletter:
                     init_dict.update({
                         'webpush_subscription_info_id': webpush_subscription.id,
                         'webpush_subscription_info': webpush_subscription
-                    }
-                    )
+                    })
                     newsletter = cls(**init_dict)
                     if newsletter.to_send(type_, force_send):
                         yield newsletter
@@ -578,7 +575,7 @@ class Newsletter:
 
     @property
     def is_init_indice_uv(self):
-        return self.indice_uv is not None and isinstance(self.indice_uv.uv_j0, int)
+        return self.indice_uv is not None and isinstance(self.indice_uv.uv_j1, int)
 
     @property
     def show_indice_uv(self):
@@ -587,9 +584,10 @@ class Newsletter:
         if not self.is_init_indice_uv:
             return self.force_send
         if self.inscription.has_frequence("alerte"):
-            if self.indice_uv.uv_j0 <= 2:
+            if self.indice_uv.uv_j1 <= 2:
                 return False
-            if 3 <= self.indice_uv.uv_j0 <= 5:
+            if 3 <= self.indice_uv.uv_j1 <= 5:
                 return self.inscription.has_enfants
             return True  # >= 8
+
         return True

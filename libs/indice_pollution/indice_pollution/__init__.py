@@ -12,7 +12,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 
 from . import db
 from .extensions import celery, logger
-from .helpers import ping, today
+from .helpers import ping, today, tomorrow
 from .history.models import (RAEP, Commune, EpisodePollution, IndiceATMO,
                              IndiceUv, VigilanceMeteo)
 from .regions.solvers import get_region
@@ -246,25 +246,24 @@ def chunks(lst, count):
         yield lst[i:i + count]
 
 
-def get_all(date_):
-    date_ = date_ or today()
-    indices = IndiceATMO.get_all(date_)
-    episodes_pollution = EpisodePollution.get_all(date_)
+def get_all():
+    indices = IndiceATMO.get_all(tomorrow())
+    episodes_pollution = EpisodePollution.get_all(tomorrow())
     allergenes_par_departement = {
         r.zone_id: r
-        for r in RAEP.get_all()
+        for r in RAEP.get_all(tomorrow())
     }
     vigilances_par_departement = {
         zone_id: list(vigilances)
         for zone_id, vigilances in groupby(
             sorted(
-                VigilanceMeteo.get_all(date_=date_),
+                VigilanceMeteo.get_all(date_=tomorrow()),
                 key=lambda v: v.zone_id
             ),
             lambda v: v.zone_id
         )
     }
-    indices_uv = IndiceUv.get_all(date_)
+    indices_uv = IndiceUv.get_all(today())
     return (indices, episodes_pollution, allergenes_par_departement, vigilances_par_departement, indices_uv)
 
 

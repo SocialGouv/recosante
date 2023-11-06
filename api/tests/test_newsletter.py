@@ -4,6 +4,7 @@ from itertools import product
 import pytest
 from indice_pollution.history.models import (IndiceATMO, IndiceUv,
                                              VigilanceMeteo)
+from indice_pollution.helpers import tomorrow
 from psycopg2.extras import DateTimeTZRange
 
 from ecosante.newsletter.models import Newsletter, NewsletterDB
@@ -21,7 +22,7 @@ def test_episode_passe(db_session, inscription):
     ]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [
@@ -44,12 +45,13 @@ def test_formatted_polluants_indice_atmo_pm10(db_session, inscription, episode_p
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_pm10.dict()]},
         recommandations=recommandations
     )
+    print(f'test_formatted_polluants_indice_atmo_pm10: {newsletter}')
     assert newsletter.polluants_formatted == "aux particules fines"
     assert newsletter.polluants_symbols == ['pm10']
     # pylint: disable-next=line-too-long
@@ -63,7 +65,7 @@ def test_formatted_polluants_indice_atmo_pm10_no2(db_session, inscription, episo
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_pm10.dict(), episode_azote.dict()]},
@@ -78,15 +80,15 @@ def test_formatted_polluants_indice_atmo_pm10_no2(db_session, inscription, episo
 
 
 # pylint: disable-next=line-too-long
-def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
+def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_soufre_tomorrow, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
-        episodes={"data": [episode_soufre.dict(), episode_pm10.dict(
+        episodes={"data": [episode_soufre_tomorrow.dict(), episode_pm10.dict(
         ), episode_ozone.dict(), episode_azote.dict()]},
         recommandations=recommandations
     )
@@ -98,14 +100,14 @@ def test_formatted_polluants_indice_atmo_tous(db_session, inscription, episode_s
 
 
 # pylint: disable-next=line-too-long
-def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, episode_soufre, episode_pm10, episode_ozone, episode_azote):
+def test_formatted_polluants_indice_atmo_pm10_o3_no2(db_session, inscription, episode_soufre_tomorrow, episode_pm10, episode_ozone, episode_azote):
     recommandations = [published_recommandation(
         particules_fines=True, type_='episode_pollution')]
     db_session.add_all(recommandations)
     db_session.commit()
-    episode_dict = episode_soufre.dict()
+    episode_dict = episode_soufre_tomorrow.dict()
     episode_dict['etat'] = 'PAS DE DEPASSEMENT'
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_dict, episode_pm10.dict(
@@ -128,7 +130,7 @@ def test_formatted_polluants_indice_atmo_no2(db_session, inscription, episode_az
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -149,7 +151,7 @@ def test_avis_oui(db_session, client, inscription, episode_azote):
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -175,7 +177,7 @@ def test_avis_non(db_session, client, inscription, episode_azote):
     db_session.add_all(recommandations)
     db_session.commit()
     inscription.pathologie_respiratoire = True
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": [episode_azote.dict()]},
@@ -232,11 +234,11 @@ def test_pollens(db_session, inscription, episodes, raep, delta, indice, request
     assert newsletter.show_raep == (raep > 0)
 
 
-def test_show_qa(inscription, bonne_qualite_air):
+def test_show_qa(inscription, bonne_qualite_air_tomorrow):
     inscription.indicateurs = ['indice_atmo']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
-        forecast={"data": [bonne_qualite_air.dict()]},
+        forecast={"data": [bonne_qualite_air_tomorrow.dict()]},
         episodes={"data": []},
         raep=0,
         recommandations=[]
@@ -244,9 +246,9 @@ def test_show_qa(inscription, bonne_qualite_air):
     assert newsletter.show_qa is True
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
-        forecast={"data": [{"date": str(date.today()), "indice": "bon"}]},
+        forecast={"data": [{"date": str(tomorrow()), "indice": "bon"}]},
         episodes={"data": []},
         raep=0,
         recommandations=[]
@@ -256,7 +258,7 @@ def test_show_qa(inscription, bonne_qualite_air):
 
 def test_show_qa_evenement(inscription, evenement_qualite_air):
     inscription.indicateurs = ['indice_atmo']
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [evenement_qualite_air.dict()]},
         episodes={"data": []},
@@ -277,7 +279,7 @@ def test_show_qa_evenement(inscription, evenement_qualite_air):
         'RECOMMANDATION']
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [evenement_qualite_air.dict()]},
         episodes={"data": []},
@@ -292,9 +294,9 @@ def test_show_indice_uv(inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -305,7 +307,7 @@ def test_show_indice_uv(inscription):
     assert newsletter.show_indice_uv is True
 
     inscription.indicateurs = []
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -327,11 +329,10 @@ def test_sous_indice(db_session, inscription):
     ]
     db_session.add_all(recommandations)
     db_session.commit()
-    today_date = date.today()
     inscription.allergie_pollens = False
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
-        forecast={"data": [{"date": str(today_date), "indice": "bon"}]},
+        forecast={"data": [{"date": str(tomorrow()), "indice": "bon"}]},
         episodes={"data": []},
         raep=0,
         recommandations=recommandations,
@@ -347,7 +348,7 @@ def test_sous_indice(db_session, inscription):
 
     forecast = {
         'couleur': '#50CCAA',
-        'date': str(today_date),
+        'date': str(tomorrow()),
         'indice': 'moyen',
         'label': 'Moyen',
         'sous_indices': [
@@ -385,7 +386,7 @@ def test_sous_indice(db_session, inscription):
         'valeur': 2
     }
 
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": [forecast]},
         episodes={"data": []},
@@ -406,8 +407,8 @@ def test_sous_indice(db_session, inscription):
             f'SS_INDICE_{sous_indice.upper()}_COULEUR'], str)
 
 
-def test_export_simple(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = (bonne_qualite_air, raep_nul)
+def test_export_simple(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = (bonne_qualite_air_tomorrow, raep_nul)
     db_session.add(published_recommandation())
     db_session.add(inscription)
     db_session.commit()
@@ -423,7 +424,7 @@ def test_indice_nul(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=date.today(),
+        date_ech=date.today() + timedelta(days=1),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=0)
@@ -441,7 +442,7 @@ def test_indice_sept(db_session, inscription):
     db_session.commit()
     indice = IndiceATMO(
         zone_id=inscription.commune.zone.id,
-        date_ech=date.today(),
+        date_ech=date.today() + timedelta(days=1),
         date_dif=date.today(),
         no2=1, so2=1, o3=1, pm10=1, pm25=1,
         valeur=7)
@@ -452,8 +453,8 @@ def test_indice_sept(db_session, inscription):
     assert len(newsletters) == 1
 
 
-def test_ville_slug(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = bonne_qualite_air, raep_nul
+def test_ville_slug(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = bonne_qualite_air_tomorrow, raep_nul
     # Lowercase
     inscription.commune.nom = "Paris"
     db_session.add(inscription)
@@ -545,8 +546,8 @@ def test_export_user_hebdo_ordre(db_session, inscription, templates):
     assert nl2.newsletter_hebdo_template.ordre > nl1.newsletter_hebdo_template.ordre
 
 
-def test_export_user_hebdo_quotidien(db_session, inscription, templates, bonne_qualite_air, raep_eleve):
-    _ = (templates, bonne_qualite_air, raep_eleve)
+def test_export_user_hebdo_quotidien(db_session, inscription, templates, bonne_qualite_air_tomorrow, raep_eleve):
+    _ = (templates, bonne_qualite_air_tomorrow, raep_eleve)
     db_session.add(inscription)
     db_session.commit()
     newsletters_hebdo = list(Newsletter.export(type_='hebdomadaire'))
@@ -571,15 +572,15 @@ def test_export_user_hebdo_alerte(db_session, inscription, templates):
 @pytest.mark.parametrize(
     "inscription, episode, raep, nb_nls",
     [
-        ("inscription_alerte", "episode_soufre", "raep_nul", 0),
+        ("inscription_alerte", "episode_soufre_tomorrow", "raep_nul", 0),
         ("inscription_alerte", "", "raep_nul", 0),
-        ("inscription_alerte", "episode_soufre", "raep_eleve", 1),
+        ("inscription_alerte", "episode_soufre_tomorrow", "raep_eleve", 1),
         ("inscription_alerte", "", "raep_eleve", 1)
     ]
 )
 # pylint: disable-next=too-many-arguments
-def test_export(db_session, recommandation, bonne_qualite_air, inscription, episode, raep, nb_nls, request):
-    _ = (recommandation, bonne_qualite_air)
+def test_export(db_session, recommandation, bonne_qualite_air_tomorrow, inscription, episode, raep, nb_nls, request):
+    _ = (recommandation, bonne_qualite_air_tomorrow)
     inscription = request.getfixturevalue(inscription)
     db_session.add(inscription)
     raep = request.getfixturevalue(raep)
@@ -593,7 +594,7 @@ def test_export(db_session, recommandation, bonne_qualite_air, inscription, epis
 
 
 def test_get_recommandation_simple_case(inscription, recommandation):
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -634,7 +635,7 @@ def test_get_recommandation_par_type(inscription, db_session):
         published_recommandation(type_="raep")
     ]
     db_session.add_all(recommandations)
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription,
         forecast={"data": []},
         episodes={"data": []},
@@ -645,8 +646,8 @@ def test_get_recommandation_par_type(inscription, db_session):
     assert all([r.type_ == "indice_atmo"] for r in eligible_recommandations)
 
 
-def test_vigilance(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = (bonne_qualite_air, raep_nul)
+def test_vigilance(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = (bonne_qualite_air_tomorrow, raep_nul)
     db_session.add(published_recommandation())
     db_session.add(inscription)
     db_session.commit()
@@ -661,6 +662,15 @@ def test_vigilance(db_session, inscription, bonne_qualite_air, raep_nul):
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=1,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 1
@@ -671,11 +681,12 @@ def test_vigilance(db_session, inscription, bonne_qualite_air, raep_nul):
         assert attributes[f'{key}_COULEUR'] == attributes['VIGILANCE_GLOBALE_COULEUR']
 
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
 
-def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
-    _ = bonne_qualite_air, raep_nul
+def test_vigilance_alerte(db_session, inscription, bonne_qualite_air_tomorrow, raep_nul):
+    _ = bonne_qualite_air_tomorrow, raep_nul
     db_session.add(published_recommandation())
     inscription.indicateurs_frequence = ['alerte']
     inscription.indicateurs = ['vigilance_meteo']
@@ -692,10 +703,20 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=1,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 0
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
     for phenomene_id in VigilanceMeteo.phenomenes:
@@ -708,6 +729,15 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
                 date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
         )
         db_session.add(vigilance_meteo)
+        vigilance_meteo_tomorrow = VigilanceMeteo(
+            zone_id=inscription.commune.departement.zone_id,
+            phenomene_id=phenomene_id,
+            couleur_id=3,
+            date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+            validity=DateTimeTZRange(
+                date.today(), date.today() + timedelta(days=2)),
+        )
+        db_session.add(vigilance_meteo_tomorrow)
         db_session.commit()
         newsletters = list(Newsletter.export())
         assert len(newsletters) == 1
@@ -718,11 +748,12 @@ def test_vigilance_alerte(db_session, inscription, bonne_qualite_air, raep_nul):
         assert attributes[f'{key}_COULEUR'] == attributes['VIGILANCE_GLOBALE_COULEUR']
 
         db_session.delete(vigilance_meteo)
+        db_session.delete(vigilance_meteo_tomorrow)
         db_session.commit()
 
 
-def test_no_indice_uv_data(db_session, inscription, bonne_qualite_air):
-    _ = bonne_qualite_air
+def test_no_indice_uv_data(db_session, inscription, bonne_qualite_air_tomorrow):
+    _ = bonne_qualite_air_tomorrow
     db_session.add(published_recommandation())
     inscription.indicateurs = ['indice_atmo', 'indice_uv']
     db_session.add(inscription)
@@ -746,7 +777,7 @@ def test_no_indice_uv(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=None,
+        uv_j1=None,
     )
     db_session.add(indice_uv)
     db_session.commit()
@@ -771,7 +802,7 @@ def test_indice_uv(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     db_session.commit()
@@ -797,20 +828,20 @@ def test_indice_uv_alerte(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
     assert len(newsletters) == 0
 
-    indice_uv.uv_j0 = 3
+    indice_uv.uv_j1 = 3
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
     assert len(newsletters) == 0
 
-    indice_uv.uv_j0 = 8
+    indice_uv.uv_j1 = 8
     db_session.add(indice_uv)
     db_session.commit()
     newsletters = list(Newsletter.export())
@@ -821,7 +852,7 @@ def test_indice_uv_alerte(db_session, inscription):
     assert 'INDICE_UV_LABEL' in attributes
     assert attributes['INDICE_UV_LABEL'] == "Très\u00a0fort (UV\u00a08)"
 
-    indice_uv.uv_j0 = 3
+    indice_uv.uv_j1 = 3
     inscription.enfants = "oui"
     db_session.add_all([indice_uv, inscription])
     db_session.commit()
@@ -844,7 +875,7 @@ def test_indice_uv_recommandation(db_session, inscription):
     indice_uv = IndiceUv(
         zone_id=inscription.commune.zone_id,
         date=date.today(),
-        uv_j0=3,
+        uv_j1=3,
     )
     db_session.add(indice_uv)
     db_session.commit()

@@ -22,10 +22,10 @@ def test_commune(client, commune_commited):
     assert response.json['commune']['nom'] == commune_commited.nom
 
 
-def test_indice_atmo(client, commune_commited, bonne_qualite_air):
+def test_indice_atmo(client, commune_commited, bonne_qualite_air_today):
     response = client.get(f"/v1/?insee={commune_commited.code}")
     assert response.status_code == 200
-    helper_test(response, 'indice_atmo', bonne_qualite_air.label,
+    helper_test(response, 'indice_atmo', bonne_qualite_air_today.label,
                 "la commune de Laval", "de ", "53130")
 
 
@@ -55,8 +55,8 @@ def test_potentiel_radon(client, commune_commited, db_session):
                 "la commune de Laval", "de ", "53130")
 
 
-def test_episodes_pollution(client, commune_commited, episode_soufre, db_session):
-    db_session.add(episode_soufre)
+def test_episodes_pollution(client, commune_commited, episode_soufre_today, db_session):
+    db_session.add(episode_soufre_today)
     db_session.commit()
     response = client.get(f"/v1/?insee={commune_commited.code}")
     assert response.status_code == 200

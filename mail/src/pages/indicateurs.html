@@ -15,7 +15,7 @@ subject: Indicateurs quotidiens
   <row>
     <columns>
       <p class="lead">
-        <strong>\{{contact.VILLE}}</strong>, le \{{ time_now|date:"02/01/2006" }}
+        <strong>\{{contact.VILLE}}</strong>, le \{{ contact.INDICATEURS_DATE }}
       </p>
     </columns>
   </row>
@@ -48,8 +48,8 @@ subject: Indicateurs quotidiens
     </columns>
   </row>
   <spacer size="40"></spacer>
-  {% endif %} 
-  {% endif %} 
+  {% endif %}
+  {% endif %}
 
   {% if contact.SHOW_QA %}
   <row>
@@ -63,22 +63,22 @@ subject: Indicateurs quotidiens
         <center>
           {% if contact.QUALITE_AIR == "Bon" %}
           <img src="assets/img/atmo-bon.png" alt="Bon" />
-          {% endif %} 
+          {% endif %}
           {% if contact.QUALITE_AIR == "Moyen" %}
           <img src="assets/img/atmo-moyen.png" alt="Moyen" />
-          {% endif %} 
+          {% endif %}
           {% if contact.QUALITE_AIR == "Dégradé" %}
           <img src="assets/img/atmo-degrade.png" alt="Dégradé" />
-          {% endif %} 
+          {% endif %}
           {% if contact.QUALITE_AIR == "Mauvais" %}
           <img src="assets/img/atmo-mauvais.png" alt="Mauvais" />
-          {% endif %} 
+          {% endif %}
           {% if contact.QUALITE_AIR == "Très Mauvais" %}
           <img src="assets/img/atmo-tres-mauvais.png" alt="Très Mauvais" />
-          {% endif %} 
+          {% endif %}
           {% if contact.QUALITE_AIR == "Extrêmement Mauvais" %}
           <img src="assets/img/atmo-extremement-mauvais.png" alt="Extrêmement Mauvais" />
-          {% endif %} 
+          {% endif %}
         </center>
         <spacer size="16"></spacer>
 
@@ -110,7 +110,7 @@ subject: Indicateurs quotidiens
         </row>
         <spacer size="16"></spacer>
         {% endif %}
-          
+
         {% if contact.SS_INDICE_PM10_LABEL %}
         <row>
           <columns small="4">
@@ -244,12 +244,12 @@ subject: Indicateurs quotidiens
         {% else %}
         <p class="text-center">
           L'indice de qualité de l'air à \{{contact.VILLE}} n'est pas disponible au moment de l'envoi de cet email.<br/><a href="https://recosante.beta.gouv.fr/place/\{{contact.VILLE_CODE}}/\{{contact.VILLE_SLUG}}">Retrouvez-le ici.</a>
-        {% endif %} 
+        {% endif %}
       </callout>
     </columns>
   </row>
   <spacer size="40"></spacer>
-  {% endif %} 
+  {% endif %}
   {% if contact.SHOW_RAEP %}
   <row>
     <columns>
@@ -258,7 +258,7 @@ subject: Indicateurs quotidiens
         <spacer size="16"></spacer>
         <h2 class="text-center blue">\{{contact.RAEP}}</h2>
         <spacer size="16"></spacer>
-       
+
         <row><columns>
         <table >
           {% if contact.ALLERGENE_CYPRES %}
@@ -691,7 +691,7 @@ subject: Indicateurs quotidiens
         <p class="text-center tiny">
           Prévision du \{{contact.RAEP_DEBUT_VALIDITE}} au \{{contact.RAEP_FIN_VALIDITE}}<br /> dans le département \{{contact.DEPARTEMENT}}
         </p>
-     
+
       </callout>
     </columns>
   </row>
@@ -990,7 +990,7 @@ subject: Indicateurs quotidiens
   <row>
     <columns>
       <img src="assets/img/logos.jpg" alt="République Française et Recosanté" />
-    </columns> 
+    </columns>
     <columns>
       <p class="text-right tiny">
         Les données sont fournies par

@@ -143,20 +143,21 @@ class IndiceUv(db.Base):
 
     @property
     def label(self):
-        if isinstance(self.uv_j0, int):
-            if self.uv_j0 >= 11:
+        uv_j1_or_j0 = self.uv_j1 or self.uv_j0
+        if isinstance(uv_j1_or_j0, int):
+            if uv_j1_or_j0 >= 11:
                 label = 'Extrême'
-            elif self.uv_j0 >= 8:
+            elif uv_j1_or_j0 >= 8:
                 label = 'Très\u00a0fort'  # unbreakable space
-            elif self.uv_j0 >= 6:
+            elif uv_j1_or_j0 >= 6:
                 label = 'Fort'
-            elif self.uv_j0 >= 3:
+            elif uv_j1_or_j0 >= 3:
                 label = 'Modéré'
-            elif self.uv_j0 >= 1:
+            elif uv_j1_or_j0 >= 1:
                 label = 'Faible'
             else:
                 label = 'Nul'
-            label += f' (UV\u00a0{self.uv_j0})'  # unbreakable space
+            label += f' (UV\u00a0{uv_j1_or_j0})'  # unbreakable space
         else:
             label = None
         return label

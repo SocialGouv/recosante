@@ -1,8 +1,9 @@
 import os
 from datetime import date, datetime, timedelta
+from indice_pollution.history.models import IndiceUv, VigilanceMeteo
+from indice_pollution.helpers import tomorrow
 
 import requests_mock
-from indice_pollution.history.models import IndiceUv, VigilanceMeteo
 from psycopg2.extras import DateTimeTZRange
 
 from ecosante.newsletter.models import Newsletter, NewsletterDB
@@ -16,7 +17,7 @@ def test_cas_send_wepush_notification(inscription_notifications, recommandation,
     mock.post(
         'https://updates.push.services.mozilla.com/wpush/v2/pouet', text='data')
 
-    newsletter = Newsletter(
+    newsletter = Newsletter(date=tomorrow(),
         inscription=inscription_notifications,
         forecast={"data": []},
         episodes={"data": []},
@@ -28,8 +29,12 @@ def test_cas_send_wepush_notification(inscription_notifications, recommandation,
 
 
 @requests_mock.Mocker(kw='mock')
-def test_cas_send_wepush_notifications(inscription_notifications, recommandation, bonne_qualite_air, raep_eleve, **kw):
-    _ = (recommandation, bonne_qualite_air, raep_eleve)
+def test_cas_send_wepush_notifications(
+    inscription_notifications,
+    recommandation,
+    bonne_qualite_air_tomorrow,
+    raep_eleve, **kw):
+    _ = (recommandation, bonne_qualite_air_tomorrow, raep_eleve)
     mock = kw['mock']
     mock.post(
         'https://updates.push.services.mozilla.com/wpush/v2/pouet', text='data')
@@ -65,12 +70,12 @@ def test_cas_send_wepush_notifications_pas_de_donnee(inscription_notifications, 
     assert len(nls) == 0
 
 
-def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_air, raep_eleve, db_session):
-    _ = (recommandation, bonne_qualite_air, raep_eleve)
+def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_air_tomorrow, raep_eleve, db_session):
+    _ = (recommandation, bonne_qualite_air_tomorrow, raep_eleve)
     indice_uv = IndiceUv(
         zone_id=inscription_notifications.commune.zone_id,
         date=date.today(),
-        uv_j0=1,
+        uv_j1=1,
     )
     db_session.add(indice_uv)
     vigilance_meteo = VigilanceMeteo(
@@ -82,6 +87,15 @@ def test_webpush_data(inscription_notifications, recommandation, bonne_qualite_a
             date.today() - timedelta(days=1), date.today() + timedelta(days=1)),
     )
     db_session.add(vigilance_meteo)
+    vigilance_meteo_tomorrow = VigilanceMeteo(
+        zone_id=inscription_notifications.commune.departement.zone_id,
+        phenomene_id=1,
+        couleur_id=1,
+        date_export=datetime.now() - timedelta(hours=1) + timedelta(days=1),
+        validity=DateTimeTZRange(
+            date.today(), date.today() + timedelta(days=2)),
+    )
+    db_session.add(vigilance_meteo_tomorrow)
     inscription_notifications.indicateurs = inscription_notifications.indicateurs + \
         ["indice_uv"] + ["vigilance_meteo"]
     db_session.commit()

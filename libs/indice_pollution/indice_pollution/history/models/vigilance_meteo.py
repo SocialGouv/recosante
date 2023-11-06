@@ -174,10 +174,10 @@ class VigilanceMeteo(db.Base):
             # ça donne des données parcelaires dont on ne veut pas.
             func.date_trunc('day', vigilance_t.c.date_export) + case(
                 ((func.date_part('hour', vigilance_t.c.date_export) < 6),
-                 text(f"'{cls.hours_to_add_before_6}h'::interval")),
+                 text(f"'{cls.hours_to_add_before_6+24}h'::interval")),
                 ((func.date_part('hour', vigilance_t.c.date_export) < 16),
-                 text(f"'{cls.hours_to_add_before_16}h'::interval")),
-                else_=text(f"'{cls.hours_to_add_after_16}h'::interval")
+                 text(f"'{cls.hours_to_add_before_16+24}h'::interval")),
+                else_=text(f"'{cls.hours_to_add_after_16+24}h'::interval")
             ) > datetime_
         ).order_by(
             vigilance_t.c.date_export.desc()

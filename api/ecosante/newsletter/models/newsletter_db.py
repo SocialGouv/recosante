@@ -281,6 +281,7 @@ class NewsletterDB(db.Model, Newsletter):
         return {
             # pylint: disable=line-too-long
             **{
+                'INDICATEURS_DATE': self.date.strftime('%d/%m/%Y'),
                 'EMAIL': self.inscription.mail,
                 'RECOMMANDATION': (self.recommandation.format(self.inscription.commune) or "") if self.recommandation else "",
                 'LIEN_AASQA': self.lien_aasqa,
@@ -317,8 +318,8 @@ class NewsletterDB(db.Model, Newsletter):
                 'RECOMMANDATION_INDICE_UV': (self.recommandation_indice_uv.format(self.inscription.commune) or "") if self.recommandation_indice_uv else "",
                 'NEW_USER': str(self.inscription.date_inscription) > '2021-10-14',
                 'INDICATEURS_MEDIA': self.inscription.indicateurs_medias_lib,
-                "VIGILANCE_VALIDITE_DEBUT": VigilanceMeteo.make_start_date([self.vigilance_globale]).strftime('%d/%m/%Y à %H:%M') if self.vigilance_globale else "",
-                "VIGILANCE_VALIDITE_FIN": VigilanceMeteo.make_end_date([self.vigilance_globale]).strftime('%d/%m/%Y à %H:%M') if self.vigilance_globale else "",
+                "VIGILANCE_VALIDITE_DEBUT": VigilanceMeteo.make_start_date([self.vigilance_globale], self.vigilance_globale.validity.lower).strftime('%d/%m/%Y à %H:%M') if self.vigilance_globale else "",
+                "VIGILANCE_VALIDITE_FIN": VigilanceMeteo.make_end_date([self.vigilance_globale], self.vigilance_globale.validity.upper).strftime('%d/%m/%Y à %H:%M') if self.vigilance_globale else "",
                 "VIGILANCE_LABEL": VigilanceMeteo.make_label(self.vigilance_globale.couleur_id) if self.vigilance_globale else "",
             },
             **{f'ALLERGENE_{a[0]}': int(a[1]) if a[1] is not None else None for a in (self.allergenes if isinstance(self.allergenes, dict) else {}).items()},
@@ -328,7 +329,7 @@ class NewsletterDB(db.Model, Newsletter):
         }
 
     header = [
-        'EMAIL', 'RECOMMANDATION', 'LIEN_AASQA', 'NOM_AASQA', 'PRECISIONS', 'QUALITE_AIR', 'VILLE', 'VILLE_CODE',
+        'INDICATEURS_DATE', 'EMAIL', 'RECOMMANDATION', 'LIEN_AASQA', 'NOM_AASQA', 'PRECISIONS', 'QUALITE_AIR', 'VILLE', 'VILLE_CODE',
         'VILLE_SLUG', 'BACKGROUND_COLOR', 'SHORT_ID', 'POLLUANT', 'LIEN_RECOMMANDATIONS_ALERTE', 'SHOW_RAEP', 'RAEP',
         'BACKGROUND_COLOR_RAEP', 'USER_UID', 'AUTH_TOKEN', 'DEPARTEMENT', 'DEPARTEMENT_PREPOSITION', 'OBJECTIF',
         'RAEP_DEBUT_VALIDITE', 'RAEP_FIN_VALIDITE', 'QUALITE_AIR_VALIDITE', 'INDICE_UV_VALIDITE',

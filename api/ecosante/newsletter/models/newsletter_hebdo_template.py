@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 from typing import List
 
 from psycopg2.extras import DateRange
@@ -185,4 +185,5 @@ class NewsletterHebdoTemplate(db.Model):
     raep = property_indicateur("raep")
     indice_atmo = property_indicateur("indice_atmo")
     vigilance_meteo = property_indicateur("vigilance_meteo")
+
     indice_uv = property_indicateur("indice_uv")
