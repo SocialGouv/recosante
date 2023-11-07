@@ -13,8 +13,8 @@ RUN apt update \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs && npm install --global yarn
 WORKDIR /code
 COPY libs libs/
-ADD api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
-ADD package.json yarn.lock ./
+COPY api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
+COPY package.json yarn.lock ./
 # Keep yarn install cache when bumping version and dependencies still the sames
 RUN node -e " \
     const package = JSON.parse(fs.readFileSync('/code/package.json')); \
