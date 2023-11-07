@@ -41,7 +41,7 @@ jobs:
       - name: Install Dependencies
         run: |
           pip install poetry
-          yarn install --prefer-offline --frozen-lockfile
+          yarn --immutable
           cd api
           poetry install
           cd ../libs/indice_pollution

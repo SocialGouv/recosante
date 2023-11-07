@@ -40,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --prefer-offline --frozen-lockfile
+          yarn --immutable
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v5
