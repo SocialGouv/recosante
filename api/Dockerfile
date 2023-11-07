@@ -1,49 +1,50 @@
 ARG PYTHON_VERSION=3.11.3-slim@sha256:7b866f12347fbfccbb73284d9c04bbd67b5f9cca8b46786e9fa2bd07af53f09a
 
-########
-# Base : node / fr locales + libs
 FROM python:$PYTHON_VERSION AS base
-RUN pip install poetry
-RUN apt update && apt install -y --no-install-recommends curl
+RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
 RUN apt update \
-    && apt install -y --no-install-recommends curl gcc libc6-dev libpq-dev locales python3-dev \
+    && apt install -y --no-install-recommends \
+        locales \
+        curl \
     && rm -rf /var/lib/apt/lists/* \
     && sed -i '/^#.* fr_FR.UTF-8 /s/^#//' /etc/locale.gen \
     && locale-gen
+RUN pip install poetry
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs && npm install --global yarn
 WORKDIR /code
-COPY libs libs/
-COPY api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
-COPY package.json yarn.lock ./
-# Keep yarn install cache when bumping version and dependencies still the sames
-RUN node -e " \
-    const package = JSON.parse(fs.readFileSync('/code/package.json')); \
-    const packageZero = { ...package, version: '0.0.0' };  \
-    fs.writeFileSync('/code/package.json', JSON.stringify(packageZero));"
 
-########
-# Need this hack to not install dependencies when api changes
-FROM python:$PYTHON_VERSION AS tmp-api
-COPY api api/
+FROM base AS node-deps
+COPY .yarnrc.yml yarn.lock ./
+COPY .yarn .yarn
+RUN yarn fetch workspaces focus @recosante/api
 
-########
-# Install dependencies only when needeed
-FROM base AS installer
-RUN yarn install --frozen-lockfile
+FROM base AS python-deps
+RUN apt update \
+    && apt install -y --no-install-recommends \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+# gcc \
+# libc6-dev \
+# libpq-dev \
+# python3-dev \
+
+COPY api/pyproject.toml api/poetry.toml api/poetry.lock ./api/
+COPY \
+    libs/indice_pollution/pyproject.toml \
+    libs/indice_pollution/poetry.lock \
+    libs/indice_pollution/poetry.toml \
+        libs/indice_pollution/
+# COPY libs libs
 WORKDIR /code/api
 RUN poetry install --without dev
 
-########
-# Runner
 FROM base AS runner
-RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
-RUN apt-get purge -y curl gcc libc6-dev && apt-get autoremove -y
-RUN chown -R pn:pn /code
-COPY --from=tmp-api --chown=pn:pn /api ./api
-COPY --from=installer --chown=pn:pn /code/node_modules ./node_modules
-COPY --from=installer --chown=pn:pn /code/api/node_modules ./api/node_modules
-COPY --from=installer --chown=pn:pn /code/api/.venv ./api/.venv
-RUN yarn install --production && yarn cache clean
+RUN chown -R 1000:1000 /code
+COPY --chown=1000:1000 api api/
+COPY --chown=1000:1000 libs libs/
+COPY --from=node-deps --chown=1000:1000 /code/node_modules ./node_modules
+COPY --from=node-deps --chown=1000:1000 /code/api/node_modules ./api/node_modules
+COPY --from=python-deps --chown=1000:1000 /code/api/.venv ./api/.venv
 
 USER 1000
 

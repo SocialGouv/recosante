@@ -1,5 +1,5 @@
 {
-  "name": "recosante-api",
+  "name": "@recosante/api",
   "version": "1.0.0",
   "license": "SEE LICENSE in ../LICENSE",
   "private": true,
