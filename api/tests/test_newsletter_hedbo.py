@@ -107,9 +107,12 @@ def test_periode_validite_contains_periode_validite_two_month(db_session, templa
     db_session.commit()
 
     for month in [7, 8]:
-        assert not template.filtre_date(date.today().replace(month=month, day=1))
-        assert not template.filtre_date(date.today().replace(month=month, day=10))
-        assert not template.filtre_date(date.today().replace(month=month, day=31))
+        assert not template.filtre_date(
+            date.today().replace(month=month, day=1))
+        assert not template.filtre_date(
+            date.today().replace(month=month, day=10))
+        assert not template.filtre_date(
+            date.today().replace(month=month, day=31))
 
 
 def test_chauffage(template, inscription):
@@ -378,3 +381,18 @@ def test_meme_ordre_population_recoupe(templates, inscription, db_session):
 
     nlt = NewsletterHebdoTemplate.next_template(inscription)
     assert nlt is None or nlt.ordre > 12
+
+
+def test_daily_and_weekly_sent(inscription):
+    # I subscribed to daily emails AND weekly emails, I should receive both of them on the day the weekly newsletter is sent
+
+    # weekly newsletter is sent on Thursday
+    today = date.today()
+    days_until_thursday = (3 - today.weekday()) % 7
+    thursday = today + timedelta(days=days_until_thursday)
+
+    # if user is subscribed to daily emails AND weekly emails
+    if inscription.indicateurs_frequence.contains("quotidien") and inscription.indicateur_media.contains('mail') and inscription.recommandations_actives.contains('oui'):
+        # Check that the user receives both newsletters on thursday
+        assert inscription.last_month_newsletters[0].date == thursday
+        assert inscription.last_newsletters_hebdo[0].date == thursday
