@@ -106,39 +106,41 @@ class VigilanceMeteo(db.Base):
             logger.warn("Import déjà fait aujourd’hui")
             return None
 
-        period_j = next(
-            (period for period in product['periods'] if period['echeance'] == 'J'), None)
+        periods = [period for period in product['periods']
+                   if period['echeance'] in ['J', 'J1']]
 
-        for domain in period_j['timelaps']['domain_ids']:
-            dept_code = cls.get_departement_code(domain['domain_id'])
+        for period in periods:
+            for domain in period['timelaps']['domain_ids']:
+                dept_code = cls.get_departement_code(domain['domain_id'])
 
-            if dept_code is None:
-                continue
+                if dept_code is None:
+                    continue
 
-            try:
-                departement = Departement.get(dept_code)
-            except requests.HTTPError:
-                departement = None
+                try:
+                    departement = Departement.get(dept_code)
+                except requests.HTTPError:
+                    departement = None
 
-            if not departement:
-                logger.warn("domain_id inconnu : %s", dept_code)
-                continue
+                if not departement:
+                    logger.warn("domain_id inconnu : %s", dept_code)
+                    continue
 
-            for phenomene in domain['phenomenon_items']:
-                if len(phenomene['timelaps_items']) > 0:
-                    timelaps_items = phenomene['timelaps_items'][0]
-                    debut = convert_datetime(
-                        timelaps_items['begin_time'][:19])
-                    fin = convert_datetime(timelaps_items['end_time'])
-                    obj = cls(
-                        zone_id=departement.zone_id,
-                        phenomene_id=int(phenomene['phenomenon_id']),
-                        date_export=date_export,
-                        couleur_id=int(phenomene['phenomenon_max_color_id']),
-                        validity=DateTimeTZRange(debut, fin),
-                    )
-                    db.session.add(obj)
-        db.session.commit()
+                for phenomene in domain['phenomenon_items']:
+                    if len(phenomene['timelaps_items']) > 0:
+                        timelaps_items = phenomene['timelaps_items'][0]
+                        debut = convert_datetime(
+                            timelaps_items['begin_time'][:19])
+                        fin = convert_datetime(timelaps_items['end_time'])
+                        obj = cls(
+                            zone_id=departement.zone_id,
+                            phenomene_id=int(phenomene['phenomenon_id']),
+                            date_export=date_export,
+                            couleur_id=int(
+                                phenomene['phenomenon_max_color_id']),
+                            validity=DateTimeTZRange(debut, fin),
+                        )
+                        db.session.add(obj)
+                db.session.commit()
 
     # Cette requête selectionne les vigilances météo du dernier export fait avant date_ & time_
     # Et ne renvoie que les vigilances comprises entre :
