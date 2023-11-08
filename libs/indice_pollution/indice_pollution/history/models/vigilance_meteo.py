@@ -22,7 +22,7 @@ class VigilanceMeteo(db.Base):
     zone_id = Column(Integer, ForeignKey('indice_schema.zone.id'))
     phenomene_id = Column(Integer)
     date_export = Column(DateTime)
-    echeance = Column(String, default='J')
+    echeance = Column(String, nullable=True, default='J')
 
     couleur_id = Column(Integer)
     validity = Column(TSTZRANGE(), nullable=False)
