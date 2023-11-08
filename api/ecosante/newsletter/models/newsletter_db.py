@@ -26,6 +26,9 @@ class NewsletterDB(db.Model, Newsletter):
 
     # pylint: disable-next=invalid-name
     id: int = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(
+        db.DateTime, default=db.func.now(), onupdate=db.func.now())
     short_id: str = db.Column(
         db.String(),
         server_default=text(
