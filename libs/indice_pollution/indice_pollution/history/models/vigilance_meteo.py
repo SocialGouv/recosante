@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 
 import requests
 from psycopg2.extras import DateTimeTZRange
-from sqlalchemy import (Column, DateTime, ForeignKey, Index, Integer,
+from sqlalchemy import (Column, DateTime, ForeignKey, Index, Integer, String,
                         UniqueConstraint)
 from sqlalchemy.dialects.postgresql import TSTZRANGE
 from sqlalchemy.sql import func
@@ -22,6 +22,7 @@ class VigilanceMeteo(db.Base):
     zone_id = Column(Integer, ForeignKey('indice_schema.zone.id'))
     phenomene_id = Column(Integer)
     date_export = Column(DateTime)
+    echeance = Column(String, nullable=True, default='J')
 
     couleur_id = Column(Integer)
     validity = Column(TSTZRANGE(), nullable=False)
