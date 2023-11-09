@@ -124,43 +124,43 @@ def call_tasks_now():
 
 
 def all_tasks():
-    regions = [
-        'Auvergne-Rhône-Alpes',
-        'Bourgogne-Franche-Comté',
-        'Bretagne',
-        'Centre-Val de Loire',
-        'Corse',
-        'Grand Est',
-        'Guadeloupe',
-        'Guyane',
-        'Hauts-de-France',
-        'Île-de-France',
-        'Martinique',
-        'Mayotte',
-        'Normandie',
-        'Nouvelle-Aquitaine',
-        'Occitanie',
-        'Pays de la Loire',
-        "Réunion",
-        "Sud"
-    ]
+    # regions = [
+    #     'Auvergne-Rhône-Alpes',
+    #     'Bourgogne-Franche-Comté',
+    #     'Bretagne',
+    #     'Centre-Val de Loire',
+    #     'Corse',
+    #     'Grand Est',
+    #     'Guadeloupe',
+    #     'Guyane',
+    #     'Hauts-de-France',
+    #     'Île-de-France',
+    #     'Martinique',
+    #     'Mayotte',
+    #     'Normandie',
+    #     'Nouvelle-Aquitaine',
+    #     'Occitanie',
+    #     'Pays de la Loire',
+    #     "Réunion",
+    #     "Sud"
+    # ]
 
     scheduled_datetime = datetime.now().isoformat()
     tasks = []
 
-    for region in regions:
-        tasks.append(save_all_indices.s(
-            f"indice_pollution.regions.{region}", "Forecast", scheduled_datetime))
-        tasks.append(save_all_indices.s(
-            f"indice_pollution.regions.{region}", "Episode", scheduled_datetime))
+    # for region in regions:
+    #     tasks.append(save_all_indices.s(
+    #         f"indice_pollution.regions.{region}", "Forecast", scheduled_datetime))
+    #     tasks.append(save_all_indices.s(
+    #         f"indice_pollution.regions.{region}", "Episode", scheduled_datetime))
 
-    tasks.append(save_all_indices.s(
-        "indice_pollution.history.models.raep", "RAEP", scheduled_datetime))
+    # tasks.append(save_all_indices.s(
+    #     "indice_pollution.history.models.raep", "RAEP", scheduled_datetime))
     tasks.append(save_all_indices.s(
         "indice_pollution.history.models.vigilance_meteo", "VigilanceMeteo", scheduled_datetime))
 
-    tasks.append(save_all_indices.s(
-        "indice_pollution.history.models.indice_uv", "IndiceUv", scheduled_datetime))
+    # tasks.append(save_all_indices.s(
+    #     "indice_pollution.history.models.indice_uv", "IndiceUv", scheduled_datetime))
 
     return tasks
 

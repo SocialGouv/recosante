@@ -136,6 +136,7 @@ class VigilanceMeteo(db.Base):
                             zone_id=departement.zone_id,
                             phenomene_id=int(phenomene['phenomenon_id']),
                             date_export=date_export,
+                            echeance=period['echeance'],
                             couleur_id=int(
                                 phenomene['phenomenon_max_color_id']),
                             validity=DateTimeTZRange(debut, fin),
