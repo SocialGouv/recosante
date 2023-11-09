@@ -65,7 +65,7 @@ Then set your env in you terminal.
 You can adapt the [`.env.example`](./.env.example) file in a newly created `.env` file that wil l be ignored by `git`. Keep in mind that it won't be automatically sourced and some secrets are kept empty, but you should have the minimum requirements with the example file. If you need secrets for your local env, you can have a look at the secrets storage on rancher.
 Basically, just to make things run you need to set the `SQLALCHEMY_DATABASE_URI` env variable.
 
-Also install dotenv-cli package, so that thew environment vairables get loaded: `pip install dotenv-cli`
+Also install dotenv-cli package, so that thew environment vairables get loaded: `npm install -g dotenv-cli`
 
 Once everything is ready, you can start the worker locally with the `start_all_local.sh` files in the project. Beware of the `alembic` migration.
 
