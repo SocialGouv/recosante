@@ -71,6 +71,9 @@ Once everything is ready, you can start the worker locally with the `start_all_l
 
 To stop everything, warn shutdown is `CTRL+C` and hard shutdown is `CTRL+Z`.
 
+If you want to run a custom script such as `/libs/indice_pollution/call_all_tasks.py`, you can do: `dotenv -f .env run /bin/sh -c "python ./call_all_tasks.py"`
+You MIGHT have a problem with environment variable on first run (like `[2023-11-09 12:32:56,044: ERROR/ForkPoolWorker-8] The following env var is required: PORTAL_API_METEOFRANCE_API_KEY`). Just re-run the script it it could work :). Magic python.
+
 ### Test
 
 There is currently no test in this project. PRs are welcome !
