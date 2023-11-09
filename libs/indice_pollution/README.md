@@ -57,9 +57,22 @@ These command will generate a virtual environment in the `.venv` folder with all
 
 Once the installation done, be sure to have the required services up and running. You can have a look at [the repository Dockerfile Compose file](../../docker-compose.yml).
 
-Then set your env in you terminal. You can source / adapt the [`.env.example`](./.env.example) file or even create your `.env` file. Keep in mind that it won't be automatically sourced and some secrets are kept empty, but you should have the minimum requirements with the example file. If you need secrets for your local env, you can have a look at the secrets storage on rancher.
+It consists mainly of having the local postgres DB running.
 
-Once everything is ready, you can start the worker locally with the `start_*.sh` files in the project. Beware of the `alembic` migration.
+Get the URL of your DB (such as `postgresql://postgres:postgres@localhost:5432/recosante` for example).
+
+Then set your env in you terminal.
+You can adapt the [`.env.example`](./.env.example) file in a newly created `.env` file that wil l be ignored by `git`. Keep in mind that it won't be automatically sourced and some secrets are kept empty, but you should have the minimum requirements with the example file. If you need secrets for your local env, you can have a look at the secrets storage on rancher.
+Basically, just to make things run you need to set the `SQLALCHEMY_DATABASE_URI` env variable.
+
+Also install dotenv-cli package, so that thew environment vairables get loaded: `npm install -g dotenv-cli`
+
+Once everything is ready, you can start the worker locally with the `start_all_local.sh` files in the project. Beware of the `alembic` migration.
+
+To stop everything, warn shutdown is `CTRL+C` and hard shutdown is `CTRL+Z`.
+
+If you want to run a custom script such as `/libs/indice_pollution/call_all_tasks.py`, you can do: `dotenv -f .env run /bin/sh -c "python ./call_all_tasks.py"`
+You MIGHT have a problem with environment variable on first run (like `[2023-11-09 12:32:56,044: ERROR/ForkPoolWorker-8] The following env var is required: PORTAL_API_METEOFRANCE_API_KEY`). Just re-run the script it it could work :). Magic python.
 
 ### Test
 

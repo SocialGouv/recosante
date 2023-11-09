@@ -16,3 +16,4 @@ dist
 ecosante.egg-info
 node_modules
 public
+celerybeat-schedule.db

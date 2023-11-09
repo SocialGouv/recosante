@@ -119,7 +119,8 @@ def setup_periodic_tasks(sender, **kwargs):
 
 def call_tasks_now():
     for task in all_tasks():
-        task.apply_async(queue='save_indices', routing_key='save_indices.save_all')
+        task.apply_async(queue='save_indices',
+                         routing_key='save_indices.save_all')
 
 
 def all_tasks():
