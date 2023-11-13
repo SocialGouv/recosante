@@ -49,7 +49,7 @@ def get_all_contacts(limit=100):
         except ValueError:
             break
         contacts += result.contacts
-        current_app.logger.info(result.contacts)
+        # current_app.logger.info(result.contacts)
         if len(result.contacts) < limit:
             break
         offset += limit
@@ -229,8 +229,10 @@ def import_in_db(
     for newsletter in (newsletters or Newsletter.export(type_=type_, force_send=force_send, filter_already_sent=filter_already_sent)):
         nldb = NewsletterDB(newsletter, get_mail_list_id(
             newsletter, template_id_mail_list_id, now, test))
+        current_app.logger.info("nldb created")
         errors.extend(newsletter.errors)
         if current_app.config['ENV'] == 'production':
+            current_app.logger.info("nldb appended")
             to_add.append(nldb)
             current_app.logger.info(
                 # pylint: disable-next=line-too-long
