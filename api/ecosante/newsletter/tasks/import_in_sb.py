@@ -36,6 +36,7 @@ from ecosante.utils.send_log_mail import send_log_mail
 
 
 def get_all_contacts(limit=100):
+    current_app.logger.info("get_all_contacts")
     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
     contacts = []
     offset = 0
@@ -48,6 +49,7 @@ def get_all_contacts(limit=100):
         except ValueError:
             break
         contacts += result.contacts
+        current_app.logger.info(result.contacts)
         if len(result.contacts) < limit:
             break
         offset += limit
@@ -55,50 +57,56 @@ def get_all_contacts(limit=100):
 
 
 def get_blacklisted_contacts(contacts):
+    current_app.logger.info("get_blacklisted_contacts")
     return [c for c in contacts if c['emailBlacklisted']]
 
 
 def deactivate_contacts(task, contacts):
-    if task:
-        task.update_state(
-            state='STARTED',
-            meta={
-                "progress": 0,
-                "details": "Prise en compte de la désincription des membres"
-            }
-        )
-    for contact in get_blacklisted_contacts(contacts):
-        db_contact = Inscription.active_query().filter(
-            Inscription.mail == contact['email']).first()
-        if not db_contact or not db_contact.is_active:
-            continue
-        db_contact.unsubscribe()
+    current_app.logger.info("deactivate_contacts")
+    # if current_app.config['ENV'] == 'production':
+    #     if task:
+    #         task.update_state(
+    #             state='STARTED',
+    #             meta={
+    #                 "progress": 0,
+    #                 "details": "Prise en compte de la désincription des membres"
+    #             }
+    #         )
+    #     for contact in get_blacklisted_contacts(contacts):
+    #         db_contact = Inscription.active_query().filter(
+    #             Inscription.mail == contact['email']).first()
+    #         if not db_contact or not db_contact.is_active:
+    #             continue
+    #         db_contact.unsubscribe()
 
 
 def delete_lists(task):
-    if task:
-        task.update_state(
-            state='STARTED',
-            meta={
-                "progress": 0,
-                "details": "Suppression des anciennes listes"
-            }
-        )
-    list_ids_to_delete = get_lists_ids_to_delete()
-    contacts_api = sib_api_v3_sdk.ContactsApi(sib)
-    for i, list_id in enumerate(list_ids_to_delete, 1):
-        contacts_api.delete_list(list_id)
-        if task:
-            task.update_state(
-                state='STARTED',
-                meta={
-                    "progress": 0,
-                    "details": f"Suppression des anciennes listes ({i}/{len(list_ids_to_delete)})"
-                }
-            )
+    current_app.logger.info("delete_lists")
+    # if current_app.config['ENV'] == 'production':
+    #     if task:
+    #         task.update_state(
+    #             state='STARTED',
+    #             meta={
+    #                 "progress": 0,
+    #                 "details": "Suppression des anciennes listes"
+    #             }
+    #         )
+    #     list_ids_to_delete = get_lists_ids_to_delete()
+    #     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
+    #     for i, list_id in enumerate(list_ids_to_delete, 1):
+    #         contacts_api.delete_list(list_id)
+    #         if task:
+    #             task.update_state(
+    #                 state='STARTED',
+    #                 meta={
+    #                     "progress": 0,
+    #                     "details": f"Suppression des anciennes listes ({i}/{len(list_ids_to_delete)})"
+    #                 }
+    #             )
 
 
 def import_and_send(task, type_='quotidien', force_send=False):
+    current_app.logger.info("import_and_send")
     send_in_blue_contacts = get_all_contacts()
     deactivate_contacts(task, send_in_blue_contacts)
     delete_lists(task)
@@ -111,6 +119,7 @@ def import_and_send(task, type_='quotidien', force_send=False):
 
 
 def send(task, campaign_id, type_, test=False):
+    current_app.logger.info("send")
     if current_app.config['ENV'] == 'production' or test:
         current_app.logger.info(
             f"Envoi en cours de la campagne: {campaign_id}")
@@ -133,6 +142,7 @@ def send(task, campaign_id, type_, test=False):
 
 
 def create_mail_list(now, test):
+    current_app.logger.info("create_mail_list")
     lists_api = ListsApi(sib)
     liste = lists_api.create_list(
         sib_api_v3_sdk.CreateList(
@@ -146,6 +156,7 @@ def create_mail_list(now, test):
 
 
 def get_mail_list_id(newsletter, template_id_mail_list_id, now, test):
+    current_app.logger.info("get_mail_list_id")
     template_sib_id = newsletter.newsletter_hebdo_template.sib_id if newsletter.newsletter_hebdo_template else None
     if not template_sib_id in template_id_mail_list_id:
         template_id_mail_list_id[template_sib_id] = create_mail_list(now, test)
@@ -167,7 +178,7 @@ def import_(
         activate_webhook=True,
         filter_already_sent=True,
         send_in_blue_contacts=None):
-
+    current_app.logger.info("import_")
     if send_in_blue_contacts is None:
         send_in_blue_contacts = []
 
@@ -195,6 +206,7 @@ def import_in_db(
         newsletters=None,
         filter_already_sent=True):
 
+    current_app.logger.info("import_in_db")
     errors = []
     template_id_mail_list_id = {}
     if mail_list_id:
@@ -237,6 +249,7 @@ def import_in_db(
 
 
 def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
+    current_app.logger.info("import_contacts_in_sb")
     contact_api = sib_api_v3_sdk.ContactsApi(sib)
     window_size = 100  # or whatever limit you like
     window_idx = 0
@@ -290,7 +303,7 @@ def import_contacts_in_sb_all(
         test,
         activate_webhook,
         send_in_blue_contacts):
-
+    current_app.logger.info("import_contacts_in_sb_all")
     _ = activate_webhook
     if current_app.config['ENV'] == 'production' or test:
         for template_id, mail_list_id in template_id_mail_list_id.items():
@@ -305,6 +318,7 @@ def import_contacts_in_sb_all(
 
 
 def check_campaign_already_sent(email_campaign_api, mail_list_id):
+    current_app.logger.info("check_campaign_already_sent")
     api_response = email_campaign_api.get_email_campaigns(limit=20)
     return any(
         mail_list_id in c['recipients']['lists']
@@ -314,6 +328,8 @@ def check_campaign_already_sent(email_campaign_api, mail_list_id):
 
 
 def create_campaign(task, now, mail_list_id, template_id=None, type_='quotidien', test=False):
+    current_app.logger.info("create_campaign")
+
     def get_tag(test, type_):
         if test:
             return "test_newsletter"
@@ -374,6 +390,7 @@ def create_campaign(task, now, mail_list_id, template_id=None, type_='quotidien'
 
 
 def format_errors(errors):
+    current_app.logger.info("format_errors")
     if not errors:
         return ''
     response = ''
@@ -409,6 +426,7 @@ def make_nom_ping(type_):
 
 @celery.task(bind=True)
 def import_send_and_report(self, type_='quotidien', force_send=False, report=False):
+    print("import_send_and_report")
     nom_ping = make_nom_ping(type_)
     ping(nom_ping, "start")
     current_app.logger.info("Début !")
@@ -463,6 +481,7 @@ Bonne journée
 
 
 def get_lists_ids_to_delete():
+    current_app.logger.info("get_lists_ids_to_delete")
     api_instance = sib_api_v3_sdk.ContactsApi(sib)
     offset = 0
     api_response = api_instance.get_lists(limit=10, offset=offset)
