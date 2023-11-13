@@ -249,11 +249,14 @@ def chunks(lst, count):
 
 def get_all():
     indices = IndiceATMO.get_all(tomorrow())
+    print("indices finito")
     episodes_pollution = EpisodePollution.get_all(tomorrow())
+    print("episodes_pollution finito")
     allergenes_par_departement = {
         r.zone_id: r
         for r in RAEP.get_all(tomorrow())
     }
+    print("allergenes_par_departement finito")
     vigilances_par_departement = {
         zone_id: list(vigilances)
         for zone_id, vigilances in groupby(
@@ -264,7 +267,9 @@ def get_all():
             lambda v: v.zone_id
         )
     }
+    print("vigilances_par_departement finito")
     indices_uv = IndiceUv.get_all(today())
+    print("indices_uv finito")
     return (indices, episodes_pollution, allergenes_par_departement, vigilances_par_departement, indices_uv)
 
 

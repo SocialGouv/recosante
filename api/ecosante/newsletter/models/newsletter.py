@@ -297,14 +297,16 @@ class Newsletter:
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all()
-
+        current_app.logger.info("get_all finito")
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
         }
-        indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        current_app.logger.info("vigilances_recommandations finito")
+        # indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        current_app.logger.info("indices_uv finito")
         templates = NewsletterHebdoTemplate.get_templates()
-        current_app.logger.info("indicateurs finito")
+        current_app.logger.info("templates finito")
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_=tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
