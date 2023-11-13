@@ -171,8 +171,6 @@ class Newsletter:
                     # pylint: disable-next=cell-var-from-loop
                                       "dashboard"], vigilances=[vigilance]), recommandations))
             except StopIteration:
-                current_app.logger.info(
-                    f"Impossible de trouver une recommandation pour {vigilance.id}")
                 recommandation = None
             to_return[phenomene] = {
                 "vigilance": db.session.merge(vigilance),
@@ -299,12 +297,16 @@ class Newsletter:
         recommandations = Recommandation.shuffled(
             user_seed=user_seed, preferred_reco=preferred_reco, remove_reco=remove_reco)
         indices, all_episodes, allergenes, vigilances, indices_uv = get_all()
+        current_app.logger.info("get_all finito")
         vigilances_recommandations = {
             dep_code: cls.get_vigilances_recommandations(v, recommandations)
             for dep_code, v in vigilances.items()
         }
-        indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        current_app.logger.info("vigilances_recommandations finito")
+        # indices_uv = {k: db.session.merge(v) for k, v in indices_uv.items()}
+        current_app.logger.info("indices_uv finito")
         templates = NewsletterHebdoTemplate.get_templates()
+        current_app.logger.info("templates finito")
         for inscription in Inscription.export_query(only_to, filter_already_sent, media, type_, date_=tomorrow() if type_ == 'quotidien' else today()).yield_per(100):
             init_dict = {"type_": type_, "force_send": force_send}
             if type_ == 'quotidien':
@@ -333,6 +335,7 @@ class Newsletter:
                     "indice_uv": indice_uv,
                     "date": tomorrow()
                 })
+                current_app.logger.info("init_dict finito")
             elif type_ == 'hebdomadaire':
                 next_template = NewsletterHebdoTemplate.next_template(
                     inscription, templates)
@@ -359,16 +362,22 @@ class Newsletter:
     # pylint: disable-next=too-many-return-statements
     def to_send(self, type_, force_send):
         if type_ == 'hebdomadaire':
+            current_app.logger.info("icibas 1")
             return self.newsletter_hebdo_template is not None
         if force_send and self.inscription.has_frequence("quotidien"):
+            current_app.logger.info("icibas 2")
             return True
         if not self.is_init_qa and self.inscription.has_indicateur("indice_atmo"):
+            current_app.logger.info("icibas 3")
             return False
         if not self.is_init_raep and self.inscription.has_indicateur("raep"):
+            current_app.logger.info("icibas 4")
             return False
         if not self.is_init_vigilance and self.inscription.has_indicateur("vigilance_meteo"):
+            current_app.logger.info("icibas 5")
             return False
         if not self.is_init_indice_uv and self.inscription.has_indicateur("indice_uv"):
+            current_app.logger.info("icibas 6")
             return False
         return self.show_qa or self.show_raep or self.show_vigilance or self.show_indice_uv
 
