@@ -11,6 +11,7 @@ from ecosante.newsletter.tasks.send_webpush_notifications import \
 def setup_periodic_tasks(sender, **kwargs):
     _ = kwargs
     if sender.conf.env != "production":
+        print(f"Skipping periodic tasks setup for env {sender.conf.env}")
         return
     sender.add_periodic_task(
         crontab(minute='00', hour='18', day_of_week='*/1'),
