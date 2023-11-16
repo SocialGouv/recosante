@@ -4,7 +4,5 @@ metadata:
   name: api-configmap
 data:
   FLASK_APP: ecosante
-  FLASK_DEBUG: "true"
   FLASK_ENV: dev
-  DEBUG: "true"
   NODE_SASS_BIN: "./yarn-scss"

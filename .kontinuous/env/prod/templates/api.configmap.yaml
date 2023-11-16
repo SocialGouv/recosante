@@ -5,9 +5,7 @@ metadata:
   namespace: recosante
 data:
   FLASK_APP: ecosante
-  FLASK_DEBUG: "false"
   FLASK_ENV: production
-  DEBUG: "true"
   NODE_SASS_BIN: "./yarn-scss"
   REDIS_URL: "redis://redis:80"
   REDIS_HOST: "redis"

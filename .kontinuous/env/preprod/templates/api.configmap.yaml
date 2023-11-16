@@ -5,7 +5,5 @@ metadata:
   namespace: recosante-preprod
 data:
   FLASK_APP: ecosante
-  FLASK_DEBUG: "true"
-  FLASK_ENV: dev
-  DEBUG: "true"
+  FLASK_ENV: production
   NODE_SASS_BIN: "./yarn-scss"
