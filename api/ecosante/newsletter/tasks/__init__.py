@@ -16,7 +16,7 @@ def setup_periodic_tasks(sender, **kwargs):
         print(f"Skipping periodic tasks setup for env {sender.conf.env}")
         return
     sender.add_periodic_task(
-        crontab(minute='30', hour='13', day_of_week='*/1'),
+        crontab(minute='45', hour='13', day_of_week='*/1'),
         # this cron is the final call to send the daily newsletter
         # the newsletter is sent even if some indicators are missing
         import_send_and_report.s(
