@@ -9,7 +9,7 @@ from ecosante.newsletter.tasks.send_webpush_notifications import \
 print("on_after_configure")
 
 
-@celery.on_after_configure.connect
+@celery.on_after_finalize.connect
 def setup_periodic_tasks(sender, **kwargs):
     _ = kwargs
     if sender.conf.env != "production":
