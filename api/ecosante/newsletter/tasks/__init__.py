@@ -15,6 +15,7 @@ def setup_periodic_tasks(sender, **kwargs):
     if sender.conf.env != "production":
         print(f"Skipping periodic tasks setup for env {sender.conf.env}")
         return
+    print(f"Setting periodic tasks setup for env {sender.conf.env}")
     sender.add_periodic_task(
         crontab(minute='00', hour='14', day_of_week='*/1'),
         # this cron is the final call to send the daily newsletter
