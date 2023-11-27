@@ -1,3 +1,42 @@
+# [1.11.0](https://github.com/SocialGouv/recosante/compare/v1.10.15...v1.11.0) (2023-11-27)
+
+
+### Bug Fixes
+
+* add log ([742bc9c](https://github.com/SocialGouv/recosante/commit/742bc9cbf67a8778a8316a60ae6917f4ba7b9054))
+* created_at for newsletter ([#281](https://github.com/SocialGouv/recosante/issues/281)) ([bdb1975](https://github.com/SocialGouv/recosante/commit/bdb197588ab19d213da0c14306e22c88849195fd))
+* cron schedule ([3c00129](https://github.com/SocialGouv/recosante/commit/3c00129e24a00354eba9aee0b23c3e9313bc53b8))
+* cron task schedule ([a502715](https://github.com/SocialGouv/recosante/commit/a502715cd5aa99a8d58396e84ec9a41344a68ecb))
+* enable cron in preprod ([25d9ecf](https://github.com/SocialGouv/recosante/commit/25d9ecf9a47f7d8ba2f316a16bb2983852a361e5))
+* even earlier ([000f4ed](https://github.com/SocialGouv/recosante/commit/000f4ed7e75067353ac353ec3cddf6d4a44238c0))
+* FLASK_ENV=production for preprod ([7919696](https://github.com/SocialGouv/recosante/commit/791969659e94eec30e94af1d9d505d81818129d0))
+* log why no celery on newsletter ([9369cf6](https://github.com/SocialGouv/recosante/commit/9369cf632bad97cb4929cf8d81518c46d2a9e0b0))
+* move cron to early now ([5c60905](https://github.com/SocialGouv/recosante/commit/5c609051c7a50e388397790c2e3af719633e0a67))
+* new cron ([3e55b58](https://github.com/SocialGouv/recosante/commit/3e55b58aa84a0ec3691b303177e9d61ddc118e96))
+* new cron ([7aa2ec6](https://github.com/SocialGouv/recosante/commit/7aa2ec67593067f3e175e264c4b056f7b0cb2dcc))
+* new cron hour ([d849995](https://github.com/SocialGouv/recosante/commit/d849995b7b5829187eb6a21b40122785182dda81))
+* new logs ([#287](https://github.com/SocialGouv/recosante/issues/287)) ([511cec5](https://github.com/SocialGouv/recosante/commit/511cec526f47443df482cb0ab2ef858e9f7cd3f5))
+* new matomo ([#291](https://github.com/SocialGouv/recosante/issues/291)) ([f4d1637](https://github.com/SocialGouv/recosante/commit/f4d16372df19d587781139e976bac183047f3706))
+* new SIB template id ([c9843fc](https://github.com/SocialGouv/recosante/commit/c9843fcb4f1ac7d9161405892e45310faeaf945b))
+* production for preprod ([fff8611](https://github.com/SocialGouv/recosante/commit/fff8611499a285b234c66dc62c478fe9936a0a7c))
+* production for preprod ([02d7e71](https://github.com/SocialGouv/recosante/commit/02d7e717cd6a44650ed5d2534517ecced4fd5859))
+* setup proper cron ([46a4766](https://github.com/SocialGouv/recosante/commit/46a47663f0df5cbe9a45fd35fed6d256277a59c0))
+* start api locally too ([#286](https://github.com/SocialGouv/recosante/issues/286)) ([38e4462](https://github.com/SocialGouv/recosante/commit/38e446205837b51e6b80516150c3936a0d519ae2))
+* try fix api tasks on preprod ([38e7b6c](https://github.com/SocialGouv/recosante/commit/38e7b6c80520ca84cbf99d900169c551c02b315e))
+* vigilance meteo J+1 ([#276](https://github.com/SocialGouv/recosante/issues/276)) ([30734b4](https://github.com/SocialGouv/recosante/commit/30734b425b82a94ed5fd866443cc948c7fd16b4f))
+
+
+### Features
+
+* echeance J or J1 to vigilance meteo table ([#282](https://github.com/SocialGouv/recosante/issues/282)) ([6e2ac6b](https://github.com/SocialGouv/recosante/commit/6e2ac6bb6abd8a7f1060023ee5ea456db4145690))
+* newsletter sent J-1 ([#261](https://github.com/SocialGouv/recosante/issues/261)) ([d7efe36](https://github.com/SocialGouv/recosante/commit/d7efe368b4b3033e11ef2755c471a469c344acb2))
+* PREPROD WORKING - setting final schedule for J-1 newsletter ([ae82216](https://github.com/SocialGouv/recosante/commit/ae822169647ece51fee611d14729c4b6b4e38525))
+
+
+### Reverts
+
+* Revert "fix: sealed secret" ([d00c49c](https://github.com/SocialGouv/recosante/commit/d00c49c8976e5c5a2cd0c8cea8f15bb19da4e83b))
+
 ## [1.10.15](https://github.com/SocialGouv/recosante/compare/v1.10.14...v1.10.15) (2023-10-17)
 
 
