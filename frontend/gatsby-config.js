@@ -95,8 +95,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-matomo",
       options: {
-        siteId: "157",
-        matomoUrl: "https://stats.data.gouv.fr",
+        siteId: "100",
+        matomoUrl: "https://matomo.fabrique.social.gouv.fr",
         siteUrl: "https://recosante.beta.gouv.fr",
       },
     },
