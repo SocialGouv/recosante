@@ -18,4 +18,4 @@ Certains cookies permettent d’établir des mesures statistiques de fréquentat
 
 La mesure d’audience (nombre de visites, pages consultées) est réalisée via un outil libre intitulé [Matomo](https://matomo.org/) spécifiquement paramétré, respectant les conditions d’exemption du consentement de l’internaute définies par la recommandation « Cookies » de la Commission nationale informatique et libertés (CNIL). Cela signifie que votre adresse IP, par exemple, est anonymisée avant d’être enregistrée. Il est donc impossible d’associer les visites sur ce site à une personne.
 
-Les statistiques d’usage sont disponibles en accès libre [ici](https://stats.data.gouv.fr/index.php?module=CoreHome&action=index&date=yesterday&period=day&idSite=157&updated=1#?idSite=157&period=day&date=yesterday&category=Dashboard_Dashboard&subcategory=1)
+Les statistiques d’usage sont disponibles en accès libre [ici](https://matomo.fabrique.social.gouv.fr/index.php?module=CoreHome&action=index&date=yesterday&period=day&idSite=157&updated=1#?idSite=157&period=day&date=yesterday&category=Dashboard_Dashboard&subcategory=1)
