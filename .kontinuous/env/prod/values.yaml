@@ -23,7 +23,7 @@ metabase:
     enabled: false
   env:
     - name: MB_DB_CONNECTION_URI
-      value: "postgres://pg-metabase-rw:5432/app?user=$(username)&password=$(password)&ssl=false&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+      value: "postgres://$(PGHOST):5432/$(PGDATABASE)?user=$(PGUSER)&password=$(PGPASSWORD)&ssl=false&sslfactory=org.postgresql.ssl.NonValidatingFactory"
   envFrom:
     - configMapRef:
         name: metabase-configmap
