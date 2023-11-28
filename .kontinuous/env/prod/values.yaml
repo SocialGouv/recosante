@@ -14,6 +14,35 @@ pg:
       limits:
         memory: 3Gi
 
+pg-metabase:
+  ~chart: pg
+
+metabase:
+  enabled: true
+  ingress:
+    enabled: false
+  env:
+    - name: MB_DB_CONNECTION_URI
+      value: "postgres://pg-metabase-rw:5432/app?user=$(username)&password=$(password)&ssl=false&sslfactory=org.postgresql.ssl.NonValidatingFactory"
+  envFrom:
+    - configMapRef:
+        name: metabase-configmap
+    - secretRef:
+        name: pg-metabase-app
+
+oauth2-proxy:
+  host: "metabase-recosante.fabrique.social.gouv.fr"
+  enabled: true
+  upstream: http://metabase
+  envFrom:
+    - configMapRef:
+        name: oauth2-proxy-configmap
+    - secretRef:
+        name: oauth2-proxy-sealed-secret
+  additionalArgs:
+    - --skip-auth-route
+    - ^/public/.*,^/app/dist/.*,^/api/public/.*,^/api/session/.*,^/app/assets/.*
+
 flower:
   replicas: 1
   host: "flower-recosante.fabrique.social.gouv.fr"
