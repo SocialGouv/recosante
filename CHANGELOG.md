@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/SocialGouv/recosante/compare/v1.12.0...v1.12.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* metabase db ([9c3aed5](https://github.com/SocialGouv/recosante/commit/9c3aed560f865e0a1521fce80aaab1056d065a7a))
+
 # [1.12.0](https://github.com/SocialGouv/recosante/compare/v1.11.0...v1.12.0) (2023-11-28)
 
 
