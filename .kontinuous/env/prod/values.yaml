@@ -2,6 +2,7 @@ global:
   host: "recosante.beta.gouv.fr"
   apiHost: "api.recosante.beta.gouv.fr"
   pgSecretName: pg-app
+  namespaceLabels: "kubed-matomo-secret=sync"
 
 pg:
   ~chart: pg
@@ -15,6 +16,9 @@ pg:
         memory: 3Gi
 
 pg-metabase:
+  ~chart: pg
+
+pg-matomo:
   ~chart: pg
 
 metabase:
