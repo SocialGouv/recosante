@@ -1,3 +1,16 @@
+# [1.13.0](https://github.com/SocialGouv/recosante/compare/v1.12.1...v1.13.0) (2023-12-05)
+
+
+### Bug Fixes
+
+* get back non empty nvmrc ([1c37272](https://github.com/SocialGouv/recosante/commit/1c37272a67ea9d327ac2121654affd9f8443145e))
+* matomo sync ([a95aecb](https://github.com/SocialGouv/recosante/commit/a95aecb9dec5e36c735139b62cbf1375dda73f2e))
+
+
+### Features
+
+* add pg matomo ([0fe76b2](https://github.com/SocialGouv/recosante/commit/0fe76b22389447a7df957b74438714826bdff8e3))
+
 ## [1.12.1](https://github.com/SocialGouv/recosante/compare/v1.12.0...v1.12.1) (2023-11-28)
 
 
