@@ -1,0 +1,6 @@
+apiVersion: v2
+dependencies:
+- condition: matomo-sync.enabled
+  name: matomo-sync
+  repository: https://socialgouv.github.io/helm-charts
+  version: 1.19.0
