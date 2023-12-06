@@ -4,23 +4,8 @@ export default function EndIndicateurs({ onClose, onNextStep }) {
   return (
     <div className="relative z-[2] flex flex-1 flex-col items-center overflow-y-auto pt-6">
       <CheckSvg />
-      <h2 className="text-center">
-        Félicitations ! Votre demande de notification a bien été prise en
-        compte...
-      </h2>
-      <p className="text-center">
-        Vous pouvez également vous inscrire à l’infolettre afin de recevoir un
-        email par semaine contenant des conseils adaptés.
-      </p>
+      <h2 className="text-center">Félicitations !</h2>
       <div className="flex w-full flex-col items-center justify-around gap-4 md:flex-row-reverse">
-        <button
-          className="inline-flex items-center gap-x-2 rounded-full border-2 border-main bg-main px-4 py-3 text-white disabled:opacity-50"
-          type="submit"
-          form="subscription-form-email"
-          onClick={onNextStep}
-        >
-          S'abonner à l'infolettre
-        </button>
         <button
           className="inline-flex items-center gap-x-2 rounded-full bg-white px-4 py-3 text-main"
           type="button"
