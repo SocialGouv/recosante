@@ -37,10 +37,9 @@
     "typescript": "5.3.2"
   },
   "prettier": {
-    "plugins": ["prettier-plugin-prisma"],
+    "plugins": [
+      "prettier-plugin-prisma"
+    ],
     "printWidth": 120
-  },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
   }
 }

@@ -1,10 +1,8 @@
 import React from "react";
 
 import Alerte from "./icons/Alerte";
-import Email from "./icons/Email";
 import IndiceAtmo from "./icons/IndiceAtmo";
 import IndiceUv from "./icons/IndiceUv";
-import Notification from "./icons/Notification";
 import Quotidien from "./icons/Quotidien";
 import Raep from "./icons/Raep";
 import VigilanceMeteo from "./icons/VigilanceMeteo";

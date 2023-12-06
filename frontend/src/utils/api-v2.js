@@ -1,4 +1,5 @@
-import { SCHEME, API_HOST } from "../config";
+const SCHEME = process.env.NODE_ENV === "development" ? "http" : "https";
+const API_HOST = process.env.GATSBY_API_2_BASE_URL || "localhost:3000";
 
 class ApiService {
   host = API_HOST;
@@ -18,42 +19,26 @@ class ApiService {
     body = null,
   }) => {
     try {
-      if (path === "/event" && body) {
-        body.newFeaturesLastShownId = NewFeaturePop.lastShownId;
-      }
-
       const config = {
         method,
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          appversion: deviceInfoModule.getBuildNumber(),
-          appdevice: Platform.OS,
-          currentroute: this.navigation?.getCurrentRoute?.()?.name,
+          // appversion: deviceInfoModule.getBuildNumber(),
+          // appdevice: Platform.OS,
+          // currentroute: this.navigation?.getCurrentRoute?.()?.name,
           ...headers,
         },
         body: body ? JSON.stringify(body) : null,
       };
 
       const url = this.getUrl(path, query);
-      // console.log('url: ', url);
-      const canFetch = await checkNetwork();
-      if (!canFetch) return { ok: false };
 
       const response = await fetch(url, config);
 
       if (response.json) {
         try {
           const readableRes = await response.json();
-          if (readableRes.sendInApp)
-            this?.handleInAppMessage(readableRes.sendInApp);
-          if (readableRes.showNewBadge)
-            this?.handleShowBadge(readableRes.showNewBadge);
-          if (readableRes.showInAppModal)
-            this?.handleShowInAppModal(readableRes.showInAppModal);
-          if (readableRes.newFeatures) {
-            NewFeaturePop.handleShowNewFeaturePopup(readableRes.newFeatures);
-          }
           return readableRes;
         } catch (e) {
           console.log("ERROR IN RESPONSE JSON", response);
@@ -79,5 +64,5 @@ class ApiService {
   delete = async (args) => this.execute({ method: "DELETE", ...args });
 }
 
-const API = new ApiService();
-export default API;
+const APIV2 = new ApiService();
+export default APIV2;
