@@ -10,6 +10,9 @@ export default function useNotificationsPrompt(sw, applicationServerKey) {
 
   const registrationRef = useRef(null);
   useEffect(() => {
+    if (typeof window !== "undefined" && window.ENV.APP_PLATFORM === "native") {
+      return null;
+    }
     if (typeof navigator === "undefined") return null;
     const supported = "serviceWorker" in navigator;
 
