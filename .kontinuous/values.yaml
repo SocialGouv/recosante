@@ -1,5 +1,6 @@
 global:
   apiHost: "api-{{ .Values.global.host }}"
+  apiNodeHost: "api-node-{{ .Values.global.host }}"
 
 api:
   ingress:
@@ -38,6 +39,20 @@ api:
     - name: FRONTEND_URL
       value: "https://{{ .Values.global.host }}"
 
+api-node:
+  ~chart: app
+  ~needs: [build-api-node]
+  containerPort: 3000
+  host: "{{ tpl .Values.global.apiNodeHost . }}"
+  probesPath: /healthz
+  resources:
+    requests:
+      cpu: 0.1
+      memory: 128Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+
 frontend:
   ~chart: app
   ~needs: [build-frontend]
@@ -75,7 +90,7 @@ indice:
       memory: 4Gi
   startupProbe:
     initialDelaySeconds: 30
-    failureThreshold: 500  # for very long migrations
+    failureThreshold: 500 # for very long migrations
     periodSeconds: 10
   ingress:
     enabled: false
@@ -142,6 +157,11 @@ jobs:
       with:
         imagePackage: api
         dockerfile: api/Dockerfile
+    build-api-node:
+      use: build
+      with:
+        imagePackage: api-node
+        dockerfile: api-node/Dockerfile
     build-indice:
       use: build
       with:
