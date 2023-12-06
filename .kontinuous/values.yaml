@@ -1,6 +1,7 @@
 global:
   apiHost: "api-{{ .Values.global.host }}"
   apiNodeHost: "api-node-{{ .Values.global.host }}"
+  pgApiNodeSecretName: "pg-api-node-app"
 
 api:
   ingress:
@@ -45,6 +46,9 @@ api-node:
   containerPort: 3000
   host: "{{ tpl .Values.global.apiNodeHost . }}"
   probesPath: /healthz
+  envFrom:
+    - secretRef:
+        name: "{{ .Values.global.pgApiNodeSecretName }}"
   resources:
     requests:
       cpu: 0.1
@@ -149,6 +153,9 @@ flower:
       value: "5555"
     - name: FLOWER_PERSISTENT
       value: "True"
+
+pg-api-node:
+  chart: pg
 
 jobs:
   runs:
