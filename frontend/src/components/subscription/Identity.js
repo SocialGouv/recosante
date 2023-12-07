@@ -6,9 +6,7 @@ import MagicLink from "components/base/MagicLink";
 import TextInput from "components/base/TextInput";
 import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
-import { useLocalUser, useUserMutation } from "hooks/useUser";
-import { useQueryParam } from "hooks/useQueryParam";
-import Error from "./identity/Error";
+import APIV2 from "../../utils/api-node";
 
 const StyledAlert = styled(Alert)`
   margin: -2rem 0 1rem;
@@ -30,25 +28,27 @@ const MailInput = styled(TextInput)`
 `;
 
 export default function Identity({ onNextStep }) {
-  const { user, mutateUser } = useLocalUser();
-  const setUid = useQueryParam("user")[1];
-  const setToken = useQueryParam("token")[1];
-  const { data: availability } = useAvailability(user.commune?.code);
-  const mutation = useUserMutation();
+  const [email, setEmail] = useState("arnaud@ambroselli.io");
+  const [commune, setCommune] = useState({ nom: "Parisot", code: "81202" });
+  const { data: availability } = useAvailability(commune?.code);
+
+  const [error] = useState(false);
 
   useEffect(() => {
-    if (mutation.isSuccess) {
-      const newUid = mutation.data.data.uid;
-      const newToken = mutation.data.data.authentication_token;
-      mutation.mutate({ uid: newUid, authentication_token: newToken });
-      setUid(newUid);
-      setToken(newToken);
-      onNextStep();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mutation.isSuccess]);
-
-  const [error, setError] = useState(false);
+    window.onNativePushToken = function handleNativePushToken(
+      push_notif_token
+    ) {
+      APIV2.post({
+        path: "/user",
+        body: { email, commune, push_notif_token },
+      }).then(() => {
+        // onNextStep();
+      });
+    };
+    setTimeout(() => {
+      window.ReactNativeWebView?.postMessage("request-native-get-expo-token");
+    }, 250);
+  }, [commune, email]);
 
   return (
     <>
@@ -63,12 +63,9 @@ export default function Identity({ onNextStep }) {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (!user.commune) {
-              setError(true);
-            } else {
-              setError(false);
-              mutation.mutate(user);
-            }
+            window.ReactNativeWebView.postMessage(
+              "request-native-expo-push-permission"
+            );
           }}
         >
           <MailInput
@@ -77,8 +74,8 @@ export default function Identity({ onNextStep }) {
             className="mx-auto max-w-xs xl:max-w-2xl"
             title="Entrez votre email (obligatoire)"
             placeholder="Entrez votre email (obligatoire)"
-            value={user.mail}
-            onChange={({ value }) => mutateUser({ mail: value })}
+            value={email}
+            onChange={({ value }) => setEmail(value)}
             required
             autoComplete="email"
           />
@@ -86,13 +83,13 @@ export default function Identity({ onNextStep }) {
         <div className="relative order-2 mx-auto mb-4 w-full max-w-2xl">
           <SearchInput
             numberOfSuggestions={4}
-            initialValue={user.commune && user.commune.nom}
+            initialValue={commune?.nom}
             className={[
               "left-0 right-0 top-0 mx-auto w-full !transform-none text-[1.125rem]",
-              error && !user.commune ? "!border-error" : "",
+              error && !commune ? "!border-error" : "",
             ].join(" ")}
             handlePlaceSelection={(place) => {
-              mutateUser({ commune: place });
+              setCommune(place);
             }}
           />
         </div>
@@ -116,7 +113,7 @@ export default function Identity({ onNextStep }) {
           en vous désinscrivant.
         </p>
       </div>
-      <Error error={mutation.error} reset={mutation.reset} />
+      {/* <Error error={mutation.error} reset={mutation.reset} /> */}
     </>
   );
 }

@@ -34,34 +34,34 @@ Notifications.setNotificationHandler({
 
 export async function registerForPushNotificationsAsync({ force = false, expo = false } = {}) {
   let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    console.log("existingStatus", existingStatus);
-    if (existingStatus !== "granted") {
-      console.log("force", force);
-      if (!force) return null;
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    console.log("finalStatus", finalStatus);
-    if (finalStatus !== "granted") {
-      Alert.alert(
-        "Permission for Push notifications not granted",
-        "You can change that in your settings",
-        [
-          { text: "Open Settings", onPress: () => Linking.openSettings() },
-          { text: "OK", style: "cancel", onPress: () => {} },
-        ]
-      );
-      return;
-    }
-    token = expo
-      ? await Notifications.getExpoPushTokenAsync()
-      : await Notifications.getDevicePushTokenAsync();
-  } else {
-    // alert("Must use physical device for Push Notifications");
+  // if (Device.isDevice) {
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+  console.log("existingStatus", existingStatus);
+  if (existingStatus !== "granted") {
+    console.log("force", force);
+    if (!force) return null;
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
   }
+  console.log("finalStatus", finalStatus);
+  if (finalStatus !== "granted") {
+    Alert.alert(
+      "Permission for Push notifications not granted",
+      "You can change that in your settings",
+      [
+        { text: "Open Settings", onPress: () => Linking.openSettings() },
+        { text: "OK", style: "cancel", onPress: () => {} },
+      ]
+    );
+    return;
+  }
+  token = expo
+    ? await Notifications.getExpoPushTokenAsync()
+    : await Notifications.getDevicePushTokenAsync();
+  // } else {
+  //   // alert("Must use physical device for Push Notifications");
+  // }
 
   if (Platform.OS === "android") {
     Notifications.setNotificationChannelAsync("default", {

@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider   = "prisma-client-js"
-  engineType = "binary" // https://github.com/prisma/prisma/issues/10649
+  engineType = "binary"
 }
 
 datasource db {
@@ -13,7 +10,10 @@ datasource db {
 
 model User {
   id               String   @id @default(uuid())
-  push_notif_token String   @default("")
+  email            String   @unique
+  commune_code     String?
+  commune_nom      String?
+  push_notif_token String?
   created_at       DateTime @default(now())
   updated_at       DateTime @default(now()) @updatedAt
 

@@ -74,6 +74,8 @@ frontend:
   env:
     - name: GATSBY_API_BASE_URL
       value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
+    - name: GATSBY_API_NODE_BASE_URL
+      value: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
     - name: GATSBY_URL
       value: "https://{{ .Values.global.host }}"
     - name: GATSBY_REPOSITORY_URL
@@ -182,5 +184,6 @@ jobs:
         dockerfile: frontend/Dockerfile
         buildArgs:
           GATSBY_API_BASE_URL: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
+          GATSBY_API_NODE_BASE_URL: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
           GATSBY_URL: "https://{{ .Values.global.host }}"
           GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante

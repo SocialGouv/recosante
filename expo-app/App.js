@@ -7,7 +7,7 @@ import * as Location from "expo-location";
 import * as DeepLinking from "expo-linking";
 import { registerForPushNotificationsAsync } from "./src/services/expo-push-notifs";
 
-const APP_URL = __DEV__ ? "http://localhost:8000" : "https://recosante.beta.gouv.fr";
+const APP_URL = __DEV__ ? "http://192.168.178.198:8000" : "https://recosante.beta.gouv.fr";
 // const APP_URL = "https://recosante.beta.gouv.fr";
 
 SplashScreen.preventAutoHideAsync();
@@ -34,6 +34,7 @@ function App() {
   };
 
   const onPushNotification = (event) => {
+    console.log("onPushNotification", event.nativeEvent.data);
     const requestPush = event.nativeEvent.data === "request-native-push-permission";
     const requestExpoPush = event.nativeEvent.data === "request-native-expo-push-permission";
     // const readToken = event.nativeEvent.data === "request-native-get-token-if-exists";
@@ -124,6 +125,7 @@ function App() {
         case "request-native-expo-push-permission":
         case "request-native-get-token-if-exists":
         case "request-native-get-expo-token":
+          console.log("BIM");
           onPushNotification(event);
           break;
         default:
