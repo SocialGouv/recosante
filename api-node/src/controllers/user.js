@@ -3,29 +3,21 @@ const { catchErrors } = require("../middlewares/errors");
 const router = express.Router();
 const prisma = require("../prisma");
 
-router.put(
+router.post(
   "/",
   catchErrors(async (req, res) => {
-    const { matomoId } = req.body || {};
-
-    if (!matomoId) return res.status(400).json({ ok: false, error: "no matomo id" });
-
-    const updateObj = {};
-
-    let created_from = "User";
-    if (req.body.hasOwnProperty("pushNotifToken")) {
-      updateObj.push_notif_token = req.body.pushNotifToken;
-      created_from = "User-PushNotif";
-    }
-
-    // TODO: fix concurrency issue Unique constraint failed on the fields: (`matomo_id`)
-    // using a "version" field ? https://www.prisma.io/docs/guides/performance-and-optimization/prisma-client-transactions-guide#optimistic-concurrency-control
+    const { commune, email, push_notif_token } = req.body;
+    const updateObj = {
+      email,
+      commune_code: commune?.code,
+      commune_nom: commune?.nom,
+      push_notif_token,
+    };
+    console.log("updateObj", updateObj);
     await prisma.user.upsert({
-      where: { matomo_id: matomoId },
+      where: { email },
       update: updateObj,
       create: {
-        matomo_id: matomoId,
-        created_from,
         ...updateObj,
       },
     });

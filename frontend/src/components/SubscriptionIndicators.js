@@ -1,24 +1,17 @@
-import { graphql, useStaticQuery } from "gatsby";
 import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { useLocalUser, useUserMutation } from "hooks/useUser";
 import indicateursSteps from "utils/indicateursSteps";
-import recommandationsSteps from "utils/recommandationsSteps";
 import ModalContext from "utils/ModalContext";
 import Navigation from "./subscription/Navigation";
-import Newsletter from "./subscription/Newsletter";
-import Notifications from "./subscription/Notifications";
 import Progress from "./subscription/Progress";
 import Question from "./subscription/Question";
 import Identity from "./subscription/Identity";
 import EndIndicateurs from "./subscription/EndIndicateurs";
-import EndRecommandations from "./subscription/EndRecommandations";
 
 const indicateursStepsOrder = Object.keys(indicateursSteps);
 
 export default function SubscriptionIndicators() {
-  const notifications = {};
-
   const [currentStepName, setCurrentStepName] = useState(
     indicateursStepsOrder[0]
   );
@@ -28,13 +21,12 @@ export default function SubscriptionIndicators() {
   }, [currentStepName]);
 
   const { setSubscription, setNeedConfirmation } = useContext(ModalContext);
-  const [modal, setModal] = useState(false);
+  const [, setModal] = useState(false);
 
   const localUser = useLocalUser();
   const mutation = useUserMutation();
 
   const currentIndicateurStep = indicateursSteps[currentStepName];
-  const currentRecommandationStep = recommandationsSteps[currentStepName];
 
   return (
     <div
