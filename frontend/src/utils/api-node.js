@@ -1,5 +1,5 @@
 const SCHEME = process.env.NODE_ENV === "development" ? "http" : "https";
-const API_HOST = process.env.GATSBY_API_2_BASE_URL || "localhost:3000";
+const API_HOST = process.env.GATSBY_API_NODE_BASE_URL || "localhost:3000";
 
 class ApiService {
   host = API_HOST;

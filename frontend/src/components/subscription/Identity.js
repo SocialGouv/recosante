@@ -6,7 +6,7 @@ import MagicLink from "components/base/MagicLink";
 import TextInput from "components/base/TextInput";
 import SearchInput from "components/search/SearchInput";
 import { useAvailability } from "hooks/useSearch";
-import APIV2 from "../../utils/api-v2";
+import APIV2 from "../../utils/api-node";
 
 const StyledAlert = styled(Alert)`
   margin: -2rem 0 1rem;
