@@ -3,7 +3,6 @@ import os
 
 from celery.signals import after_setup_logger, after_setup_task_logger
 from flask import Flask, g
-from indice_pollution import init_app
 from kombu import Queue
 from werkzeug.urls import url_encode
 
@@ -28,6 +27,11 @@ def configure_celery(flask_app):
     celery.conf.update(celery_conf)
     print(f"flask_app.config['ENV']: {flask_app.config['ENV']}")
     celery.conf.env = flask_app.config['ENV']
+
+    celery_conf.setdefault('result_backend', "db+" +
+                           os.getenv('SQLALCHEMY_DATABASE_URI'))
+    celery_conf.setdefault('broker_url', "sqla+" +
+                           os.getenv('SQLALCHEMY_DATABASE_URI'))
     # print celery.config
     print(f"Celery configured for env {celery.conf.env}")
     if flask_app.config['ENV'] == 'staging':
@@ -48,6 +52,10 @@ def configure_celery(flask_app):
         def __call__(self, *args, **kwargs):
             with flask_app.app_context():
                 return self.run(*args, **kwargs)
+        
+        # pylint: disable-next=unused-argument
+        def after_return(self, *args, **kwargs):
+            db.session.remove()
 
     celery.Task = ContextTask
 
@@ -105,7 +113,6 @@ def create_app(testing=False):
         'TEMP_AUTHENTICATOR_EXP_TIME') or 60 * 60 * 24 * 30  # 30 days
     app.logger.setLevel(logging.INFO)
 
-    init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     assets_env.init_app(app)
