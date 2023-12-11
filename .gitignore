@@ -1,6 +1,7 @@
 .awspublish*
 .cache
 .eggs
+.venv
 .env
 .env.*
 !.env.example
