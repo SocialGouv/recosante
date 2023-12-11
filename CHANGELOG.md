@@ -1,3 +1,11 @@
+## [1.13.1](https://github.com/SocialGouv/recosante/compare/v1.13.0...v1.13.1) (2023-12-11)
+
+
+### Bug Fixes
+
+* fix flask sqlalchemy usage ([#306](https://github.com/SocialGouv/recosante/issues/306)) ([e8cb170](https://github.com/SocialGouv/recosante/commit/e8cb17074d2ba16a99a5e56f55523f3a349f79d3))
+* indice_pollution db ([7ebfce1](https://github.com/SocialGouv/recosante/commit/7ebfce110aadf1e76bbfb3517f737f567014dd3b))
+
 # [1.13.0](https://github.com/SocialGouv/recosante/compare/v1.12.1...v1.13.0) (2023-12-05)
 
 
