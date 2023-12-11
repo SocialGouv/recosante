@@ -8,6 +8,7 @@ from werkzeug.urls import url_encode
 
 from .extensions import (assets_env, cache, celery, cors, db, migrate, rebar,
                          sib)
+import indice_pollution
 
 
 def configure_celery(flask_app):
@@ -114,6 +115,7 @@ def create_app(testing=False):
     app.logger.setLevel(logging.INFO)
 
     db.init_app(app)
+ 
     migrate.init_app(app, db)
     assets_env.init_app(app)
     cors.init_app(app)
@@ -149,6 +151,9 @@ def create_app(testing=False):
 
         log_level = logging.DEBUG
         app.logger.setLevel(log_level)
+
+        indice_pollution.db.session = db.session
+        indice_pollution.db.engine = db.engine
 
     rebar.init_app(app)
 
