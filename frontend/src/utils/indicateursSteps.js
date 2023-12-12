@@ -1,75 +1,98 @@
 import React from "react";
 
 import Alerte from "./icons/Alerte";
+import Email from "./icons/Email";
 import IndiceAtmo from "./icons/IndiceAtmo";
 import IndiceUv from "./icons/IndiceUv";
+import Notification from "./icons/Notification";
 import Quotidien from "./icons/Quotidien";
 import Raep from "./icons/Raep";
 import VigilanceMeteo from "./icons/VigilanceMeteo";
 
-const indicateurs = {
-  step: 1,
-  name: "indicateurs",
-  title: "Indicateurs",
-  label: "Je choisis les indicateurs que je souhaite recevoir\u00A0:",
-  options: [
-    {
-      value: "indice_atmo",
-      label: `Qualité de l'air`,
-      icon: <IndiceAtmo />,
-    },
-    {
-      value: "raep",
-      label: `Allergie aux pollens`,
-      icon: <Raep />,
-    },
-    {
-      value: "vigilance_meteo",
-      label: `Vigilance météo`,
-      icon: <VigilanceMeteo />,
-    },
-    {
-      value: "indice_uv",
-      label: `Indice UV`,
-      icon: <IndiceUv />,
-    },
-  ],
-  mandatory: true,
-};
-
-const indicateurs_frequence = {
-  step: 2,
-  name: "indicateurs_frequence",
-  title: "Fréquence",
-  label:
-    "Je choisis à quelle fréquence je souhaite recevoir ces indicateurs\u00A0:",
-  options: [
-    {
-      value: "alerte",
-      label: `En cas de vigilance`,
-      icon: <Alerte />,
-      detail: {
-        label:
-          "Uniquement les jours où la situation nécessite d'adapter votre comportement.",
-      },
-    },
-    {
-      value: "quotidien",
-      label: `Tous les jours`,
-      icon: <Quotidien />,
-      detail: {
-        label:
-          "Chaque matin, même lorsque la situation ne nécessite pas de vigilance particulière.",
-      },
-    },
-  ],
-  exclusive: true,
-  mandatory: true,
-};
-
 const steps = {
-  indicateurs,
-  indicateurs_frequence,
+  indicateurs: {
+    step: 1,
+    name: "indicateurs",
+    title: "Indicateurs",
+    label: "Je choisis les indicateurs que je souhaite recevoir\u00A0:",
+    options: [
+      {
+        value: "indice_atmo",
+        label: `Qualité de l'air`,
+        icon: <IndiceAtmo />,
+      },
+      {
+        value: "raep",
+        label: `Allergie aux pollens`,
+        icon: <Raep />,
+      },
+      {
+        value: "vigilance_meteo",
+        label: `Vigilance météo`,
+        icon: <VigilanceMeteo />,
+      },
+      {
+        value: "indice_uv",
+        label: `Indice UV`,
+        icon: <IndiceUv />,
+      },
+    ],
+    mandatory: true,
+  },
+  indicateurs_frequence: {
+    step: 2,
+    name: "indicateurs_frequence",
+    title: "Fréquence",
+    label:
+      "Je choisis à quelle fréquence je souhaite recevoir ces indicateurs\u00A0:",
+    options: [
+      {
+        value: "alerte",
+        label: `En cas de vigilance`,
+        icon: <Alerte />,
+        detail: {
+          label:
+            "Uniquement les jours où la situation nécessite d'adapter votre comportement.",
+        },
+      },
+      {
+        value: "quotidien",
+        label: `Tous les jours`,
+        icon: <Quotidien />,
+        detail: {
+          label:
+            "Chaque matin, même lorsque la situation ne nécessite pas de vigilance particulière.",
+        },
+      },
+    ],
+    exclusive: true,
+    mandatory: true,
+  },
+  indicateurs_media: {
+    step: 3,
+    name: "indicateurs_media",
+    title: "Média",
+    label:
+      "Je choisis de quelle façon je souhaite recevoir ces indicateurs\u00A0:",
+    options: [
+      {
+        value: "mail",
+        label: `Email`,
+        icon: <Email />,
+      },
+      {
+        value: "notifications_web",
+        label: `Notification`,
+        icon: <Notification />,
+        detail: {
+          label: `Qu'est ce que c'est ?`,
+          modal: "notifications",
+        },
+      },
+    ],
+    exclusive: true,
+    mandatory: true,
+  },
   validation: {
     step: 4,
     name: "validation",
