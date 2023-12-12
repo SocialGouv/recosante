@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TextProps } from "react-native";
 import { styled } from "nativewind";
 import { useFonts } from "expo-font";
 
@@ -7,8 +7,27 @@ import { useFonts } from "expo-font";
 // - fix android color issue
 // - fix globally some issues with android chinese phones sometimes
 
+export type Fonts =
+  | "MarianneBold"
+  | "MarianneBoldItalic"
+  | "MarianneExtraBold"
+  | "MarianneExtraBoldItalic"
+  | "MarianneLight"
+  | "MarianneLightItalic"
+  | "MarianneMedium"
+  | "MarianneMediumItalic"
+  | "MarianneRegular"
+  | "MarianneRegularItalic"
+  | "MarianneThin"
+  | "MarianneThinItalic";
+
+interface MyTextProps extends TextProps {
+  children: React.ReactNode;
+  font?: Fonts;
+}
+
 // Bare in mind that NativeWind converts `className` to `style` prop
-function MyText({ font, style, children, ...props }) {
+function MyText({ font, style, children, ...props }: MyTextProps) {
   const fontStyle = font ? styles[font] : styles.default;
   const [fontsLoaded] = useFonts({
     MarianneBold: require("../assets/fonts/Marianne-Bold.otf"),
@@ -44,7 +63,7 @@ export default styled(MyText);
 
 const styles = StyleSheet.create({
   default: {
-    fontFamily: "MarianneRegular",
+    // fontFamily: "MarianneRegular",
     color: "#000",
   },
   MarianneBold: {

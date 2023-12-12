@@ -29,6 +29,17 @@
         "projectId": "8d8b446e-c8db-4641-b730-5cef195e96da"
       }
     },
-    "owner": "recosante"
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "owner": "recosante",
+    "plugins": ["sentry-expo"],
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps"
+        }
+      ]
+    }
   }
 }
