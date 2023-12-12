@@ -1,32 +1,18 @@
-import NetInfo from '@react-native-community/netinfo';
-import DeviceInfo from 'react-native-device-info';
-import { Platform } from 'react-native';
-import * as Sentry from '@sentry/react-native';
-import Matomo from './matomo';
-import { MATOMO_IDSITE_1, MATOMO_IDSITE_2, MATOMO_URL, MATOMO_URL_2 } from '../config';
-import { mapOnboardingResultToMatomoProfile } from '../scenes/Quizzs/QuizzOnboarding/utils';
-import { storage } from './storage';
-import CONSTANTS from '../reference/constants';
-import API from './api';
+import NetInfo from "@react-native-community/netinfo";
+import * as Sentry from "@sentry/react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Matomo from "./matomo";
+import { MATOMO_URL, MATOMO_IDSITE } from "../config";
+import API from "./api";
 
-// https://docs.google.com/spreadsheets/d/1FzFrt-JsNK-OXqBz8f5sop3BcHhcvjGieZUF4gXHBJg/edit#gid=367769533
-
-const parseStringMaybeStringified = (string) => {
-  try {
-    return JSON.parse(string);
-  } catch (e) {
-    return string;
-  }
-};
-
-// storage.delete('@UserIdv2');
+// storage.delete('STORAGE_MATOMO_USER_ID');
 export const initMatomo = async () => {
-  let userId = storage.getString('@UserIdv2');
+  let userId = await AsyncStorage.getItem("STORAGE_MATOMO_USER_ID");
   if (!userId) {
     userId = Matomo.makeid();
-    storage.set('@UserIdv2', userId);
+    AsyncStorage.setItem("STORAGE_MATOMO_USER_ID", userId);
     API.put({
-      path: '/user',
+      path: "/user",
       body: {
         matomoId: userId,
       },
@@ -35,35 +21,24 @@ export const initMatomo = async () => {
   Sentry.setUser({ id: userId });
   API.userId = userId;
 
-  const prevVisits = storage.getString('@NumberOfVisits');
+  const prevVisits = await AsyncStorage.getItem("STORAGE_MATOMO_VISITS");
   const newVisits = prevVisits ? Number(prevVisits) + 1 : 1;
-  storage.set('@NumberOfVisits', `${newVisits}`);
+  AsyncStorage.setItem("STORAGE_MATOMO_VISITS", `${newVisits}`);
 
   Matomo.init({
     baseUrl: MATOMO_URL,
-    idsite: MATOMO_IDSITE_1,
+    idsite: MATOMO_IDSITE,
     userId,
     _idvc: newVisits,
   });
 
-  Matomo.init2({
-    baseUrl: MATOMO_URL_2,
-    idsite: MATOMO_IDSITE_2,
-  });
-
-  const resultKey = parseStringMaybeStringified(storage.getString('@Quizz_result') ?? '""');
-  const betterEval = storage.getString('@QuizzEvaluateConso_result');
-  const result = betterEval ? JSON.parse(betterEval)?.scoreAddiction : resultKey;
-  const gender = parseStringMaybeStringified(storage.getString('@Gender'));
-  const age = storage.getNumber('@Age');
-
-  Matomo.setCustomDimensions({
-    [CONSTANTS.MATOMO_CUSTOM_DIM_VERSION]: DeviceInfo.getVersion(),
-    [CONSTANTS.MATOMO_CUSTOM_DIM_SYSTEM]: Platform.OS,
-    [CONSTANTS.MATOMO_CUSTOM_DIM_PROFILE]: mapOnboardingResultToMatomoProfile(result),
-    [CONSTANTS.MATOMO_CUSTOM_DIM_GENDER]: gender,
-    [CONSTANTS.MATOMO_CUSTOM_DIM_AGE]: age,
-  });
+  // Matomo.setCustomDimensions({
+  //   [1]: "",
+  //   [2]: "",
+  //   [3]: "",
+  //   [4]: "",
+  //   [5]: "",
+  // });
 };
 
 const checkNetwork = async () => {
@@ -72,22 +47,22 @@ const checkNetwork = async () => {
   return true;
 };
 
-export const logEvent = async ({ category, action, name, value, dimension6 }) => {
+export const logEvent = async ({ category, action, name, value }) => {
   try {
     const canSend = await checkNetwork();
-    if (!canSend) throw new Error('no network');
-    Matomo.logEvent({ category, action, name, value, dimension6 });
+    if (!canSend) throw new Error("no network");
+    Matomo.logEvent({ category, action, name, value });
     const body = {
-      event: { category, action, name, value, dimension6 },
+      event: { category, action, name, value },
       userId: Matomo.userId,
       dimensions: Matomo.dimensions,
     };
     API.post({
-      path: '/event',
+      path: "/event",
       body,
     });
   } catch (e) {
-    console.log('logEvent error', e);
-    console.log('logEvent error', { category, action, name, value, dimension6 });
+    console.log("logEvent error", e);
+    console.log("logEvent error", { category, action, name, value });
   }
 };

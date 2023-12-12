@@ -1,9 +1,8 @@
-import URI from "urijs";
-import { Alert, Platform } from "react-native";
+import { Platform } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import * as Application from "expo-application";
 import { navigationRef } from "./navigation";
-import { API_HOST, API_SCHEME } from "../config";
+import { API_SCHEME, API_HOST } from "../config";
 
 export const checkNetwork = async (test = false) => {
   const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
@@ -16,17 +15,13 @@ export const checkNetwork = async (test = false) => {
 };
 
 class ApiService {
-  host = API_HOST;
-  scheme = API_SCHEME;
   getUrl = (path, query) => {
-    return new URI().host(this.host).scheme(this.scheme).path(path).setSearch(query).toString();
+    const url = new URL(path, `${API_SCHEME}://${API_HOST}`);
+    url.search = new URLSearchParams(query).toString();
+    return url.toString();
   };
   execute = async ({ method = "GET", path = "", query = {}, headers = {}, body = null }) => {
     try {
-      if (path === "/event" && body) {
-        body.newFeaturesLastShownId = NewFeaturePop.lastShownId;
-      }
-
       const config = {
         method,
         headers: {
@@ -41,7 +36,7 @@ class ApiService {
       };
 
       const url = this.getUrl(path, query);
-      // console.log('url: ', url);
+      console.log("url: ", url);
       const canFetch = await checkNetwork();
       if (!canFetch) return { ok: false };
 
@@ -50,7 +45,7 @@ class ApiService {
       if (response.json) {
         try {
           const readableRes = await response.json();
-          if (readableRes.sendInApp) this?.handleInAppMessage(readableRes.sendInApp);
+          if (readableRes.sendInApp) this?.showInAppMessage?.(readableRes.sendInApp);
           return readableRes;
         } catch (e) {
           console.log("ERROR IN RESPONSE JSON", response);
