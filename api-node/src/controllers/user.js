@@ -36,12 +36,12 @@ router.post(
       updateObj.push_notif_token = req.body.push_notif_token;
     }
 
-    console.log("updateObj", updateObj);
     await prisma.user.upsert({
-      where: { email },
+      where: { matomoId },
       update: updateObj,
       create: {
         ...updateObj,
+        matomoId,
       },
     });
 
