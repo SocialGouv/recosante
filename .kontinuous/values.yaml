@@ -158,7 +158,7 @@ flower:
       value: "True"
 
 pg-api-node:
-  chart: pg
+  ~chart: pg
 
 jobs:
   runs:
