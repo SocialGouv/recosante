@@ -44,6 +44,7 @@ api-node:
   ~chart: app
   ~needs: [build-api-node]
   containerPort: 3000
+  imagePackage: api-node
   host: "{{ tpl .Values.global.apiNodeHost . }}"
   probesPath: /healthz
   envFrom:
