@@ -1,14 +1,12 @@
 {
   "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
     "skipLibCheck": true,
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2022",
+    "target": "ES2019",
     "strict": true,
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,

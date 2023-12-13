@@ -1,4 +1,8 @@
-const { version, mobileAppVersion } = require("../package.json");
+import packageJson from "../package.json" assert { type: "json" };
+const version = packageJson.version;
+const mobileAppVersion = packageJson.mobileAppVersion;
+
+console.log(process.env);
 
 const PORT = process.env.PORT || 3000;
 const ENVIRONMENT = process.env.ENVIRONMENT || process.env.NODE_ENV || "development";
@@ -21,15 +25,10 @@ const TIPIMAIL_API_KEY = process.env.TIPIMAIL_API_KEY;
 const TIPIMAIL_EMAIL_TO = process.env.TIPIMAIL_EMAIL_TO;
 const TIPIMAIL_EMAIL_FROM = process.env.TIPIMAIL_EMAIL_FROM;
 
-const PUSH_NOTIFICATION_GCM_ID = process.env.PUSH_NOTIFICATION_GCM_ID;
-const PUSH_NOTIFICATION_APN_KEY = process.env.PUSH_NOTIFICATION_APN_KEY?.replace(/\\n/g, "\n");
-const PUSH_NOTIFICATION_APN_KEY_ID = process.env.PUSH_NOTIFICATION_APN_KEY_ID;
-const PUSH_NOTIFICATION_APN_TEAM_ID = process.env.PUSH_NOTIFICATION_APN_TEAM_ID;
-
 const MATOMO_URL = process.env.MATOMO_URL;
 const MATOMO_IDSITE_1 = "100";
 
-module.exports = {
+export {
   PORT,
   PGHOST,
   PGPORT,
@@ -45,10 +44,6 @@ module.exports = {
   TIPIMAIL_API_KEY,
   TIPIMAIL_EMAIL_TO,
   TIPIMAIL_EMAIL_FROM,
-  PUSH_NOTIFICATION_GCM_ID,
-  PUSH_NOTIFICATION_APN_KEY,
-  PUSH_NOTIFICATION_APN_KEY_ID,
-  PUSH_NOTIFICATION_APN_TEAM_ID,
   MATOMO_URL,
   MATOMO_IDSITE_1,
 };

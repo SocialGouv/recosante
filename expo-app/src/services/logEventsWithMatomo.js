@@ -11,7 +11,7 @@ export const initMatomo = async () => {
   if (!userId) {
     userId = Matomo.makeid();
     AsyncStorage.setItem("STORAGE_MATOMO_USER_ID", userId);
-    API.put({
+    API.post({
       path: "/user",
       body: {
         matomoId: userId,

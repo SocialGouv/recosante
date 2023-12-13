@@ -1,6 +1,6 @@
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
-const { VERSION, ENVIRONMENT, SENTRY_KEY } = require("../config");
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
+import { VERSION, ENVIRONMENT, SENTRY_KEY } from "../config.js";
 
 const sentryEnabled = ENVIRONMENT !== "development" && ENVIRONMENT !== "test";
 
@@ -62,4 +62,4 @@ function capture(err, context = {}) {
   }
 }
 
-module.exports = { capture };
+export { capture };

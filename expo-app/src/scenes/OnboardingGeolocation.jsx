@@ -3,11 +3,15 @@ import { Alert, KeyboardAvoidingView, Linking, Platform, ScrollView, View } from
 import { SafeAreaView } from "react-native-safe-area-context";
 import MyText from "~/components/MyText";
 import Button from "~/components/Button";
+import useCommune from "~/zustand/useCommune";
 import AutoCompleteFrenchCities from "../components/AutoCompleteFrenchCities";
 import * as Location from "expo-location";
 
-export default function OnboardingGeolocation({ navigation }) {
-  const [selectedCity, setSelectedCity] = useState(null);
+export default function OnboardingGeolocation({ navigation, route }) {
+  const setCommune = useCommune((state) => state.setCommune);
+  const commune = useCommune((state) => state.commune);
+  const [selectedCommune, setSelectedCommune] = useState(commune);
+  const isOnboarding = route.params?.isOnboarding;
 
   return (
     <ScrollView
@@ -24,7 +28,7 @@ export default function OnboardingGeolocation({ navigation }) {
             Des indicateurs près de chez vous
           </MyText>
 
-          {!selectedCity ? (
+          {!selectedCommune ? (
             <View className="w-full flex-1 items-center justify-center">
               <View>
                 <Button
@@ -50,7 +54,7 @@ export default function OnboardingGeolocation({ navigation }) {
                       url.searchParams.append("lon", longitude);
                       url.searchParams.append("lat", latitude);
                       const response = await fetch(url).then((res) => res.json());
-                      if (response?.length) setSelectedCity(response[0]);
+                      if (response?.length) setSelectedCommune(response[0]);
                       if (!response?.length)
                         Alert.alert("Erreur", "Impossible de trouver votre ville");
                     });
@@ -63,48 +67,63 @@ export default function OnboardingGeolocation({ navigation }) {
                 <MyText className="text-center">ou rentrez votre ville ici</MyText>
               </View>
               <View className="z-10 flex-row items-center px-4">
-                <AutoCompleteFrenchCities setSelectedCity={setSelectedCity} />
+                <AutoCompleteFrenchCities setSelectedCommune={setSelectedCommune} />
               </View>
             </View>
           ) : (
             <View className="w-full flex-1 items-center justify-center">
               <MyText font="MarianneBold" className="text-center text-3xl">
-                {selectedCity.nom}
+                {selectedCommune.nom}
               </MyText>
               <MyText font="MarianneMedium" className="mt-4 text-lg">
                 (
-                {selectedCity.codesPostaux.length > 2
-                  ? `${selectedCity.codesPostaux[0]}..${selectedCity.codesPostaux.at(-1)}`
-                  : selectedCity.codesPostaux.length === 2
-                  ? `${selectedCity.codesPostaux[0]}, ${selectedCity.codesPostaux[1]}`
-                  : selectedCity.codesPostaux[0]}
+                {selectedCommune.codesPostaux.length > 2
+                  ? `${selectedCommune.codesPostaux[0]}..${selectedCommune.codesPostaux.at(-1)}`
+                  : selectedCommune.codesPostaux.length === 2
+                  ? `${selectedCommune.codesPostaux[0]}, ${selectedCommune.codesPostaux[1]}`
+                  : selectedCommune.codesPostaux[0]}
                 )
               </MyText>
             </View>
           )}
 
-          <View>
-            <Button
-              onPress={() => {
-                navigation.navigate("HOME");
-              }}
-              disabled={!selectedCity}
-              viewClassName="bg-app-900">
-              Suivant
-            </Button>
-            <Button
-              onPress={() => {
-                if (selectedCity) {
-                  setSelectedCity(null);
-                } else {
-                  navigation.goBack();
-                }
-              }}
-              viewClassName="mt-8"
-              textClassName="underline text-black text-sm">
-              {selectedCity ? "Choisir une autre ville" : "Précédent"}
-            </Button>
-          </View>
+          {!!isOnboarding && (
+            <View>
+              <Button
+                onPress={() => {
+                  setCommune(selectedCommune);
+                  navigation.navigate("HOME");
+                }}
+                disabled={!selectedCommune}
+                viewClassName="bg-app-900">
+                Suivant
+              </Button>
+              <Button
+                onPress={() => {
+                  if (selectedCommune) {
+                    setSelectedCommune(null);
+                  } else {
+                    navigation.goBack();
+                  }
+                }}
+                viewClassName="mt-8"
+                textClassName="underline text-black text-sm">
+                {selectedCommune ? "Choisir une autre ville" : "Précédent"}
+              </Button>
+            </View>
+          )}
+          {!isOnboarding && selectedCommune && (
+            <View>
+              <Button
+                onPress={() => {
+                  setSelectedCommune(null);
+                }}
+                viewClassName="mt-8"
+                textClassName="underline text-black text-sm">
+                Choisir une autre ville
+              </Button>
+            </View>
+          )}
         </KeyboardAvoidingView>
       </SafeAreaView>
     </ScrollView>

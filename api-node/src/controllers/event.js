@@ -1,5 +1,5 @@
-const express = require("express");
-const { catchErrors } = require("../middlewares/errors");
+import express from "express";
+import { catchErrors } from "../middlewares/errors.js";
 const router = express.Router();
 
 router.post(
@@ -8,7 +8,7 @@ router.post(
     const { body } = req;
 
     return res.status(200).send({ ok: true });
-  })
+  }),
 );
 
-module.exports = router;
+export default router;

@@ -1,7 +1,7 @@
-const express = require("express");
-const { catchErrors } = require("../middlewares/errors");
+import express from "express";
+import { catchErrors } from "../middlewares/errors.js";
+import prisma from "../prisma.js";
 const router = express.Router();
-const prisma = require("../prisma");
 
 router.get(
   "/",
@@ -16,7 +16,7 @@ router.get(
       return res.send({ ok: true, data: conso?.id });
     }
     return res.send({ ok: false });
-  })
+  }),
 );
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
 const MINIMUM_MOBILE_APP_VERSION = 75;
 
-module.exports = ({ headers: { appversion } }, res, next) => {
+export default function ({ headers: { appversion } }, res, next) {
   // if (!appversion) return res.status(403).send({ ok: false, sendInApp: ["Veuillez mettre à jour votre application!"] });
   // if (Number(appversion) < MINIMUM_MOBILE_APP_VERSION)
   //   return res.status(403).send({
@@ -13,4 +13,4 @@ module.exports = ({ headers: { appversion } }, res, next) => {
   //     ],
   //   });
   return next();
-};
+}
