@@ -1,15 +1,16 @@
-FROM node:20-alpine
-
+FROM node:20-alpine as deps
 WORKDIR /app
 
-RUN chown node:node /app
-RUN chmod 1777 /tmp
+COPY package.json yarn.lock ./
+RUN yarn --production --frozen-lockfile
 
-USER 1000
+FROM node:20-alpine as run
+WORKDIR /app
 
+COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN yarn --production --frozen-lockfile && yarn cache clean
+USER 1000
 
 ENV NODE_ENV=production
 
