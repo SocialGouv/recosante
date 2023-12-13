@@ -97,7 +97,7 @@ function OnboardinScreen4({ navigation }) {
       <View className="mt-4">
         <Button
           onPress={() => {
-            navigation.navigate("ONBOARDING_SETTINGS");
+            navigation.navigate("ONBOARDING_GEOLOCATION");
           }}
           viewClassName="bg-app-900">
           Suivant

@@ -11,8 +11,7 @@ const PGDATABASE = process.env.PGDATABASE;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 const SENTRY_KEY =
-  process.env.SENTRY_KEY ||
-  "https://0ef6896e639948fd9ba54b861186360d@sentry.fabrique.social.gouv.fr/80";
+  process.env.SENTRY_KEY || "https://3451d3d9799d44d59ef0e63eb0f2cdf7@sentry.fabrique.social.gouv.fr/95";
 
 const VERSION = version;
 const MOBILE_VERSION = mobileAppVersion;

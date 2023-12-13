@@ -2,11 +2,13 @@ import React, { useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+// import { useHeaderHeight } from "@react-navigation/elements";
 import * as SplashScreen from "expo-splash-screen";
 import { navigationRef } from "~/services/navigation";
 import Onboarding from "~/scenes/Onboarding";
 import IndicatorsList from "~/scenes/IndicatorsList";
-import Settings from "~/scenes/Settings";
+import OnboardingGeolocation from "~/scenes/OnboardingGeolocation";
 import { initMatomo, logEvent } from "./services/logEventsWithMatomo";
 
 const BottomTab = createBottomTabNavigator();
@@ -14,7 +16,7 @@ function Home() {
   return (
     <BottomTab.Navigator>
       <BottomTab.Screen name="INDICATORS_LIST" component={IndicatorsList} />
-      <BottomTab.Screen name="SETTINGS" component={Settings} />
+      <BottomTab.Screen name="SETTINGS" component={OnboardingGeolocation} />
     </BottomTab.Navigator>
   );
 }
@@ -37,16 +39,18 @@ function Navigators() {
   };
 
   return (
-    <NavigationContainer
-      onStateChange={onNavigationStateChange}
-      onReady={onReady}
-      ref={navigationRef}>
-      <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        <RootStack.Screen name="ONBOARDING" component={Onboarding} />
-        <RootStack.Screen name="ONBOARDING_SETTINGS" component={Settings} />
-        <RootStack.Screen name="HOME" component={Home} />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <AutocompleteDropdownContextProvider>
+      <NavigationContainer
+        onStateChange={onNavigationStateChange}
+        onReady={onReady}
+        ref={navigationRef}>
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <RootStack.Screen name="ONBOARDING" component={Onboarding} />
+          <RootStack.Screen name="ONBOARDING_GEOLOCATION" component={OnboardingGeolocation} />
+          <RootStack.Screen name="HOME" component={Home} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </AutocompleteDropdownContextProvider>
   );
 }
 

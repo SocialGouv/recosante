@@ -18,6 +18,7 @@ app.use(logger("dev"));
 // }
 
 app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 app.use(cors());
 
@@ -77,6 +78,7 @@ app.use(versionCheck);
 app.use("/event", require("./controllers/event"));
 app.use("/user", require("./controllers/user"));
 
+app.use(Sentry.Handlers.errorHandler());
 app.use(errors.sendError);
 
 // Start the server

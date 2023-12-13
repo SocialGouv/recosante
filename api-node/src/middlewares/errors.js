@@ -31,13 +31,17 @@ const notFound = (req, res, next) => {
   In development we show good error messages so if we hit a syntax error or any other previously un-handled error, we can show good info on what happened
 */
 const sendError = (err, req, res, next) => {
-  const { body, query, user, params, route, method, originalUrl, headers } = req;
-  const { appversion, appdevice } = headers;
-  capture(err, { extra: { body, query, params, route, method, originalUrl, appversion, appdevice }, user });
+  // const { body, query, user, params, route, method, originalUrl, headers } = req;
+  // const { appversion, appdevice } = headers;
+  // capture(err, { extra: { body, query, params, route, method, originalUrl, appversion, appdevice }, user });
 
   return res
     .status(err.status || 500)
-    .send({ ok: false, code: "SERVER_ERROR", error: "Désolé, une erreur est survenue, l'équipe technique est prévenue." });
+    .send({
+      ok: false,
+      code: "SERVER_ERROR",
+      error: "Désolé, une erreur est survenue, l'équipe technique est prévenue.",
+    });
 };
 
 module.exports = { catchErrors, notFound, sendError };
