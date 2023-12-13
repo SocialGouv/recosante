@@ -2,7 +2,7 @@ import React, { memo, useCallback, useRef, useState } from "react";
 import { Button, Dimensions, Text, View, Platform, StyleSheet } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-export default function AutoCompleteFrenchCities({ setSelectedCity }) {
+export default function AutoCompleteFrenchCities({ setSelectedCommune }) {
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const dropdownController = useRef(null);
@@ -67,7 +67,7 @@ export default function AutoCompleteFrenchCities({ setSelectedCity }) {
       dataSet={suggestionsList}
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
-        item && setSelectedCity(item);
+        item && setSelectedCommune(item);
       }}
       debounce={600}
       suggestionsListMaxHeight={Dimensions.get("window").height * 0.4}
@@ -89,7 +89,7 @@ export default function AutoCompleteFrenchCities({ setSelectedCity }) {
       renderItem={(item, text) => {
         return (
           <Text style={styles.suggestionStyle}>
-            <Text style={styles.cityName}>{item.nom}</Text> ({item.displayCodesPostaux})
+            <Text style={styles.communeName}>{item.nom}</Text> ({item.displayCodesPostaux})
           </Text>
         );
       }}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     color: "#000",
     padding: 16,
   },
-  cityName: {
+  communeName: {
     fontWeight: "bold",
   },
 });

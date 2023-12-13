@@ -1,7 +1,8 @@
-require("dotenv").config({ path: "./.env" });
+import dotenv from "dotenv";
+dotenv.config({ path: "./.env" });
 
 // const cron = require("node-cron");
-// const { capture } = require("./third-parties/sentry");
+// const { capture } = require("./third-parties/sentry.js");
 
 // const { notificationsCronJob, scheduleNotificationsInactivity5DaysCronJob } = require("./notifications");
 // const { reminderCronJob } = require("./controllers/reminder");
