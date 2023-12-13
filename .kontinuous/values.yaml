@@ -172,6 +172,7 @@ jobs:
       with:
         imagePackage: api-node
         dockerfile: api-node/Dockerfile
+        context: api-node
     build-indice:
       use: build
       with:
