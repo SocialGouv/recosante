@@ -1,10 +1,10 @@
-import { Pressable, View } from "react-native";
-import MyText from "./MyText";
-import type { Fonts } from "./MyText";
+import { Pressable, View } from 'react-native';
+import MyText from './my-text';
+import type { Fonts } from './my-text';
 
 interface ButtonProps {
   children: string;
-  font: Fonts;
+  font?: Fonts;
   viewClassName?: string;
   textClassName?: string;
   disabled?: boolean;
@@ -12,10 +12,10 @@ interface ButtonProps {
 }
 
 export default function Button({
-  font = "MarianneBold",
+  font = 'MarianneBold',
   children,
-  viewClassName = "",
-  textClassName = "",
+  viewClassName = '',
+  textClassName = '',
   disabled = false,
   onPress,
 }: ButtonProps) {
@@ -23,9 +23,13 @@ export default function Button({
     <Pressable onPress={onPress} disabled={disabled}>
       <View
         className={`flex-col justify-center rounded-full px-4 py-2 ${
-          disabled ? "opacity-30" : "opacity-100"
-        } ${viewClassName}`}>
-        <MyText font={font} className={`-mt-1 text-center text-xl text-white ${textClassName}`}>
+          disabled ? 'opacity-30' : 'opacity-100'
+        } ${viewClassName}`}
+      >
+        <MyText
+          font={font}
+          className={`-mt-1 text-center text-xl text-white ${textClassName}`}
+        >
           {children}
         </MyText>
       </View>

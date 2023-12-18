@@ -1,8 +1,8 @@
-import { Platform } from "react-native";
-import NetInfo from "@react-native-community/netinfo";
-import * as Application from "expo-application";
-import { navigationRef } from "./navigation";
-import { API_SCHEME, API_HOST } from "../config";
+import { Platform } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import * as Application from 'expo-application';
+import { navigationRef } from './navigation';
+import { API_SCHEME, API_HOST } from '../config';
 
 export const checkNetwork = async (test = false) => {
   const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
@@ -20,13 +20,19 @@ class ApiService {
     url.search = new URLSearchParams(query).toString();
     return url.toString();
   };
-  execute = async ({ method = "GET", path = "", query = {}, headers = {}, body = null }) => {
+  execute = async ({
+    method = 'GET',
+    path = '',
+    query = {},
+    headers = {},
+    body = null,
+  }) => {
     try {
       const config = {
         method,
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
           appversion: Application.nativeBuildVersion,
           appdevice: Platform.OS,
           currentroute: navigationRef?.getCurrentRoute?.()?.name,
@@ -36,7 +42,7 @@ class ApiService {
       };
 
       const url = this.getUrl(path, query);
-      console.log("url: ", url);
+      console.log('url: ', url);
       const canFetch = await checkNetwork();
       if (!canFetch) return { ok: false };
 
@@ -45,17 +51,18 @@ class ApiService {
       if (response.json) {
         try {
           const readableRes = await response.json();
-          if (readableRes.sendInApp) this?.showInAppMessage?.(readableRes.sendInApp);
+          if (readableRes.sendInApp)
+            this?.showInAppMessage?.(readableRes.sendInApp);
           return readableRes;
         } catch (e) {
-          console.log("ERROR IN RESPONSE JSON", response);
+          console.log('ERROR IN RESPONSE JSON', response);
           console.log(e);
         }
       }
 
       return response;
     } catch (e) {
-      console.log(" error in api");
+      console.log(' error in api');
       console.log(e);
       return {
         ok: false,
@@ -65,10 +72,10 @@ class ApiService {
     }
   };
 
-  get = async (args) => this.execute({ method: "GET", ...args });
-  post = async (args) => this.execute({ method: "POST", ...args });
-  put = async (args) => this.execute({ method: "PUT", ...args });
-  delete = async (args) => this.execute({ method: "DELETE", ...args });
+  get = async (args) => this.execute({ method: 'GET', ...args });
+  post = async (args) => this.execute({ method: 'POST', ...args });
+  put = async (args) => this.execute({ method: 'PUT', ...args });
+  delete = async (args) => this.execute({ method: 'DELETE', ...args });
 }
 
 const API = new ApiService();

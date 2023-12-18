@@ -1,5 +1,5 @@
-import React from "react";
-import Svg, { G, Path } from "react-native-svg";
+import React from 'react';
+import Svg, { G, Path } from 'react-native-svg';
 
 export default function InfosIcon({ color, size }) {
   return (

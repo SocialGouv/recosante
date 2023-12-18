@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Text, View, Button, Platform, Alert, Linking } from "react-native";
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
+import { useState, useEffect, useRef } from 'react';
+import { Text, View, Button, Platform, Alert, Linking } from 'react-native';
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -32,27 +32,30 @@ Notifications.setNotificationHandler({
 //   });
 // }
 
-export async function registerForPushNotificationsAsync({ force = false, expo = false } = {}) {
+export async function registerForPushNotificationsAsync({
+  force = false,
+  expo = false,
+} = {}) {
   let token;
   // if (Device.isDevice) {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
-  console.log("existingStatus", existingStatus);
-  if (existingStatus !== "granted") {
-    console.log("force", force);
+  console.log('existingStatus', existingStatus);
+  if (existingStatus !== 'granted') {
+    console.log('force', force);
     if (!force) return null;
     const { status } = await Notifications.requestPermissionsAsync();
     finalStatus = status;
   }
-  console.log("finalStatus", finalStatus);
-  if (finalStatus !== "granted") {
+  console.log('finalStatus', finalStatus);
+  if (finalStatus !== 'granted') {
     Alert.alert(
-      "Permission for Push notifications not granted",
-      "You can change that in your settings",
+      'Permission for Push notifications not granted',
+      'You can change that in your settings',
       [
-        { text: "Open Settings", onPress: () => Linking.openSettings() },
-        { text: "OK", style: "cancel", onPress: () => {} },
-      ]
+        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+        { text: 'OK', style: 'cancel', onPress: () => {} },
+      ],
     );
     return;
   }
@@ -63,48 +66,61 @@ export async function registerForPushNotificationsAsync({ force = false, expo = 
   //   // alert("Must use physical device for Push Notifications");
   // }
 
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
+      lightColor: '#FF231F7C',
     });
   }
-  console.log("token", token);
+  console.log('token', token);
   return token;
 }
 
 export default function ExpoPushNotifToken() {
-  const [expoPushToken, setExpoPushToken] = useState("");
+  const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token),
+    );
 
-    notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
-      setNotification(notification);
-    });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener((response) => {
-      console.log(response);
-    });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current,
+      );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "space-around" }}>
+    <View
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'space-around' }}
+    >
       <Text>Your expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Text>
+          Title: {notification && notification.request.content.title}{' '}
+        </Text>
         <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+        <Text>
+          Data:{' '}
+          {notification && JSON.stringify(notification.request.content.data)}
+        </Text>
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
-import { Alert, Linking } from "react-native";
-import { navigationRef } from "./navigation";
-import { logEvent } from "./logEventsWithMatomo";
-import API from "./api";
+import { Alert, Linking } from 'react-native';
+import { navigationRef } from './navigation';
+import { logEvent } from './logEventsWithMatomo';
+import API from './api';
 
 async function showInAppMessage(inAppMessage) {
   const [title, subTitle, actions = [], options = {}] = inAppMessage;

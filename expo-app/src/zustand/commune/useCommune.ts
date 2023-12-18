@@ -1,13 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import API from "~/services/api";
-
-type Commune = {
-  nom: string;
-  code: string;
-  codesPostaux: Array<string>;
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { COMMUNE_STORAGE } from '~/constants/commune';
+import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
+import API from '~/services/api';
+import { Commune } from '~/types/commune';
 
 interface CommuneState {
   commune: Commune | null;
@@ -18,13 +15,13 @@ interface CommuneState {
 
 const useCommune = create<CommuneState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       commune: null,
       setCommune: async (commune) => {
         set({ commune });
-        const matomoId = await AsyncStorage.getItem("STORAGE_MATOMO_USER_ID");
+        const matomoId = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
         API.post({
-          path: "/user",
+          path: '/user',
           body: {
             matomoId,
             commune_code: commune.code,
@@ -41,13 +38,13 @@ const useCommune = create<CommuneState>()(
       },
     }),
     {
-      name: "commune-storage",
+      name: COMMUNE_STORAGE,
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
-    }
-  )
+    },
+  ),
 );
 
 export default useCommune;

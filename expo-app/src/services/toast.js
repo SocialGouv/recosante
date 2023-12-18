@@ -49,7 +49,7 @@ const ToastProvider = (props) => {
         }, 150);
       }, timeout);
     },
-    [setCaption, fadeAnim]
+    [setCaption, fadeAnim],
   );
 
   return (
@@ -58,10 +58,16 @@ const ToastProvider = (props) => {
       {Boolean(caption) && (
         <Animated.View
           style={{ opacity: fadeAnim }}
-          className="flex flex-row w-full justify-center absolute bottom-11"
-          pointerEvents={'box-none'}>
-          <View className="bg-[#4030a5] grow-0 rounded-full mb-4 flex w-min px-4	">
-            <TextStyled maxFontSizeMultiplier={2} color={'#FFF'} testID="toast" className="text-center py-2">
+          className="absolute bottom-11 flex w-full flex-row justify-center"
+          pointerEvents={'box-none'}
+        >
+          <View className="mb-4 flex w-min grow-0 rounded-full bg-[#4030a5] px-4	">
+            <TextStyled
+              maxFontSizeMultiplier={2}
+              color={'#FFF'}
+              testID="toast"
+              className="py-2 text-center"
+            >
               {caption}
             </TextStyled>
           </View>
