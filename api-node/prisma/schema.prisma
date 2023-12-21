@@ -20,3 +20,145 @@ model User {
 
   @@index([push_notif_token], type: Hash)
 }
+
+model IndiceUv {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  validity_start DateTime // the date is the first date of the validity period, included
+  validity_end   DateTime // the date is the last date of the validity period, included
+  diffusion_date DateTime
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  zone_id        String
+  // specific fields for this indicator
+  uv_j0          Int // the day of validity_start
+  uv_j1          Int // the day + 1 of validity_start
+  uv_j2          Int // the day + 2 of validity_start
+  uv_j3          Int // the day + 3 of validity_start
+}
+
+// REAP - Risque d'Exposition aux Allergènes Polliniques
+model PollenAllergyRisk {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  validity_start DateTime // the date is the first date of the validity period, included
+  validity_end   DateTime // the date is the last date of the validity period, included
+  diffusion_date DateTime
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  zone_id        String
+  // specific fields for this indicator
+  cypres         Int      @default(0)
+  noisetier      Int      @default(0)
+  aulne          Int      @default(0)
+  peuplier       Int      @default(0)
+  saule          Int      @default(0)
+  frene          Int      @default(0)
+  charme         Int      @default(0)
+  bouleau        Int      @default(0)
+  platane        Int      @default(0)
+  chene          Int      @default(0)
+  olivier        Int      @default(0)
+  tilleul        Int      @default(0)
+  chataignier    Int      @default(0)
+  rumex          Int      @default(0)
+  graminees      Int      @default(0)
+  plantain       Int      @default(0)
+  urticacees     Int      @default(0)
+  armoises       Int      @default(0)
+  ambroisies     Int      @default(0)
+  total          Int      @default(0)
+}
+
+enum CodeAlertEnums {
+  GREEN // Vigilance verte
+  YELLOW // Vigilance jaune
+  ORANGE // Vigilance orange
+  RED // Vigilance rouge
+}
+
+enum PhenomenonsEnum {
+  VIOLENT_WIND // Vent violent
+  RAIN_FLOOD // Pluie-Inondation
+  STORM // Orages
+  FLOOD // Crues
+  SNOW_ICE // Neige-verglas
+  HEAT_WAVE // Canicule
+  COLD_WAVE // Grand Froid
+  AVALANCHE // Avalanches
+  WAVES_SUBMERSION // Vagues-Submersion
+}
+
+// Vigilance Météo par MétéoFrance
+model WeatherAlert {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  validity_start DateTime // the date is the first date of the validity period, included
+  validity_end   DateTime // the date is the last date of the validity period, included
+  diffusion_date DateTime
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @default(now()) @updatedAt
+  zone_id        String
+  // specific fields for this indicator
+  // a row will be created ONLY if there is an alert
+  // an alert is a combination of a code_alert and a phenomenon
+  // example: alert HEAT_WAVE code RED
+  phenomenon     PhenomenonsEnum
+  code_alert     CodeAlertEnums
+}
+
+model IndiceAtmosperic {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  validity_start DateTime // the date is the first date of the validity period, included
+  validity_end   DateTime // the date is the last date of the validity period, included
+  diffusion_date DateTime
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+  zone_id        String
+  // specific fields for this indicator
+  no2            Int
+  so2            Int
+  o3             Int
+  pm10           Int
+  pm25           Int
+  max_value      Int // max value between no2, so2, o3, pm10, pm25
+}
+
+enum PollutionStateEnum {
+  ALERT // ALERTE
+  INFORMATION_AND_RECOMMANDATION // INFORMATION ET RECOMMANDATION
+  NO_ALERT // PAS DE DEPASSEMENT
+  ALERT_PERSISTANCE // ALERTE SUR PERSISTANCE
+}
+
+enum PollutionCodeEnum {
+  SULFUR_DIOXIDE // Dioxyde de soufre - code 1
+  NITROGEN_DIOXIDE // Dioxyde d'azote - code 3 / code 8
+  FINES_PARTICLES // Particules fines PM10 - code 5
+  OZONE // Ozone - code 7
+  PM10 // Particules en suspension PM10 - code 24
+  PM25 // Particules en suspension PM2.5 - code 39
+  BENZENE // Benzène - code 60
+}
+
+model AlertPollutionAtmospheric {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  validity_start DateTime // the date is the first date of the validity period, included
+  validity_end   DateTime // the date is the last date of the validity period, included
+  diffusion_date DateTime
+  created_at     DateTime           @default(now())
+  updated_at     DateTime           @default(now()) @updatedAt
+  zone_id        String
+  // specific fields for this indicator
+  state          PollutionStateEnum
+  code           PollutionCodeEnum
+  comment_short  String
+  comment_long   String
+}
