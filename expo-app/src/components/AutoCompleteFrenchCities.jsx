@@ -2,7 +2,7 @@ import React, { memo, useCallback, useRef, useState } from "react";
 import { Button, Dimensions, Text, View, Platform, StyleSheet } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-export default function AutoCompleteFrenchCities({ setSelectedCommune }) {
+export default function AutoCompleteFrenchCities({ setSelectedCity }) {
   const [loading, setLoading] = useState(false);
   const [suggestionsList, setSuggestionsList] = useState(null);
   const dropdownController = useRef(null);
@@ -57,50 +57,53 @@ export default function AutoCompleteFrenchCities({ setSelectedCommune }) {
   const onOpenSuggestionsList = useCallback((isOpened) => {}, []);
 
   return (
-    <AutocompleteDropdown
-      ref={searchRef}
-      controller={(controller) => {
-        dropdownController.current = controller;
-      }}
-      // initialValue={'1'}
-      direction={Platform.select({ ios: "down" })}
-      dataSet={suggestionsList}
-      onChangeText={getSuggestions}
-      onSelectItem={(item) => {
-        item && setSelectedCommune(item);
-      }}
-      debounce={600}
-      suggestionsListMaxHeight={Dimensions.get("window").height * 0.4}
-      onClear={onClearPress}
-      //  onSubmit={(e) => onSubmitSearch(e.nativeEvent.text)}
-      onOpenSuggestionsList={onOpenSuggestionsList}
-      loading={loading}
-      useFilter={false} // set false to prevent rerender twice
-      textInputProps={{
-        placeholder: "Écrivez votre ville ici",
-        autoCorrect: true,
-        autoCapitalize: "words",
-        style: styles.textInput,
-      }}
-      rightButtonsContainerStyle={styles.rightButtonsContainerStyle}
-      inputContainerStyle={styles.inputContainerStyle}
-      suggestionsListContainerStyle={styles.suggestionsListContainerStyle}
-      containerStyle={styles.containerStyle}
-      renderItem={(item, text) => {
-        return (
-          <Text style={styles.suggestionStyle}>
-            <Text style={styles.communeName}>{item.nom}</Text> ({item.displayCodesPostaux})
-          </Text>
-        );
-      }}
-      //   ChevronIconComponent={<Feather name="chevron-down" size={20} color="#fff" />}
-      //   ClearIconComponent={<Feather name="x-circle" size={18} color="#fff" />}
-      inputHeight={50}
-      showChevron={false}
-      closeOnBlur={false}
-      emptyResultText="Aucun résultat 🧐"
-      //  showClear={false}
-    />
+    <View style={{ zIndex: 1 }}>
+      <AutocompleteDropdown
+        ref={searchRef}
+        controller={(controller) => {
+          dropdownController.current = controller;
+          dropdownController.current.toggle();
+        }}
+        // initialValue={'1'}
+        direction={Platform.select({ ios: "down" })}
+        dataSet={suggestionsList}
+        onChangeText={getSuggestions}
+        onSelectItem={(item) => {
+          item && setSelectedCity(item);
+        }}
+        debounce={600}
+        suggestionsListMaxHeight={Dimensions.get("window").height * 0.4}
+        onClear={onClearPress}
+        //  onSubmit={(e) => onSubmitSearch(e.nativeEvent.text)}
+        onOpenSuggestionsList={onOpenSuggestionsList}
+        loading={loading}
+        useFilter={false} // set false to prevent rerender twice
+        textInputProps={{
+          placeholder: "Écrivez votre ville ici",
+          autoCorrect: true,
+          autoCapitalize: "words",
+          style: styles.textInput,
+        }}
+        rightButtonsContainerStyle={styles.rightButtonsContainerStyle}
+        inputContainerStyle={styles.inputContainerStyle}
+        suggestionsListContainerStyle={styles.suggestionsListContainerStyle}
+        containerStyle={styles.containerStyle}
+        renderItem={(item, text) => {
+          return (
+            <Text style={styles.suggestionStyle}>
+              <Text style={styles.cityName}>{item.nom}</Text> ({item.displayCodesPostaux})
+            </Text>
+          );
+        }}
+        //   ChevronIconComponent={<Feather name="chevron-down" size={20} color="#fff" />}
+        //   ClearIconComponent={<Feather name="x-circle" size={18} color="#fff" />}
+        inputHeight={50}
+        showChevron={false}
+        closeOnBlur={false}
+        emptyResultText="Aucun résultat 🧐"
+        //  showClear={false}
+      />
+    </View>
   );
 }
 
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
     color: "#000",
     padding: 16,
   },
-  communeName: {
+  cityName: {
     fontWeight: "bold",
   },
 });

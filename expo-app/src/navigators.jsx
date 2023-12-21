@@ -8,7 +8,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { navigationRef } from "~/services/navigation";
 import Onboarding from "~/scenes/Onboarding";
 import IndicatorsList from "~/scenes/IndicatorsList";
-import OnboardingGeolocation from "~/scenes/OnboardingGeolocation";
+import Geolocation from "~/scenes/Geolocation";
 import { initMatomo, logEvent } from "./services/logEventsWithMatomo";
 import useCommune from "./zustand/useCommune";
 import Cloud from "./assets/images/Cloud";
@@ -44,7 +44,7 @@ function Home() {
       />
       <BottomTab.Screen
         name="SETTINGS"
-        component={OnboardingGeolocation}
+        component={Geolocation}
         options={{
           tabBarLabel: (props) => <TabBarLabel {...props}>Paramètres</TabBarLabel>,
           tabBarIcon: ({ size, color }) => <InfosIcon size={size} color={color} />,
@@ -88,7 +88,7 @@ function Navigators() {
           <RootStack.Screen name="ONBOARDING" component={Onboarding} />
           <RootStack.Screen
             name="ONBOARDING_GEOLOCATION"
-            component={OnboardingGeolocation}
+            component={Geolocation}
             initialParams={{
               isOnboarding: true,
             }}

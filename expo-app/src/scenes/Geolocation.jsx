@@ -7,7 +7,7 @@ import useCommune from "~/zustand/useCommune";
 import AutoCompleteFrenchCities from "../components/AutoCompleteFrenchCities";
 import * as Location from "expo-location";
 
-export default function OnboardingGeolocation({ navigation, route }) {
+export default function Geolocation({ navigation, route }) {
   const setCommune = useCommune((state) => state.setCommune);
   const commune = useCommune((state) => state.commune);
   const [selectedCommune, setSelectedCommune] = useState(commune);
@@ -114,6 +114,13 @@ export default function OnboardingGeolocation({ navigation, route }) {
           )}
           {!isOnboarding && selectedCommune && (
             <View>
+              <Button
+                onPress={() => {
+                  setCommune(selectedCommune);
+                }}
+                viewClassName="bg-app-900">
+                Enregistrer
+              </Button>
               <Button
                 onPress={() => {
                   setSelectedCommune(null);
