@@ -9,7 +9,7 @@ import { navigationRef } from '~/services/navigation';
 import IndicatorsList from '~/scenes/indicators-list/indicators-list';
 import OnboardingGeolocation from '~/scenes/onboarding-geolocation';
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
-import useCommune from './zustand/commune/useCommune';
+import useMunicipality from './zustand/municipality´/useMunicipality';
 import Cloud from './assets/images/Cloud';
 import MyText from './components/ui/my-text';
 import InfosIcon from './assets/images/Infos';
@@ -75,9 +75,9 @@ function Home() {
 const RootStack = createNativeStackNavigator();
 
 export function Navigators() {
-  const hasHydrated = useCommune((state) => state._hasHydrated);
-  const hasCommune = useCommune(
-    (state) => !!state.commune?.nom && !!state.commune?.code,
+  const hasHydrated = useMunicipality((state) => state._hasHydrated);
+  const hasCommune = useMunicipality(
+    (state) => !!state.municipality?.nom && !!state.municipality?.code,
   );
 
   async function onReady() {

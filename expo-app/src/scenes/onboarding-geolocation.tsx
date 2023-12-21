@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MyText from '~/components/ui/my-text';
 import Button from '~/components/ui/button';
-import useCommune from '~/zustand/commune/useCommune';
+import useCommune from '~/zustand/municipality/useMunicipality';
 import * as Location from 'expo-location';
 import AutoComplete from '~/components/autocomplete-french-cities/autocomplete';
 
@@ -22,8 +22,8 @@ export default function OnboardingGeolocation(
   props: OnboardingGeolocationProps,
 ) {
   const setCommune = useCommune((state) => state.setCommune);
-  const commune = useCommune((state) => state.commune);
-  const [selectedCommune, setSelectedCommune] = useState(commune);
+  const municipality = useCommune((state) => state.municipality);
+  const [selectedCommune, setSelectedCommune] = useState(municipality);
   const isOnboarding = props.route.params?.isOnboarding;
 
   return (
@@ -124,8 +124,8 @@ export default function OnboardingGeolocation(
                       selectedCommune.codesPostaux[0]
                     }..${selectedCommune.codesPostaux.at(-1)}`
                   : selectedCommune.codesPostaux.length === 2
-                    ? `${selectedCommune.codesPostaux[0]}, ${selectedCommune.codesPostaux[1]}`
-                    : selectedCommune.codesPostaux[0]}
+                  ? `${selectedCommune.codesPostaux[0]}, ${selectedCommune.codesPostaux[1]}`
+                  : selectedCommune.codesPostaux[0]}
                 )
               </MyText>
             </View>

@@ -2,8 +2,6 @@ import packageJson from "../package.json" assert { type: "json" };
 const version = packageJson.version;
 const mobileAppVersion = packageJson.mobileAppVersion;
 
-console.log(process.env);
-
 const PORT = process.env.PORT || 3000;
 const ENVIRONMENT = process.env.ENVIRONMENT || process.env.NODE_ENV || "development";
 

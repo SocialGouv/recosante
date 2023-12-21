@@ -2,8 +2,8 @@
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "commune_code" TEXT,
-    "commune_nom" TEXT,
+    "municipality_code" TEXT,
+    "municipality_nom" TEXT,
     "push_notif_token" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

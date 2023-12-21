@@ -10,9 +10,9 @@ router.post(
     try {
       z.object({
         matomoId: z.string(),
-        commune_code: z.string().optional(),
-        commune_nom: z.string().optional(),
-        commune_codesPostaux: z.string().optional(),
+        municipality_code: z.string().optional(),
+        municipality_nom: z.string().optional(),
+        municipality_zip_code: z.string().optional(),
         push_notif_token: z.string().optional(),
       }).parse(req.body);
     } catch (e) {
@@ -23,14 +23,14 @@ router.post(
 
     const { matomoId } = req.body;
     const updateObj = {};
-    if (req.body.hasOwnProperty("commune_code")) {
-      updateObj.commune_code = req.body.commune_code;
+    if (req.body.hasOwnProperty("municipality_code")) {
+      updateObj.municipality_code = req.body.municipality_code;
     }
-    if (req.body.hasOwnProperty("commune_nom")) {
-      updateObj.commune_nom = req.body.commune_nom;
+    if (req.body.hasOwnProperty("municipality_nom")) {
+      updateObj.municipality_nom = req.body.municipality_nom;
     }
-    if (req.body.hasOwnProperty("commune_codesPostaux")) {
-      updateObj.commune_codesPostaux = req.body.commune_codesPostaux;
+    if (req.body.hasOwnProperty("municipality_zip_code")) {
+      updateObj.municipality_zip_code = req.body.municipality_zip_code;
     }
     if (req.body.hasOwnProperty("push_notif_token")) {
       updateObj.push_notif_token = req.body.push_notif_token;
@@ -46,7 +46,7 @@ router.post(
     });
 
     return res.status(200).send({ ok: true });
-  })
+  }),
 );
 
 export default router;

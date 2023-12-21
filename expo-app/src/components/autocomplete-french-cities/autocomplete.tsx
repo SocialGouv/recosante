@@ -2,10 +2,10 @@ import React from 'react';
 import { Dimensions, Text, Platform, StyleSheet } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { useAutoComplete } from './hooks/autocomplete.hooks';
-import { Commune } from '~/types/commune';
+import { Municipality } from '~/types/municipality';
 
 interface AutoCompleteProps {
-  setSelectedCommune: (commune: Commune) => void;
+  setSelectedCommune: (municipality: Municipality) => void;
 }
 export default function AutoComplete(props: AutoCompleteProps) {
   const {
@@ -31,7 +31,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
         if (!item) return;
-        const selectedItem = item as unknown as Commune;
+        const selectedItem = item as unknown as Municipality;
         props.setSelectedCommune(selectedItem);
       }}
       debounce={600}
