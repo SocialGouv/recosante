@@ -1,0 +1,22 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String   @id @default(uuid())
+  matomoId             String   @unique
+  commune_code         String?
+  commune_nom          String?
+  commune_codesPostaux String?
+  push_notif_token     String?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @default(now()) @updatedAt
+
+  @@index([push_notif_token], type: Hash)
+}
