@@ -1,7 +1,5 @@
 global:
   apiHost: "api-{{ .Values.global.host }}"
-  apiNodeHost: "api-node-{{ .Values.global.host }}"
-  pgApiNodeSecretName: "pg-api-node-app"
 
 api:
   ingress:
@@ -40,24 +38,6 @@ api:
     - name: FRONTEND_URL
       value: "https://{{ .Values.global.host }}"
 
-api-node:
-  ~chart: app
-  ~needs: [build-api-node]
-  containerPort: 3000
-  imagePackage: api-node
-  host: "{{ tpl .Values.global.apiNodeHost . }}"
-  probesPath: /healthz
-  envFrom:
-    - secretRef:
-        name: "{{ .Values.global.pgApiNodeSecretName }}"
-  resources:
-    requests:
-      cpu: 0.1
-      memory: 128Mi
-    limits:
-      cpu: 1
-      memory: 1Gi
-
 frontend:
   ~chart: app
   ~needs: [build-frontend]
@@ -75,8 +55,6 @@ frontend:
   env:
     - name: GATSBY_API_BASE_URL
       value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
-    - name: GATSBY_API_NODE_BASE_URL
-      value: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
     - name: GATSBY_URL
       value: "https://{{ .Values.global.host }}"
     - name: GATSBY_REPOSITORY_URL
@@ -97,7 +75,7 @@ indice:
       memory: 4Gi
   startupProbe:
     initialDelaySeconds: 30
-    failureThreshold: 500 # for very long migrations
+    failureThreshold: 500  # for very long migrations
     periodSeconds: 10
   ingress:
     enabled: false
@@ -157,9 +135,6 @@ flower:
     - name: FLOWER_PERSISTENT
       value: "True"
 
-pg-api-node:
-  ~chart: pg
-
 jobs:
   runs:
     build-api:
@@ -167,11 +142,6 @@ jobs:
       with:
         imagePackage: api
         dockerfile: api/Dockerfile
-    build-api-node:
-      use: build
-      with:
-        imagePackage: api-node
-        context: api-node
     build-indice:
       use: build
       with:
@@ -185,6 +155,5 @@ jobs:
         dockerfile: frontend/Dockerfile
         buildArgs:
           GATSBY_API_BASE_URL: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
-          GATSBY_API_NODE_BASE_URL: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
           GATSBY_URL: "https://{{ .Values.global.host }}"
           GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante

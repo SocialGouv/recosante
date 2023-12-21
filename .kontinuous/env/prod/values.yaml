@@ -1,7 +1,6 @@
 global:
   host: "recosante.beta.gouv.fr"
   apiHost: "api.recosante.beta.gouv.fr"
-  apiNodeHost: "api-node.recosante.beta.gouv.fr"
   pgSecretName: pg-app
   namespaceLabels:
     kubed-matomo-secret: sync
