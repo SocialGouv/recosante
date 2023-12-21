@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useRef, useState } from "react";
-import { Button, Dimensions, Text, View, Platform, StyleSheet } from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { Dimensions, Text, View, Platform, StyleSheet } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
 export default function AutoCompleteFrenchCities({ setSelectedCity }) {
