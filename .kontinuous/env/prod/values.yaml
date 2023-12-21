@@ -12,7 +12,7 @@ pg:
       size: "50Gi"
     resources:
       requests:
-        memory: 512Mi
+        memory: 3Gi
       limits:
         memory: 3Gi
 
