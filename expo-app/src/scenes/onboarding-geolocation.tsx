@@ -100,7 +100,7 @@ export default function OnboardingGeolocation(
                   }}
                   viewClassName="bg-app-900"
                 >
-                  Accéder à ma position
+                  Accéder à ma position s
                 </Button>
               </View>
               <View className="my-4">

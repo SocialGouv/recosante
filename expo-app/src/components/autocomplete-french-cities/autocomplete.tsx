@@ -17,6 +17,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
     onClearPress,
     onOpenSuggestionsList,
   } = useAutoComplete();
+
+  console.log('suggestionsList', suggestionsList);
   return (
     <AutocompleteDropdown
       ref={searchRef}
@@ -24,7 +26,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         // @ts-ignore
         dropdownController.current = controller;
       }}
-      direction={Platform.select({ ios: 'down' })}
+      // direction={Platform.select({ ios: 'down' })}
       dataSet={suggestionsList}
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
