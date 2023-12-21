@@ -1,6 +1,18 @@
+import express from 'express';
+
 const MINIMUM_MOBILE_APP_VERSION = 75;
 
-export default function ({ headers: { appversion } }, res, next) {
+export default function (
+  {
+    headers: { appversion },
+  }: {
+    headers: {
+      appversion: string;
+    };
+  },
+  res: express.Response,
+  next: express.NextFunction,
+) {
   // if (!appversion) return res.status(403).send({ ok: false, sendInApp: ["Veuillez mettre à jour votre application!"] });
   // if (Number(appversion) < MINIMUM_MOBILE_APP_VERSION)
   //   return res.status(403).send({

@@ -21,6 +21,7 @@ export function useAutoComplete() {
       setSuggestionsList([]);
       return;
     }
+
     const filterToken = query.toLowerCase();
     setLoading(true);
     const url = new URL('https://geo.api.gouv.fr/communes');

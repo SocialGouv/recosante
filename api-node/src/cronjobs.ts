@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
 // const cron = require("node-cron");
 // const { capture } = require("./third-parties/sentry.js");
