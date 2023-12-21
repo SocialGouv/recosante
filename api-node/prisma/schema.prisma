@@ -9,14 +9,14 @@ datasource db {
 }
 
 model User {
-  id                    String   @id @default(uuid())
-  matomo_id             String   @unique
-  municipality_code     String?
-  municipality_name     String?
-  municipality_zip_code String?
-  push_notif_token      String?
-  created_at            DateTime @default(now())
-  updated_at            DateTime @default(now()) @updatedAt
+  id                      String   @id @default(uuid())
+  matomo_id               String   @unique
+  municipality_insee_code String? // code INSEE
+  municipality_name       String?
+  municipality_zip_code   String?
+  push_notif_token        String?
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
 
   @@index([push_notif_token], type: Hash)
 }
@@ -25,17 +25,17 @@ model IndiceUv {
   id String @id @default(uuid())
 
   // common fields for all indicators
-  validity_start DateTime // the date is the first date of the validity period, included
-  validity_end   DateTime // the date is the last date of the validity period, included
-  diffusion_date DateTime
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  zone_id        String
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+  municipality_insee_code String
   // specific fields for this indicator
-  uv_j0          Int // the day of validity_start
-  uv_j1          Int // the day + 1 of validity_start
-  uv_j2          Int // the day + 2 of validity_start
-  uv_j3          Int // the day + 3 of validity_start
+  uv_j0                   Int // the day of validity_start
+  uv_j1                   Int // the day + 1 of validity_start
+  uv_j2                   Int // the day + 2 of validity_start
+  uv_j3                   Int // the day + 3 of validity_start
 }
 
 // REAP - Risque d'Exposition aux Allergènes Polliniques
@@ -43,33 +43,33 @@ model PollenAllergyRisk {
   id String @id @default(uuid())
 
   // common fields for all indicators
-  validity_start DateTime // the date is the first date of the validity period, included
-  validity_end   DateTime // the date is the last date of the validity period, included
-  diffusion_date DateTime
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  zone_id        String
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+  municipality_insee_code String
   // specific fields for this indicator
-  cypres         Int      @default(0)
-  noisetier      Int      @default(0)
-  aulne          Int      @default(0)
-  peuplier       Int      @default(0)
-  saule          Int      @default(0)
-  frene          Int      @default(0)
-  charme         Int      @default(0)
-  bouleau        Int      @default(0)
-  platane        Int      @default(0)
-  chene          Int      @default(0)
-  olivier        Int      @default(0)
-  tilleul        Int      @default(0)
-  chataignier    Int      @default(0)
-  rumex          Int      @default(0)
-  graminees      Int      @default(0)
-  plantain       Int      @default(0)
-  urticacees     Int      @default(0)
-  armoises       Int      @default(0)
-  ambroisies     Int      @default(0)
-  total          Int      @default(0)
+  cypres                  Int      @default(0)
+  noisetier               Int      @default(0)
+  aulne                   Int      @default(0)
+  peuplier                Int      @default(0)
+  saule                   Int      @default(0)
+  frene                   Int      @default(0)
+  charme                  Int      @default(0)
+  bouleau                 Int      @default(0)
+  platane                 Int      @default(0)
+  chene                   Int      @default(0)
+  olivier                 Int      @default(0)
+  tilleul                 Int      @default(0)
+  chataignier             Int      @default(0)
+  rumex                   Int      @default(0)
+  graminees               Int      @default(0)
+  plantain                Int      @default(0)
+  urticacees              Int      @default(0)
+  armoises                Int      @default(0)
+  ambroisies              Int      @default(0)
+  total                   Int      @default(0)
 }
 
 enum CodeAlertEnums {
@@ -96,37 +96,37 @@ model WeatherAlert {
   id String @id @default(uuid())
 
   // common fields for all indicators
-  validity_start DateTime // the date is the first date of the validity period, included
-  validity_end   DateTime // the date is the last date of the validity period, included
-  diffusion_date DateTime
-  created_at     DateTime        @default(now())
-  updated_at     DateTime        @default(now()) @updatedAt
-  zone_id        String
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  created_at              DateTime        @default(now())
+  updated_at              DateTime        @default(now()) @updatedAt
+  municipality_insee_code String
   // specific fields for this indicator
   // a row will be created ONLY if there is an alert
   // an alert is a combination of a code_alert and a phenomenon
   // example: alert HEAT_WAVE code RED
-  phenomenon     PhenomenonsEnum
-  code_alert     CodeAlertEnums
+  phenomenon              PhenomenonsEnum
+  code_alert              CodeAlertEnums
 }
 
 model IndiceAtmosperic {
   id String @id @default(uuid())
 
   // common fields for all indicators
-  validity_start DateTime // the date is the first date of the validity period, included
-  validity_end   DateTime // the date is the last date of the validity period, included
-  diffusion_date DateTime
-  created_at     DateTime @default(now())
-  updated_at     DateTime @default(now()) @updatedAt
-  zone_id        String
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  created_at              DateTime @default(now())
+  updated_at              DateTime @default(now()) @updatedAt
+  municipality_insee_code String
   // specific fields for this indicator
-  no2            Int
-  so2            Int
-  o3             Int
-  pm10           Int
-  pm25           Int
-  max_value      Int // max value between no2, so2, o3, pm10, pm25
+  no2                     Int
+  so2                     Int
+  o3                      Int
+  pm10                    Int
+  pm25                    Int
+  max_value               Int // max value between no2, so2, o3, pm10, pm25
 }
 
 enum PollutionStateEnum {
@@ -150,15 +150,15 @@ model AlertPollutionAtmospheric {
   id String @id @default(uuid())
 
   // common fields for all indicators
-  validity_start DateTime // the date is the first date of the validity period, included
-  validity_end   DateTime // the date is the last date of the validity period, included
-  diffusion_date DateTime
-  created_at     DateTime           @default(now())
-  updated_at     DateTime           @default(now()) @updatedAt
-  zone_id        String
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  created_at              DateTime           @default(now())
+  updated_at              DateTime           @default(now()) @updatedAt
+  municipality_insee_code String
   // specific fields for this indicator
-  state          PollutionStateEnum
-  code           PollutionCodeEnum
-  comment_short  String
-  comment_long   String
+  state                   PollutionStateEnum
+  code                    PollutionCodeEnum
+  comment_short           String
+  comment_long            String
 }
