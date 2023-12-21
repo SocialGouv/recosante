@@ -9,13 +9,13 @@ import { navigationRef } from '~/services/navigation';
 import IndicatorsList from '~/scenes/indicators-list/indicators-list';
 import OnboardingGeolocation from '~/scenes/onboarding-geolocation';
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
-import useMunicipality from './zustand/municipality´/useMunicipality';
-import Cloud from './assets/images/Cloud';
+import useMunicipality from './zustand/municipality/useMunicipality';
+import Cloud from './assets/images/cloud';
 import MyText from './components/ui/my-text';
-import InfosIcon from './assets/images/Infos';
 import { IndicatorPage } from './scenes/indicator-page';
 import { RouteEnum } from './constants/route';
 import { Onboarding } from './scenes/onboarding';
+import InfosIcon from './assets/images/infos';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
