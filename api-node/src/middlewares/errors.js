@@ -1,5 +1,3 @@
-import { capture } from "../third-parties/sentry.js";
-
 /*
   Catch Errors Handler
 

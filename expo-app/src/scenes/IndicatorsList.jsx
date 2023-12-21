@@ -2,7 +2,6 @@ import * as React from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MyText from "~/components/MyText";
-import Button from "~/components/Button";
 
 function IndicatorsList({ navigation }) {
   const data = [

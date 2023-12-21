@@ -5,7 +5,7 @@ const router = express.Router();
 router.post(
   "/",
   catchErrors(async (req, res) => {
-    const { body } = req;
+    // const { body } = req;
 
     return res.status(200).send({ ok: true });
   }),
