@@ -34,8 +34,8 @@ router.post(
 
       const updatedUser = {} as User;
       const { matomo_id } = req.body;
-      if (req.body.hasOwnProperty('municipality_insee_code')) {
-        updatedUser.municipality_insee_code = req.body.municipality_insee_code;
+      if (req.body.hasOwnProperty('municipality_zip_code')) {
+        updatedUser.municipality_zip_code = req.body.municipality_zip_code;
       }
       if (req.body.hasOwnProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;

@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "csvjson-csv2json": "^5.0.6",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "dayjs": "^1.11.10",
@@ -28,7 +29,9 @@
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2",
     "node-pushnotifications": "^2.1.0",
+    "prettier": "^3.1.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
