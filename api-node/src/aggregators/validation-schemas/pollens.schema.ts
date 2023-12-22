@@ -21,9 +21,9 @@ export const pollenSchema = z.object({
   armoises: z.number(),
   ambroisies: z.number(),
   municipality_insee_code: z.string(),
-  diffusion_date: z.date(),
-  validity_start: z.date(),
-  validity_end: z.date(),
+  diffusion_date: z.string(),
+  validity_start: z.string(),
+  validity_end: z.string(),
 });
 
 export const pollenResponseSchema = z.array(pollenSchema);
