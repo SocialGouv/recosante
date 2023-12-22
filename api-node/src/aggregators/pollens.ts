@@ -131,12 +131,22 @@ export default async function getPollensIndicator() {
     }
   }
 
-  const result = await prisma.pollenAllergyRisk.createMany({
-    data: pollensRows,
-    skipDuplicates: true,
+  // check if diffusion date is already in db
+  const existingPollens = await prisma.pollenAllergyRisk.findMany({
+    where: {
+      diffusion_date: diffusionDate,
+    },
   });
-
-  logStep(
-    `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
-  );
+  if (existingPollens.length > 0) {
+    // If already in db, do nothing
+    logStep('Pollens already in db');
+  } else {
+    const result = await prisma.pollenAllergyRisk.createMany({
+      data: pollensRows,
+      skipDuplicates: true,
+    });
+    logStep(
+      `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+    );
+  }
 }
