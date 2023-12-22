@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
-function getIndiceUV() {
+function getUltraVioletIndicator() {
   /*
   1. fetch data
   2. map the v_commune_2023.csv file by insee_code
@@ -21,4 +21,4 @@ function getIndiceUV() {
   */
 }
 
-getIndiceUV();
+getUltraVioletIndicator();

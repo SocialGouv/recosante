@@ -1,5 +1,5 @@
 import express from 'express';
-import { catchErrors } from '../middlewares/errors';
+import { catchErrors } from '../middlewares/errors.ts';
 const router = express.Router();
 
 router.post(

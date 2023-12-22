@@ -1,8 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import prisma from "~/prisma";
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
-function getIndiceUV() {
+function getAtomsphericIndicator() {
   // return fetch(
   //   `https://api.openweathermap.org/data/2.5/uvi?lat=${process.env.LATITUDE}&lon=${process.env.LONGITUDE}&appid=${process.env.API_KEY}`
   // )
@@ -10,4 +9,4 @@ function getIndiceUV() {
   //   .then((res) => res.value);
 }
 
-getIndiceUV();
+getAtomsphericIndicator();

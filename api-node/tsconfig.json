@@ -1,19 +1,21 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "compilerOptions": {
-    "isolatedModules": true,
+    "target": "es6",
+    "module": "NodeNext",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "noEmit": true,
     "strict": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src",
     "paths": {
       "~/*": ["src/*"]
-    },
-    "noEmit": true
-  }
+    }
+  },
+  "include": ["src"]
 }

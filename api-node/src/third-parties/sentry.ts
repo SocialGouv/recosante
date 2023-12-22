@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
-import { VERSION, ENVIRONMENT, SENTRY_KEY } from '../config.js';
+import { ENVIRONMENT, SENTRY_KEY } from '../config.ts';
 
 const sentryEnabled = ENVIRONMENT !== 'development' && ENVIRONMENT !== 'test';
 
@@ -8,7 +8,6 @@ if (sentryEnabled) {
   Sentry.init({
     dsn: SENTRY_KEY,
     environment: `api-${ENVIRONMENT}`,
-    release: VERSION,
     integrations: [
       // enable HTTP calls tracing
       new Sentry.Integrations.Http({ tracing: true }),

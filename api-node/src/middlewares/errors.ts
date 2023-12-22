@@ -1,4 +1,4 @@
-import { CustomError } from '~/types/error';
+import { CustomError } from './../types/error.ts';
 // import { capture } from '../third-parties/sentry.js';
 import express from 'express';
 /*

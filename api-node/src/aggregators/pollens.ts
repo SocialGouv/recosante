@@ -1,8 +1,42 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import prisma from "~/prisma";
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+// @ts-ignore
+import csv2json from 'csvjson-csv2json/csv2json.js';
+import { PollenAllergyRisk } from '@prisma/client';
+import prisma from '../prisma.ts';
+dotenv.config({ path: './.env' });
+const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
-function getIndiceUV() {
+export default function getPollensIndicator() {
+  fetch(URL).then(async (response) => {
+    if (!response.ok) {
+      throw new Error(`getPollensIndicator error! status: ${response.status}`);
+    }
+    const data = await response.text();
+    const formatedJson = csv2json(data, { parseNumbers: true });
+    formatedJson.forEach((row: any) => {
+      // // get the first key (date)
+      const key = Object.keys(row)[0];
+      // // get the value
+      const value = row[key];
+      row.municipality_insee_code = value;
+      // // delete the key
+      delete row[key];
+      // // add the new key
+      row.diffusion_date = key;
+      row.validity_start = key;
+      row.validity_end = key;
+      delete row.departements;
+      delete row.Total;
+    });
+
+    formatedJson.forEach(async (row: PollenAllergyRisk, index: number) => {
+      if (index === 0) {
+        await prisma.pollenAllergyRisk.create({ data: row });
+      }
+    });
+    // console.log(MunicipalityService.getMunicipality());
+  });
   /*
   1. fetch data
   2. map the v_commune_2023.csv file by insee_code
@@ -22,4 +56,4 @@ function getIndiceUV() {
   */
 }
 
-getIndiceUV();
+getPollensIndicator();
