@@ -8,8 +8,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
 
-import { pollenResponseSchema } from './validation-schemas/pollens.schema';
-import { ZodService } from '~/services/zod.service';
+import { ZodError, z } from 'zod';
 
 const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
@@ -100,11 +99,37 @@ export default async function getPollensIndicator() {
     });
   }
 
-  ZodService.checkSchema(
-    'pollenResponseSchema',
-    pollenResponseSchema,
-    pollensRows,
-  );
+  try {
+    z.object({
+      cypres: z.number(),
+      noisetier: z.number(),
+      aulne: z.number(),
+      peuplier: z.number(),
+      saule: z.number(),
+      frene: z.number(),
+      charme: z.number(),
+      bouleau: z.number(),
+      platane: z.number(),
+      chene: z.number(),
+      olivier: z.number(),
+      tilleul: z.number(),
+      chataignier: z.number(),
+      rumex: z.number(),
+      graminees: z.number(),
+      plantain: z.number(),
+      urticacees: z.number(),
+      armoises: z.number(),
+      ambroisies: z.number(),
+      municipality_insee_code: z.string(),
+      diffusion_date: z.string(),
+      validity_start: z.string(),
+      validity_end: z.string(),
+    });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      console.error(`Zod validation error pollens`, error);
+    }
+  }
 
   const result = await prisma.pollenAllergyRisk.createMany({
     data: pollensRows,
