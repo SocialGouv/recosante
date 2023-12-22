@@ -4,9 +4,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "npm run format && npm run ts:check && cross-env NODE_ENV=development npx prisma db push && ts-node --esm &&  nodemon ./src/index.ts",
+    "dev": "npm run prisma-setup && npm run format && npm run ts:check && cross-env NODE_ENV=development npx prisma db push && tsx watch ./src/index.ts",
     "create-migration": "cross-env NODE_ENV=development npx prisma migrate dev --name",
-    "start": "npm run prisma-deploy && NODE_ENV=production node ./src/index.ts",
+    "start": "npm run prisma-deploy && NODE_ENV=production tsx ./src/index.ts",
     "prisma-setup": "prisma generate && prisma migrate deploy",
     "prisma-create-migration": "NODE_ENV=development npx prisma migrate dev --name",
     "prisma-deploy": "NODE_ENV=production npx prisma migrate deploy",
@@ -36,10 +36,10 @@
     "@types/express": "4.17.21",
     "@types/morgan": "^1.9.9",
     "@types/node": "20.10.3",
-    "nodemon": "^3.0.2",
     "prettier-plugin-prisma": "^5.0.0",
     "prisma": "^5.6.0",
     "ts-node": "10.9.1",
+    "tsx": "^4.7.0",
     "typescript": "5.3.2"
   },
   "prettier": {

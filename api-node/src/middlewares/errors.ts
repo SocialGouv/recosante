@@ -50,6 +50,7 @@ const sendError = (
   err: CustomError,
   _req: express.Request,
   res: express.Response,
+  _next: express.NextFunction,
 ) => {
   // const { body, query, user, params, route, method, originalUrl, headers } = req;
   // const { appversion, appdevice } = headers;
