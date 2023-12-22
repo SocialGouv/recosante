@@ -24,7 +24,7 @@ const useCommune = create<MuniciaplityState>()(
           path: '/user',
           body: {
             matomoId,
-            municipality_code: municipality.code,
+            municipality_insee_code: municipality.code,
             municipality_nom: municipality.nom,
             municipality_zip_code: JSON.stringify(municipality.codesPostaux),
           },

@@ -19,7 +19,7 @@ router.post(
       try {
         z.object({
           matomo_id: z.string(),
-          municipality_code: z.string().optional(),
+          municipality_insee_code: z.string().optional(),
           municipality_nom: z.string().optional(),
           municipality_zip_code: z.string().optional(),
           push_notif_token: z.string().optional(),
@@ -34,8 +34,8 @@ router.post(
 
       const updatedUser = {} as User;
       const { matomo_id } = req.body;
-      if (req.body.hasOwnProperty('municipality_code')) {
-        updatedUser.municipality_code = req.body.municipality_code;
+      if (req.body.hasOwnProperty('municipality_insee_code')) {
+        updatedUser.municipality_insee_code = req.body.municipality_insee_code;
       }
       if (req.body.hasOwnProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;
@@ -46,7 +46,7 @@ router.post(
       if (req.body.hasOwnProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
       }
-      console.log('updatedUser', updatedUser);
+
       await prisma.user.upsert({
         where: { matomo_id },
         update: updatedUser,
