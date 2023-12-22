@@ -1,6 +1,6 @@
 // @ts-ignore
 import csv2json from 'csvjson-csv2json/csv2json.js';
-import { PollenAllergyRisk } from '@prisma/client';
+import { PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
 import prisma from '~/prisma';
 import fs from 'fs';
 import dayjs from 'dayjs';
@@ -32,7 +32,22 @@ export default async function getPollensIndicator() {
   });
 
   const date = Object.keys(data[0])[0];
+
+  const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toDate();
+  const validityEnd = dayjs(diffusionDate).add(7, 'days').endOf('day').toDate();
+
   logStep(`diffusionDate: ${date}`);
+  const existingPollens = await prisma.pollenAllergyRisk.count({
+    where: {
+      diffusion_date: diffusionDate,
+    },
+  });
+  if (existingPollens > 0) {
+    logStep(
+      `Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`,
+    );
+    return;
+  }
   const pollensByDepartment: Record<DepartmentCode, PollenAllergyRisk> = {};
   for (const row of data) {
     const departmentCode = row[date];
@@ -59,16 +74,17 @@ export default async function getPollensIndicator() {
   );
   logStep('fetching muunicipalities DONE');
 
-  const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toISOString();
-  const validityEnd = dayjs(diffusionDate)
-    .add(7, 'days')
-    .endOf('day')
-    .toISOString();
-
   const pollensRows = [];
   for (const municipality of municipalities) {
     const pollenData = pollensByDepartment[municipality.DEP];
     if (!pollenData) {
+      pollensRows.push({
+        diffusion_date: diffusionDate,
+        validity_start: diffusionDate,
+        validity_end: validityEnd,
+        municipality_insee_code: municipality.COM,
+        data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+      });
       continue;
     }
     pollensRows.push({
@@ -76,6 +92,7 @@ export default async function getPollensIndicator() {
       validity_start: diffusionDate,
       validity_end: validityEnd,
       municipality_insee_code: municipality.COM,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
       cypres: pollenData.cypres,
       noisetier: pollenData.noisetier,
       aulne: pollenData.aulne,

@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "npm run prisma-setup && npm run format && npm run ts:check && cross-env NODE_ENV=development npx prisma db push && tsx watch ./src/index.ts",
+    "dev": "npm run prisma-setup && cross-env NODE_ENV=development npx prisma db push && npm run format && npm run ts:check && tsx watch ./src/index.ts",
     "create-migration": "cross-env NODE_ENV=development npx prisma migrate dev --name",
     "start": "npm run prisma-deploy && NODE_ENV=production tsx ./src/index.ts",
     "prisma-setup": "prisma generate && prisma migrate deploy",
