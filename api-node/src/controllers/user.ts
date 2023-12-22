@@ -1,13 +1,13 @@
-import express from "express";
-import { z } from "zod";
-import { catchErrors } from "../middlewares/errors";
-import prisma from "../prisma.js";
-import { CustomError } from "~/types/error";
-import { User } from "@prisma/client";
+import express from 'express';
+import { z } from 'zod';
+import { catchErrors } from '../middlewares/errors';
+import prisma from '../prisma.js';
+import { CustomError } from '~/types/error';
+import { User } from '@prisma/client';
 const router = express.Router();
 
 router.post(
-  "/",
+  '/',
   catchErrors(
     async (
       req: {
@@ -25,23 +25,25 @@ router.post(
           push_notif_token: z.string().optional(),
         }).parse(req.body);
       } catch (error) {
-        const customError = new Error(`Invalid request in post user: ${error}`) as CustomError;
+        const customError = new Error(
+          `Invalid request in post user: ${error}`,
+        ) as CustomError;
         customError.status = 400;
         return next(customError);
       }
 
       const updatedUser = {} as User;
       const { matomo_id } = req.body;
-      if (req.body.hasOwnProperty("municipality_insee_code")) {
+      if (req.body.hasOwnProperty('municipality_insee_code')) {
         updatedUser.municipality_insee_code = req.body.municipality_insee_code;
       }
-      if (req.body.hasOwnProperty("municipality_name")) {
+      if (req.body.hasOwnProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;
       }
-      if (req.body.hasOwnProperty("municipality_zip_code")) {
+      if (req.body.hasOwnProperty('municipality_zip_code')) {
         updatedUser.municipality_zip_code = req.body.municipality_zip_code;
       }
-      if (req.body.hasOwnProperty("push_notif_token")) {
+      if (req.body.hasOwnProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
       }
 
