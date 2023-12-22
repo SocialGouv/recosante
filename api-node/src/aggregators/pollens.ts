@@ -1,57 +1,109 @@
-import fetch from 'node-fetch';
-import dotenv from 'dotenv';
 // @ts-ignore
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import { PollenAllergyRisk } from '@prisma/client';
-import prisma from '../prisma';
-dotenv.config({ path: './.env' });
+import prisma from '~/prisma';
+import fs from 'fs';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
+import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
+
 const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
-export default function getPollensIndicator() {
-  fetch(URL).then(async (response) => {
+let now = Date.now();
+function logStep(step: string) {
+  console.log(Date.now() - now, step);
+  now = Date.now();
+}
+
+export default async function getPollensIndicator() {
+  logStep('Fetching Pollens Data');
+  const data = await fetch(URL).then(async (response) => {
     if (!response.ok) {
       throw new Error(`getPollensIndicator error! status: ${response.status}`);
     }
     const data = await response.text();
-    const formatedJson = csv2json(data, { parseNumbers: true });
-    formatedJson.forEach((row: any) => {
-      // // get the first key (date)
-      const key = Object.keys(row)[0];
-      // // get the value
-      const value = row[key];
-      row.municipality_insee_code = value.toString();
-      // // delete the key
-      delete row[key];
-      // // add the new key
-      // row.diffusion_date = new Date(key).toISOString();
-      row.diffusion_date = new Date();
-      row.validity_start = new Date();
-      row.validity_end = new Date();
-      delete row.departements;
-      delete row.Total;
-    });
-
-    formatedJson.forEach(async (row: PollenAllergyRisk, index: number) => {
-      await prisma.pollenAllergyRisk.create({ data: row });
-    });
+    logStep('Formatting into json');
+    const rawFormatedJson = csv2json(data, { parseNumbers: true });
+    logStep('Formatting into json DONE');
+    return rawFormatedJson;
   });
-  /*
-  1. fetch data
-  2. map the v_commune_2023.csv file by insee_code
-  3. for each insee_code, we know the department codd
-  v_commune_2023.map(commune => {
-    const pollenRow = pollenData.find(pollen => pollen.depratement_code === commune.DEP);
-    return {
-      validity_start: pollenRow.validity_start,
-      validity_end: pollenRow.validity_end,
-      diffusion_date: pollenRow.diffusion_date,
-      municipality_insee_code: commune.insee_code,
-      cypres: pollenRow.cypres,
-      noisetier: pollenRow.noisetier,
-      ....
-    }
-  })
-  */
-}
 
-getPollensIndicator();
+  const date = Object.keys(data[0])[0];
+  logStep(`diffusionDate: ${date}`);
+  const pollensByDepartment: Record<DepartmentCode, PollenAllergyRisk> = {};
+  for (const row of data) {
+    const departmentCode = row[date];
+    let formattedDepCode =
+      departmentCode < 10 && departmentCode != '2A' && departmentCode != '2B'
+        ? '0' + departmentCode
+        : '' + departmentCode;
+    delete row[date];
+    pollensByDepartment[formattedDepCode] = row;
+  }
+
+  logStep('formatting pollens by department DONE');
+  const municipalities: Array<MunicipalityJSON> = await new Promise(
+    (resolve) => {
+      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const municipalities = JSON.parse(data);
+        resolve(municipalities);
+      });
+    },
+  );
+  logStep('fetching muunicipalities DONE');
+
+  const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toISOString();
+  const validityEnd = dayjs(diffusionDate)
+    .add(7, 'days')
+    .endOf('day')
+    .toISOString();
+
+  const numberOfRowInserted = await prisma.$transaction(async (tx) => {
+    let numberOfRowInserted = 0;
+    for (const municipality of municipalities) {
+      const pollenData = pollensByDepartment[municipality.DEP];
+      if (!pollenData) {
+        continue;
+      }
+      await tx.pollenAllergyRisk.create({
+        data: {
+          diffusion_date: diffusionDate,
+          validity_start: diffusionDate,
+          validity_end: validityEnd,
+          municipality_insee_code: municipality.COM,
+          cypres: pollenData.cypres,
+          noisetier: pollenData.noisetier,
+          aulne: pollenData.aulne,
+          peuplier: pollenData.peuplier,
+          saule: pollenData.saule,
+          frene: pollenData.frene,
+          charme: pollenData.charme,
+          bouleau: pollenData.bouleau,
+          platane: pollenData.platane,
+          chene: pollenData.chene,
+          olivier: pollenData.olivier,
+          tilleul: pollenData.tilleul,
+          chataignier: pollenData.chataignier,
+          rumex: pollenData.rumex,
+          graminees: pollenData.graminees,
+          plantain: pollenData.plantain,
+          urticacees: pollenData.urticacees,
+          armoises: pollenData.armoises,
+          ambroisies: pollenData.ambroisies,
+          total: pollenData.total,
+        },
+      });
+      numberOfRowInserted++;
+    }
+    return numberOfRowInserted;
+  });
+
+  logStep(
+    `DONE INSERTING POLLENS: ${numberOfRowInserted} rows inserted upon ${municipalities.length} municipalities`,
+  );
+}
