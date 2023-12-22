@@ -6,13 +6,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import logger from 'morgan';
 
-import { PORT, VERSION } from './config.js';
-import { sendError } from './middlewares/errors.js';
+import { PORT, VERSION } from './config.ts';
+import { sendError } from './middlewares/errors.ts';
 import versionCheck from './middlewares/version-check';
-import { capture } from './third-parties/sentry.js';
+import { capture } from './third-parties/sentry.ts';
 
-import eventRouter from './controllers/event.js';
-import userRouter from './controllers/user.js';
+import eventRouter from './controllers/event.ts';
+import userRouter from './controllers/user.ts';
+import getPollensIndicator from './aggregators/pollens.ts';
 
 // Put together a schema
 const app = express();
@@ -73,6 +74,7 @@ app.post('/sentry-check', async (req, res) => {
   res.status(200).send({ ok: true, data: `Sentry checked!` });
 });
 
+getPollensIndicator();
 // check version before checking other controllers
 // @ts-expect-error TODO: Fix this when using version-check.ts
 app.use(versionCheck);
