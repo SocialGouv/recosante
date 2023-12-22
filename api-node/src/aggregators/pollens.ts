@@ -8,6 +8,9 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
 
+import { pollenResponseSchema } from './validation-schemas/pollens.schema';
+import { ZodService } from '~/services/zod.service';
+
 const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
 let now = Date.now();
@@ -96,6 +99,11 @@ export default async function getPollensIndicator() {
       total: pollenData.total,
     });
   }
+  ZodService.checkSchema(
+    'pollenResponseSchema',
+    pollenResponseSchema,
+    pollensRows,
+  );
 
   const result = await prisma.pollenAllergyRisk.createMany({
     data: pollensRows,
