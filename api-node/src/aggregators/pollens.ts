@@ -63,47 +63,46 @@ export default async function getPollensIndicator() {
     .endOf('day')
     .toISOString();
 
-  const numberOfRowInserted = await prisma.$transaction(async (tx) => {
-    let numberOfRowInserted = 0;
-    for (const municipality of municipalities) {
-      const pollenData = pollensByDepartment[municipality.DEP];
-      if (!pollenData) {
-        continue;
-      }
-      await tx.pollenAllergyRisk.create({
-        data: {
-          diffusion_date: diffusionDate,
-          validity_start: diffusionDate,
-          validity_end: validityEnd,
-          municipality_insee_code: municipality.COM,
-          cypres: pollenData.cypres,
-          noisetier: pollenData.noisetier,
-          aulne: pollenData.aulne,
-          peuplier: pollenData.peuplier,
-          saule: pollenData.saule,
-          frene: pollenData.frene,
-          charme: pollenData.charme,
-          bouleau: pollenData.bouleau,
-          platane: pollenData.platane,
-          chene: pollenData.chene,
-          olivier: pollenData.olivier,
-          tilleul: pollenData.tilleul,
-          chataignier: pollenData.chataignier,
-          rumex: pollenData.rumex,
-          graminees: pollenData.graminees,
-          plantain: pollenData.plantain,
-          urticacees: pollenData.urticacees,
-          armoises: pollenData.armoises,
-          ambroisies: pollenData.ambroisies,
-          total: pollenData.total,
-        },
-      });
-      numberOfRowInserted++;
+  const pollensRows = [];
+  for (const municipality of municipalities) {
+    const pollenData = pollensByDepartment[municipality.DEP];
+    if (!pollenData) {
+      continue;
     }
-    return numberOfRowInserted;
+    pollensRows.push({
+      diffusion_date: diffusionDate,
+      validity_start: diffusionDate,
+      validity_end: validityEnd,
+      municipality_insee_code: municipality.COM,
+      cypres: pollenData.cypres,
+      noisetier: pollenData.noisetier,
+      aulne: pollenData.aulne,
+      peuplier: pollenData.peuplier,
+      saule: pollenData.saule,
+      frene: pollenData.frene,
+      charme: pollenData.charme,
+      bouleau: pollenData.bouleau,
+      platane: pollenData.platane,
+      chene: pollenData.chene,
+      olivier: pollenData.olivier,
+      tilleul: pollenData.tilleul,
+      chataignier: pollenData.chataignier,
+      rumex: pollenData.rumex,
+      graminees: pollenData.graminees,
+      plantain: pollenData.plantain,
+      urticacees: pollenData.urticacees,
+      armoises: pollenData.armoises,
+      ambroisies: pollenData.ambroisies,
+      total: pollenData.total,
+    });
+  }
+
+  const result = await prisma.pollenAllergyRisk.createMany({
+    data: pollensRows,
+    skipDuplicates: true,
   });
 
   logStep(
-    `DONE INSERTING POLLENS: ${numberOfRowInserted} rows inserted upon ${municipalities.length} municipalities`,
+    `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
   );
 }
