@@ -99,6 +99,7 @@ export default async function getPollensIndicator() {
       total: pollenData.total,
     });
   }
+
   ZodService.checkSchema(
     'pollenResponseSchema',
     pollenResponseSchema,
