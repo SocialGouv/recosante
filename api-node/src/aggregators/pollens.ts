@@ -1,17 +1,17 @@
 // @ts-ignore
-import csv2json from "csvjson-csv2json/csv2json.js";
-import { PollenAllergyRisk, DataAvailabilityEnum } from "@prisma/client";
-import prisma from "~/prisma";
-import fs from "fs";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
+import csv2json from 'csvjson-csv2json/csv2json.js';
+import { PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
+import prisma from '~/prisma';
+import fs from 'fs';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
-import type { MunicipalityJSON, DepartmentCode } from "~/types/municipality";
+import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
 
-import { z } from "zod";
-import { capture } from "~/third-parties/sentry";
+import { z } from 'zod';
+import { capture } from '~/third-parties/sentry';
 
-const URL = "https://www.pollens.fr/docs/ecosante.csv";
+const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
 let now = Date.now();
 function logStep(step: string) {
@@ -21,15 +21,15 @@ function logStep(step: string) {
 
 export default async function getPollensIndicator() {
   // Step 1: Fetch data
-  logStep("Fetching Pollens Data");
+  logStep('Fetching Pollens Data');
   const data = await fetch(URL).then(async (response) => {
     if (!response.ok) {
       throw new Error(`getPollensIndicator error! status: ${response.status}`);
     }
     const data = await response.text();
-    logStep("Formatting into json");
+    logStep('Formatting into json');
     const rawFormatedJson = csv2json(data, { parseNumbers: true });
-    logStep("Formatting into json DONE");
+    logStep('Formatting into json DONE');
     return rawFormatedJson;
   });
 
@@ -66,7 +66,7 @@ export default async function getPollensIndicator() {
   } catch (error: any) {
     capture(error, {
       extra: {
-        functionCall: "getPollensIndicator",
+        functionCall: 'getPollensIndicator',
         dataSample: data.filter((_: any, index: number) => index < 2),
       },
     });
@@ -74,8 +74,8 @@ export default async function getPollensIndicator() {
   }
 
   // Step 3: check if data already exists
-  const diffusionDate = dayjs(date, "DD/MM/YYYY").startOf("day").toDate();
-  const validityEnd = dayjs(diffusionDate).add(7, "days").endOf("day").toDate();
+  const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toDate();
+  const validityEnd = dayjs(diffusionDate).add(7, 'days').endOf('day').toDate();
 
   const existingPollens = await prisma.pollenAllergyRisk.count({
     where: {
@@ -83,7 +83,9 @@ export default async function getPollensIndicator() {
     },
   });
   if (existingPollens > 0) {
-    logStep(`Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`);
+    logStep(
+      `Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`,
+    );
     return;
   }
 
@@ -92,28 +94,30 @@ export default async function getPollensIndicator() {
   for (const row of data) {
     const departmentCode = row[date];
     let formattedDepCode =
-      departmentCode < 10 && departmentCode != "2A" && departmentCode != "2B"
-        ? "0" + departmentCode
-        : "" + departmentCode;
+      departmentCode < 10 && departmentCode != '2A' && departmentCode != '2B'
+        ? '0' + departmentCode
+        : '' + departmentCode;
     delete row[date];
     pollensByDepartment[formattedDepCode] = row;
   }
 
   // Step 5: grab the municipalities list
-  logStep("formatting pollens by department DONE");
-  const municipalities: Array<MunicipalityJSON> = await new Promise((resolve) => {
-    fs.readFile("./data/municipalities.json", "utf8", async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      const municipalities = JSON.parse(data);
-      resolve(municipalities);
-    });
-  });
+  logStep('formatting pollens by department DONE');
+  const municipalities: Array<MunicipalityJSON> = await new Promise(
+    (resolve) => {
+      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const municipalities = JSON.parse(data);
+        resolve(municipalities);
+      });
+    },
+  );
 
   // Step 6: loop on municipalities and create rows to insert
-  logStep("fetching muunicipalities DONE");
+  logStep('fetching muunicipalities DONE');
   const pollensRows = [];
   for (const municipality of municipalities) {
     const pollenData = pollensByDepartment[municipality.DEP];
@@ -162,5 +166,7 @@ export default async function getPollensIndicator() {
     skipDuplicates: true,
   });
 
-  logStep(`DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`);
+  logStep(
+    `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+  );
 }
