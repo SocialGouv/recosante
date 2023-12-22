@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import prisma from "~/prisma";
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
+import prisma from '~/prisma';
 
 function getIndiceUV() {
   /*

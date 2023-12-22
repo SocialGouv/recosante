@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
 function getIndiceUV() {
   /*
