@@ -1,8 +1,8 @@
-import * as Sentry from '@sentry/node';
-import * as Tracing from '@sentry/tracing';
-import { VERSION, ENVIRONMENT, SENTRY_KEY } from '../config.js';
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
+import { VERSION, ENVIRONMENT, SENTRY_KEY } from "../config.js";
 
-const sentryEnabled = ENVIRONMENT !== 'development' && ENVIRONMENT !== 'test';
+const sentryEnabled = ENVIRONMENT !== "development" && ENVIRONMENT !== "test";
 
 if (sentryEnabled) {
   Sentry.init({
@@ -27,34 +27,34 @@ if (sentryEnabled) {
 }
 
 function capture(
-  error: string,
+  error: string | Error,
   context: {
     extra?: any;
     [key: string]: unknown;
   },
 ) {
   if (!sentryEnabled) {
-    console.log('capture', error, JSON.stringify(context));
+    console.log("capture", error, JSON.stringify(context));
     return;
   }
 
-  if (typeof context === 'string') {
+  if (typeof context === "string") {
     context = JSON.parse(context);
   } else {
     context = JSON.parse(JSON.stringify(context));
   }
-  if (!!context.extra && typeof context.extra !== 'string') {
+  if (!!context.extra && typeof context.extra !== "string") {
     try {
       const newExtra = {};
       for (const [extraKey, extraValue] of Object.entries(context.extra)) {
-        if (typeof extraValue === 'string') {
+        if (typeof extraValue === "string") {
           // @ts-expect-error TODO: Fix this later
           newExtra[extraKey] = extraValue;
         } else {
           // @ts-expect-error TODO: Fix this later
           if (extraValue?.password) {
             // @ts-expect-error TODO: Fix this later
-            extraValue.password = '******';
+            extraValue.password = "******";
           }
 
           // @ts-expect-error TODO: Fix this later
@@ -69,7 +69,7 @@ function capture(
     }
   }
 
-  if (typeof error === 'string') {
+  if (typeof error === "string") {
     Sentry.captureMessage(error, context);
   } else {
     Sentry.captureException(error, context);

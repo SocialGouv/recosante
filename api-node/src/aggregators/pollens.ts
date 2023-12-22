@@ -1,16 +1,17 @@
 // @ts-ignore
-import csv2json from 'csvjson-csv2json/csv2json.js';
-import { PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
-import prisma from '~/prisma';
-import fs from 'fs';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import csv2json from "csvjson-csv2json/csv2json.js";
+import { PollenAllergyRisk, DataAvailabilityEnum } from "@prisma/client";
+import prisma from "~/prisma";
+import fs from "fs";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
-import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
+import type { MunicipalityJSON, DepartmentCode } from "~/types/municipality";
 
-import { ZodError, z } from 'zod';
+import { z } from "zod";
+import { capture } from "~/third-parties/sentry";
 
-const URL = 'https://www.pollens.fr/docs/ecosante.csv';
+const URL = "https://www.pollens.fr/docs/ecosante.csv";
 
 let now = Date.now();
 function logStep(step: string) {
@@ -19,61 +20,100 @@ function logStep(step: string) {
 }
 
 export default async function getPollensIndicator() {
-  logStep('Fetching Pollens Data');
+  // Step 1: Fetch data
+  logStep("Fetching Pollens Data");
   const data = await fetch(URL).then(async (response) => {
     if (!response.ok) {
       throw new Error(`getPollensIndicator error! status: ${response.status}`);
     }
     const data = await response.text();
-    logStep('Formatting into json');
+    logStep("Formatting into json");
     const rawFormatedJson = csv2json(data, { parseNumbers: true });
-    logStep('Formatting into json DONE');
+    logStep("Formatting into json DONE");
     return rawFormatedJson;
   });
 
+  // Step 2: Validate data
   const date = Object.keys(data[0])[0];
-
-  const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toDate();
-  const validityEnd = dayjs(diffusionDate).add(7, 'days').endOf('day').toDate();
-
   logStep(`diffusionDate: ${date}`);
+
+  try {
+    z.array(
+      z.object({
+        [date]: z.number(), // department code
+        cypres: z.number().optional(),
+        noisetier: z.number().optional(),
+        aulne: z.number().optional(),
+        peuplier: z.number().optional(),
+        saule: z.number().optional(),
+        frene: z.number().optional(),
+        charme: z.number().optional(),
+        bouleau: z.number().optional(),
+        platane: z.number().optional(),
+        chene: z.number().optional(),
+        olivier: z.number().optional(),
+        tilleul: z.number().optional(),
+        chataignier: z.number().optional(),
+        rumex: z.number().optional(),
+        graminees: z.number().optional(),
+        plantain: z.number().optional(),
+        urticacees: z.number().optional(),
+        armoises: z.number().optional(),
+        ambroisies: z.number().optional(),
+        total: z.number().optional(),
+      }),
+    ).parse(data);
+  } catch (error: any) {
+    capture(error, {
+      extra: {
+        functionCall: "getPollensIndicator",
+        dataSample: data.filter((_: any, index: number) => index < 2),
+      },
+    });
+    return;
+  }
+
+  // Step 3: check if data already exists
+  const diffusionDate = dayjs(date, "DD/MM/YYYY").startOf("day").toDate();
+  const validityEnd = dayjs(diffusionDate).add(7, "days").endOf("day").toDate();
+
   const existingPollens = await prisma.pollenAllergyRisk.count({
     where: {
       diffusion_date: diffusionDate,
     },
   });
   if (existingPollens > 0) {
-    logStep(
-      `Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`,
-    );
+    logStep(`Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`);
     return;
   }
+
+  // Step 4: format data by department to iterate quickly on municipalities
   const pollensByDepartment: Record<DepartmentCode, PollenAllergyRisk> = {};
   for (const row of data) {
     const departmentCode = row[date];
     let formattedDepCode =
-      departmentCode < 10 && departmentCode != '2A' && departmentCode != '2B'
-        ? '0' + departmentCode
-        : '' + departmentCode;
+      departmentCode < 10 && departmentCode != "2A" && departmentCode != "2B"
+        ? "0" + departmentCode
+        : "" + departmentCode;
     delete row[date];
     pollensByDepartment[formattedDepCode] = row;
   }
 
-  logStep('formatting pollens by department DONE');
-  const municipalities: Array<MunicipalityJSON> = await new Promise(
-    (resolve) => {
-      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
-      });
-    },
-  );
-  logStep('fetching muunicipalities DONE');
+  // Step 5: grab the municipalities list
+  logStep("formatting pollens by department DONE");
+  const municipalities: Array<MunicipalityJSON> = await new Promise((resolve) => {
+    fs.readFile("./data/municipalities.json", "utf8", async (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const municipalities = JSON.parse(data);
+      resolve(municipalities);
+    });
+  });
 
+  // Step 6: loop on municipalities and create rows to insert
+  logStep("fetching muunicipalities DONE");
   const pollensRows = [];
   for (const municipality of municipalities) {
     const pollenData = pollensByDepartment[municipality.DEP];
@@ -116,44 +156,11 @@ export default async function getPollensIndicator() {
     });
   }
 
-  try {
-    z.object({
-      cypres: z.number(),
-      noisetier: z.number(),
-      aulne: z.number(),
-      peuplier: z.number(),
-      saule: z.number(),
-      frene: z.number(),
-      charme: z.number(),
-      bouleau: z.number(),
-      platane: z.number(),
-      chene: z.number(),
-      olivier: z.number(),
-      tilleul: z.number(),
-      chataignier: z.number(),
-      rumex: z.number(),
-      graminees: z.number(),
-      plantain: z.number(),
-      urticacees: z.number(),
-      armoises: z.number(),
-      ambroisies: z.number(),
-      municipality_insee_code: z.string(),
-      diffusion_date: z.string(),
-      validity_start: z.string(),
-      validity_end: z.string(),
-    });
-  } catch (error) {
-    if (error instanceof ZodError) {
-      console.error(`Zod validation error pollens`, error);
-    }
-  }
-
+  // Step 7: insert data
   const result = await prisma.pollenAllergyRisk.createMany({
     data: pollensRows,
     skipDuplicates: true,
   });
 
-  logStep(
-    `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
-  );
+  logStep(`DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`);
 }
