@@ -27,7 +27,7 @@ if (sentryEnabled) {
 }
 
 function capture(
-  error: string,
+  error: string | Error,
   context: {
     extra?: any;
     [key: string]: unknown;

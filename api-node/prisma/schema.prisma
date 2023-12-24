@@ -21,6 +21,11 @@ model User {
   @@index([push_notif_token], type: Hash)
 }
 
+enum DataAvailabilityEnum {
+  AVAILABLE // Données disponibles
+  NOT_AVAILABLE // Données non disponibles
+}
+
 model IndiceUv {
   id String @id @default(uuid())
 
@@ -28,9 +33,10 @@ model IndiceUv {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime @default(now())
-  updated_at              DateTime @default(now()) @updatedAt
+  created_at              DateTime              @default(now())
+  updated_at              DateTime              @default(now()) @updatedAt
   municipality_insee_code String
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
   uv_j0                   Int // the day of validity_start
   uv_j1                   Int // the day + 1 of validity_start
@@ -40,36 +46,36 @@ model IndiceUv {
 
 // REAP - Risque d'Exposition aux Allergènes Polliniques
 model PollenAllergyRisk {
-  id String @id @default(uuid())
-
+  id                      String                @id @default(uuid())
   // common fields for all indicators
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime @default(now())
-  updated_at              DateTime @default(now()) @updatedAt
+  created_at              DateTime              @default(now())
+  updated_at              DateTime              @default(now()) @updatedAt
   municipality_insee_code String
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
-  cypres                  Int      @default(0)
-  noisetier               Int      @default(0)
-  aulne                   Int      @default(0)
-  peuplier                Int      @default(0)
-  saule                   Int      @default(0)
-  frene                   Int      @default(0)
-  charme                  Int      @default(0)
-  bouleau                 Int      @default(0)
-  platane                 Int      @default(0)
-  chene                   Int      @default(0)
-  olivier                 Int      @default(0)
-  tilleul                 Int      @default(0)
-  chataignier             Int      @default(0)
-  rumex                   Int      @default(0)
-  graminees               Int      @default(0)
-  plantain                Int      @default(0)
-  urticacees              Int      @default(0)
-  armoises                Int      @default(0)
-  ambroisies              Int      @default(0)
-  total                   Int      @default(0)
+  cypres                  Int?                  @default(0)
+  noisetier               Int?                  @default(0)
+  aulne                   Int?                  @default(0)
+  peuplier                Int?                  @default(0)
+  saule                   Int?                  @default(0)
+  frene                   Int?                  @default(0)
+  charme                  Int?                  @default(0)
+  bouleau                 Int?                  @default(0)
+  platane                 Int?                  @default(0)
+  chene                   Int?                  @default(0)
+  olivier                 Int?                  @default(0)
+  tilleul                 Int?                  @default(0)
+  chataignier             Int?                  @default(0)
+  rumex                   Int?                  @default(0)
+  graminees               Int?                  @default(0)
+  plantain                Int?                  @default(0)
+  urticacees              Int?                  @default(0)
+  armoises                Int?                  @default(0)
+  ambroisies              Int?                  @default(0)
+  total                   Int?                  @default(0)
 }
 
 enum CodeAlertEnums {
@@ -99,9 +105,10 @@ model WeatherAlert {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime        @default(now())
-  updated_at              DateTime        @default(now()) @updatedAt
+  created_at              DateTime              @default(now())
+  updated_at              DateTime              @default(now()) @updatedAt
   municipality_insee_code String
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
   // a row will be created ONLY if there is an alert
   // an alert is a combination of a code_alert and a phenomenon
@@ -117,9 +124,10 @@ model IndiceAtmosperic {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime @default(now())
-  updated_at              DateTime @default(now()) @updatedAt
+  created_at              DateTime              @default(now())
+  updated_at              DateTime              @default(now()) @updatedAt
   municipality_insee_code String
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
   no2                     Int
   so2                     Int
@@ -153,9 +161,10 @@ model AlertPollutionAtmospheric {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime           @default(now())
-  updated_at              DateTime           @default(now()) @updatedAt
+  created_at              DateTime              @default(now())
+  updated_at              DateTime              @default(now()) @updatedAt
   municipality_insee_code String
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
   state                   PollutionStateEnum
   code                    PollutionCodeEnum
