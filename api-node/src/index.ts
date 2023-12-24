@@ -14,6 +14,7 @@ import { capture } from './third-parties/sentry.ts';
 import eventRouter from './controllers/event.ts';
 import userRouter from './controllers/user.ts';
 import getPollensIndicator from './aggregators/pollens.ts';
+import { getWeatherAlert } from './aggregators/weather-alert.ts';
 
 // Put together a schema
 const app = express();
@@ -74,7 +75,9 @@ app.post('/sentry-check', async (req, res) => {
   res.status(200).send({ ok: true, data: `Sentry checked!` });
 });
 
-getPollensIndicator();
+// getPollensIndicator();
+// getWeatherAlert();
+
 // check version before checking other controllers
 // @ts-expect-error TODO: Fix this when using version-check.ts
 app.use(versionCheck);

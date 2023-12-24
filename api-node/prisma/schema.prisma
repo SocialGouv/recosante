@@ -113,8 +113,9 @@ model WeatherAlert {
   // a row will be created ONLY if there is an alert
   // an alert is a combination of a code_alert and a phenomenon
   // example: alert HEAT_WAVE code RED
-  phenomenon              PhenomenonsEnum
-  code_alert              CodeAlertEnums
+
+  code_alert CodeAlertEnums?
+  phenomenon PhenomenonsEnum?
 }
 
 model IndiceAtmosperic {

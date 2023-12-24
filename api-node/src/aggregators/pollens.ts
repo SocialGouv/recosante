@@ -36,7 +36,6 @@ export default async function getPollensIndicator() {
   // Step 2: Validate data
   const date = Object.keys(data[0])[0];
   logStep(`diffusionDate: ${date}`);
-
   try {
     z.array(
       z.object({
@@ -82,6 +81,8 @@ export default async function getPollensIndicator() {
       diffusion_date: diffusionDate,
     },
   });
+  // TODO: Maybe Add check if the data in the db is data_availability: NOT_AVAILABLE
+  // In some scenarios, the data is not available and can be available later, no ?.
   if (existingPollens > 0) {
     logStep(
       `Pollens already fetched for diffusionDate ${date}: ${existingPollens} rows`,
@@ -93,6 +94,7 @@ export default async function getPollensIndicator() {
   const pollensByDepartment: Record<DepartmentCode, PollenAllergyRisk> = {};
   for (const row of data) {
     const departmentCode = row[date];
+    // we need to format the department code to have a 2 digits string
     let formattedDepCode =
       departmentCode < 10 && departmentCode != '2A' && departmentCode != '2B'
         ? '0' + departmentCode
@@ -117,10 +119,11 @@ export default async function getPollensIndicator() {
   );
 
   // Step 6: loop on municipalities and create rows to insert
-  logStep('fetching muunicipalities DONE');
+  logStep('fetching municipalities DONE');
   const pollensRows = [];
   for (const municipality of municipalities) {
     const pollenData = pollensByDepartment[municipality.DEP];
+    // if no data for this department, we say that data is not available.
     if (!pollenData) {
       pollensRows.push({
         diffusion_date: diffusionDate,
