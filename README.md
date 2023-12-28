@@ -207,6 +207,7 @@ Requête sur `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services
 https://github.com/SocialGouv/recosante/blob/4bcce8744eec7257862f7752c445796892d46ecf/libs/indice_pollution/indice_pollution/regions/Guadeloupe.py#L24
 Il semblerait que outfields = ['*'] permettent de fill tous les params.
 Je ne suis pas encore parvenu à le faire mais si tu test https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?where=1 tu vois que where = 1
+👀 https://github.com/search?q=repo%3ASocialGouv%2Frecosante%20outfields&type=code
 
 #### Guyane
 
