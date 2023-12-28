@@ -188,6 +188,7 @@ Requête API non authentifiée vers `https://data.airbreizh.asso.fr/geoserver/in
 Dans le code il semble que ce soit : https://www.ligair.fr/ville/city?q=01400 (où le code postal est envoyé en params via 'q'.
 https://github.com/SocialGouv/recosante/blob/46e5d33a5475ff091eb286f6f86413e7a13e13e6/libs/indice_pollution/indice_pollution/regions/Centre-Val%20de%20Loire.py#L72
 Mais je ne reçois que des tableaux vides ensuite.
+Si requête vers https://www.ligair.fr/ville/city : On reçoit un objet de type key:number, value:nom_de_ville.
 
 Requête API non authentifiée vers `https://geo.api.gouv.fr/communes/{insee}` pour récupérer le code postal de la ville, puis requête vers `http://www.ligair.fr/ville/city` pour récupérer le nom de la ville dans le bon format pour ensuite scrapper `http://www.ligair.fr/commune/{ville_bon_format}` pour récupérer les polluants responsables des dégradations de la qualité de l'air.
 
