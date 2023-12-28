@@ -174,13 +174,15 @@ Pour chaque région, voici le détail concernant la récupération des données 
 
 Scrapping (mais en réalité simple requête API) : Requête authentifiée vers `https://api.atmo-aura.fr/api/v1/communes/{insee}/indices/atmo?api_token={api_key}&date_debut_echeance={date_}` qui renvoie un JSON avec toutes les données à partir de la date du jour.
 
-#### Bourgogne-Franche-Comté
+#### Bourgogne-Franche-Comté (ne fonctionne pas)
 
 Requête API non authentifiée vers `https://atmo-bfc.iad-informatique.com/geoserver/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
 
-#### Bretagne
+#### Bretagne  (ne fonctionne pas)
 
 Requête API non authentifiée vers `https://data.airbreizh.asso.fr/geoserver/ind_bretagne/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
+
+
 
 #### Centre-Val de Loire
 
