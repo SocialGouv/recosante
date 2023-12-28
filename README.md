@@ -212,8 +212,9 @@ Je ne suis pas encore parvenu à le faire mais si tu test https://services8.arcg
 
 👀 https://github.com/search?q=repo%3ASocialGouv%2Frecosante%20outfields&type=code
 
-https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&f=json
-En mentionnant le format d'export en json il se passe quelque chose : )
+Si on reprend les query params de la Corse on obtient des résultats pour la Guadeloupe:
+https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY
+
 
 #### Guyane
 
