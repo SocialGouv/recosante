@@ -173,6 +173,13 @@ export async function getWeatherAlert() {
       // we need to format the cantonCode code to have a 2 digits string departmentCode
 
       const cantonCode = domain.domain_id;
+      // https://github.com/SocialGouv/recosante/blob/46e5d33a5475ff091eb286f6f86413e7a13e13e6/libs/indice_pollution/indice_pollution/history/models/vigilance_meteo.py#L75C28-L75C31
+      if (cantonCode === '99') {
+        continue;
+      }
+      if (cantonCode === 'FRA') {
+        continue;
+      }
       let formattedDepCode = cantonCode.slice(0, 2);
       weatherAlertByDepartment[formattedDepCode] = {
         code_alert: getPhenomenonColorById(domain.max_color_id),
