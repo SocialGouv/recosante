@@ -212,6 +212,9 @@ Je ne suis pas encore parvenu à le faire mais si tu test https://services8.arcg
 
 👀 https://github.com/search?q=repo%3ASocialGouv%2Frecosante%20outfields&type=code
 
+https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&f=json
+En mentionnant le format d'export en json il se passe quelque chose : )
+
 #### Guyane
 
 Requête API non authentifiée vers `https://dservices8.arcgis.com/5JImMrIjAqUJnR3H/arcgis/services/ind_guyane_nouvel_indice/WFSServer?service=wfs&version=2.0.0&request=getfeature&typeName=ind_guyane_nouvel_indice:ind_guyane_agglo&outputFormat=GEOJSON` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
