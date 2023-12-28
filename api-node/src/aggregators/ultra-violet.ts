@@ -145,8 +145,8 @@ export async function getUltraVioletIndicator() {
       ultraVioletByDepartment[formattedDepCode] = {
         UV_J0: formatUV(row.UV_J0),
         UV_J1: formatUV(row.UV_J1),
-        UV_J2: formatUV(row.UV_J2 ?? null),
-        UV_J3: formatUV(row.UV_J3 ?? null),
+        UV_J2: formatUV(row.UV_J2),
+        UV_J3: formatUV(row.UV_J3),
       };
     }
 
