@@ -38,10 +38,10 @@ model IndiceUv {
   municipality_insee_code String
   data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
-  uv_j0                   Int // the day of validity_start
-  uv_j1                   Int // the day + 1 of validity_start
-  uv_j2                   Int // the day + 2 of validity_start
-  uv_j3                   Int // the day + 3 of validity_start
+  uv_j0                   Int? // the day of validity_start
+  uv_j1                   Int? // the day + 1 of validity_start
+  uv_j2                   Int? // the day + 2 of validity_start
+  uv_j3                   Int? // the day + 3 of validity_start
 }
 
 // REAP - Risque d'Exposition aux Allergènes Polliniques
