@@ -204,16 +204,9 @@ Requête API non authentifiée vers `https://opendata.arcgis.com/api/v3/datasets
 
 [À PRÉCISER]
 Requête sur `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query`: il s'agit d'une page où il faudrait faire du scrapping - mais aucun signe de scrapping dans la codebase 🧐.
-https://github.com/SocialGouv/recosante/blob/4bcce8744eec7257862f7752c445796892d46ecf/libs/indice_pollution/indice_pollution/regions/Guadeloupe.py#L24
-
-Il semblerait que outfields = ['*'] permettent de fill tous les params.
-
-Je ne suis pas encore parvenu à le faire mais si tu test https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?where=1 tu vois que where = 1
-
-👀 https://github.com/search?q=repo%3ASocialGouv%2Frecosante%20outfields&type=code
 
 Si on reprend les query params de la Corse on obtient des résultats pour la Guadeloupe:
-`https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query??outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY`
+`https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY`
 
 
 #### Guyane
