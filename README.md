@@ -213,7 +213,7 @@ Je ne suis pas encore parvenu à le faire mais si tu test https://services8.arcg
 👀 https://github.com/search?q=repo%3ASocialGouv%2Frecosante%20outfields&type=code
 
 Si on reprend les query params de la Corse on obtient des résultats pour la Guadeloupe:
-https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY
+`https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query??outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY`
 
 
 #### Guyane
@@ -222,7 +222,7 @@ Requête API non authentifiée vers `https://dservices8.arcgis.com/5JImMrIjAqUJn
 
 #### Hauts-de-France
 
-Requête sur `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query`: il s'agit d'une page où il faudrait faire du scrapping - mais aucun signe de scrapping dans la codebase 🧐.
+Requête sur `https://services8.arcgis.com/rxZzohbySMKHTNcy/arcgis/rest/services/ind_hdf_2021/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY`: il s'agit d'une page où il faudrait faire du scrapping - mais aucun signe de scrapping dans la codebase 🧐.
 
 #### Île-de-France
 
