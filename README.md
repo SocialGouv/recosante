@@ -209,8 +209,8 @@ Si on reprend les query params de la Corse on obtient des résultats pour la Gua
 `https://services8.arcgis.com/7RrxpwWeFIQ8JGGp/arcgis/rest/services/ind_guadeloupe_1/FeatureServer/0/query?outFields=*&outSR=4326&f=json&orderByFields=date_ech DESC&where=date_ech >= CURRENT_DATE - INTERVAL '1' DAY`
 
 
-#### Guyane
-
+#### Guyane  (Erreur 404)
+ 
 Requête API non authentifiée vers `https://dservices8.arcgis.com/5JImMrIjAqUJnR3H/arcgis/services/ind_guyane_nouvel_indice/WFSServer?service=wfs&version=2.0.0&request=getfeature&typeName=ind_guyane_nouvel_indice:ind_guyane_agglo&outputFormat=GEOJSON` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25).
 
 #### Hauts-de-France
