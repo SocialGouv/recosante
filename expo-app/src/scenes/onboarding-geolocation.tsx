@@ -124,8 +124,8 @@ export default function OnboardingGeolocation(
                       selectedCommune.codesPostaux[0]
                     }..${selectedCommune.codesPostaux.at(-1)}`
                   : selectedCommune.codesPostaux.length === 2
-                  ? `${selectedCommune.codesPostaux[0]}, ${selectedCommune.codesPostaux[1]}`
-                  : selectedCommune.codesPostaux[0]}
+                    ? `${selectedCommune.codesPostaux[0]}, ${selectedCommune.codesPostaux[1]}`
+                    : selectedCommune.codesPostaux[0]}
                 )
               </MyText>
             </View>

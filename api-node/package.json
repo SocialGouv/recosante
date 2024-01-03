@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
+  "prisma": {
+    "seed": "tsx prisma/seed/indicators.ts"
+  },
   "scripts": {
     "dev": "npm run prisma-setup && cross-env NODE_ENV=development npx prisma db push && npm run format && npm run ts:check && tsx watch ./src/index.ts",
     "create-migration": "cross-env NODE_ENV=development npx prisma migrate dev --name",
@@ -10,6 +13,7 @@
     "prisma-setup": "prisma generate && prisma migrate deploy",
     "prisma-create-migration": "NODE_ENV=development npx prisma migrate dev --name",
     "prisma-deploy": "NODE_ENV=production npx prisma migrate deploy",
+    "prisma-seed": "npx prisma db seed",
     "ts:check": "tsc",
     "format": "prettier --write . --ignore-unknown"
   },

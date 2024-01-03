@@ -172,3 +172,17 @@ model AlertPollutionAtmospheric {
   comment_short           String
   comment_long            String
 }
+
+enum IndicatorsSlugEnum {
+  ultra_violet
+  pollen
+  weather
+  indice_atmospheric
+  pollution_atmospheric
+}
+
+model Indicators {
+  id   String             @id @default(uuid())
+  name String             @unique
+  slug IndicatorsSlugEnum @unique
+}
