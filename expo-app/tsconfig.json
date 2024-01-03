@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "src/custom.d.ts"],
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,

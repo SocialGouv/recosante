@@ -10,12 +10,15 @@ import IndicatorsList from '~/scenes/indicators-list/indicators-list';
 import OnboardingGeolocation from '~/scenes/onboarding-geolocation';
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
 import useMunicipality from './zustand/municipality/useMunicipality';
-import Cloud from './assets/images/cloud';
+import { HomeIcon } from '~/assets/icons/home';
+import { SettingsIcon } from '~/assets/icons/settings';
+import { ShareIcon } from '~/assets/icons/share';
+
 import MyText from './components/ui/my-text';
-import { IndicatorPage } from './scenes/indicator-page';
+import { IndicatorPage } from './scenes/indicator.page';
 import { RouteEnum } from './constants/route';
 import { Onboarding } from './scenes/onboarding';
-import InfosIcon from './assets/images/infos';
+import { SharePage } from './scenes/share.page';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -39,10 +42,21 @@ const BottomTab = createBottomTabNavigator();
 function Home() {
   return (
     <BottomTab.Navigator
+      sceneContainerStyle={{ backgroundColor: '#3343BD' }}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#000091',
-        tabBarInactiveTintColor: '#767676',
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.5)',
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          paddingHorizontal: 5,
+          paddingTop: 0,
+          backgroundColor: '#3343BD',
+          borderTopWidth: 0,
+          borderRadius: 500,
+          paddingBottom: -10,
+          margin: 12,
+        },
         lazy: false,
       }}
     >
@@ -52,9 +66,23 @@ function Home() {
           tabBarLabel: (props) => (
             <TabBarLabel {...props}>Indicateurs</TabBarLabel>
           ),
-          tabBarIcon: ({ size, color }) => <Cloud size={size} color={color} />,
+          tabBarIcon: ({ size, color, focused }) => (
+            <HomeIcon size={size} color={color} focused={focused} />
+          ),
         }}
         component={IndicatorsList}
+      />
+      <BottomTab.Screen
+        name={RouteEnum.SHARE}
+        options={{
+          tabBarLabel: (props) => (
+            <TabBarLabel {...props}>Partager</TabBarLabel>
+          ),
+          tabBarIcon: ({ size, color, focused }) => (
+            <ShareIcon size={size} color={color} focused={focused} />
+          ),
+        }}
+        component={SharePage}
       />
       <BottomTab.Screen
         name={RouteEnum.SETTINGS}
@@ -63,8 +91,8 @@ function Home() {
           tabBarLabel: (props) => (
             <TabBarLabel {...props}>Paramètres</TabBarLabel>
           ),
-          tabBarIcon: ({ size, color }) => (
-            <InfosIcon size={size} color={color} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <SettingsIcon size={size} color={color} focused={focused} />
           ),
         }}
       />
@@ -128,6 +156,7 @@ export function Navigators() {
             name={RouteEnum.INDICATOR_SCENE}
             component={IndicatorPage}
           />
+          <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
         </RootStack.Navigator>
       </NavigationContainer>
     </AutocompleteDropdownContextProvider>
