@@ -18,7 +18,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
     onOpenSuggestionsList,
   } = useAutoComplete();
 
-  console.log('suggestionsList', suggestionsList);
   return (
     <AutocompleteDropdown
       ref={searchRef}

@@ -20,19 +20,19 @@ export function Screen5({ navigation }: { navigation: any }) {
     // When the user has already granted permission, we can navigate to the home screen
     getNotificationToken().then((hasToken) => {
       if (hasToken) {
-        navigation.navigate(RouteEnum.HOME);
+        navigation.navigate(RouteEnum.DASHBOARD);
       }
     });
   }, []);
 
   return (
-    <View className="bg-app-primary flex flex-1 items-center justify-around">
+    <View className="flex flex-1 items-center justify-around bg-app-primary">
       <Skip navigation={navigation} target={3} />
 
       <View className="absolute bottom-20">
         <Button
           onPress={() => {
-            navigation.navigate(RouteEnum.HOME);
+            navigation.navigate(RouteEnum.DASHBOARD);
           }}
           viewClassName="bg-app-yellow p-4"
           textClassName="text-black"

@@ -20,7 +20,7 @@ export function Screen2({ navigation }: { navigation: any }) {
 
       <MyText
         font="MarianneRegular"
-        className="px-4 text-center text-xl text-white"
+        className=" text-center text-xl text-white"
       >
         Ainsi, nous pouvons vous fournir des informations précises sur la
         qualité de l'air et les risques environnementaux spécifiques à votre

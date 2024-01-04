@@ -42,7 +42,7 @@ class ApiService {
       };
 
       const url = this.getUrl(path, query);
-      console.log('url: ', url);
+      // console.log('url: ', url);
       const canFetch = await checkNetwork();
       if (!canFetch) return { ok: false };
 

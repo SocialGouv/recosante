@@ -7,7 +7,7 @@ export type IndicatorItem = {
 };
 
 export const indicators: IndicatorItem[] = [
-  { name: 'Indice UV', navigateTo: RouteEnum.INDICATOR_SCENE },
+  { name: 'Indice UV', navigateTo: RouteEnum.DASHBOARD },
   { name: 'Eau du robinet', disabled: true },
   { name: 'Vigilance météo', disabled: true },
   { name: 'Eaux de baignades', disabled: true },

@@ -15,10 +15,10 @@ import { SettingsIcon } from '~/assets/icons/settings';
 import { ShareIcon } from '~/assets/icons/share';
 
 import MyText from './components/ui/my-text';
-import { IndicatorPage } from './scenes/indicator.page';
+import { DashboardPage } from './scenes/dashboard/dashboard';
 import { RouteEnum } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
-import { SharePage } from './scenes/share.page';
+import { SharePage } from './scenes/share';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -61,10 +61,10 @@ function Home() {
       }}
     >
       <BottomTab.Screen
-        name={RouteEnum.INDICATOR_SCENE}
+        name={RouteEnum.DASHBOARD}
         options={{
           tabBarLabel: (props) => (
-            <TabBarLabel {...props}>Indicateurs</TabBarLabel>
+            <TabBarLabel {...props}>Dashboard</TabBarLabel>
           ),
           tabBarIcon: ({ size, color, focused }) => (
             <HomeIcon size={size} color={color} focused={focused} />
@@ -138,8 +138,11 @@ export function Navigators() {
       >
         <RootStack.Navigator
           screenOptions={{ headerShown: false }}
-          // initialRouteName={hasCommune ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+          // initialRouteName={
+          //   hasCommune ? RouteEnum.DASHBOARD : RouteEnum.ONBOARDING
+          // }
           initialRouteName={RouteEnum.ONBOARDING}
+          // initialRouteName={RouteEnum.DASHBOARD}
         >
           <RootStack.Screen
             name={RouteEnum.ONBOARDING}
@@ -154,8 +157,8 @@ export function Navigators() {
           />
           <RootStack.Screen name={RouteEnum.HOME} component={Home} />
           <RootStack.Screen
-            name={RouteEnum.INDICATOR_SCENE}
-            component={IndicatorPage}
+            name={RouteEnum.DASHBOARD}
+            component={DashboardPage}
           />
           <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
         </RootStack.Navigator>
