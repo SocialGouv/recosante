@@ -102,7 +102,7 @@ export namespace ExpoPushNotificationService {
         }) as any;
       responseListener.current =
         Notifications.addNotificationResponseReceivedListener((response) => {
-          console.log(response);
+          // console.log(response);
         }) as any;
 
       return () => {

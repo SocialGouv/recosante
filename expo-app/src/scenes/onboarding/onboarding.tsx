@@ -13,7 +13,7 @@ import { OnboardingRouteEnum } from '~/constants/route';
 const OnboardingStack = createNativeStackNavigator();
 export function Onboarding() {
   return (
-    <SafeAreaView className="flex flex-1 bg-app-primary">
+    <SafeAreaView className="flex flex-1 bg-app-primary px-4">
       <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
         <OnboardingStack.Screen
           name={OnboardingRouteEnum.SCREEN_1}

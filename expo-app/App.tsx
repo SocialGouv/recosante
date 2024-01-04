@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { Navigators } from './src/navigators';
 import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 SplashScreen.preventAutoHideAsync();
 
 Sentry.init({
@@ -33,7 +33,6 @@ function App() {
   if (!fontsLoaded) {
     return null;
   }
-
   return (
     <SafeAreaProvider>
       <Navigators />
@@ -44,7 +43,9 @@ function App() {
 export default function () {
   return (
     <SafeAreaProvider>
-      <App />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <App />
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }

@@ -21,7 +21,7 @@ export function Screen4({ navigation }: { navigation: any }) {
 
       <MyText
         font="MarianneRegular"
-        className="px-4 text-center text-xl text-white"
+        className=" text-center text-xl text-white"
       >
         Activez les notifications pour recevoir des alertes et des
         recommandations personnalisées, vous permettant de prendre des mesures

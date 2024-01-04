@@ -9,7 +9,7 @@ interface SkipProps {
 const PATH = 'SCREEN_';
 export function Skip(props: SkipProps) {
   return (
-    <View className="absolute top-4 flex w-full justify-end px-2">
+    <View className="absolute top-4 flex w-full justify-end ">
       <Button
         onPress={() => {
           props.navigation.navigate(`${PATH}${props.target}`);
