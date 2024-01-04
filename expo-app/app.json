@@ -23,6 +23,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "eas": {
+        "projectId": "8d8b446e-c8db-4641-b730-5cef195e96da"
+      }
+    },
     "experiments": {
       "tsconfigPaths": true
     },
