@@ -23,7 +23,7 @@ export function Screen3({ navigation }: { navigation: any }) {
   }, []);
 
   return (
-    <View className="bg-app-primary flex flex-1 items-center justify-around">
+    <View className="flex flex-1 items-center justify-around bg-app-primary">
       <Skip navigation={navigation} target={3} />
 
       <View className="absolute bottom-20">

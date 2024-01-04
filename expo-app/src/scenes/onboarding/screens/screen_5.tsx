@@ -11,7 +11,7 @@ export function Screen5({ navigation }: { navigation: any }) {
       force: true,
     }).then((token) => {
       if (token) {
-        navigation.navigate(RouteEnum.HOME, {});
+        navigation.navigate(RouteEnum.HOME);
       }
     });
   }, []);
@@ -22,7 +22,7 @@ export function Screen5({ navigation }: { navigation: any }) {
       <View className="absolute bottom-20">
         <Button
           onPress={() => {
-            navigation.navigate(OnboardingRouteEnum.SCREEN_4);
+            navigation.navigate(RouteEnum.HOME);
           }}
           viewClassName="bg-app-yellow p-4"
           textClassName="text-black"

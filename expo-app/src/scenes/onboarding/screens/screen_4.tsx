@@ -8,7 +8,7 @@ import { Illu_4 } from '~/assets/onboarding/illu_4';
 
 export function Screen4({ navigation }: { navigation: any }) {
   return (
-    <View className="bg-app-primary flex flex-1 items-center justify-around">
+    <View className="flex flex-1 items-center justify-around bg-app-primary">
       <Skip navigation={navigation} target={3} />
       <MyText
         font="MarianneExtraBold"
