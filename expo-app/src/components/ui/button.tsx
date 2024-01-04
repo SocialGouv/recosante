@@ -3,7 +3,7 @@ import MyText from './my-text';
 import type { Fonts } from './my-text';
 
 interface ButtonProps {
-  children: string;
+  children: string | React.ReactNode;
   font?: Fonts;
   viewClassName?: string;
   textClassName?: string;

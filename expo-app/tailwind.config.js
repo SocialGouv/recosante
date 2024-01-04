@@ -19,6 +19,8 @@ module.exports = {
       },
       colors: {
         app: {
+          yellow: '#F2D072',
+          primary: '#3343BD',
           50: '#f1f4ff',
           100: '#e5e8ff',
           200: '#ced5ff',

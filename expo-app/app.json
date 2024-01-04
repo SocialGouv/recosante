@@ -27,7 +27,15 @@
       "tsconfigPaths": true
     },
     "owner": "recosante",
-    "plugins": ["sentry-expo"],
+    "plugins": [
+      "sentry-expo",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow recosanté to use your location."
+        }
+      ]
+    ],
     "hooks": {
       "postPublish": [
         {

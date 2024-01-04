@@ -17,7 +17,7 @@ import { ShareIcon } from '~/assets/icons/share';
 import MyText from './components/ui/my-text';
 import { IndicatorPage } from './scenes/indicator.page';
 import { RouteEnum } from './constants/route';
-import { Onboarding } from './scenes/onboarding';
+import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share.page';
 
 interface TabBarLabelProps {
@@ -138,7 +138,8 @@ export function Navigators() {
       >
         <RootStack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={hasCommune ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+          // initialRouteName={hasCommune ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+          initialRouteName={RouteEnum.ONBOARDING}
         >
           <RootStack.Screen
             name={RouteEnum.ONBOARDING}
