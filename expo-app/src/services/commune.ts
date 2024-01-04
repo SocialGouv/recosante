@@ -19,7 +19,7 @@ export namespace CommuneService {
     if (!response?.length) {
       Alert.alert('Erreur', 'Impossible de trouver votre ville');
     }
-    console.log(location);
+
     return response[0];
   }
 }

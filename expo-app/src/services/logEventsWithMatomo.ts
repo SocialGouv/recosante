@@ -61,23 +61,24 @@ export const logEvent = async ({
   name,
   value,
 }: LogEventProps) => {
-  try {
-    const canSend = await checkNetwork();
-    if (!canSend) throw new Error('no network');
-    // TODO: type Matomo.logEvent
-    // @ts-ignore
-    Matomo.logEvent({ category, action, name, value });
-    const body = {
-      event: { category, action, name, value },
-      userId: Matomo.userId,
-      dimensions: Matomo.dimensions,
-    };
-    API.post({
-      path: '/event',
-      body,
-    });
-  } catch (e) {
-    console.log('logEvent error', e);
-    console.log('logEvent error', { category, action, name, value });
-  }
+  return;
+  // try {
+  //   const canSend = await checkNetwork();
+  //   if (!canSend) throw new Error('no network');
+  //   // TODO: type Matomo.logEvent
+  //   // @ts-ignore
+  //   Matomo.logEvent({ category, action, name, value });
+  //   const body = {
+  //     event: { category, action, name, value },
+  //     userId: Matomo.userId,
+  //     dimensions: Matomo.dimensions,
+  //   };
+  //   API.post({
+  //     path: '/event',
+  //     body,
+  //   });
+  // } catch (e) {
+  //   console.log('logEvent error', e);
+  //   console.log('logEvent error', { category, action, name, value });
+  // }
 };

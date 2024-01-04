@@ -76,7 +76,6 @@ export namespace ExpoPushNotificationService {
         lightColor: '#FF231F7C',
       });
     }
-    console.log('token', token);
     return token;
   }
 
