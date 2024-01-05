@@ -41,7 +41,9 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
         {...props}
         indicatorStyle={{ backgroundColor: 'black' }}
         labelStyle={{ color: 'black' }}
-        style={{ backgroundColor: '#ECF1FB' }}
+        style={{
+          backgroundColor: '#ECF1FB',
+        }}
       />
     );
   }
@@ -52,7 +54,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
         {props.favoriteIndicator ? (
           <IndicatorPreview indicator={props.favoriteIndicator} isFavorite />
         ) : null}
-        <View>
+        <View className=" mx-3 flex flex-1  flex-row flex-wrap pb-24">
           {filteredIndicators?.map((indicator) => (
             <IndicatorPreview key={indicator.id} indicator={indicator} />
           ))}
@@ -76,7 +78,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   return (
     <TabView
       renderTabBar={renderTabBar}
-      className="flex  flex-1 bg-app-gray "
+      className="bg-app-gray  flex flex-1 "
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}
