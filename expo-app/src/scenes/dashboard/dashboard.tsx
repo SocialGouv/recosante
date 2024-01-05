@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import { Portal, PortalHost } from '@gorhom/portal';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -57,52 +57,47 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   }
 
   return (
-    <SafeAreaView className="flex flex-1 items-center justify-start bg-app-100 px-4">
-      <View className="flex w-full items-end  pt-4">
-        <Button
-          viewClassName="bg-app-primary w-fit  "
-          textClassName="text-white text-sm "
-          font="MarianneMedium"
-        >
-          Localisez-moi
-          <View className="pl-2 pt-1">
+    <>
+      <View className="flex  items-center justify-start bg-app-100 px-4 py-4">
+        <View className="top-4 flex w-full  items-end">
+          <Pressable className="top-6 w-fit rounded-full  bg-app-primary p-3 text-sm text-white">
             <LocationIcon />
-          </View>
-        </Button>
-      </View>
-      <View className="mt-4 flex w-full   ">
-        <MyText font="MarianneRegular" className="text-md text-black">
-          Bonjour
-        </MyText>
-        <MyText font="MarianneBold" className="text-2xl text-black">
-          Découvrez {'\n'}vos indicateurs favoris !
-        </MyText>
+          </Pressable>
+        </View>
+        <View className="mt-4 flex w-full   ">
+          <MyText font="MarianneRegular" className="text-md text-black">
+            Bonjour
+          </MyText>
+          <MyText font="MarianneBold" className="text-2xl text-black">
+            Découvrez {'\n'}vos indicateurs favoris !
+          </MyText>
+        </View>
 
-        <IndicatorsListPreview
-          indicators={indicators}
-          favoriteIndicator={favoriteIndicator}
-        />
-      </View>
-      <Portal>
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={2}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <View className="flex flex-1 bg-app-primary p-6">
-            <IndicatorsSelector
-              navigation={navigation}
-              closeBottomSheet={closeBottomSheet}
-              indicators={indicators}
-              favoriteIndicator={favoriteIndicator}
-              setFavoriteIndicator={setFavoriteIndicator}
-            />
-          </View>
-        </BottomSheet>
-      </Portal>
+        <Portal>
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={2}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+          >
+            <View className="flex flex-1 bg-app-primary p-6">
+              <IndicatorsSelector
+                navigation={navigation}
+                closeBottomSheet={closeBottomSheet}
+                indicators={indicators}
+                favoriteIndicator={favoriteIndicator}
+                setFavoriteIndicator={setFavoriteIndicator}
+              />
+            </View>
+          </BottomSheet>
+        </Portal>
 
-      <PortalHost name="custom_host" />
-    </SafeAreaView>
+        <PortalHost name="custom_host" />
+      </View>
+      <IndicatorsListPreview
+        indicators={indicators}
+        favoriteIndicator={favoriteIndicator}
+      />
+    </>
   );
 }
