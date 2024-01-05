@@ -66,7 +66,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   const hideIndicatorsList = Boolean(favoriteIndicator?.id);
   return (
     <>
-      <View className="flex  items-center justify-start bg-app-100 px-4 py-4">
+      <View className="bg-app-gray  flex items-center justify-start px-4 py-4">
         <View className="top-4 flex w-full  items-end">
           <Pressable className="top-6 w-fit rounded-full  bg-app-primary p-3 text-sm text-white">
             <LocationIcon />
@@ -114,8 +114,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
             </BottomSheet>
           </Portal>
         )}
-
-        <PortalHost name="custom_host" />
+        <PortalHost name="indicators-list" />
       </View>
       <IndicatorsListPreview
         indicators={indicators}
