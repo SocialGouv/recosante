@@ -179,6 +179,8 @@ enum IndicatorsSlugEnum {
   weather
   indice_atmospheric
   pollution_atmospheric
+  air_quality
+  water
 }
 
 model Indicators {
