@@ -6,7 +6,6 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import * as SplashScreen from 'expo-splash-screen';
 import { navigationRef } from '~/services/navigation';
 
-import IndicatorsList from '~/scenes/indicators-list/indicators-list';
 import OnboardingGeolocation from '~/scenes/onboarding-geolocation';
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
 import useMunicipality from './zustand/municipality/useMunicipality';
@@ -56,6 +55,8 @@ function Home() {
           borderRadius: 500,
           paddingBottom: -10,
           margin: 12,
+          position: 'absolute',
+          overflow: 'hidden',
         },
         lazy: false,
       }}
@@ -70,7 +71,7 @@ function Home() {
             <HomeIcon size={size} color={color} focused={focused} />
           ),
         }}
-        component={IndicatorsList}
+        component={DashboardPage}
       />
       <BottomTab.Screen
         name={RouteEnum.SHARE}
@@ -138,11 +139,9 @@ export function Navigators() {
       >
         <RootStack.Navigator
           screenOptions={{ headerShown: false }}
-          // initialRouteName={
-          //   hasCommune ? RouteEnum.DASHBOARD : RouteEnum.ONBOARDING
-          // }
-          initialRouteName={RouteEnum.ONBOARDING}
-          // initialRouteName={RouteEnum.DASHBOARD}
+          initialRouteName={
+            hasCommune ? RouteEnum.DASHBOARD : RouteEnum.ONBOARDING
+          }
         >
           <RootStack.Screen
             name={RouteEnum.ONBOARDING}
