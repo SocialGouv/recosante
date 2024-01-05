@@ -18,6 +18,7 @@ import { DashboardPage } from './scenes/dashboard/dashboard';
 import { RouteEnum } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
+import { SettingsPage } from './scenes/settings/settings';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -88,7 +89,7 @@ function Home() {
       />
       <BottomTab.Screen
         name={RouteEnum.SETTINGS}
-        component={OnboardingGeolocation}
+        component={SettingsPage}
         options={{
           tabBarLabel: (props) => (
             <TabBarLabel {...props}>Paramètres</TabBarLabel>
