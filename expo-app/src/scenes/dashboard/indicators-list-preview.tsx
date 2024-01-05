@@ -16,7 +16,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   const filteredIndicators = useMemo(
     () =>
       props.indicators?.filter(
-        (indicator) => indicator !== props.favoriteIndicator,
+        (indicator) => indicator.slug !== props.favoriteIndicator?.slug,
       ),
     [props.indicators, props.favoriteIndicator],
   );
@@ -25,16 +25,11 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
       {props.favoriteIndicator ? (
         <IndicatorPreview indicator={props.favoriteIndicator} isFavorite />
       ) : null}
-
-      <FlatList
-        numColumns={2} // set number of columns
-        columnWrapperStyle={styles.row} // space them out evenly
-        data={filteredIndicators}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <IndicatorPreview indicator={item} key={item.id} />
-        )}
-      />
+      <View>
+        {filteredIndicators?.map((indicator) => (
+          <IndicatorPreview key={indicator.id} indicator={indicator} />
+        ))}
+      </View>
     </ScrollView>
   );
 }
@@ -45,9 +40,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-  },
-  row: {
-    flex: 1,
-    justifyContent: 'space-between',
   },
 });
