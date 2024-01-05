@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
-
+import { Portal, PortalHost } from '@gorhom/portal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MyText from '~/components/ui/my-text';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -19,17 +19,16 @@ export function DashboardPage({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     let ignore = false;
+    setIndicators([]);
     async function getIndicators() {
       return Api.get({
         path: '/indicators',
       }).then((response) => {
-        if (!response.ok) {
-          setError(response.error);
-          return;
-        }
         const indicators = response.data as Indicator[];
         if (!ignore) {
-          setIndicators(indicators);
+          if (!response.ok) {
+            setError(response.error);
+          } else setIndicators(indicators);
         }
       });
     }
@@ -84,22 +83,25 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           favoriteIndicator={favoriteIndicator}
         />
       </View>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={2}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <View className="flex flex-1 bg-app-primary p-6">
-          <IndicatorsSelector
-            navigation={navigation}
-            closeBottomSheet={closeBottomSheet}
-            indicators={indicators}
-            favoriteIndicator={favoriteIndicator}
-            setFavoriteIndicator={setFavoriteIndicator}
-          />
-        </View>
-      </BottomSheet>
+      <Portal>
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={2}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        >
+          <View className="flex flex-1 bg-app-primary p-6">
+            <IndicatorsSelector
+              navigation={navigation}
+              closeBottomSheet={closeBottomSheet}
+              indicators={indicators}
+              favoriteIndicator={favoriteIndicator}
+              setFavoriteIndicator={setFavoriteIndicator}
+            />
+          </View>
+        </BottomSheet>
+      </Portal>
+      <PortalHost name="custom_host" />
     </SafeAreaView>
   );
 }

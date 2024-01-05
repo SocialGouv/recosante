@@ -17,9 +17,7 @@ interface IndicatorsSelectorProps {
 }
 export function IndicatorsSelector(props: IndicatorsSelectorProps) {
   function handleSelectIndicator(indicator: Indicator) {
-    if (props.favoriteIndicator?.slug === indicator.slug) {
-      props.setFavoriteIndicator(null);
-    } else props.setFavoriteIndicator(indicator);
+    props.setFavoriteIndicator(indicator);
   }
   return (
     <View className="flex  items-start  ">
@@ -30,7 +28,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
             onPress={() => handleSelectIndicator(indicator)}
             viewClassName={cn(
               `${isFavorite ? 'bg-app-yellow' : ''}
-              border border-white border-2 rounded-full p-4 my-2 `,
+               border-white border-2 rounded-full p-4 my-2 `,
             )}
             textClassName="text-white text-md "
             key={indicator.id}
