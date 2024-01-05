@@ -28,7 +28,7 @@ const buttons = [
 
 export function SharePage({ navigation }: { navigation: any }) {
   return (
-    <View className="bg-app-gray flex flex-1 items-center justify-around px-4">
+    <View className="flex flex-1 items-center justify-around bg-app-gray px-4">
       <View className="top-8 flex w-full">
         <MyText font="MarianneBold" className=" text-3xl">
           Partagez l’app !
