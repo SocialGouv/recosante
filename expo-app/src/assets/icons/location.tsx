@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-export function LocationIcon() {
+export function LocationIcon(props: any) {
   return (
     <Svg width={19} height={19} viewBox="0 0 19 19" fill="none">
       <Path
@@ -10,6 +10,7 @@ export function LocationIcon() {
         stroke="#fff"
         strokeWidth={3}
         strokeLinecap="round"
+        {...props}
       />
     </Svg>
   );

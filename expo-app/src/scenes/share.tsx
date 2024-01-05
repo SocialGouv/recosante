@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Alert, Pressable, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Email } from '~/assets/share/email';
 import { Illu } from '~/assets/share/illu';
 import { Message } from '~/assets/share/message';
@@ -28,8 +29,8 @@ const buttons = [
 
 export function SharePage({ navigation }: { navigation: any }) {
   return (
-    <View className="flex flex-1 items-center justify-around bg-app-gray px-4">
-      <View className="top-8 flex w-full">
+    <SafeAreaView className="bg-app-gray flex flex-1 items-center justify-around px-4">
+      <View className=" flex w-full">
         <MyText font="MarianneBold" className=" text-3xl">
           Partagez l’app !
         </MyText>
@@ -89,6 +90,6 @@ export function SharePage({ navigation }: { navigation: any }) {
           </View>
         ))}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

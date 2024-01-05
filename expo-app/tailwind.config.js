@@ -20,6 +20,7 @@ module.exports = {
       colors: {
         app: {
           gray: '#ECF1FB',
+          'gray-100': '#AEB1B7',
           yellow: '#F2D072',
           primary: '#3343BD',
           50: '#f1f4ff',

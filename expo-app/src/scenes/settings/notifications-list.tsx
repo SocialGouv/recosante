@@ -47,7 +47,7 @@ export function NotificationsList() {
             key={notification.id}
             className="mt-4 flex flex-row items-center justify-between rounded-lg bg-white p-4"
           >
-            <View className="w-2/3">
+            <View className="w-3/4">
               <MyText font="MarianneBold" className=" text-lg">
                 {notification.label}
               </MyText>

@@ -76,7 +76,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   return (
     <TabView
       renderTabBar={renderTabBar}
-      className="bg-app-gray  flex flex-1 "
+      className="flex  flex-1 bg-app-gray "
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}

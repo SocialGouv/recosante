@@ -11,10 +11,12 @@ import { useIndicator } from '~/zustand/indicator/useIndicator';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import { Indicator } from '~/types/indicator';
 import Api from '~/services/api';
+import useMunicipality from '~/zustand/municipality/useMunicipality';
 
 export function DashboardPage({ navigation }: { navigation: any }) {
   const { setFavoriteIndicator, favoriteIndicator, indicators, setIndicators } =
     useIndicator((state) => state);
+  const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
@@ -66,11 +68,24 @@ export function DashboardPage({ navigation }: { navigation: any }) {
         </View>
         <View className="mt-4 flex w-full   ">
           <MyText font="MarianneRegular" className="text-md text-black">
-            Bonjour
+            Bonjour,
           </MyText>
           <MyText font="MarianneBold" className="text-2xl text-black">
             Découvrez {'\n'}vos indicateurs favoris !
           </MyText>
+          {municipality?.nom ? (
+            <View className="flex flex-row items-center">
+              <MyText
+                font="MarianneRegular"
+                className="text-md text-app-gray-100 mt-2 uppercase"
+              >
+                {municipality?.nom}
+              </MyText>
+              <View className="relative -bottom-1 ml-2 ">
+                <LocationIcon fill="#AEB1B7" stroke="#AEB1B7" />
+              </View>
+            </View>
+          ) : null}
         </View>
 
         <Portal>
