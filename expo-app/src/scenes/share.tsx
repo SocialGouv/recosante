@@ -29,7 +29,7 @@ const buttons = [
 
 export function SharePage({ navigation }: { navigation: any }) {
   return (
-    <SafeAreaView className="bg-app-gray flex flex-1 items-center justify-around px-4">
+    <SafeAreaView className="flex flex-1 items-center justify-around bg-app-gray px-4">
       <View className=" flex w-full">
         <MyText font="MarianneBold" className=" text-3xl">
           Partagez l’app !
