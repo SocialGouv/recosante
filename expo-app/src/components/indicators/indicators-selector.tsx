@@ -10,19 +10,24 @@ import { cn } from '~/utils/tailwind';
 
 interface IndicatorsSelectorProps {
   navigation: any;
-  closeBottomSheet: () => void;
   setFavoriteIndicator: (indicator: Indicator | null) => void;
   indicators: Indicator[] | null;
   favoriteIndicator: Indicator | null;
+  onSubmit: (state: Indicator | null) => void;
 }
 export function IndicatorsSelector(props: IndicatorsSelectorProps) {
+  const [state, setState] = useState<Indicator | null>(props.favoriteIndicator);
   function handleSelectIndicator(indicator: Indicator) {
-    props.setFavoriteIndicator(indicator);
+    setState(indicator);
+  }
+
+  function handleSubmit() {
+    props.onSubmit(state);
   }
   return (
     <View className="flex  items-start  ">
       {props.indicators?.map((indicator) => {
-        const isFavorite = props.favoriteIndicator?.slug === indicator.slug;
+        const isFavorite = state?.slug === indicator.slug;
         return (
           <Button
             onPress={() => handleSelectIndicator(indicator)}
@@ -38,12 +43,10 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
           </Button>
         );
       })}
-      {props.favoriteIndicator ? (
+      {state?.slug ? (
         <View className="mx-auto mt-2">
           <Button
-            onPress={() => {
-              props.closeBottomSheet();
-            }}
+            onPress={handleSubmit}
             viewClassName="bg-app-yellow p-4"
             textClassName="text-black"
             font="MarianneMedium"

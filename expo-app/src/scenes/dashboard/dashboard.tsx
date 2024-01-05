@@ -58,6 +58,12 @@ export function DashboardPage({ navigation }: { navigation: any }) {
     bottomSheetRef.current?.close();
   }
 
+  function handleSubmit(indicator: Indicator | null) {
+    setFavoriteIndicator(indicator);
+    closeBottomSheet();
+  }
+
+  const hideIndicatorsList = Boolean(favoriteIndicator?.id);
   return (
     <>
       <View className="flex  items-center justify-start bg-app-100 px-4 py-4">
@@ -88,24 +94,26 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           ) : null}
         </View>
 
-        <Portal>
-          <BottomSheet
-            ref={bottomSheetRef}
-            index={2}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-          >
-            <View className="flex flex-1 bg-app-primary p-6">
-              <IndicatorsSelector
-                navigation={navigation}
-                closeBottomSheet={closeBottomSheet}
-                indicators={indicators}
-                favoriteIndicator={favoriteIndicator}
-                setFavoriteIndicator={setFavoriteIndicator}
-              />
-            </View>
-          </BottomSheet>
-        </Portal>
+        {hideIndicatorsList ? null : (
+          <Portal>
+            <BottomSheet
+              ref={bottomSheetRef}
+              index={2}
+              snapPoints={snapPoints}
+              onChange={handleSheetChanges}
+            >
+              <View className="flex flex-1 bg-app-primary p-6">
+                <IndicatorsSelector
+                  onSubmit={handleSubmit}
+                  navigation={navigation}
+                  indicators={indicators}
+                  favoriteIndicator={favoriteIndicator}
+                  setFavoriteIndicator={setFavoriteIndicator}
+                />
+              </View>
+            </BottomSheet>
+          </Portal>
+        )}
 
         <PortalHost name="custom_host" />
       </View>

@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export function SettingsPage({ navigation }: { navigation: any }) {
   return (
-    <SafeAreaView className="bg-app-gray flex flex-1 items-center justify-around px-4">
+    <SafeAreaView className="flex flex-1 items-center justify-around bg-app-gray px-4">
       <ScrollView className="top-8 flex w-full flex-1">
         <MyText font="MarianneBold" className=" text-3xl">
           Vos préférences
