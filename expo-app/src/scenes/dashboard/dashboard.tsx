@@ -57,7 +57,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   }
 
   return (
-    <SafeAreaView className="flex flex-1 items-center justify-start bg-app-100 px-4">
+    <View className="flex flex-1 items-center justify-start bg-app-100 px-4">
       <View className="flex w-full items-end  pt-4">
         <Button
           viewClassName="bg-app-primary w-fit  "
@@ -101,7 +101,8 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           </View>
         </BottomSheet>
       </Portal>
+
       <PortalHost name="custom_host" />
-    </SafeAreaView>
+    </View>
   );
 }

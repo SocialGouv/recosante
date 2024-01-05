@@ -57,6 +57,7 @@ function Home() {
           margin: 12,
           position: 'absolute',
           overflow: 'hidden',
+          zIndex: 100,
         },
         lazy: false,
       }}
@@ -139,9 +140,7 @@ export function Navigators() {
       >
         <RootStack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={
-            hasCommune ? RouteEnum.DASHBOARD : RouteEnum.ONBOARDING
-          }
+          initialRouteName={hasCommune ? RouteEnum.HOME : RouteEnum.ONBOARDING}
         >
           <RootStack.Screen
             name={RouteEnum.ONBOARDING}
