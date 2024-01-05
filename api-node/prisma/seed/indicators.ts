@@ -12,11 +12,11 @@ const indicatorsList: Indicator[] = [
     slug: 'indice_atmospheric',
   },
   {
-    name: 'Ultra Violet',
+    name: 'Indice UV',
     slug: 'ultra_violet',
   },
   {
-    name: 'Alerte Pollen',
+    name: 'Allergie aux Pollens',
     slug: 'pollen',
   },
   {
@@ -26,6 +26,14 @@ const indicatorsList: Indicator[] = [
   {
     name: 'Pollution Atmosphérique',
     slug: 'pollution_atmospheric',
+  },
+  {
+    name: "Qualité de l'air",
+    slug: 'air_quality',
+  },
+  {
+    name: 'Eau',
+    slug: 'water',
   },
 ];
 
