@@ -1,14 +1,28 @@
-import { useMemo } from 'react';
-import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { IndicatorPreview } from '~/components/indicators/indicator-preview';
 import { Indicator } from '~/types/indicator';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 interface IndicatorsListPreviewProps {
   indicators: Indicator[] | null;
   favoriteIndicator: Indicator | null;
 }
 
+const tabs = [
+  { key: 'today', title: "Aujourd'hui" },
+  { key: 'tomorow', title: 'Demain' },
+];
+
 export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
+  const layout = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const [routes] = useState(tabs);
   if (!props.indicators) {
     return null;
   }
@@ -20,17 +34,54 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
       ),
     [props.indicators, props.favoriteIndicator],
   );
+
+  function renderTabBar(props: any) {
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{ backgroundColor: 'black' }}
+        labelStyle={{ color: 'black' }}
+        style={{ backgroundColor: '#ECF1FB' }}
+      />
+    );
+  }
+
+  function IndicatorListView() {
+    return (
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        {props.favoriteIndicator ? (
+          <IndicatorPreview indicator={props.favoriteIndicator} isFavorite />
+        ) : null}
+        <View>
+          {filteredIndicators?.map((indicator) => (
+            <IndicatorPreview key={indicator.id} indicator={indicator} />
+          ))}
+        </View>
+      </ScrollView>
+    );
+  }
+
+  function TodayRoute() {
+    return <IndicatorListView />;
+  }
+
+  function TomorowRoute() {
+    return <IndicatorListView />;
+  }
+
+  const renderScene = SceneMap({
+    today: TodayRoute,
+    tomorow: TomorowRoute,
+  });
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
-      {props.favoriteIndicator ? (
-        <IndicatorPreview indicator={props.favoriteIndicator} isFavorite />
-      ) : null}
-      <View>
-        {filteredIndicators?.map((indicator) => (
-          <IndicatorPreview key={indicator.id} indicator={indicator} />
-        ))}
-      </View>
-    </ScrollView>
+    <TabView
+      renderTabBar={renderTabBar}
+      className="bg-app-gray  flex flex-1 "
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width, height: layout.height }}
+    />
   );
 }
 const styles = StyleSheet.create({

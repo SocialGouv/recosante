@@ -1,16 +1,15 @@
 import React from 'react';
 import { Alert, Pressable, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MyText from '~/components/ui/my-text';
 import { NotificationsList } from './notifications-list';
-import { useNotification } from '~/zustand/notification/useNotification';
 import { Arrow } from '~/assets/icons/arrow';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function SettingsPage({ navigation }: { navigation: any }) {
   return (
-    <SafeAreaView className="bg-app-gray flex flex-1 items-center justify-around px-4">
-      <View className="top-16 flex w-full flex-1">
+    <View className="flex flex-1 items-center justify-around bg-app-gray px-4">
+      <ScrollView className="top-16 flex w-full flex-1">
         <MyText font="MarianneBold" className=" text-3xl">
           Vos préférences
         </MyText>
@@ -42,8 +41,8 @@ export function SettingsPage({ navigation }: { navigation: any }) {
             nous contacter
           </MyText>
         </Pressable>
-      </View>
-    </SafeAreaView>
+      </ScrollView>
+    </View>
   );
 }
 
