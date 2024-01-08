@@ -27,6 +27,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
         path: '/indicators',
       }).then((response) => {
         const indicators = response.data as Indicator[];
+        setIndicators(indicators);
         if (!ignore) {
           if (!response.ok) {
             setError(response.error);
@@ -40,13 +41,6 @@ export function DashboardPage({ navigation }: { navigation: any }) {
     };
   }, []);
 
-  if (error) {
-    return (
-      <View>
-        <MyText>{error}</MyText>
-      </View>
-    );
-  }
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -64,6 +58,13 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   }
 
   const hideIndicatorsList = Boolean(favoriteIndicator?.id);
+  if (error) {
+    return (
+      <View>
+        <MyText>{error}</MyText>
+      </View>
+    );
+  }
   return (
     <>
       <View className="flex  items-center justify-start bg-app-gray px-4 py-4">

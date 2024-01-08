@@ -23,9 +23,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
   const [routes] = useState(tabs);
-  if (!props.indicators) {
-    return null;
-  }
+
   //   Remove the favorite indicator from the list of indicators
   const filteredIndicators = useMemo(
     () =>
@@ -34,7 +32,9 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
       ),
     [props.indicators, props.favoriteIndicator],
   );
-
+  if (!props.indicators) {
+    return null;
+  }
   function renderTabBar(props: any) {
     return (
       <TabBar
