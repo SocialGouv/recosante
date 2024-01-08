@@ -5,6 +5,7 @@ import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
 // import API from '~/services/api';
 import { Indicator } from '~/types/indicator';
 import { INDICATOR_STORAGE } from '~/constants/indicator';
+import API from '~/services/api';
 
 interface State {
   indicators: Indicator[] | null;
@@ -25,16 +26,15 @@ export const useIndicator = create<State>()(
       },
       setFavoriteIndicator: async (favoriteIndicator) => {
         set({ favoriteIndicator });
-        const matomoId = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
-        // API.post({
-        //   path: '/user',
-        //   body: {
-        //     matomoId,
-        //     municipality_insee_code: municipality.code,
-        //     municipality_nom: municipality.nom,
-        //     municipality_zip_code: JSON.stringify(municipality.codesPostaux),
-        //   },
-        // });
+        const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
+        API.post({
+          path: '/user',
+          body: {
+            matomo_id,
+            favorite_indicator: favoriteIndicator?.slug,
+          },
+          // TODO: handle error
+        });
       },
       _hasHydrated: false,
       setHasHydrated: (hydrationState) => {
