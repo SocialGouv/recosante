@@ -18,7 +18,7 @@ import indicatorRouter from './controllers/indicator.ts';
 // import getPollensIndicator from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
 // import { getUltraVioletIndicator } from './aggregators/ultra-violet.ts';
-import { getAtmoIndicator } from './aggregators/atmo.ts';
+// import { getAtmoIndicator } from './aggregators/atmo.ts';
 
 // Put together a schema
 const app = express();
@@ -82,7 +82,7 @@ app.post('/sentry-check', async (req, res) => {
 // getPollensIndicator();
 // getWeatherAlert();
 // getUltraVioletIndicator();
-getAtmoIndicator();
+// getAtmoIndicator();
 
 // check version before checking other controllers
 // @ts-expect-error TODO: Fix this when using version-check.ts
