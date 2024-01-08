@@ -19,15 +19,16 @@ const useCommune = create<MuniciaplityState>()(
       municipality: null,
       setCommune: async (municipality) => {
         set({ municipality });
-        const matomoId = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
+        const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
         API.post({
           path: '/user',
           body: {
-            matomoId,
+            matomo_id,
             municipality_insee_code: municipality.code,
             municipality_nom: municipality.nom,
             municipality_zip_code: JSON.stringify(municipality.codesPostaux),
           },
+          // TODO: handle error
         });
       },
       _hasHydrated: false,

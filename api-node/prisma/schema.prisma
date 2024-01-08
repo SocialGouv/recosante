@@ -8,15 +8,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum NotifationEnum {
+  morning
+  evening
+  alert
+}
+
 model User {
-  id                      String   @id @default(uuid())
-  matomo_id               String   @unique
-  municipality_insee_code String? // code INSEE
-  municipality_name       String?
-  municipality_zip_code   String?
-  push_notif_token        String?
-  created_at              DateTime @default(now())
-  updated_at              DateTime @default(now()) @updatedAt
+  id                       String              @id @default(uuid())
+  matomo_id                String              @unique
+  municipality_insee_code  String? // code INSEE
+  municipality_name        String?
+  municipality_zip_code    String?
+  push_notif_token         String?
+  created_at               DateTime            @default(now())
+  updated_at               DateTime            @default(now()) @updatedAt
+  favorite_indicator       IndicatorsSlugEnum?
+  notifications_preference NotifationEnum[]
 
   @@index([push_notif_token], type: Hash)
 }

@@ -18,13 +18,13 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
     <View
       className={cn(
         '   mx-auto my-5 basis-[47%]  rounded-2xl bg-white p-2 ',
-        `${props.isFavorite ? 'border-app-green mx-2 -mt-2 border-[3px]' : ''}
+        `${props.isFavorite ? 'mx-2 -mt-2 border-[3px] border-app-green' : ''}
     }`,
       )}
     >
       <View className="flex flex-row justify-between">
         <View className=" flex w-full justify-center">
-          <View className=" bg-app-green  -top-6 mx-auto  items-center rounded-full px-6 py-1">
+          <View className=" -top-6  mx-auto items-center  rounded-full bg-app-green px-6 py-1">
             <MyText font="MarianneBold" className="uppercase">
               Moyen
             </MyText>

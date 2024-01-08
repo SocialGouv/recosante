@@ -66,7 +66,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   const hideIndicatorsList = Boolean(favoriteIndicator?.id);
   return (
     <>
-      <View className="bg-app-gray  flex items-center justify-start px-4 py-4">
+      <View className="flex  items-center justify-start bg-app-gray px-4 py-4">
         <View className="top-4 flex w-full  items-end">
           <Pressable className="top-6 w-fit rounded-full  bg-app-primary p-3 text-sm text-white">
             <LocationIcon />
@@ -83,7 +83,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
             <View className="flex flex-row items-center">
               <MyText
                 font="MarianneRegular"
-                className="text-md text-app-gray-100 mt-2 uppercase"
+                className="text-md mt-2 uppercase text-app-gray-100"
               >
                 {municipality?.nom}
               </MyText>
