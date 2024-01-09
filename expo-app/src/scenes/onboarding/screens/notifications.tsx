@@ -3,13 +3,14 @@ import { View } from 'react-native';
 import Button from '~/components/ui/button';
 import MyText from '~/components/ui/my-text';
 import { Skip } from '../skip';
-import { OnboardingRouteEnum, RouteEnum } from '~/constants/route';
 import { Illu_4 } from '~/assets/onboarding/illu_4';
+import { registerForPushNotificationsAsync } from '~/services/expo-push-notifs';
+import { RouteEnum } from '~/constants/route';
 
-export function Screen4({ navigation }: { navigation: any }) {
+export function Notifications({ navigation }: { navigation: any }) {
   return (
     <View className="flex flex-1 items-center justify-around bg-app-primary">
-      <Skip navigation={navigation} target={3} />
+      <Skip onPress={() => navigation.navigate(RouteEnum.HOME)} />
       <MyText
         font="MarianneExtraBold"
         className="text-center text-3xl text-white"
@@ -29,8 +30,12 @@ export function Screen4({ navigation }: { navigation: any }) {
       </MyText>
       <View>
         <Button
-          onPress={() => {
-            navigation.navigate(OnboardingRouteEnum.SCREEN_5);
+          onPress={async () => {
+            await registerForPushNotificationsAsync({
+              force: true,
+              expo: true,
+            });
+            navigation.navigate(RouteEnum.HOME);
           }}
           viewClassName="bg-app-yellow p-4"
           textClassName="text-black"

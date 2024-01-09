@@ -9,9 +9,7 @@ export enum RouteEnum {
 }
 
 export enum OnboardingRouteEnum {
-  SCREEN_1 = 'SCREEN_1',
-  SCREEN_2 = 'SCREEN_2',
-  SCREEN_3 = 'SCREEN_3',
-  SCREEN_4 = 'SCREEN_4',
-  SCREEN_5 = 'SCREEN_5',
+  WELCOME = 'WELCOME',
+  GEOLOCATION = 'GEOLOCATION',
+  NOTIFICATIONS = 'NOTIFICATIONS',
 }

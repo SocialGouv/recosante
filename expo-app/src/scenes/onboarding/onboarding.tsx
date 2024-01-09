@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Screen1 } from './screens/screen_1';
-import { Screen2 } from './screens/screen_2';
-import { Screen3 } from './screens/screen_3';
+import { Welcome } from './screens/welcome';
+import { Geolocation } from './screens/geolocation';
+import { Notifications } from './screens/notifications';
 import { Screen4 } from './screens/screen_4';
 import { Screen5 } from './screens/screen_5';
 
@@ -16,24 +16,16 @@ export function Onboarding() {
     <SafeAreaView className="flex flex-1 bg-app-primary px-4">
       <OnboardingStack.Navigator screenOptions={{ headerShown: false }}>
         <OnboardingStack.Screen
-          name={OnboardingRouteEnum.SCREEN_1}
-          component={Screen1}
+          name={OnboardingRouteEnum.WELCOME}
+          component={Welcome}
         />
         <OnboardingStack.Screen
-          name={OnboardingRouteEnum.SCREEN_2}
-          component={Screen2}
+          name={OnboardingRouteEnum.GEOLOCATION}
+          component={Geolocation}
         />
         <OnboardingStack.Screen
-          name={OnboardingRouteEnum.SCREEN_3}
-          component={Screen3}
-        />
-        <OnboardingStack.Screen
-          name={OnboardingRouteEnum.SCREEN_4}
-          component={Screen4}
-        />
-        <OnboardingStack.Screen
-          name={OnboardingRouteEnum.SCREEN_5}
-          component={Screen5}
+          name={OnboardingRouteEnum.NOTIFICATIONS}
+          component={Notifications}
         />
       </OnboardingStack.Navigator>
     </SafeAreaView>
