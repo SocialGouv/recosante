@@ -10,28 +10,19 @@ import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 
-export function DashboardPage({ navigation }: { navigation: any }) {
+export function DashboardPage() {
   const { setFavoriteIndicator, favoriteIndicator, indicators, setIndicators } =
     useIndicator((state) => state);
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
   useEffect(() => {
     let ignore = false;
-    setIndicators([]);
-    async function getIndicators() {
-      return Api.get({
-        path: '/indicators',
-      }).then((response) => {
-        const indicators = response.data as Indicator[];
-        setIndicators(indicators);
-        if (!ignore) {
-          if (!response.ok) {
-            setError(response.error);
-          } else setIndicators(indicators);
-        }
-      });
-    }
-    getIndicators();
+    Api.get({ path: '/indicators' }).then((response) => {
+      const indicators = response.data as Indicator[];
+      if (!!ignore) return;
+      if (!response.ok) return setError(response.error);
+      setIndicators(indicators);
+    });
     return () => {
       ignore = true;
     };
@@ -80,11 +71,8 @@ export function DashboardPage({ navigation }: { navigation: any }) {
         </View>
 
         <IndicatorSelectorSheet
-          handleSubmit={handleSubmit}
           indicators={indicators}
           favoriteIndicator={favoriteIndicator}
-          setFavoriteIndicator={setFavoriteIndicator}
-          navigation={navigation}
         />
 
         <IndicatorDetail />

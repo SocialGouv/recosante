@@ -7,11 +7,8 @@ import { IndicatorsSelector } from '~/components/indicators/indicators-selector'
 import { Indicator } from '~/types/indicator';
 
 interface IndicatorSelectorSheetProps {
-  navigation: any;
   indicators: Indicator[] | null;
   favoriteIndicator: Indicator | null;
-  setFavoriteIndicator: (indicator: Indicator | null) => void;
-  handleSubmit: (indicator: Indicator | null) => void;
 }
 export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -23,11 +20,6 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
 
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
-  }
-
-  function onSubmit(indicator: Indicator | null) {
-    props.handleSubmit(indicator);
-    closeBottomSheet();
   }
 
   if (props.favoriteIndicator?.slug) {
@@ -44,12 +36,13 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
           onChange={handleSheetChanges}
         >
           <View className="flex flex-1 bg-app-primary p-6">
+            <MyText className="mb-4 text-white">
+              Sélectionnez votre indicateur favori&nbsp;?
+            </MyText>
             <IndicatorsSelector
-              onSubmit={onSubmit}
-              navigation={props.navigation}
+              onSubmit={closeBottomSheet}
               indicators={props.indicators}
               favoriteIndicator={props.favoriteIndicator}
-              setFavoriteIndicator={props.setFavoriteIndicator}
             />
           </View>
         </BottomSheet>
