@@ -82,7 +82,7 @@ app.post('/sentry-check', async (req, res) => {
 
 // getPollensIndicator();
 // getWeatherAlert();
-getIndiceUVIndicator();
+// getIndiceUVIndicator();
 // getAtmoIndicator();
 
 // check version before checking other controllers

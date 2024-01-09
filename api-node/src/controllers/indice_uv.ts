@@ -1,3 +1,4 @@
+import fs from 'fs';
 import express from 'express';
 import { catchErrors } from '~/middlewares/errors';
 import { CustomError } from '~/types/error';
@@ -8,6 +9,17 @@ import dayjs from 'dayjs';
 import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
 import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
 import { DataAvailabilityEnum } from '@prisma/client';
+const indiceUvRecommendationsMd = fs.readFileSync(
+  './data/recommandations/indice_uv.md',
+  'utf8',
+);
+const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
+
+// convert md list to array of strings
+const recommendations = indiceUvRecommendationsMd
+  .split('\n')
+  .filter((line) => line.startsWith('- '))
+  .map((line) => line.replace('- ', ''));
 
 router.get(
   '/:municipality_insee_code/:date_ISO',
@@ -62,6 +74,8 @@ router.get(
         diffusion_date: indice_uv.diffusion_date,
         created_at: indice_uv.created_at,
         updated_at: indice_uv.updated_at,
+        recommendations,
+        about: indiceUvAboutMd,
         j0: {
           indice_uv_value: indice_uv.uv_j0,
           indice_uv_color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),

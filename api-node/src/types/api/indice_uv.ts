@@ -47,6 +47,8 @@ export interface IndiceUVAPIData
     IndiceUv,
     'data_availability' | 'uv_j0' | 'uv_j1' | 'uv_j2' | 'uv_j3'
   > {
+  recommendations: Array<string>;
+  about: string;
   j0: IndiceUVDay;
   j1?: IndiceUVDay;
 }
