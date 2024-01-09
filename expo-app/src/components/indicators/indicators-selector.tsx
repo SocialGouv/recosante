@@ -36,7 +36,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
                border-white border-2 rounded-full p-4 my-2 `,
             )}
             textClassName="text-white text-md "
-            key={indicator.id}
+            key={indicator.slug}
             icon={IndicatorService.getIconBySlug(indicator.slug)}
           >
             {indicator.name}

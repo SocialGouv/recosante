@@ -24,6 +24,7 @@ export const useIndicator = create<State>()(
       setIndicators: async (indicators) => {
         set({ indicators });
       },
+
       setFavoriteIndicator: async (favoriteIndicator) => {
         set({ favoriteIndicator });
         const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
@@ -52,3 +53,14 @@ export const useIndicator = create<State>()(
     },
   ),
 );
+
+interface SelectedState {
+  selectedIndicator: Indicator | null;
+  setSelectedIndicator: (indicator: Indicator | null) => void;
+}
+export const useSelectedIndicator = create<SelectedState>()((set, _get) => ({
+  selectedIndicator: null,
+  setSelectedIndicator: async (selectedIndicator) => {
+    set({ selectedIndicator });
+  },
+}));
