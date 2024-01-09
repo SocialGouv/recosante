@@ -15,13 +15,13 @@ enum NotifationEnum {
 }
 
 enum IndicatorsSlugEnum {
-  ultra_violet
-  pollen
-  weather
   indice_atmospheric
-  pollution_atmospheric
-  air_quality
-  water
+  indice_uv
+  pollen_allergy
+  weather_alert
+  episode_pollution_atmospheric
+  tap_water
+  bathing_water
 }
 
 model User {
