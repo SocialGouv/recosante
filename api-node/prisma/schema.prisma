@@ -14,6 +14,16 @@ enum NotifationEnum {
   alert
 }
 
+enum IndicatorsSlugEnum {
+  ultra_violet
+  pollen
+  weather
+  indice_atmospheric
+  pollution_atmospheric
+  air_quality
+  water
+}
+
 model User {
   id                       String              @id @default(uuid())
   matomo_id                String              @unique
@@ -179,20 +189,4 @@ model AlertPollutionAtmospheric {
   code                    PollutionCodeEnum
   comment_short           String
   comment_long            String
-}
-
-enum IndicatorsSlugEnum {
-  ultra_violet
-  pollen
-  weather
-  indice_atmospheric
-  pollution_atmospheric
-  air_quality
-  water
-}
-
-model Indicators {
-  id   String             @id @default(uuid())
-  name String             @unique
-  slug IndicatorsSlugEnum @unique
 }
