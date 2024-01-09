@@ -7,6 +7,7 @@ import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
 import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
+import { DataAvailabilityEnum } from '@prisma/client';
 
 router.get(
   '/:municipality_insee_code/:date_ISO',
@@ -26,7 +27,7 @@ router.get(
         }).parse(_req.query);
       } catch (zodError) {
         const error = new Error(
-          `Invalid request in person delete: ${zodError}`,
+          `Invalid request in GET /indice_uv/:municipality_insee_code/:date_ISO: ${zodError}`,
         ) as CustomError;
         error.status = 400;
         return next(error);
@@ -37,7 +38,7 @@ router.get(
       const indice_uv = await prisma.indiceUv.findFirst({
         where: {
           municipality_insee_code,
-          data_availability: 'AVAILABLE',
+          data_availability: DataAvailabilityEnum.AVAILABLE,
           validity_start: {
             gte: dayjs(date_ISO).startOf('day').toISOString(),
           },
@@ -45,7 +46,7 @@ router.get(
         orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
       });
 
-      if (!indice_uv || !indice_uv.uv_j0) {
+      if (!indice_uv?.uv_j0) {
         const error = new Error(
           `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_ISO=${date_ISO}`,
         ) as CustomError;

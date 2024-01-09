@@ -4,7 +4,7 @@ import type {
   IndiceUVColor,
 } from '~/types/api/indice_uv';
 
-const getIndiceUVLabel = (indice_uv: IndiceUVNumber): IndiceUVLabel => {
+function getIndiceUVLabel(indice_uv: IndiceUVNumber): IndiceUVLabel {
   if (indice_uv >= 11) {
     return 'Extrême';
   } else if (indice_uv >= 8) {
@@ -18,9 +18,9 @@ const getIndiceUVLabel = (indice_uv: IndiceUVNumber): IndiceUVLabel => {
   } else {
     return 'Nul';
   }
-};
+}
 
-const getIndiceUVColor = (indice_uv: IndiceUVNumber): IndiceUVColor => {
+function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
   if (indice_uv >= 11) {
     return '#B600AE';
   } else if (indice_uv >= 8) {
@@ -34,6 +34,6 @@ const getIndiceUVColor = (indice_uv: IndiceUVNumber): IndiceUVColor => {
   } else {
     return '#757575';
   }
-};
+}
 
 export { getIndiceUVLabel, getIndiceUVColor };
