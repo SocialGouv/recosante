@@ -1,5 +1,5 @@
 import { CustomError } from '~/types/error';
-// import { capture } from '../third-parties/sentry.js';
+import { capture } from '../third-parties/sentry.js';
 import express from 'express';
 /*
   Catch Errors Handler
@@ -48,13 +48,24 @@ const notFound = (
 const sendError = (
   // TODO: Check this error type
   err: CustomError,
-  _req: express.Request,
+  req: express.Request,
   res: express.Response,
   _next: express.NextFunction,
 ) => {
-  // const { body, query, user, params, route, method, originalUrl, headers } = req;
-  // const { appversion, appdevice } = headers;
-  // capture(err, { extra: { body, query, params, route, method, originalUrl, appversion, appdevice }, user });
+  const { body, query, params, route, method, originalUrl, headers } = req;
+  const { appversion, appdevice } = headers;
+  capture(err, {
+    extra: {
+      body,
+      query,
+      params,
+      route,
+      method,
+      originalUrl,
+      appversion,
+      appdevice,
+    },
+  });
 
   return res.status(err.status || 500).send({
     ok: false,
