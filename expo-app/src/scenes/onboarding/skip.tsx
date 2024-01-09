@@ -2,8 +2,7 @@ import { View } from 'react-native';
 import Button from '~/components/ui/button';
 
 interface SkipProps {
-  navigation: any;
-  target: number;
+  onPress: () => void;
 }
 
 const PATH = 'SCREEN_';
@@ -11,9 +10,7 @@ export function Skip(props: SkipProps) {
   return (
     <View className="absolute top-4 flex w-full justify-end ">
       <Button
-        onPress={() => {
-          props.navigation.navigate(`${PATH}${props.target}`);
-        }}
+        onPress={props.onPress}
         textClassName="text-right text-white text-sm"
         font="MarianneRegular"
       >

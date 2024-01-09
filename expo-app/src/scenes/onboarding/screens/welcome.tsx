@@ -7,10 +7,14 @@ import MyText from '~/components/ui/my-text';
 import { Skip } from '../skip';
 import { OnboardingRouteEnum } from '~/constants/route';
 
-export function Screen1({ navigation }: { navigation: any }) {
+export function Welcome({ navigation }: { navigation: any }) {
   return (
     <View className="flex flex-1 items-center justify-around bg-app-primary">
-      <Skip navigation={navigation} target={2} />
+      <Skip
+        onPress={() => {
+          navigation.navigate(OnboardingRouteEnum.GEOLOCATION);
+        }}
+      />
       <Logo />
       <Illu_1 />
 
@@ -23,7 +27,7 @@ export function Screen1({ navigation }: { navigation: any }) {
       <View className="mt-4">
         <Button
           onPress={() => {
-            navigation.navigate(OnboardingRouteEnum.SCREEN_2);
+            navigation.navigate(OnboardingRouteEnum.GEOLOCATION);
           }}
           viewClassName="bg-app-yellow p-4"
           textClassName="text-black"
