@@ -15,7 +15,7 @@ web-build/
 *.p12
 *.key
 *.mobileprovision
-
+!splash.key
 # Metro
 .metro-health-check*
 
