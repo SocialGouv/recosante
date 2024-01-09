@@ -8,20 +8,20 @@ import { WeatherIcon } from '~/assets/icons/indicators/weather';
 export namespace IndicatorService {
   export function getIconBySlug(slug: IndicatorsSlugEnum) {
     switch (slug) {
-      case IndicatorsSlugEnum.ultra_violet:
-        return <UltraVioletIcon />;
-      case IndicatorsSlugEnum.pollen:
-        return <PollensIcon />;
-      case IndicatorsSlugEnum.weather:
-        return <WeatherIcon />;
       case IndicatorsSlugEnum.indice_atmospheric:
         return <AirIcon />;
-      case IndicatorsSlugEnum.pollution_atmospheric:
+      case IndicatorsSlugEnum.indice_uv:
+        return <UltraVioletIcon />;
+      case IndicatorsSlugEnum.pollen_allergy:
+        return <PollensIcon />;
+      case IndicatorsSlugEnum.weather_alert:
+        return <WeatherIcon />;
+      case IndicatorsSlugEnum.episode_pollution_atmospheric:
         return <AirIcon />;
-      case IndicatorsSlugEnum.water:
+      case IndicatorsSlugEnum.tap_water:
         return <WaterIcon />;
-      case IndicatorsSlugEnum.air_quality:
-        return <AirIcon />;
+      case IndicatorsSlugEnum.bathing_water:
+        return <WaterIcon />;
       default:
         throw new Error('No icon found');
     }
@@ -29,19 +29,19 @@ export namespace IndicatorService {
 
   export function getDescriptionBySlug(slug: IndicatorsSlugEnum) {
     switch (slug) {
-      case IndicatorsSlugEnum.ultra_violet:
-        return 'Appliquez une crème solaire et portez des vêtements protecteurs pour vous protéger du soleil.';
-      case IndicatorsSlugEnum.pollen:
-        return "En cas d'allergie diagnostiquée, penser à prendre le traitement prescrit par votre médecin.";
-      case IndicatorsSlugEnum.weather:
-        return 'Anticipez les variations météorologiques en portant des vêtements adaptés à tout changement de température.';
       case IndicatorsSlugEnum.indice_atmospheric:
+        return 'Appliquez une crème solaire et portez des vêtements protecteurs pour vous protéger du soleil.';
+      case IndicatorsSlugEnum.indice_uv:
         return "En cas d'allergie diagnostiquée, penser à prendre le traitement prescrit par votre médecin.";
-      case IndicatorsSlugEnum.pollution_atmospheric:
-        return "En cas d'allergie diagnostiquée, penser à prendre le traitement prescrit par votre médecin.";
-      case IndicatorsSlugEnum.water:
+      case IndicatorsSlugEnum.pollen_allergy:
         return 'Anticipez les variations météorologiques en portant des vêtements adaptés à tout changement de température.';
-      case IndicatorsSlugEnum.air_quality:
+      case IndicatorsSlugEnum.weather_alert:
+        return "En cas d'allergie diagnostiquée, penser à prendre le traitement prescrit par votre médecin.";
+      case IndicatorsSlugEnum.episode_pollution_atmospheric:
+        return "En cas d'allergie diagnostiquée, penser à prendre le traitement prescrit par votre médecin.";
+      case IndicatorsSlugEnum.tap_water:
+        return 'Anticipez les variations météorologiques en portant des vêtements adaptés à tout changement de température.';
+      case IndicatorsSlugEnum.bathing_water:
         return 'Anticipez les variations météorologiques en portant des vêtements adaptés à tout changement de température.';
       default:
         throw new Error('No description found');

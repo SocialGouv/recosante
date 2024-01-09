@@ -5,11 +5,11 @@ export type Indicator = {
 };
 
 export enum IndicatorsSlugEnum {
-  ultra_violet = 'ultra_violet',
-  pollen = 'pollen',
-  weather = 'weather',
   indice_atmospheric = 'indice_atmospheric',
-  pollution_atmospheric = 'pollution_atmospheric',
-  water = 'water',
-  air_quality = 'air_quality',
+  indice_uv = 'indice_uv',
+  pollen_allergy = 'pollen_allergy',
+  weather_alert = 'weather_alert',
+  episode_pollution_atmospheric = 'episode_pollution_atmospheric',
+  tap_water = 'tap_water',
+  bathing_water = 'bathing_water',
 }
