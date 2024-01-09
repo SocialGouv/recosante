@@ -56,7 +56,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
         ) : null}
         <View className=" mx-3 flex flex-1  flex-row flex-wrap pb-24">
           {filteredIndicators?.map((indicator) => (
-            <IndicatorPreview key={indicator.id} indicator={indicator} />
+            <IndicatorPreview key={indicator.slug} indicator={indicator} />
           ))}
         </View>
       </ScrollView>

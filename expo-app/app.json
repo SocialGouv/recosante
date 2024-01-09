@@ -12,13 +12,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.recosante.recosante"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1f0085"
-      }
+      },
+      "package": "com.recosante.recosante"
     },
     "web": {
       "favicon": "./assets/favicon.png"

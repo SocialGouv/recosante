@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { Indicator } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
@@ -8,6 +8,7 @@ import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
 import { randomIndicatorData } from './mocks/fake';
+import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
 
 interface IndicatorPreviewProps {
   indicator: Indicator;
@@ -16,7 +17,12 @@ interface IndicatorPreviewProps {
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
   const { municipality } = useMunicipality((state) => state);
+  const { setSelectedIndicator } = useSelectedIndicator((state) => state);
   const { status, color, value } = randomIndicatorData();
+
+  function handleSelect() {
+    setSelectedIndicator(props.indicator);
+  }
   return (
     <View
       style={{
@@ -40,9 +46,9 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
               {status}
             </MyText>
           </View>
-          <View className="-top-6 flex items-end">
+          <Pressable className="-top-6 flex items-end" onPress={handleSelect}>
             <Info />
-          </View>
+          </Pressable>
 
           <MyText
             className="text-wrap text-md uppercase text-black"

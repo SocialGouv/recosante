@@ -1,24 +1,20 @@
-import { View, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
-import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
-import { Portal, PortalHost } from '@gorhom/portal';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
-import BottomSheet from '@gorhom/bottom-sheet';
-import Button from '~/components/ui/button';
 import { LocationIcon } from '~/assets/icons/location';
-import { IndicatorsSelector } from '~/components/indicators/indicators-selector';
 import { useIndicator } from '~/zustand/indicator/useIndicator';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import { Indicator } from '~/types/indicator';
 import Api from '~/services/api';
 import useMunicipality from '~/zustand/municipality/useMunicipality';
+import { IndicatorDetail } from './indicator-detail';
+import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 
 export function DashboardPage({ navigation }: { navigation: any }) {
   const { setFavoriteIndicator, favoriteIndicator, indicators, setIndicators } =
     useIndicator((state) => state);
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
-
   useEffect(() => {
     let ignore = false;
     setIndicators([]);
@@ -41,23 +37,10 @@ export function DashboardPage({ navigation }: { navigation: any }) {
     };
   }, []);
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const handleSheetChanges = useCallback((index: number) => {
-    // console.log('handleSheetChanges', index);
-  }, []);
-
-  function closeBottomSheet() {
-    bottomSheetRef.current?.close();
-  }
-
   function handleSubmit(indicator: Indicator | null) {
     setFavoriteIndicator(indicator);
-    closeBottomSheet();
   }
 
-  const hideIndicatorsList = Boolean(favoriteIndicator?.id);
   if (error) {
     return (
       <View>
@@ -65,6 +48,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
       </View>
     );
   }
+
   return (
     <>
       <View className="flex  items-center justify-start bg-app-gray px-4 py-4">
@@ -95,27 +79,15 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           ) : null}
         </View>
 
-        {hideIndicatorsList ? null : (
-          <Portal>
-            <BottomSheet
-              ref={bottomSheetRef}
-              index={2}
-              snapPoints={snapPoints}
-              onChange={handleSheetChanges}
-            >
-              <View className="flex flex-1 bg-app-primary p-6">
-                <IndicatorsSelector
-                  onSubmit={handleSubmit}
-                  navigation={navigation}
-                  indicators={indicators}
-                  favoriteIndicator={favoriteIndicator}
-                  setFavoriteIndicator={setFavoriteIndicator}
-                />
-              </View>
-            </BottomSheet>
-          </Portal>
-        )}
-        <PortalHost name="indicators-list" />
+        <IndicatorSelectorSheet
+          handleSubmit={handleSubmit}
+          indicators={indicators}
+          favoriteIndicator={favoriteIndicator}
+          setFavoriteIndicator={setFavoriteIndicator}
+          navigation={navigation}
+        />
+
+        <IndicatorDetail />
       </View>
       <IndicatorsListPreview
         indicators={indicators}
