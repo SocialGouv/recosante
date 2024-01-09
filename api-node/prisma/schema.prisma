@@ -48,18 +48,21 @@ model IndiceUv {
   id String @id @default(uuid())
 
   // common fields for all indicators
+  municipality_insee_code String
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   created_at              DateTime              @default(now())
   updated_at              DateTime              @default(now()) @updatedAt
-  municipality_insee_code String
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
   uv_j0                   Int? // the day of validity_start
   uv_j1                   Int? // the day + 1 of validity_start
   uv_j2                   Int? // the day + 2 of validity_start
   uv_j3                   Int? // the day + 3 of validity_start
+
+  // index by municipality_insee_code and diffusion_date desc and validity_start asc
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "indice_uv_municipality_insee_code_diffusion_date_validity_start")
 }
 
 // REAP - Risque d'Exposition aux Allergènes Polliniques

@@ -14,10 +14,11 @@ import { capture } from './third-parties/sentry.ts';
 import eventRouter from './controllers/event.ts';
 import userRouter from './controllers/user.ts';
 import indicatorRouter from './controllers/indicator.ts';
+import indiceUvRouter from './controllers/indice_uv.ts';
 
 // import getPollensIndicator from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
-// import { getUltraVioletIndicator } from './aggregators/ultra-violet.ts';
+import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
 // import { getAtmoIndicator } from './aggregators/atmo.ts';
 
 // Put together a schema
@@ -81,7 +82,7 @@ app.post('/sentry-check', async (req, res) => {
 
 // getPollensIndicator();
 // getWeatherAlert();
-// getUltraVioletIndicator();
+getIndiceUVIndicator();
 // getAtmoIndicator();
 
 // check version before checking other controllers
@@ -92,6 +93,7 @@ app.use(versionCheck);
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/indicators', indicatorRouter);
+app.use('/indice-uv', indiceUvRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
