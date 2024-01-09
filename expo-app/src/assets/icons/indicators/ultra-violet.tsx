@@ -3,7 +3,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 export function UltraVioletIcon() {
   return (
-    <Svg width={35} height={33} viewBox="0 0 35 33" fill="none">
+    <Svg className="h-9 w-9" viewBox="0 0 35 33" fill="none">
       <Circle cx={17.5011} cy={15.5001} r={8.55186} fill="#fff" />
       <Path
         d="M17.501 24.052a8.552 8.552 0 01-7.322-12.97l7.322 4.418v8.552z"

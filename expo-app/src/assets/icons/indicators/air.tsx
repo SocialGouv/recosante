@@ -3,7 +3,7 @@ import Svg, { Mask, Path, G, Circle } from 'react-native-svg';
 
 export function AirIcon() {
   return (
-    <Svg width={36} height={36} viewBox="0 0 36 36" fill="none">
+    <Svg className="h-9 w-9" viewBox="0 0 36 36" fill="none">
       <Mask
         id="a"
         maskUnits="userSpaceOnUse"

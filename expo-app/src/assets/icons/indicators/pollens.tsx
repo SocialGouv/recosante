@@ -3,7 +3,7 @@ import Svg, { Circle } from 'react-native-svg';
 
 export function PollensIcon() {
   return (
-    <Svg width={21} height={31} viewBox="0 0 21 31" fill="none">
+    <Svg className="h-9 w-9" viewBox="0 0 21 31" fill="none">
       <Circle
         cx={4.50025}
         cy={4.50025}
