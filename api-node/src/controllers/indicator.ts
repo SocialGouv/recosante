@@ -8,32 +8,32 @@ router.get(
   catchErrors(async (_req: express.Request, res: express.Response) => {
     const indicators: Indicator[] = [
       {
-        name: 'Indice Atmosphérique',
+        name: 'Indice ATMO',
         slug: 'indice_atmospheric',
       },
       {
         name: 'Indice UV',
-        slug: 'ultra_violet',
+        slug: 'indice_uv',
       },
       {
         name: 'Allergie aux Pollens',
-        slug: 'pollen',
+        slug: 'pollen_allergy',
       },
       {
         name: 'Alerte Météo',
-        slug: 'weather',
+        slug: 'weather_alert',
       },
+      // {
+      //   name: 'Épisode Pollution Atmosphérique',
+      //   slug: 'episode_pollution_atmospheric',
+      // },
+      // {
+      //   name: 'Eau du robinet',
+      //   slug: 'tap_water',
+      // },
       {
-        name: 'Pollution Atmosphérique',
-        slug: 'pollution_atmospheric',
-      },
-      {
-        name: "Qualité de l'air",
-        slug: 'air_quality',
-      },
-      {
-        name: 'Eau',
-        slug: 'water',
+        name: 'Eau de baignades',
+        slug: 'bathing_water',
       },
     ];
     return res.status(200).send({ ok: true, data: indicators });
