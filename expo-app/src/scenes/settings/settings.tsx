@@ -24,16 +24,7 @@ export function SettingsPage({ navigation }: { navigation: any }) {
           text="Votre indicateur favoris"
           onPress={() => Alert.alert('TODO')}
         />
-        <Title label="Données personnelles" />
 
-        <TextRow
-          text="Changer votre email"
-          onPress={() => Alert.alert('TODO')}
-        />
-        <TextRow
-          text="Supprimer votre compte"
-          onPress={() => Alert.alert('TODO')}
-        />
         <Pressable onPress={() => Alert.alert('TODO')}>
           <MyText
             font="MarianneExtraBold"
