@@ -56,7 +56,6 @@ router.get(
       next: express.NextFunction,
     ) => {
       try {
-        z.object({}).parse(_req.params);
         z.object({
           municipality_insee_code: z.string().length(5),
           date_ISO: z.string().length(24),
@@ -110,8 +109,6 @@ router.get(
         episode_pollution_atmospheric: example,
         tap_water: example,
       };
-
-      console.log('data', data);
 
       return res.status(200).send({ ok: true, data });
     },
