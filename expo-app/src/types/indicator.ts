@@ -1,9 +1,13 @@
-export type Indicator = {
+export type IndicatorItem = {
   name: string;
   slug: IndicatorsSlugEnum;
 };
 
 export type IndicatorDay = 'j0' | 'j1';
+
+export type IndicatorsDto = Partial<
+  Record<IndicatorsSlugEnum, IndicatorCommonData>
+>;
 
 export enum IndicatorsSlugEnum {
   indice_atmospheric = 'indice_atmospheric',
@@ -15,7 +19,7 @@ export enum IndicatorsSlugEnum {
   bathing_water = 'bathing_water',
 }
 
-type DataDay = {
+type IndicatorDataPerDay = {
   value: number;
   color: string;
   label: string;
@@ -34,6 +38,6 @@ export type IndicatorCommonData = {
   updated_at: string;
   recommendations: Array<string>;
   about: string;
-  j0: DataDay; // specific to each indicator
-  j1?: DataDay; // specific to each indicator
+  j0: IndicatorDataPerDay; // specific to each indicator
+  j1?: IndicatorDataPerDay; // specific to each indicator
 };

@@ -4,10 +4,10 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { IndicatorsSelector } from '~/components/indicators/indicators-selector';
-import { Indicator } from '~/types/indicator';
+import { IndicatorItem } from '~/types/indicator';
 
 interface IndicatorSelectorSheetProps {
-  indicators: Indicator[] | null;
+  indicators: IndicatorItem[] | null;
 }
 export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
