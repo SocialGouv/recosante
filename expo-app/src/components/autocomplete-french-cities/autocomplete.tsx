@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   inputContainerStyle: {
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 200,
   },
   suggestionsListContainerStyle: {
     backgroundColor: '#fff',
