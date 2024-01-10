@@ -1,29 +1,21 @@
-import { useMemo, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { useMemo } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { IndicatorPreview } from '~/components/indicators/indicator-preview';
 import { Indicator } from '~/types/indicator';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+const Tab = createMaterialTopTabNavigator();
+
+const tabsEnum = {
+  TODAY: "Aujourd'hui",
+  TOMORROW: 'Demain',
+};
 
 interface IndicatorsListPreviewProps {
   indicators: Indicator[] | null;
   favoriteIndicator: Indicator | null;
 }
-
-const tabs = [
-  { key: 'today', title: "Aujourd'hui" },
-  { key: 'tomorow', title: 'Demain' },
-];
-
 export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
-  const [routes] = useState(tabs);
-
   //   Remove the favorite indicator from the list of indicators
   const filteredIndicators = useMemo(
     () =>
@@ -34,18 +26,6 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   );
   if (!props.indicators) {
     return null;
-  }
-  function renderTabBar(props: any) {
-    return (
-      <TabBar
-        {...props}
-        indicatorStyle={{ backgroundColor: 'black' }}
-        labelStyle={{ color: 'black' }}
-        style={{
-          backgroundColor: '#ECF1FB',
-        }}
-      />
-    );
   }
 
   function IndicatorListView() {
@@ -63,27 +43,16 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
     );
   }
 
-  function TodayRoute() {
-    return <IndicatorListView />;
-  }
-
-  function TomorowRoute() {
-    return <IndicatorListView />;
-  }
-
-  const renderScene = SceneMap({
-    today: TodayRoute,
-    tomorow: TomorowRoute,
-  });
   return (
-    <TabView
-      renderTabBar={renderTabBar}
-      className="flex  flex-1 bg-app-gray "
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      initialLayout={{ width: layout.width, height: layout.height }}
-    />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: { backgroundColor: '#ECF1FB' },
+        tabBarLabelStyle: { fontWeight: 'bold' },
+      }}
+    >
+      <Tab.Screen name={tabsEnum.TODAY} component={IndicatorListView} />
+      <Tab.Screen name={tabsEnum.TOMORROW} component={IndicatorListView} />
+    </Tab.Navigator>
   );
 }
 const styles = StyleSheet.create({
