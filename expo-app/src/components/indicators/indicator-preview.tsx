@@ -1,5 +1,5 @@
 import { View, Pressable } from 'react-native';
-import { Indicator, IndicatorDate } from '~/types/indicator';
+import { Indicator, IndicatorDay } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -16,7 +16,7 @@ import { IndicatorCommonData } from '~/types/indicator';
 interface IndicatorPreviewProps {
   indicator: Indicator;
   isFavorite?: boolean;
-  date: IndicatorDate;
+  day: IndicatorDay;
 }
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {

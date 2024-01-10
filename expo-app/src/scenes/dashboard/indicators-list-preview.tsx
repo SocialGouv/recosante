@@ -28,15 +28,23 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
     return null;
   }
 
-  function IndicatorListView() {
+  function IndicatorListView({ navigation, route }: any) {
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {props.favoriteIndicator ? (
-          <IndicatorPreview indicator={props.favoriteIndicator} isFavorite />
+          <IndicatorPreview
+            day={route.day}
+            indicator={props.favoriteIndicator}
+            isFavorite
+          />
         ) : null}
         <View className=" mx-3 flex flex-1  flex-row flex-wrap pb-24">
           {filteredIndicators?.map((indicator) => (
-            <IndicatorPreview key={indicator.slug} indicator={indicator} />
+            <IndicatorPreview
+              day={route.day}
+              key={indicator.slug}
+              indicator={indicator}
+            />
           ))}
         </View>
       </ScrollView>
@@ -50,8 +58,16 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
         tabBarLabelStyle: { fontWeight: 'bold' },
       }}
     >
-      <Tab.Screen name={tabsEnum.TODAY} component={IndicatorListView} />
-      <Tab.Screen name={tabsEnum.TOMORROW} component={IndicatorListView} />
+      <Tab.Screen
+        name={tabsEnum.TODAY}
+        component={IndicatorListView}
+        initialParams={{ day: 'j0' }}
+      />
+      <Tab.Screen
+        name={tabsEnum.TOMORROW}
+        component={IndicatorListView}
+        initialParams={{ day: 'j1' }}
+      />
     </Tab.Navigator>
   );
 }

@@ -36,9 +36,10 @@ export type IndiceUVLabel =
   | 'Nul';
 
 export type IndiceUVDay = {
-  indice_uv_value: number;
-  indice_uv_color: string;
-  indice_uv_label: IndiceUVLabel;
+  value: number;
+  color: string;
+  label: IndiceUVLabel;
+  recommendation: string;
 };
 
 // omit created_at updated_at uv_j0 uv_j1 uv_j2 uv_j3

@@ -1,10 +1,9 @@
 export type Indicator = {
   name: string;
   slug: IndicatorsSlugEnum;
-  id: string;
 };
 
-export type IndicatorDate = 'j0' | 'j1';
+export type IndicatorDay = 'j0' | 'j1';
 
 export enum IndicatorsSlugEnum {
   indice_atmospheric = 'indice_atmospheric',

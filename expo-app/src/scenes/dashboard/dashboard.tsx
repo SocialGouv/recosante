@@ -16,18 +16,6 @@ export function DashboardPage() {
   );
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
-  useEffect(() => {
-    let ignore = false;
-    Api.get({ path: '/indicators/list' }).then((response) => {
-      const indicators = response.data as Indicator[];
-      if (!!ignore) return;
-      if (!response.ok) return setError(response.error);
-      setIndicators(indicators);
-    });
-    return () => {
-      ignore = true;
-    };
-  }, []);
 
   if (error) {
     return (

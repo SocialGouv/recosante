@@ -73,17 +73,19 @@ async function getIndiceUvFromMunicipalityAndDate({
     recommendations,
     about: indiceUvAboutMd,
     j0: {
-      indice_uv_value: indice_uv.uv_j0,
-      indice_uv_color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
-      indice_uv_label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
+      value: indice_uv.uv_j0,
+      color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
+      label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
+      recommendation: 'blablabla',
     },
   };
 
   if (indice_uv.uv_j1) {
     data.j1 = {
-      indice_uv_value: indice_uv.uv_j1,
-      indice_uv_color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
-      indice_uv_label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
+      value: indice_uv.uv_j1,
+      color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
+      label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
+      recommendation: 'blablabla',
     };
   }
 }
