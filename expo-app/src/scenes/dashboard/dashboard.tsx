@@ -10,8 +10,9 @@ import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import dayjs from 'dayjs';
+import { RouteEnum } from '~/constants/route';
 
-export function DashboardPage() {
+export function DashboardPage({ navigation }: { navigation: any }) {
   const { favoriteIndicator, indicators } = useIndicatorsList((state) => state);
   const { setIndicatorsDto } = useIndicatorsDto((state) => state);
   const { municipality } = useMunicipality((state) => state);
@@ -48,7 +49,7 @@ export function DashboardPage() {
       <View className="flex  items-center justify-start bg-app-gray px-4 py-4">
         <View className="relative  top-8  flex w-full items-end ">
           <Pressable
-            className="  w-fit rounded-full border bg-app-primary p-3 text-sm text-white"
+            className="w-fit rounded-full bg-app-primary p-3 text-sm text-white"
             onPress={() => navigation.navigate(RouteEnum.LOCATION)}
           >
             <LocationIcon />
