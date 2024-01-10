@@ -32,7 +32,7 @@ export function IndicatorDetail() {
     } else {
       closeBottomSheet();
     }
-  }, [selectedIndicator?.slug]);
+  }, [selectedIndicator?.slug, openBottomSheet, closeBottomSheet]);
 
   return (
     <View>
