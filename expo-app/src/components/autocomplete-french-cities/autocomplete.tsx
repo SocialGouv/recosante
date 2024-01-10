@@ -16,6 +16,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     searchRef,
     onClearPress,
     onOpenSuggestionsList,
+    adressList,
   } = useAutoComplete();
 
   return (
@@ -26,9 +27,10 @@ export default function AutoComplete(props: AutoCompleteProps) {
         dropdownController.current = controller;
       }}
       // direction={Platform.select({ ios: 'down' })}
-      dataSet={suggestionsList}
+      dataSet={adressList}
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
+        console.log('item', item);
         if (!item) return;
         const selectedItem = item as unknown as Municipality;
         props.setSelectedCommune(selectedItem);
@@ -54,9 +56,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
           <Text style={styles.suggestionStyle}>
             {/* TODO: Check how to infer item type from Suggestion type in hooks */}
             {/* @ts-ignore */}
-            <Text style={styles.communeName}>{item.nom}</Text> (
+            <Text style={styles.communeName}>{item.nom}</Text>
             {/* @ts-ignore */}
-            {item.displayCodesPostaux})
+            {item.label}
           </Text>
         );
       }}
