@@ -1,9 +1,5 @@
 import { View, Pressable } from 'react-native';
-import {
-  Indicator,
-  IndicatorDay,
-  IndicatorCommonData,
-} from '~/types/indicator';
+import { Indicator, IndicatorDay } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -12,9 +8,6 @@ import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
 import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
-import { useFocusEffect } from '@react-navigation/native';
-import Api from '~/services/api';
-import { useState } from 'react';
 import { useIndicatorsData } from '~/zustand/indicator/useIndicatorsData';
 
 interface IndicatorPreviewProps {
