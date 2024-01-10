@@ -4,7 +4,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { Indicator } from '~/types/indicator';
-import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
+import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { Close } from '~/assets/icons/close';
 import { LineChart } from '~/components/indicators/graphs/line';
 
@@ -54,7 +54,7 @@ export function IndicatorDetail() {
         >
           <View className="flex flex-1 bg-app-gray ">
             <View
-              className=" -top-2 left-0 right-0 flex items-center justify-center bg-app-primary 
+              className=" -top-2 left-0 right-0 flex items-center justify-center bg-app-primary
 "
             >
               <MyText font="MarianneBold" className=" text-2xl text-white">

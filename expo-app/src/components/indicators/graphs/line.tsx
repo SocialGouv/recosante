@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import MyText from '~/components/ui/my-text';
 
 interface LineChartProps {
-  value: number;
+  value?: number;
 }
 
 export function LineChart(props: LineChartProps) {

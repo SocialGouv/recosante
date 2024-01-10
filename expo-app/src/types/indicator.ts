@@ -15,6 +15,13 @@ export enum IndicatorsSlugEnum {
   bathing_water = 'bathing_water',
 }
 
+type DataDay = {
+  value: number;
+  color: string;
+  label: string;
+  recommendation: string;
+};
+
 export type IndicatorCommonData = {
   id: string;
   municipality_insee_code: string;
@@ -25,6 +32,6 @@ export type IndicatorCommonData = {
   updated_at: string;
   recommendations: Array<string>;
   about: string;
-  j0: any; // specific to each indicator
-  j1?: any; // specific to each indicator
+  j0: DataDay; // specific to each indicator
+  j1?: DataDay; // specific to each indicator
 };

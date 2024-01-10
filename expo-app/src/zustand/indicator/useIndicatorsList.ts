@@ -2,11 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
-import {
-  Indicator,
-  IndicatorCommonData,
-  IndicatorsSlugEnum,
-} from '~/types/indicator';
+import { Indicator, IndicatorsSlugEnum } from '~/types/indicator';
 import { INDICATOR_STORAGE } from '~/constants/indicator';
 import API from '~/services/api';
 
@@ -50,7 +46,7 @@ interface State {
   setHasHydrated: (hydrationState: boolean) => void;
 }
 
-export const useIndicatorList = create<State>()(
+export const useIndicatorsList = create<State>()(
   persist(
     (set, _get) => ({
       indicators: initIndicators,
@@ -91,14 +87,3 @@ export const useIndicatorList = create<State>()(
     },
   ),
 );
-
-interface SelectedState {
-  selectedIndicator: IndicatorCommonData | null;
-  setSelectedIndicator: (selectedIndicator: IndicatorCommonData | null) => void;
-}
-export const useSelectedIndicator = create<SelectedState>()((set, _get) => ({
-  selectedIndicator: null,
-  setSelectedIndicator: async (selectedIndicator) => {
-    set({ selectedIndicator });
-  },
-}));

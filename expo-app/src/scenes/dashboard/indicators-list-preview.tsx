@@ -33,7 +33,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         {props.favoriteIndicator ? (
           <IndicatorPreview
-            day={route.day}
+            day={route.params.day}
             indicator={props.favoriteIndicator}
             isFavorite
           />
@@ -41,7 +41,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
         <View className=" mx-3 flex flex-1  flex-row flex-wrap pb-24">
           {filteredIndicators?.map((indicator) => (
             <IndicatorPreview
-              day={route.day}
+              day={route.params.day}
               key={indicator.slug}
               indicator={indicator}
             />

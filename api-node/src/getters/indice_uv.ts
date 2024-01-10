@@ -54,7 +54,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  if (!indice_uv?.uv_j0) {
+  if (!indice_uv || indice_uv.uv_j0 == null) {
     const error = new Error(
       `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_ISO=${date_ISO}`,
     ) as CustomError;
@@ -88,6 +88,7 @@ async function getIndiceUvFromMunicipalityAndDate({
       recommendation: 'blablabla',
     };
   }
+  return data;
 }
 
 export { getIndiceUvFromMunicipalityAndDate };

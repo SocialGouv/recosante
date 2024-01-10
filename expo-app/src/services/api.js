@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import * as Application from 'expo-application';
-import { navigationRef } from './navigation';
+import { getRoute } from './navigation';
 import { API_SCHEME, API_HOST } from '../config';
 
 export const checkNetwork = async (test = false) => {
@@ -17,7 +17,9 @@ export const checkNetwork = async (test = false) => {
 class ApiService {
   getUrl = (path, query) => {
     const url = new URL(path, `${API_SCHEME}://${API_HOST}`);
-    url.search = new URLSearchParams(query).toString();
+    Object.keys(query).forEach((key) =>
+      url.searchParams.append(key, query[key]),
+    );
     return url.toString();
   };
   execute = async ({
@@ -35,7 +37,7 @@ class ApiService {
           Accept: 'application/json',
           appversion: Application.nativeBuildVersion,
           appdevice: Platform.OS,
-          currentroute: navigationRef?.getCurrentRoute?.()?.name,
+          currentroute: getRoute(),
           ...headers,
         },
         body: body ? JSON.stringify(body) : null,

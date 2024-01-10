@@ -1,5 +1,9 @@
 import { View, Pressable } from 'react-native';
-import { Indicator, IndicatorDay } from '~/types/indicator';
+import {
+  Indicator,
+  IndicatorDay,
+  IndicatorCommonData,
+} from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -7,11 +11,11 @@ import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
-import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
+import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { useFocusEffect } from '@react-navigation/native';
 import Api from '~/services/api';
 import { useState } from 'react';
-import { IndicatorCommonData } from '~/types/indicator';
+import { useIndicatorsData } from '~/zustand/indicator/useIndicatorsData';
 
 interface IndicatorPreviewProps {
   indicator: Indicator;
@@ -21,28 +25,21 @@ interface IndicatorPreviewProps {
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
   const { municipality } = useMunicipality((state) => state);
-  const [data, setData] = useState<IndicatorCommonData | null>(null);
   const { setSelectedIndicator } = useSelectedIndicator((state) => state);
 
-  useFocusEffect(() => {
-    Api.get({
-      path: `/${props.indicator.slug}`,
-      query: {
-        municipality_insee_code: municipality?.code,
-      },
-    }).then((response) => {
-      setData(response.data);
-    });
-  });
+  const indicatorsData = useIndicatorsData((state) => state.data);
+  const data = indicatorsData[props.indicator.slug];
 
   function handleSelect() {
     if (data) setSelectedIndicator(data);
   }
 
+  const dataDay = data?.[props.day];
+
   return (
     <View
       style={{
-        borderColor: props.isFavorite ? color : 'transparent',
+        borderColor: props.isFavorite ? dataDay?.color : 'transparent',
       }}
       className={cn(
         '   mx-auto my-5 basis-[47%]  rounded-2xl bg-white p-2 ',
@@ -55,11 +52,11 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
           <View
             className=" -top-6  mx-auto items-center  rounded-full  px-6 py-1"
             style={{
-              backgroundColor: color,
+              backgroundColor: dataDay?.color,
             }}
           >
             <MyText font="MarianneBold" className="uppercase">
-              {status}
+              {dataDay?.label}
             </MyText>
           </View>
           <Pressable className="-top-6 flex items-end" onPress={handleSelect}>
@@ -79,7 +76,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
             {municipality?.nom} {municipality?.codesPostaux[0]} -{' '}
             {dayjs().format('DD/MM')}
           </MyText>
-          <LineChart value={value} />
+          <LineChart value={dataDay?.value} />
           <MyText className="mt-4 text-xs">
             {IndicatorService.getDescriptionBySlug(props.indicator.slug)}
           </MyText>

@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { catchErrors } from '~/middlewares/errors';
 import type { Indicator } from '~/types/api/indicator';
 import type { CustomError } from '~/types/error';
+import type { MunicipalityJSON } from '~/types/municipality';
 import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
 
 const router = express.Router();
@@ -63,13 +64,15 @@ router.get(
         }).parse(_req.query);
       } catch (zodError) {
         const error = new Error(
-          `Invalid request in GET /indice_uv/:municipality_insee_code/:date_ISO: ${zodError}`,
+          `Invalid request in GET /indicators/: ${zodError}`,
         ) as CustomError;
         error.status = 400;
         return next(error);
       }
 
-      const { municipality_insee_code, date_ISO } = _req.params; // OR: just retrieve the municipality_insee_code from user row in DB ? IDK
+      const municipality_insee_code = _req.query
+        .municipality_insee_code as MunicipalityJSON['COM']; // OR: just retrieve the municipality_insee_code from user row in DB ? IDK
+      const date_ISO = _req.query.date_ISO as string;
 
       const example = {
         id: '1234',
@@ -107,6 +110,8 @@ router.get(
         episode_pollution_atmospheric: example,
         tap_water: example,
       };
+
+      console.log('data', data);
 
       return res.status(200).send({ ok: true, data });
     },
