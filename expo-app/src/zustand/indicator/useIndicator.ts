@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
 // import API from '~/services/api';
-import { Indicator } from '~/types/indicator';
+import { Indicator, IndicatorCommonData } from '~/types/indicator';
 import { INDICATOR_STORAGE } from '~/constants/indicator';
 import API from '~/services/api';
 
@@ -55,8 +55,8 @@ export const useIndicator = create<State>()(
 );
 
 interface SelectedState {
-  selectedIndicator: Indicator | null;
-  setSelectedIndicator: (indicator: Indicator | null) => void;
+  selectedIndicator: IndicatorCommonData | null;
+  setSelectedIndicator: (selectedIndicator: IndicatorCommonData | null) => void;
 }
 export const useSelectedIndicator = create<SelectedState>()((set, _get) => ({
   selectedIndicator: null,

@@ -1,5 +1,5 @@
 import { View, Pressable } from 'react-native';
-import { Indicator } from '~/types/indicator';
+import { Indicator, IndicatorDate } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -7,21 +7,36 @@ import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
-import { randomIndicatorData } from './mocks/fake';
 import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
+import { useFocusEffect } from '@react-navigation/native';
+import Api from '~/services/api';
+import { useState } from 'react';
+import { IndicatorCommonData } from '~/types/indicator';
 
 interface IndicatorPreviewProps {
   indicator: Indicator;
   isFavorite?: boolean;
+  date: IndicatorDate;
 }
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
   const { municipality } = useMunicipality((state) => state);
+  const [data, setData] = useState<IndicatorCommonData | null>(null);
   const { setSelectedIndicator } = useSelectedIndicator((state) => state);
-  const { status, color, value } = randomIndicatorData();
+
+  useFocusEffect(() => {
+    Api.get({
+      path: `/${props.indicator.slug}`,
+      query: {
+        municipality_insee_code: municipality?.code,
+      },
+    }).then((response) => {
+      setData(response.data);
+    });
+  });
 
   function handleSelect() {
-    setSelectedIndicator(props.indicator);
+    if (data) setSelectedIndicator(data);
   }
 
   return (

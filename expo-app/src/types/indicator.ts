@@ -4,6 +4,8 @@ export type Indicator = {
   id: string;
 };
 
+export type IndicatorDate = 'j0' | 'j1';
+
 export enum IndicatorsSlugEnum {
   indice_atmospheric = 'indice_atmospheric',
   indice_uv = 'indice_uv',
@@ -13,3 +15,17 @@ export enum IndicatorsSlugEnum {
   tap_water = 'tap_water',
   bathing_water = 'bathing_water',
 }
+
+export type IndicatorCommonData = {
+  id: string;
+  municipality_insee_code: string;
+  validity_start: string;
+  validity_end: string;
+  diffusion_date: string;
+  created_at: string;
+  updated_at: string;
+  recommendations: Array<string>;
+  about: string;
+  j0: any; // specific to each indicator
+  j1?: any; // specific to each indicator
+};

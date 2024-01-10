@@ -18,7 +18,7 @@ export function DashboardPage() {
   const [error, setError] = useState<string>('');
   useEffect(() => {
     let ignore = false;
-    Api.get({ path: '/indicators' }).then((response) => {
+    Api.get({ path: '/indicators/list' }).then((response) => {
       const indicators = response.data as Indicator[];
       if (!!ignore) return;
       if (!response.ok) return setError(response.error);
