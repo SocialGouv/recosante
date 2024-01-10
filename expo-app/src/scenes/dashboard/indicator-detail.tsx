@@ -25,13 +25,13 @@ export function IndicatorDetail() {
     bottomSheetRef.current?.expand();
   }
 
+  console.log(selectedIndicator?.slug);
+
   useEffect(() => {
-    if (selectedIndicator?.slug) {
+    if (!!selectedIndicator?.slug) {
       openBottomSheet();
-    } else {
-      closeBottomSheet();
     }
-  }, [selectedIndicator?.slug, openBottomSheet, closeBottomSheet]);
+  }, [selectedIndicator?.slug]);
 
   return (
     <View>
@@ -41,7 +41,10 @@ export function IndicatorDetail() {
           index={-1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          onClose={() => setSelectedIndicator(null)}
+          onClose={() => {
+            setSelectedIndicator(null);
+            closeBottomSheet();
+          }}
           handleStyle={{
             backgroundColor: '#3343BD',
             borderTopLeftRadius: 50,
