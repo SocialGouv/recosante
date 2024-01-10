@@ -24,7 +24,7 @@ type DataDay = {
 
 export type IndicatorCommonData = {
   id: string;
-  slug: string;
+  slug: IndicatorsSlugEnum;
   name: string;
   municipality_insee_code: string;
   validity_start: string;
