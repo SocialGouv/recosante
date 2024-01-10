@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { IndicatorPreview } from '~/components/indicators/indicator-preview';
-import { Indicator } from '~/types/indicator';
+import { IndicatorItem } from '~/types/indicator';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
@@ -12,8 +12,8 @@ const tabsEnum = {
 };
 
 interface IndicatorsListPreviewProps {
-  indicators: Indicator[] | null;
-  favoriteIndicator: Indicator | null;
+  indicators: IndicatorItem[] | null;
+  favoriteIndicator: IndicatorItem | null;
 }
 export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
   //   Remove the favorite indicator from the list of indicators

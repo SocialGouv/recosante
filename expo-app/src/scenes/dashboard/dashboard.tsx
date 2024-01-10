@@ -8,12 +8,12 @@ import API from '~/services/api';
 import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
-import { useIndicatorsData } from '~/zustand/indicator/useIndicatorsData';
+import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import dayjs from 'dayjs';
 
 export function DashboardPage() {
   const { favoriteIndicator, indicators } = useIndicatorsList((state) => state);
-  const { setData } = useIndicatorsData((state) => state);
+  const { setIndicatorsDto } = useIndicatorsDto((state) => state);
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
   useEffect(() => {
@@ -28,7 +28,7 @@ export function DashboardPage() {
     }).then((response) => {
       if (!!ignore) return;
       if (!response.ok) return setError(response.error);
-      setData(response.data);
+      setIndicatorsDto(response.data);
     });
     return () => {
       ignore = true;

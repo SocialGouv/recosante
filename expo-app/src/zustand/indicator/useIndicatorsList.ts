@@ -2,11 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
-import { Indicator, IndicatorsSlugEnum } from '~/types/indicator';
+import { IndicatorItem, IndicatorsSlugEnum } from '~/types/indicator';
 import { INDICATOR_STORAGE } from '~/constants/indicator';
 import API from '~/services/api';
 
-const initIndicators: Indicator[] = [
+const initIndicators: IndicatorItem[] = [
   {
     name: 'Indice ATMO',
     slug: IndicatorsSlugEnum.indice_atmospheric,
@@ -38,10 +38,10 @@ const initIndicators: Indicator[] = [
 ];
 
 interface State {
-  indicators: Indicator[];
-  favoriteIndicator: Indicator | null;
-  setFavoriteIndicator: (indicator: Indicator | null) => void;
-  setIndicators: (indicators: Indicator[]) => void;
+  indicators: IndicatorItem[];
+  favoriteIndicator: IndicatorItem | null;
+  setFavoriteIndicator: (indicator: IndicatorItem | null) => void;
+  setIndicators: (indicators: IndicatorItem[]) => void;
   _hasHydrated: boolean;
   setHasHydrated: (hydrationState: boolean) => void;
 }
@@ -80,7 +80,7 @@ export const useIndicatorsList = create<State>()(
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
         API.get({ path: '/indicators/list' }).then((response) => {
-          const indicators = response.data as Indicator[];
+          const indicators = response.data as IndicatorItem[];
           state?.setIndicators(indicators);
         });
       },
