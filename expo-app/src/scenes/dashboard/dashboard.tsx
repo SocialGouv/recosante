@@ -1,4 +1,4 @@
-import { View, Pressable } from 'react-native';
+import { View, Pressable, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { LocationIcon } from '~/assets/icons/location';
@@ -46,8 +46,11 @@ export function DashboardPage() {
   return (
     <>
       <View className="flex  items-center justify-start bg-app-gray px-4 py-4">
-        <View className="top-4 flex w-full  items-end">
-          <Pressable className="top-6 w-fit rounded-full  bg-app-primary p-3 text-sm text-white">
+        <View className="relative  top-8  flex w-full items-end ">
+          <Pressable
+            className="  w-fit rounded-full border bg-app-primary p-3 text-sm text-white"
+            onPress={() => navigation.navigate(RouteEnum.LOCATION)}
+          >
             <LocationIcon />
           </Pressable>
         </View>

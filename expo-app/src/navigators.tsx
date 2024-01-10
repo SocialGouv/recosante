@@ -6,7 +6,6 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import * as SplashScreen from 'expo-splash-screen';
 import { navigationRef } from '~/services/navigation';
 
-import OnboardingGeolocation from '~/scenes/onboarding-geolocation';
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
 import useMunicipality from './zustand/municipality/useMunicipality';
 import { HomeIcon } from '~/assets/icons/home';
@@ -19,6 +18,7 @@ import { RouteEnum } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
+import { LocationPage } from '~/scenes/location';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -148,8 +148,8 @@ export function Navigators() {
             component={Onboarding}
           />
           <RootStack.Screen
-            name={RouteEnum.ONBOARDING_GEOLOCATION}
-            component={OnboardingGeolocation}
+            name={RouteEnum.LOCATION}
+            component={LocationPage}
             initialParams={{
               isOnboarding: true,
             }}
