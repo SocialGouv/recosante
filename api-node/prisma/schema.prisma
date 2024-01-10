@@ -19,9 +19,9 @@ enum IndicatorsSlugEnum {
   indice_uv
   pollen_allergy
   weather_alert
-  episode_pollution_atmospheric
-  tap_water
+  // episode_pollution_atmospheric
   bathing_water
+  // tap_water
 }
 
 model User {

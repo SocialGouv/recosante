@@ -2,32 +2,38 @@ import { View, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { LocationIcon } from '~/assets/icons/location';
-import { useIndicator } from '~/zustand/indicator/useIndicator';
+import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
-import { Indicator } from '~/types/indicator';
-import Api from '~/services/api';
+import API from '~/services/api';
 import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
+import { useIndicatorsData } from '~/zustand/indicator/useIndicatorsData';
+import dayjs from 'dayjs';
 
 export function DashboardPage() {
-  const { favoriteIndicator, indicators, setIndicators } = useIndicator(
-    (state) => state,
-  );
+  const { favoriteIndicator, indicators } = useIndicatorsList((state) => state);
+  const { setData } = useIndicatorsData((state) => state);
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
   useEffect(() => {
+    if (!municipality?.code) return;
     let ignore = false;
-    Api.get({ path: '/indicators' }).then((response) => {
-      const indicators = response.data as Indicator[];
+    API.get({
+      path: '/indicators',
+      query: {
+        municipality_insee_code: municipality?.code,
+        date_ISO: dayjs().toISOString(),
+      },
+    }).then((response) => {
       if (!!ignore) return;
       if (!response.ok) return setError(response.error);
-      setIndicators(indicators);
+      setData(response.data);
     });
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [municipality?.code]);
 
   if (error) {
     return (

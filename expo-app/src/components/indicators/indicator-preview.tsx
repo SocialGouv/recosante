@@ -1,5 +1,5 @@
 import { View, Pressable } from 'react-native';
-import { Indicator } from '~/types/indicator';
+import { Indicator, IndicatorDay } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -7,27 +7,32 @@ import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
-import { randomIndicatorData } from './mocks/fake';
-import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
+import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
+import { useIndicatorsData } from '~/zustand/indicator/useIndicatorsData';
 
 interface IndicatorPreviewProps {
   indicator: Indicator;
   isFavorite?: boolean;
+  day: IndicatorDay;
 }
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
   const { municipality } = useMunicipality((state) => state);
   const { setSelectedIndicator } = useSelectedIndicator((state) => state);
-  const { status, color, value } = randomIndicatorData();
+
+  const indicatorsData = useIndicatorsData((state) => state.data);
+  const data = indicatorsData[props.indicator.slug];
 
   function handleSelect() {
-    setSelectedIndicator(props.indicator);
+    if (data) setSelectedIndicator(data);
   }
+
+  const dataDay = data?.[props.day];
 
   return (
     <View
       style={{
-        borderColor: props.isFavorite ? color : 'transparent',
+        borderColor: props.isFavorite ? dataDay?.color : 'transparent',
       }}
       className={cn(
         '   mx-auto my-5 basis-[47%]  rounded-2xl bg-white p-2 ',
@@ -40,11 +45,11 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
           <View
             className=" -top-6  mx-auto items-center  rounded-full  px-6 py-1"
             style={{
-              backgroundColor: color,
+              backgroundColor: dataDay?.color,
             }}
           >
             <MyText font="MarianneBold" className="uppercase">
-              {status}
+              {dataDay?.label}
             </MyText>
           </View>
           <Pressable className="-top-6 flex items-end" onPress={handleSelect}>
@@ -64,7 +69,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
             {municipality?.nom} {municipality?.codesPostaux[0]} -{' '}
             {dayjs().format('DD/MM')}
           </MyText>
-          <LineChart value={value} />
+          <LineChart value={dataDay?.value} />
           <MyText className="mt-4 text-xs">
             {IndicatorService.getDescriptionBySlug(props.indicator.slug)}
           </MyText>

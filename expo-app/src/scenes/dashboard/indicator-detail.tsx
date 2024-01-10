@@ -3,8 +3,7 @@ import { Portal, PortalHost } from '@gorhom/portal';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
-import { Indicator } from '~/types/indicator';
-import { useSelectedIndicator } from '~/zustand/indicator/useIndicator';
+import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { Close } from '~/assets/icons/close';
 import { LineChart } from '~/components/indicators/graphs/line';
 
@@ -15,24 +14,33 @@ export function IndicatorDetail() {
   );
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const isOpenedRef = useRef(false);
   const handleSheetChanges = useCallback((index: number) => {
-    // console.log('handleSheetChanges', index);
+    console.log('handleSheetChanges', index);
+    if (index < 0) {
+      isOpenedRef.current = false;
+    }
   }, []);
 
   function closeBottomSheet() {
+    console.log('closeBottomSheet');
     bottomSheetRef.current?.close();
+    if (selectedIndicator?.slug) setSelectedIndicator(null);
+    isOpenedRef.current = false;
   }
   function openBottomSheet() {
     bottomSheetRef.current?.expand();
+    isOpenedRef.current = true;
   }
 
+  console.log(selectedIndicator?.slug);
+
   useEffect(() => {
-    if (selectedIndicator?.slug) {
+    if (!!selectedIndicator?.slug && !isOpenedRef.current) {
+      isOpenedRef.current = true;
       openBottomSheet();
-    } else {
-      closeBottomSheet();
     }
-  }, [selectedIndicator?.slug, openBottomSheet, closeBottomSheet]);
+  }, [selectedIndicator?.slug]);
 
   return (
     <View>
@@ -42,7 +50,10 @@ export function IndicatorDetail() {
           index={-1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          onClose={closeBottomSheet}
+          onClose={() => {
+            console.log('onClose');
+            closeBottomSheet();
+          }}
           handleStyle={{
             backgroundColor: '#3343BD',
             borderTopLeftRadius: 50,
@@ -54,7 +65,7 @@ export function IndicatorDetail() {
         >
           <View className="flex flex-1 bg-app-gray ">
             <View
-              className=" -top-2 left-0 right-0 flex items-center justify-center bg-app-primary 
+              className=" -top-2 left-0 right-0 flex items-center justify-center bg-app-primary
 "
             >
               <MyText font="MarianneBold" className=" text-2xl text-white">
@@ -68,7 +79,10 @@ export function IndicatorDetail() {
               </MyText>
             </View>
             <Pressable
-              onPress={closeBottomSheet}
+              onPress={() => {
+                console.log('onPress');
+                closeBottomSheet();
+              }}
               className="absolute right-2 top-0"
             >
               <Close />

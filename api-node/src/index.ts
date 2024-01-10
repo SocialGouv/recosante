@@ -13,8 +13,7 @@ import { capture } from './third-parties/sentry.ts';
 
 import eventRouter from './controllers/event.ts';
 import userRouter from './controllers/user.ts';
-import indicatorRouter from './controllers/indicator.ts';
-import indiceUvRouter from './controllers/indice_uv.ts';
+import indicatorsRouter from './controllers/indicators.ts';
 
 // import getPollensIndicator from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
@@ -92,8 +91,7 @@ app.use(versionCheck);
 // Routes
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
-app.use('/indicators', indicatorRouter);
-app.use('/indice-uv', indiceUvRouter);
+app.use('/indicators', indicatorsRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);

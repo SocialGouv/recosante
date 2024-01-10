@@ -2,13 +2,43 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
-// import API from '~/services/api';
-import { Indicator } from '~/types/indicator';
+import { Indicator, IndicatorsSlugEnum } from '~/types/indicator';
 import { INDICATOR_STORAGE } from '~/constants/indicator';
 import API from '~/services/api';
 
+const initIndicators: Indicator[] = [
+  {
+    name: 'Indice ATMO',
+    slug: IndicatorsSlugEnum.indice_atmospheric,
+  },
+  {
+    name: 'Indice UV',
+    slug: IndicatorsSlugEnum.indice_uv,
+  },
+  {
+    name: 'Allergie aux Pollens',
+    slug: IndicatorsSlugEnum.pollen_allergy,
+  },
+  {
+    name: 'Alerte Météo',
+    slug: IndicatorsSlugEnum.weather_alert,
+  },
+  // {
+  //   name: 'Épisode Pollution Atmosphérique',
+  //   slug: IndicatorsSlugEnum.episode_pollution_atmospheric,
+  // },
+  // {
+  //   name: 'Eau du robinet',
+  //   slug: IndicatorsSlugEnum.tap_water,
+  // },
+  {
+    name: 'Eau de baignades',
+    slug: IndicatorsSlugEnum.bathing_water,
+  },
+];
+
 interface State {
-  indicators: Indicator[] | null;
+  indicators: Indicator[];
   favoriteIndicator: Indicator | null;
   setFavoriteIndicator: (indicator: Indicator | null) => void;
   setIndicators: (indicators: Indicator[]) => void;
@@ -16,10 +46,10 @@ interface State {
   setHasHydrated: (hydrationState: boolean) => void;
 }
 
-export const useIndicator = create<State>()(
+export const useIndicatorsList = create<State>()(
   persist(
     (set, _get) => ({
-      indicators: null,
+      indicators: initIndicators,
       favoriteIndicator: null,
       setIndicators: async (indicators) => {
         set({ indicators });
@@ -49,18 +79,11 @@ export const useIndicator = create<State>()(
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
+        API.get({ path: '/indicators/list' }).then((response) => {
+          const indicators = response.data as Indicator[];
+          state?.setIndicators(indicators);
+        });
       },
     },
   ),
 );
-
-interface SelectedState {
-  selectedIndicator: Indicator | null;
-  setSelectedIndicator: (indicator: Indicator | null) => void;
-}
-export const useSelectedIndicator = create<SelectedState>()((set, _get) => ({
-  selectedIndicator: null,
-  setSelectedIndicator: async (selectedIndicator) => {
-    set({ selectedIndicator });
-  },
-}));

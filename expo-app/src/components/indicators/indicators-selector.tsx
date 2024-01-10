@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Indicator } from '~/types/indicator';
 import { IndicatorService } from '~/services/indicator';
 import { cn } from '~/utils/tailwind';
-import { useIndicator } from '~/zustand/indicator/useIndicator';
+import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import Button from '../ui/button';
 
 interface IndicatorsSelectorProps {
@@ -11,7 +11,7 @@ interface IndicatorsSelectorProps {
   onSubmit: () => void;
 }
 export function IndicatorsSelector(props: IndicatorsSelectorProps) {
-  const { setFavoriteIndicator, favoriteIndicator } = useIndicator(
+  const { setFavoriteIndicator, favoriteIndicator } = useIndicatorsList(
     (state) => state,
   );
   const [state, setState] = useState<Indicator | null>(favoriteIndicator);

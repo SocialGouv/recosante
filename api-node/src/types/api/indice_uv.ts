@@ -1,4 +1,4 @@
-import type { IndiceUv } from '@prisma/client';
+import type { IndicatorsSlugEnum, IndiceUv } from '@prisma/client';
 
 export type IndiceUVNumber =
   | 0
@@ -36,9 +36,10 @@ export type IndiceUVLabel =
   | 'Nul';
 
 export type IndiceUVDay = {
-  indice_uv_value: number;
-  indice_uv_color: string;
-  indice_uv_label: IndiceUVLabel;
+  value: number;
+  color: string;
+  label: IndiceUVLabel;
+  recommendation: string;
 };
 
 // omit created_at updated_at uv_j0 uv_j1 uv_j2 uv_j3
@@ -47,6 +48,10 @@ export interface IndiceUVAPIData
     IndiceUv,
     'data_availability' | 'uv_j0' | 'uv_j1' | 'uv_j2' | 'uv_j3'
   > {
+  slug: IndicatorsSlugEnum;
+  name: string;
+  recommendations: Array<string>;
+  about: string;
   j0: IndiceUVDay;
   j1?: IndiceUVDay;
 }
