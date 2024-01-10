@@ -1,9 +1,8 @@
 import { View, Pressable } from 'react-native';
 import { Portal, PortalHost } from '@gorhom/portal';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
+import { useRef, useMemo, useCallback, useEffect } from 'react';
 import MyText from '~/components/ui/my-text';
-import { Indicator } from '~/types/indicator';
 import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { Close } from '~/assets/icons/close';
 import { LineChart } from '~/components/indicators/graphs/line';
@@ -42,7 +41,7 @@ export function IndicatorDetail() {
           index={-1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          onClose={closeBottomSheet}
+          onClose={() => setSelectedIndicator(null)}
           handleStyle={{
             backgroundColor: '#3343BD',
             borderTopLeftRadius: 50,

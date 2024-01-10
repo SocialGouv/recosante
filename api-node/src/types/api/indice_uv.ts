@@ -1,4 +1,4 @@
-import type { IndiceUv } from '@prisma/client';
+import type { IndicatorsSlugEnum, IndiceUv } from '@prisma/client';
 
 export type IndiceUVNumber =
   | 0
@@ -48,6 +48,8 @@ export interface IndiceUVAPIData
     IndiceUv,
     'data_availability' | 'uv_j0' | 'uv_j1' | 'uv_j2' | 'uv_j3'
   > {
+  slug: IndicatorsSlugEnum;
+  name: string;
   recommendations: Array<string>;
   about: string;
   j0: IndiceUVDay;

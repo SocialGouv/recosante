@@ -3,47 +3,18 @@ import { z } from 'zod';
 import { IndicatorsSlugEnum } from '@prisma/client';
 import dayjs from 'dayjs';
 import { catchErrors } from '~/middlewares/errors';
-import type { Indicator } from '~/types/api/indicator';
+import type { IndicatorCommonData } from '~/types/api/indicator';
 import type { CustomError } from '~/types/error';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
+import { indicatorsList } from '~/getters/indicators_list';
 
 const router = express.Router();
 
 router.get(
   '/list',
   catchErrors(async (_req: express.Request, res: express.Response) => {
-    const indicators: Indicator[] = [
-      {
-        name: 'Indice ATMO',
-        slug: IndicatorsSlugEnum.indice_atmospheric,
-      },
-      {
-        name: 'Indice UV',
-        slug: IndicatorsSlugEnum.indice_uv,
-      },
-      {
-        name: 'Allergie aux Pollens',
-        slug: IndicatorsSlugEnum.pollen_allergy,
-      },
-      {
-        name: 'Alerte Météo',
-        slug: IndicatorsSlugEnum.weather_alert,
-      },
-      // {
-      //   name: 'Épisode Pollution Atmosphérique',
-      //   slug: IndicatorsSlugEnum.episode_pollution_atmospheric,
-      // },
-      // {
-      //   name: 'Eau du robinet',
-      //   slug: IndicatorsSlugEnum.tap_water,
-      // },
-      {
-        name: 'Eau de baignades',
-        slug: IndicatorsSlugEnum.bathing_water,
-      },
-    ];
-    return res.status(200).send({ ok: true, data: indicators });
+    return res.status(200).send({ ok: true, data: indicatorsList });
   }),
 );
 
@@ -75,12 +46,14 @@ router.get(
 
       const example = {
         id: '1234',
+        name: 'Indice ATMO',
+        slug: IndicatorsSlugEnum.indice_atmospheric,
         municipality_insee_code,
-        validity_start: dayjs(date_ISO).startOf('day').toISOString(),
-        validity_end: dayjs(date_ISO).endOf('day').toISOString(),
-        diffusion_date: dayjs(date_ISO).startOf('day').toISOString(),
-        created_at: dayjs(date_ISO).startOf('day').toISOString(),
-        updated_at: dayjs(date_ISO).startOf('day').toISOString(),
+        validity_start: dayjs(date_ISO).startOf('day').toDate(),
+        validity_end: dayjs(date_ISO).endOf('day').toDate(),
+        diffusion_date: dayjs(date_ISO).startOf('day').toDate(),
+        created_at: dayjs(date_ISO).startOf('day').toDate(),
+        updated_at: dayjs(date_ISO).startOf('day').toDate(),
         recommendations: ['blasbla', 'blibli'],
         about: 'bloblo',
         j0: {
@@ -97,7 +70,7 @@ router.get(
         },
       };
 
-      const data: Record<IndicatorsSlugEnum, any> = {
+      const data: Record<IndicatorsSlugEnum, IndicatorCommonData> = {
         indice_uv: await getIndiceUvFromMunicipalityAndDate({
           municipality_insee_code,
           date_ISO,
@@ -106,8 +79,8 @@ router.get(
         indice_atmospheric: example,
         pollen_allergy: example,
         weather_alert: example,
-        episode_pollution_atmospheric: example,
-        tap_water: example,
+        // episode_pollution_atmospheric: example,
+        // tap_water: example,
       };
 
       return res.status(200).send({ ok: true, data });

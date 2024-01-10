@@ -6,7 +6,8 @@ import dayjs from 'dayjs';
 import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
 import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
 import type { MunicipalityJSON } from '~/types/municipality';
-import { DataAvailabilityEnum } from '@prisma/client';
+import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
+import { indicatorsObject } from './indicators_list';
 const indiceUvRecommendationsMd = fs.readFileSync(
   './data/recommandations/indice_uv.md',
   'utf8',
@@ -64,6 +65,8 @@ async function getIndiceUvFromMunicipalityAndDate({
 
   const data: IndiceUVAPIData = {
     id: indice_uv.id,
+    slug: IndicatorsSlugEnum.indice_uv,
+    name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
     municipality_insee_code: indice_uv.municipality_insee_code,
     validity_start: indice_uv.validity_start,
     validity_end: indice_uv.validity_end,
