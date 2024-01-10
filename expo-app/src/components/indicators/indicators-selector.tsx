@@ -1,22 +1,22 @@
 import { View } from 'react-native';
 import { useState } from 'react';
-import { Indicator } from '~/types/indicator';
+import { IndicatorItem } from '~/types/indicator';
 import { IndicatorService } from '~/services/indicator';
 import { cn } from '~/utils/tailwind';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import Button from '../ui/button';
 
 interface IndicatorsSelectorProps {
-  indicators: Indicator[] | null;
+  indicators: IndicatorItem[] | null;
   onSubmit: () => void;
 }
 export function IndicatorsSelector(props: IndicatorsSelectorProps) {
   const { setFavoriteIndicator, favoriteIndicator } = useIndicatorsList(
     (state) => state,
   );
-  const [state, setState] = useState<Indicator | null>(favoriteIndicator);
+  const [state, setState] = useState<IndicatorItem | null>(favoriteIndicator);
 
-  function handleSelectIndicator(indicator: Indicator) {
+  function handleSelectIndicator(indicator: IndicatorItem) {
     setState(indicator);
   }
 
