@@ -1,7 +1,7 @@
 import { View, Pressable } from 'react-native';
 import { Portal, PortalHost } from '@gorhom/portal';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useRef, useMemo, useCallback, useEffect } from 'react';
+import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { Close } from '~/assets/icons/close';
@@ -14,21 +14,30 @@ export function IndicatorDetail() {
   );
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const isOpenedRef = useRef(false);
   const handleSheetChanges = useCallback((index: number) => {
-    // console.log('handleSheetChanges', index);
+    console.log('handleSheetChanges', index);
+    if (index < 0) {
+      isOpenedRef.current = false;
+    }
   }, []);
 
   function closeBottomSheet() {
+    console.log('closeBottomSheet');
     bottomSheetRef.current?.close();
+    if (selectedIndicator?.slug) setSelectedIndicator(null);
+    isOpenedRef.current = false;
   }
   function openBottomSheet() {
     bottomSheetRef.current?.expand();
+    isOpenedRef.current = true;
   }
 
   console.log(selectedIndicator?.slug);
 
   useEffect(() => {
-    if (!!selectedIndicator?.slug) {
+    if (!!selectedIndicator?.slug && !isOpenedRef.current) {
+      isOpenedRef.current = true;
       openBottomSheet();
     }
   }, [selectedIndicator?.slug]);
@@ -42,7 +51,7 @@ export function IndicatorDetail() {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           onClose={() => {
-            setSelectedIndicator(null);
+            console.log('onClose');
             closeBottomSheet();
           }}
           handleStyle={{
@@ -70,7 +79,10 @@ export function IndicatorDetail() {
               </MyText>
             </View>
             <Pressable
-              onPress={closeBottomSheet}
+              onPress={() => {
+                console.log('onPress');
+                closeBottomSheet();
+              }}
               className="absolute right-2 top-0"
             >
               <Close />
