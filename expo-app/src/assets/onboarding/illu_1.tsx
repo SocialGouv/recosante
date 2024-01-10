@@ -3,12 +3,7 @@ import Svg, { Circle, G, Path, Defs, ClipPath } from 'react-native-svg';
 
 export function Illu_1(props: any) {
   return (
-    <Svg
-      viewBox="0 0 313 313"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-1/3 w-2/3"
-    >
+    <Svg viewBox="0 0 313 313" fill="none" className="h-1/3 w-2/3">
       <Circle cx={156.5} cy={156.5} r={156.5} fill="#DFDFDF" />
       <G clipPath="url(#clip0_158_8016)">
         <Path

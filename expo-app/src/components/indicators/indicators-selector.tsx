@@ -8,12 +8,14 @@ import Button from '../ui/button';
 
 interface IndicatorsSelectorProps {
   indicators: Indicator[] | null;
-  favoriteIndicator: Indicator | null;
   onSubmit: () => void;
 }
 export function IndicatorsSelector(props: IndicatorsSelectorProps) {
-  const [state, setState] = useState<Indicator | null>(props.favoriteIndicator);
-  const { setFavoriteIndicator } = useIndicator((state) => state);
+  const { setFavoriteIndicator, favoriteIndicator } = useIndicator(
+    (state) => state,
+  );
+  const [state, setState] = useState<Indicator | null>(favoriteIndicator);
+
   function handleSelectIndicator(indicator: Indicator) {
     setState(indicator);
   }

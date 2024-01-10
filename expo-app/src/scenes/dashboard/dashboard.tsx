@@ -11,8 +11,9 @@ import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 
 export function DashboardPage() {
-  const { setFavoriteIndicator, favoriteIndicator, indicators, setIndicators } =
-    useIndicator((state) => state);
+  const { favoriteIndicator, indicators, setIndicators } = useIndicator(
+    (state) => state,
+  );
   const { municipality } = useMunicipality((state) => state);
   const [error, setError] = useState<string>('');
   useEffect(() => {
@@ -27,10 +28,6 @@ export function DashboardPage() {
       ignore = true;
     };
   }, []);
-
-  function handleSubmit(indicator: Indicator | null) {
-    setFavoriteIndicator(indicator);
-  }
 
   if (error) {
     return (
@@ -70,10 +67,9 @@ export function DashboardPage() {
           ) : null}
         </View>
 
-        <IndicatorSelectorSheet
-          indicators={indicators}
-          favoriteIndicator={favoriteIndicator}
-        />
+        {favoriteIndicator ? null : (
+          <IndicatorSelectorSheet indicators={indicators} />
+        )}
 
         <IndicatorDetail />
       </View>

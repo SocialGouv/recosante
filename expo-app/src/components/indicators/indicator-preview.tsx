@@ -23,6 +23,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
   function handleSelect() {
     setSelectedIndicator(props.indicator);
   }
+
   return (
     <View
       style={{

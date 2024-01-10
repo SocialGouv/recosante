@@ -8,7 +8,6 @@ import { Indicator } from '~/types/indicator';
 
 interface IndicatorSelectorSheetProps {
   indicators: Indicator[] | null;
-  favoriteIndicator: Indicator | null;
 }
 export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -20,10 +19,6 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
 
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
-  }
-
-  if (props.favoriteIndicator?.slug) {
-    return <></>;
   }
 
   return (
@@ -42,7 +37,6 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
             <IndicatorsSelector
               onSubmit={closeBottomSheet}
               indicators={props.indicators}
-              favoriteIndicator={props.favoriteIndicator}
             />
           </View>
         </BottomSheet>

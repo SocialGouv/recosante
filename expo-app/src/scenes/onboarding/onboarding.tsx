@@ -5,8 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Welcome } from './screens/welcome';
 import { Geolocation } from './screens/geolocation';
 import { Notifications } from './screens/notifications';
-import { Screen4 } from './screens/screen_4';
-import { Screen5 } from './screens/screen_5';
 
 import { OnboardingRouteEnum } from '~/constants/route';
 
