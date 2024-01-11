@@ -22,7 +22,7 @@ export enum IndicatorsSlugEnum {
 type IndicatorDataPerDay = {
   value: number;
   color: string;
-  label: string;
+  label: LabelEnum;
   recommendation: string;
 };
 
@@ -41,3 +41,23 @@ export type IndicatorCommonData = {
   j0: IndicatorDataPerDay; // specific to each indicator
   j1?: IndicatorDataPerDay; // specific to each indicator
 };
+
+export enum IndicatorColorEnum {
+  EXTREME = '#9F5C9F',
+  ABSOLUE = '#B44E',
+  MAUVAIS = '#FF797A',
+  MODEREE = '#FFF78B',
+  MOYEN = '#4FCBAD',
+  BON = '#9DF5F0',
+  NUL = '#F5F5FE',
+}
+
+export enum LabelEnum {
+  EXTREME = 'Extrême',
+  ABSOLUE = 'Absolue',
+  MAUVAIS = 'Mauvais',
+  MODEREE = 'Modérée',
+  MOYEN = 'Moyen',
+  BON = 'Bon',
+  NUL = 'Nul',
+}

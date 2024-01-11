@@ -28,13 +28,13 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
     setSelectedIndicator(currentIndicatorData);
   }
 
-  const IndicatorDataInCurrentDay = currentIndicatorData?.[props.day];
+  const indicatorDataInCurrentDay = currentIndicatorData?.[props.day];
 
   return (
     <View
       style={{
         borderColor: props.isFavorite
-          ? IndicatorDataInCurrentDay?.color
+          ? indicatorDataInCurrentDay?.color
           : 'transparent',
       }}
       className={cn(
@@ -48,16 +48,23 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
           <View
             className=" -top-6  mx-auto items-center  rounded-full  px-6 py-1"
             style={{
-              backgroundColor: IndicatorDataInCurrentDay?.color,
+              backgroundColor: indicatorDataInCurrentDay?.color,
             }}
           >
             <MyText font="MarianneBold" className="uppercase">
-              {IndicatorDataInCurrentDay?.label}
+              {indicatorDataInCurrentDay?.label}
             </MyText>
           </View>
           <Pressable className="-top-6 flex items-end" onPress={handleSelect}>
             <Info />
           </Pressable>
+          <View className="-top-6 flex items-center justify-center">
+            {IndicatorService.getPicto({
+              slug: props.indicator.slug,
+              indicatorValue: indicatorDataInCurrentDay?.value,
+              color: indicatorDataInCurrentDay?.color,
+            })}
+          </View>
 
           <MyText
             className="text-wrap text-md uppercase text-black"
@@ -69,10 +76,9 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
             className=" mb-4 text-xs uppercase text-gray-500"
             font="MarianneRegular"
           >
-            {address?.label}
-            {dayjs().format('DD/MM')}
+            {address?.label} {dayjs().format('DD/MM')}
           </MyText>
-          <LineChart value={IndicatorDataInCurrentDay?.value} />
+          <LineChart value={indicatorDataInCurrentDay?.value} />
           {currentIndicatorData?.slug ? (
             <MyText className="mt-4 text-xs">
               {IndicatorService.getDescriptionBySlug(
