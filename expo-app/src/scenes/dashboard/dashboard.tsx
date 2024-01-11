@@ -1,4 +1,4 @@
-import { View, Pressable, Alert } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { LocationIcon } from '~/assets/icons/location';
@@ -26,8 +26,11 @@ export function DashboardPage({ navigation }: { navigation: any }) {
         date_ISO: dayjs().toISOString(),
       },
     }).then((response) => {
-      if (!!ignore) return;
-      if (!response.ok) return setError(response.error);
+      if (ignore) return;
+      if (!response.ok) {
+        setError(response.error);
+        return;
+      }
       setIndicatorsDto(response.data);
     });
     return () => {

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IndicatorsDto } from '~/types/indicator';
+import { type IndicatorsDto } from '~/types/indicator';
 
 interface State {
   indicatorsDto: IndicatorsDto;

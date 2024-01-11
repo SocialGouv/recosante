@@ -1,9 +1,8 @@
 import React from 'react';
-import { Dimensions, Text, Platform, StyleSheet } from 'react-native';
+import { Dimensions, Text, StyleSheet } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { useAutoComplete } from './hooks/autocomplete.hooks';
-import { Municipality } from '~/types/municipality';
-import { Address } from '~/types/location';
+import { type Address } from '~/types/location';
 
 interface AutoCompleteProps {
   setAddress: (address: Address) => void;
@@ -23,7 +22,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     <AutocompleteDropdown
       ref={searchRef}
       controller={(controller) => {
-        // @ts-ignore
+        // @ts-expect-error TODO
         dropdownController.current = controller;
       }}
       // direction={Platform.select({ ios: 'down' })}
@@ -54,9 +53,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
         return (
           <Text style={styles.suggestionStyle}>
             {/* TODO: Check how to infer item type from Suggestion type in hooks */}
-            {/* @ts-ignore */}
+            {/* @ts-expect-error TODO */}
             <Text style={styles.communeName}>{item.nom}</Text>
-            {/* @ts-ignore */}
+            {/* @ts-expect-error TODO */}
             {item.label}
           </Text>
         );

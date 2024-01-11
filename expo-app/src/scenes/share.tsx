@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Email } from '~/assets/share/email';
@@ -67,12 +67,16 @@ export function SharePage({ navigation }: { navigation: any }) {
                   [
                     {
                       text: 'Annuler',
-                      onPress: () => console.log('Cancel Pressed'),
+                      onPress: () => {
+                        console.log('Cancel Pressed');
+                      },
                       style: 'cancel',
                     },
                     {
                       text: 'Not Implemented',
-                      onPress: () => console.log('OK Pressed'),
+                      onPress: () => {
+                        console.log('OK Pressed');
+                      },
                     },
                   ],
                   { cancelable: false },

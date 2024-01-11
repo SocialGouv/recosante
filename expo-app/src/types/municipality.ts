@@ -1,5 +1,5 @@
-export type Municipality = {
+export interface Municipality {
   nom: string;
   code: string;
-  codesPostaux: Array<string>;
-};
+  codesPostaux: string[];
+}

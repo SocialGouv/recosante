@@ -1,7 +1,7 @@
-export type IndicatorItem = {
+export interface IndicatorItem {
   name: string;
   slug: IndicatorsSlugEnum;
-};
+}
 
 export type IndicatorDay = 'j0' | 'j1';
 
@@ -26,7 +26,7 @@ export type IndicatorDataPerDay = {
   recommendation: string;
 };
 
-export type IndicatorCommonData = {
+export interface IndicatorCommonData {
   id: string;
   slug: IndicatorsSlugEnum;
   name: string;
@@ -36,11 +36,11 @@ export type IndicatorCommonData = {
   diffusion_date: string;
   created_at: string;
   updated_at: string;
-  recommendations: Array<string>;
+  recommendations: string[];
   about: string;
   j0: IndicatorDataPerDay; // specific to each indicator
   j1?: IndicatorDataPerDay; // specific to each indicator
-};
+}
 
 export enum IndicatorColorEnum {
   EXTREME = '#9F5C9F',

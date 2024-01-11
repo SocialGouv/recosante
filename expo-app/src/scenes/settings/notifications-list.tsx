@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Switch, View } from 'react-native';
 import MyText from '~/components/ui/my-text';
-import { NotificationType } from '~/types/notification';
+import { type NotificationType } from '~/types/notification';
 import { useNotification } from '~/zustand/notification/useNotification';
 
 const notifications: NotificationType[] = [
@@ -60,7 +59,9 @@ export function NotificationsList() {
                 trackColor={{ false: '#767577', true: '#81b0ff' }}
                 thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
                 ios_backgroundColor="#3e3e3e"
-                onValueChange={() => toggleSwitch(notification.id)}
+                onValueChange={() => {
+                  toggleSwitch(notification.id);
+                }}
                 value={isEnabled}
               />
             </View>

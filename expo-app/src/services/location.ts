@@ -1,10 +1,10 @@
 import * as Location from 'expo-location';
 import { Alert, Linking } from 'react-native';
-import { Address, Property } from '~/types/location';
+import { type Address, type Property } from '~/types/location';
 
 export namespace LocationService {
   export async function requestLocation(): Promise<
-    Location.LocationObject | undefined
+  Location.LocationObject | undefined
   > {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
@@ -14,7 +14,9 @@ export namespace LocationService {
         [
           {
             text: 'Open Settings',
-            onPress: () => Linking.openSettings(),
+            onPress: async () => {
+              await Linking.openSettings();
+            },
           },
           {
             text: 'OK',
@@ -48,7 +50,7 @@ export namespace LocationService {
 
     url.searchParams.append('lon', longitude.toString());
     url.searchParams.append('lat', latitude.toString());
-    const response = await fetch(url).then((res) => res.json());
+    const response = await fetch(url).then(async (res) => await res.json());
     const currentAdress = response?.features[0]?.properties as Property;
 
     if (!currentAdress) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -14,7 +14,7 @@ import Button from '~/components/ui/button';
 import * as Location from 'expo-location';
 import AutoComplete from '~/components/autocomplete-french-cities/autocomplete';
 import { useAddress } from '~/zustand/address/useAddress';
-import { Address } from '~/types/location';
+import { type Address } from '~/types/location';
 import { LocationService } from '~/services/location';
 
 interface LocationPageProps {
@@ -72,7 +72,9 @@ export function LocationPage(props: LocationPageProps) {
                         [
                           {
                             text: 'Open Settings',
-                            onPress: () => Linking.openSettings(),
+                            onPress: async () => {
+                              await Linking.openSettings();
+                            },
                           },
                           {
                             text: 'OK',

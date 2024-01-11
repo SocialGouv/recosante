@@ -1,6 +1,6 @@
 import { View, Pressable } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
+import { useRef, useMemo, useCallback, useEffect } from 'react';
 import MyText from '~/components/ui/my-text';
 import { Close } from '~/assets/icons/close';
 import { LineChart } from '~/components/indicators/graphs/line';
@@ -10,6 +10,7 @@ import { RootStackParamList, RouteEnum } from '~/constants/route';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type IndicatorSelectorSheetProps = NativeStackScreenProps<
+// @ts-expect-error TODO
   RootStackParamList,
   RouteEnum.INDICATOR_DETAIL
 >;
@@ -31,13 +32,38 @@ export function IndicatorDetail(props: IndicatorSelectorSheetProps) {
 
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
+<<<<<<< HEAD
+=======
+    if (selectedIndicator?.slug != null) setSelectedIndicator(null);
+>>>>>>> cc74eda (lint and format expo app + husky)
     isOpenedRef.current = false;
     navigation.goBack();
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     bottomSheetRef.current?.expand();
   }, []);
+=======
+    if (!(selectedIndicator?.slug == null) && !isOpenedRef.current) {
+      isOpenedRef.current = true;
+      openBottomSheet();
+    }
+  }, [selectedIndicator?.slug]);
+
+  const indicatorData = useMemo(
+    () =>
+      selectedIndicator?.slug != null
+        ? indicatorsDto[selectedIndicator?.slug]
+        : null,
+    [selectedIndicator?.slug, indicatorsDto],
+  );
+
+  const currentDayIndicatorData = useMemo(
+    () => indicatorData?.[day],
+    [indicatorData, day],
+  );
+>>>>>>> cc74eda (lint and format expo app + husky)
 
   return (
     <View className="flex-1">

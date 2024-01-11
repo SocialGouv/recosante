@@ -1,8 +1,4 @@
-import {
-  IndicatorColorEnum,
-  IndicatorsSlugEnum,
-  LabelEnum,
-} from '~/types/indicator';
+import { IndicatorsSlugEnum } from '~/types/indicator';
 import { AirIcon } from '~/assets/icons/indicators/air';
 import { PollensIcon } from '~/assets/icons/indicators/pollens';
 import { WaterIcon } from '~/assets/icons/indicators/water';
@@ -13,7 +9,6 @@ import { Uv } from '~/assets/icons/indicators/big/uv';
 import { Pollen } from '~/assets/icons/indicators/big/pollen';
 import { Weather } from '~/assets/icons/indicators/big/weather';
 import { Swimming } from '~/assets/icons/indicators/big/swimming';
-import { Atmo } from '~/assets/icons/indicators/big/atmo';
 
 export namespace IndicatorService {
   // export function getColorByLabel(

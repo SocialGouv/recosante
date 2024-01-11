@@ -12,7 +12,7 @@ export enum RouteEnum {
   SHARE = 'SHARE',
 }
 
-export type RootStackParamList = {
+export interface RootStackParamList {
   [RouteEnum.LOCATION]: {
     isOnboarding: true;
   };
@@ -23,7 +23,7 @@ export type RootStackParamList = {
     indicator: IndicatorCommonData;
     day: DayEnum;
   };
-};
+}
 
 export enum OnboardingRouteEnum {
   WELCOME = 'WELCOME',

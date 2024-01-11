@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useState } from 'react';
-import { IndicatorItem } from '~/types/indicator';
+import { type IndicatorItem } from '~/types/indicator';
 import { IndicatorService } from '~/services/indicator';
 import { cn } from '~/utils/tailwind';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
@@ -30,7 +30,9 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
         const isFavorite = state?.slug === indicator.slug;
         return (
           <Button
-            onPress={() => handleSelectIndicator(indicator)}
+            onPress={() => {
+              handleSelectIndicator(indicator);
+            }}
             viewClassName={cn(
               `${isFavorite ? 'bg-app-yellow' : ''}
                border-white border-2 rounded-full px-4 py-2 my-2 items-center`,
@@ -43,7 +45,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
           </Button>
         );
       })}
-      {!!state?.slug && (
+      {!(state?.slug == null) && (
         <View className="mx-auto mt-2">
           <Button
             onPress={handleSubmit}
