@@ -1,10 +1,9 @@
+import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
-import { Navigators } from './src/navigators';
 import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { PortalProvider } from '@gorhom/portal';
+import { Navigators } from './src/navigators';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,11 +44,9 @@ function App() {
 export default function () {
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <PortalProvider>
-          <App />
-        </PortalProvider>
-      </GestureHandlerRootView>
+      {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
+      <App />
+      {/* </GestureHandlerRootView> */}
     </SafeAreaProvider>
   );
 }

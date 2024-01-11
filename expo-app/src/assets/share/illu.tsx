@@ -4,11 +4,11 @@ import { View } from 'react-native';
 
 export function Illu() {
   return (
-    <View className="h-1/2 w-10/12">
+    <View className="h-56 w-full">
       <Image
-        className="h-full w-full bg-gray-50"
+        className="h-full w-full"
         source={require('./illu.png')}
-        contentFit="cover"
+        contentFit="contain"
         transition={1000}
       />
     </View>
