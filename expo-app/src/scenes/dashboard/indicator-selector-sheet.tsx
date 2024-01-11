@@ -5,11 +5,17 @@ import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
 import MyText from '~/components/ui/my-text';
 import { IndicatorsSelector } from '~/components/indicators/indicators-selector';
 import { IndicatorItem } from '~/types/indicator';
+import { RouteEnum, type RootStackParamList } from '~/constants/route';
+import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-interface IndicatorSelectorSheetProps {
-  indicators: IndicatorItem[] | null;
-}
+type IndicatorSelectorSheetProps = NativeStackScreenProps<
+  RootStackParamList,
+  RouteEnum.INDICATORS_SELECTOR
+>;
+
 export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
+  const { indicators } = useIndicatorsList((state) => state);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
@@ -34,7 +40,7 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
             </MyText>
             <IndicatorsSelector
               onSubmit={closeBottomSheet}
-              indicators={props.indicators}
+              indicators={indicators}
             />
           </View>
         </BottomSheet>

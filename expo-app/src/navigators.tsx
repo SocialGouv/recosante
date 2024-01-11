@@ -1,6 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  type NativeStackScreenProps,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,17 +16,20 @@ import { ShareIcon } from '~/assets/icons/share';
 
 import MyText from './components/ui/my-text';
 import { DashboardPage } from './scenes/dashboard/dashboard';
-import { RouteEnum } from './constants/route';
+import { RouteEnum, type RootStackParamList } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
 import { LocationPage } from '~/scenes/location';
 import { useAddress } from './zustand/address/useAddress';
+import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
+import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
   focused: boolean;
 }
+
 function TabBarLabel(props: TabBarLabelProps) {
   return (
     <MyText
@@ -38,10 +44,20 @@ function TabBarLabel(props: TabBarLabelProps) {
   );
 }
 
-const BottomTab = createBottomTabNavigator();
-function Home() {
+type HomeProps = NativeStackScreenProps<RootStackParamList, RouteEnum.HOME>;
+const HomeBottomTab = createBottomTabNavigator();
+function Home(props: HomeProps) {
+  const { favoriteIndicator } = useIndicatorsList((state) => state);
+
+  useEffect(() => {
+    if (!favoriteIndicator) {
+      console.log('navigate to indicator selector');
+      props.navigation.navigate(RouteEnum.INDICATORS_SELECTOR);
+    }
+  }, []);
+
   return (
-    <BottomTab.Navigator
+    <HomeBottomTab.Navigator
       sceneContainerStyle={{ backgroundColor: '#3343BD' }}
       screenOptions={{
         headerShown: false,
@@ -63,7 +79,7 @@ function Home() {
         lazy: false,
       }}
     >
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.DASHBOARD}
         options={{
           tabBarLabel: (props) => (
@@ -75,7 +91,7 @@ function Home() {
         }}
         component={DashboardPage}
       />
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.SHARE}
         options={{
           tabBarLabel: (props) => (
@@ -87,7 +103,7 @@ function Home() {
         }}
         component={SharePage}
       />
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.SETTINGS}
         component={SettingsPage}
         options={{
@@ -99,12 +115,11 @@ function Home() {
           ),
         }}
       />
-    </BottomTab.Navigator>
+    </HomeBottomTab.Navigator>
   );
 }
 
 const RootStack = createNativeStackNavigator();
-
 export function Navigators() {
   const { _hasHydrated, address } = useAddress((state) => state);
   const hasAddress = !!address?.citycode;
@@ -153,11 +168,14 @@ export function Navigators() {
             }}
           />
           <RootStack.Screen name={RouteEnum.HOME} component={Home} />
-          <RootStack.Screen
-            name={RouteEnum.DASHBOARD}
-            component={DashboardPage}
-          />
           <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
+          <RootStack.Screen
+            name={RouteEnum.INDICATORS_SELECTOR}
+            component={IndicatorSelectorSheet}
+            options={{
+              presentation: 'transparentModal',
+            }}
+          />
         </RootStack.Navigator>
       </NavigationContainer>
     </AutocompleteDropdownContextProvider>
