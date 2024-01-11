@@ -29,7 +29,11 @@ export function SettingsPage({ navigation }: { navigation: any }) {
           onPress={() => navigation.navigate(RouteEnum.INDICATORS_SELECTOR)}
         />
 
-        <Pressable onPress={() => Alert.alert('TODO')}>
+        <Pressable
+          onPress={() => {
+            Alert.alert('TODO');
+          }}
+        >
           <MyText
             font="MarianneExtraBold"
             className=" mt-8 text-xs uppercase underline"

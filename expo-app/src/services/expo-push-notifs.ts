@@ -35,7 +35,6 @@ export async function registerForPushNotificationsAsync({
   force = false,
   expo = false,
 } = {}) {
-  let token;
   // if (Device.isDevice) {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
@@ -52,13 +51,18 @@ export async function registerForPushNotificationsAsync({
       'Permission for Push notifications not granted',
       'You can change that in your settings',
       [
-        { text: 'Open Settings', onPress: () => Linking.openSettings() },
+        {
+          text: 'Open Settings',
+          onPress: async () => {
+            await Linking.openSettings();
+          },
+        },
         { text: 'OK', style: 'cancel', onPress: () => {} },
       ],
     );
     return;
   }
-  token = expo
+  const token = expo
     ? await Notifications.getExpoPushTokenAsync()
     : await Notifications.getDevicePushTokenAsync();
   // } else {

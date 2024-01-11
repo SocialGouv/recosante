@@ -1,4 +1,4 @@
-import NetInfo from '@react-native-community/netinfo';
+// import NetInfo from '@react-native-community/netinfo';
 import * as Sentry from '@sentry/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Matomo from './matomo';
@@ -19,8 +19,8 @@ export const initMatomo = async () => {
     });
   }
   Sentry.setUser({ id: userId });
-  // TODO: userId does not exist on API :/
-  // @ts-ignore
+  // TODO:
+  // @ts-expect-error userId does not exist on API :/
   API.userId = userId;
 
   const prevVisits = await AsyncStorage.getItem('STORAGE_MATOMO_VISITS');
@@ -43,11 +43,11 @@ export const initMatomo = async () => {
   // });
 };
 
-const checkNetwork = async () => {
-  const networkState = await NetInfo.fetch();
-  if (!networkState.isConnected) return false;
-  return true;
-};
+// const checkNetwork = async () => {
+//   const networkState = await NetInfo.fetch();
+//   if (!networkState.isConnected) return false;
+//   return true;
+// };
 
 interface LogEventProps {
   category: string;
@@ -60,8 +60,7 @@ export const logEvent = async ({
   action,
   name,
   value,
-}: LogEventProps) => {
-  return;
+}: LogEventProps): Promise<void> => {
   // try {
   //   const canSend = await checkNetwork();
   //   if (!canSend) throw new Error('no network');

@@ -1,5 +1,5 @@
 import { View, Pressable } from 'react-native';
-import { IndicatorItem, IndicatorDay } from '~/types/indicator';
+import { type IndicatorItem, type IndicatorDay } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
@@ -83,7 +83,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
             {address?.label} {dayjs().format('DD/MM')}
           </MyText>
           <LineChart value={indicatorDataInCurrentDay?.value} />
-          {currentIndicatorData?.slug ? (
+          {currentIndicatorData?.slug != null ? (
             <MyText className="mt-4 text-xs">
               {IndicatorService.getDescriptionBySlug(
                 currentIndicatorData?.slug,

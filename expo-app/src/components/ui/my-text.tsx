@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextProps } from 'react-native';
+import { StyleSheet, Text, type TextProps } from 'react-native';
 import { styled } from 'nativewind';
 import { useFonts } from 'expo-font';
 

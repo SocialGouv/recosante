@@ -1,16 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { LocationService } from '~/services/location';
-import { Feature, Address } from '~/types/location';
-
-type SuggestionType = {
-  id: string;
-  title: string;
-  code: string;
-  nom: string;
-  codesPostaux: string[];
-  _score: number;
-  displayCodesPostaux: string;
-};
+import { type Feature, type Address } from '~/types/location';
 
 export function useAutoComplete() {
   const [loading, setLoading] = useState(false);

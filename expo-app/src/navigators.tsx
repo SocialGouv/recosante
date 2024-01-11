@@ -45,7 +45,7 @@ function TabBarLabel(props: TabBarLabelProps) {
     </MyText>
   );
 }
-
+// @ts-expect-error TODO
 type HomeProps = NativeStackScreenProps<RootStackParamList, RouteEnum.HOME>;
 const HomeBottomTab = createBottomTabNavigator();
 function Home(props: HomeProps) {
@@ -137,8 +137,8 @@ export function Navigators() {
     if (route?.name === prevCurrentRouteName.current) return;
     if (!prevCurrentRouteName) return;
     if (!route?.name) return;
-    // TODO: check this
-    // @ts-ignore
+    // TODO:
+    // @ts-expect-error check this
     prevCurrentRouteName.current = route.name;
     logEvent({ category: 'NAVIGATION', action: route.name });
   }
@@ -171,15 +171,13 @@ export function Navigators() {
             />
             <RootStack.Screen
               name={RouteEnum.HOME}
-              // TODO
-              // @ts-ignore
+              // @ts-expect-error TODO
               component={Home}
             />
             <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
             <RootStack.Screen
               name={RouteEnum.INDICATORS_SELECTOR}
-              // TODO
-              // @ts-ignore
+              // @ts-expect-error TODO
               component={IndicatorSelectorSheet}
               options={() => ({
                 headerShown: false,

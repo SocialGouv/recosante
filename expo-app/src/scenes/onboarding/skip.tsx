@@ -5,7 +5,6 @@ interface SkipProps {
   onPress: () => void;
 }
 
-const PATH = 'SCREEN_';
 export function Skip(props: SkipProps) {
   return (
     <View className="absolute top-4 flex w-full justify-end ">

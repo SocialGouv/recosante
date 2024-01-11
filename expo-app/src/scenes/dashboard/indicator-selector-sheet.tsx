@@ -3,11 +3,12 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { useRef, useMemo, useEffect } from 'react';
 import MyText from '~/components/ui/my-text';
 import { IndicatorsSelector } from '~/components/indicators/indicators-selector';
-import { RouteEnum, type RootStackParamList } from '~/constants/route';
+import { type RouteEnum, type RootStackParamList } from '~/constants/route';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type IndicatorSelectorSheetProps = NativeStackScreenProps<
+  // @ts-expect-error TODO
   RootStackParamList,
   RouteEnum.INDICATORS_SELECTOR
 >;

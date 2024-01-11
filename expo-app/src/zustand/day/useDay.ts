@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { DayEnum } from '~/types/day';
+import { type DayEnum } from '~/types/day';
 
 interface DayState {
   day: 'j0' | 'j1';

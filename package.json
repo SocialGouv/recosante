@@ -13,16 +13,32 @@
   ],
   "scripts": {
     "down": "docker-compose down",
-    "lint": "yarn workspaces run lint",
     "start": "docker-compose up -d --remove-orphans",
     "stop": "docker-compose stop",
     "test": "yarn workspaces run test",
-    "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis"
+    "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis",
+    "prepare": "husky install",
+    "lint": "eslint  --fix \"./expo-app/src/**/*.ts*\"",
+    "lint-check": "eslint \"./expo-app/src/**/*.ts*\" --no-fix --max-warnings 0",
+    "format": "prettier  --write . --ignore-unknown",
+    "format-check": "prettier --check . "
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@socialgouv/releaserc": "^1.1.1",
-    "semantic-release": "^21.0.2"
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-config-standard-with-typescript": "^43.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.0",
+    "semantic-release": "^21.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "prettier-plugin-prisma": "^5.0.0"
   }
 }

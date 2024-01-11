@@ -1,4 +1,4 @@
-export type Address = {
+export interface Address {
   id: string;
   title: string;
   label: string;
@@ -6,7 +6,7 @@ export type Address = {
   postcode: string;
   context: string;
   city: string;
-};
+}
 
 export interface Feature {
   type: string;

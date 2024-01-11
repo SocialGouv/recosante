@@ -4,7 +4,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { MUNICPALITY_STORAGE } from '~/constants/municipality';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
 import API from '~/services/api';
-import { Address } from '~/types/location';
+import { type Address } from '~/types/location';
 
 interface LocationState {
   address: Address | null;
