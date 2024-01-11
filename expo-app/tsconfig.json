@@ -1,5 +1,12 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "src/custom.d.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "src/custom.d.ts",
+    "src/assets/icons/indicators/big/uvtsx"
+  ],
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
