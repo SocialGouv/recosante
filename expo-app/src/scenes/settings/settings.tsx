@@ -6,11 +6,15 @@ import { NotificationsList } from './notifications-list';
 import { Arrow } from '~/assets/icons/arrow';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { RouteEnum } from '~/constants/route';
 
 export function SettingsPage({ navigation }: { navigation: any }) {
   return (
     <SafeAreaView className="flex flex-1 items-center justify-around bg-app-gray px-4">
-      <ScrollView className="top-8 flex w-full flex-1">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        className="top-8 flex w-full flex-1"
+      >
         <MyText font="MarianneBold" className=" text-3xl">
           Vos préférences
         </MyText>
@@ -22,7 +26,7 @@ export function SettingsPage({ navigation }: { navigation: any }) {
 
         <TextRow
           text="Votre indicateur favoris"
-          onPress={() => Alert.alert('TODO')}
+          onPress={() => navigation.navigate(RouteEnum.INDICATORS_SELECTOR)}
         />
 
         <Pressable onPress={() => Alert.alert('TODO')}>
@@ -59,7 +63,15 @@ function TextRow(props: TextRowProps) {
       <MyText font="MarianneRegular" className=" mt-4 text-lg ">
         {props.text}
       </MyText>
-      <Pressable onPress={props.onPress}>
+      <Pressable
+        onPress={props.onPress}
+        hitSlop={{
+          top: 20,
+          bottom: 20,
+          left: 20,
+          right: 20,
+        }}
+      >
         <View className="mt-4">
           <Arrow />
         </View>

@@ -136,7 +136,6 @@ export function Navigators() {
   async function onNavigationStateChange() {
     if (!navigationRef.isReady()) return;
     const route = navigationRef.getCurrentRoute();
-
     if (route?.name === prevCurrentRouteName.current) return;
     if (!prevCurrentRouteName) return;
     if (!route?.name) return;
@@ -188,11 +187,7 @@ export function Navigators() {
                 headerShown: false,
                 presentation: 'transparentModal',
                 //  TODO/FIXME: animation non on enter, fade on exit
-                animation: prevCurrentRouteName.current?.includes(
-                  RouteEnum.INDICATORS_SELECTOR,
-                )
-                  ? 'fade'
-                  : 'none',
+                animation: 'none',
               })}
             />
           </RootStack.Navigator>
