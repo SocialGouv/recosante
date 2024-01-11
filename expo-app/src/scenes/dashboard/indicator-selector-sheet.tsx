@@ -20,7 +20,7 @@ export function IndicatorSelectorSheet({
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
-    bottomSheetRef.current?.expand();
+    // bottomSheetRef.current?.expand();
   }, []);
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);

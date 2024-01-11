@@ -53,7 +53,6 @@ function Home(props: HomeProps) {
 
   useEffect(() => {
     if (!favoriteIndicator) {
-      console.log('navigate to indicator selector');
       props.navigation.navigate(RouteEnum.INDICATORS_SELECTOR);
     }
   }, []);
@@ -187,7 +186,7 @@ export function Navigators() {
                 headerShown: false,
                 presentation: 'transparentModal',
                 //  TODO/FIXME: animation non on enter, fade on exit
-                animation: 'none',
+                // animation: 'none',
               })}
             />
           </RootStack.Navigator>
