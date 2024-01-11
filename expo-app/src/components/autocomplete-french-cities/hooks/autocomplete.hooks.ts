@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { LocationService } from '~/services/location';
-import { LocationType } from '~/types/location';
+import { Feature, LocationType } from '~/types/location';
 
 type SuggestionType = {
   id: string;
@@ -31,9 +31,11 @@ export function useAutoComplete() {
 
     const response = await fetch(url);
     const items = await response.json();
-    const adressReponse: LocationType[] = items.features.map((el: any) => {
-      return LocationService.formatPropertyToLocationType(el.properties);
-    });
+    const adressReponse: LocationType[] = items.features.map(
+      (feature: Feature) => {
+        return LocationService.formatPropertyToLocationType(feature.properties);
+      },
+    );
     setAddresssList(adressReponse);
     setLoading(false);
   }, []);
