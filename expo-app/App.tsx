@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
 import { Navigators } from './src/navigators';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -44,9 +45,9 @@ function App() {
 export default function () {
   return (
     <SafeAreaProvider>
-      {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
-      <App />
-      {/* </GestureHandlerRootView> */}
+      <GestureHandlerRootView className="flex-1">
+        <App />
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }
