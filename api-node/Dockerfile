@@ -1,16 +1,16 @@
-FROM node:20-alpine as deps
+FROM node:20-alpine
+
+RUN mkdir /app && chown 1000:1000 /app \
+  && chown 1000:1000 /tmp && \
+  mkdir /home/node/.yarn && chown 1000:1000 /home/node/.yarn
 WORKDIR /app
-
-COPY package.json yarn.lock ./
-RUN yarn --production --frozen-lockfile
-
-FROM node:20-alpine as run
-WORKDIR /app
-
-COPY --chown=node:node --from=deps /app/node_modules ./node_modules
-COPY . .
-
 USER 1000
+
+COPY api/yarn.lock api/.yarnrc.yml ./
+COPY --chown=1000:1000 api/.yarn .yarn
+RUN yarn fetch --immutable
+
+COPY --chown=1000:1000 api/. .
 
 ENV NODE_ENV=production
 
