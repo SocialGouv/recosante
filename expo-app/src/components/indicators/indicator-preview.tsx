@@ -6,9 +6,10 @@ import dayjs from 'dayjs';
 import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
-import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import { useAddress } from '~/zustand/address/useAddress';
+import { useNavigation } from '@react-navigation/native';
+import { RouteEnum } from '~/constants/route';
 
 interface IndicatorPreviewProps {
   indicator: IndicatorItem;
@@ -18,14 +19,17 @@ interface IndicatorPreviewProps {
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
   const { address } = useAddress((state) => state);
-  const { setSelectedIndicator } = useSelectedIndicator((state) => state);
-
+  const navigation = useNavigation();
   const { indicatorsDto } = useIndicatorsDto((state) => state);
   const currentIndicatorData = indicatorsDto[props.indicator.slug];
 
   function handleSelect() {
     if (!currentIndicatorData) return;
-    setSelectedIndicator(currentIndicatorData);
+    // @ts-ignore
+    navigation.navigate(RouteEnum.INDICATOR_DETAIL, {
+      indicator: currentIndicatorData,
+      day: props.day,
+    });
   }
 
   const indicatorDataInCurrentDay = currentIndicatorData?.[props.day];

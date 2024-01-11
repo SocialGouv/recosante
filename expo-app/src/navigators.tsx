@@ -25,7 +25,7 @@ import { useAddress } from './zustand/address/useAddress';
 import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
 import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IndicatorDetail } from './scenes/dashboard/indicator-detail';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -119,7 +119,6 @@ function Home(props: HomeProps) {
     </HomeBottomTab.Navigator>
   );
 }
-// AsyncStorage.clear();
 const RootStack = createNativeStackNavigator();
 export function Navigators() {
   const { _hasHydrated, address } = useAddress((state) => state);
@@ -182,6 +181,18 @@ export function Navigators() {
               // TODO
               // @ts-ignore
               component={IndicatorSelectorSheet}
+              options={() => ({
+                headerShown: false,
+                presentation: 'transparentModal',
+                //  TODO/FIXME: animation non on enter, fade on exit
+                // animation: 'none',
+              })}
+            />
+            <RootStack.Screen
+              name={RouteEnum.INDICATOR_DETAIL}
+              // TODO
+              // @ts-ignore
+              component={IndicatorDetail}
               options={() => ({
                 headerShown: false,
                 presentation: 'transparentModal',

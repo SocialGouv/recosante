@@ -19,7 +19,7 @@ export enum IndicatorsSlugEnum {
   bathing_water = 'bathing_water',
 }
 
-type IndicatorDataPerDay = {
+export type IndicatorDataPerDay = {
   value: number;
   color: string;
   label: LabelEnum;
