@@ -50,6 +50,12 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           <Pressable
             className="w-fit rounded-full bg-app-primary p-3 text-sm text-white"
             onPress={() => navigation.navigate(RouteEnum.LOCATION)}
+            hitSlop={{
+              top: 20,
+              bottom: 20,
+              left: 20,
+              right: 20,
+            }}
           >
             <LocationIcon />
           </Pressable>
@@ -75,7 +81,6 @@ export function DashboardPage({ navigation }: { navigation: any }) {
             </View>
           ) : null}
         </View>
-        <IndicatorDetail />
       </View>
       <IndicatorsListPreview
         indicators={indicators}

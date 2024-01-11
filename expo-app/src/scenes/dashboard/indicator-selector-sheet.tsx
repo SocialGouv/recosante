@@ -24,6 +24,7 @@ export function IndicatorSelectorSheet({
   }, []);
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
     setTimeout(() => {

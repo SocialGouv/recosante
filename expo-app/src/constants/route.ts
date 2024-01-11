@@ -1,6 +1,10 @@
+import { DayEnum } from '~/types/day';
+import { IndicatorCommonData } from '~/types/indicator';
+
 export enum RouteEnum {
   DASHBOARD = 'DASHBOARD',
   INDICATORS_SELECTOR = 'INDICATORS_SELECTOR',
+  INDICATOR_DETAIL = 'INDICATOR_DETAIL',
   SETTINGS = 'SETTINGS',
   HOME = 'HOME',
   ONBOARDING = 'ONBOARDING',
@@ -15,6 +19,10 @@ export type RootStackParamList = {
   [RouteEnum.HOME]: undefined;
   [RouteEnum.SHARE]: undefined;
   [RouteEnum.INDICATORS_SELECTOR]: undefined;
+  [RouteEnum.INDICATOR_DETAIL]: {
+    indicator: IndicatorCommonData;
+    day: DayEnum;
+  };
 };
 
 export enum OnboardingRouteEnum {
