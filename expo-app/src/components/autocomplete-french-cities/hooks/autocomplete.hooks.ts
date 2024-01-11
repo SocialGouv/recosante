@@ -14,13 +14,13 @@ type SuggestionType = {
 
 export function useAutoComplete() {
   const [loading, setLoading] = useState(false);
-  const [locationsList, setAddresssList] = useState<LocationType[]>([]);
+  const [addressList, setAddressList] = useState<LocationType[]>([]);
   const dropdownController = useRef(null);
   const searchRef = useRef(null);
 
   const getSuggestions = useCallback(async (query: string | number) => {
     if (typeof query !== 'string' || query.length < 3) {
-      setAddresssList([]);
+      setAddressList([]);
       return;
     }
 
@@ -36,18 +36,18 @@ export function useAutoComplete() {
         return LocationService.formatPropertyToLocationType(feature.properties);
       },
     );
-    setAddresssList(adressReponse);
+    setAddressList(adressReponse);
     setLoading(false);
   }, []);
 
   const onClearPress = useCallback(() => {
-    setAddresssList([]);
+    setAddressList([]);
   }, []);
 
   const onOpenSuggestionsList = useCallback(() => {}, []);
 
   return {
-    locationsList,
+    addressList,
     loading,
     getSuggestions,
     dropdownController,

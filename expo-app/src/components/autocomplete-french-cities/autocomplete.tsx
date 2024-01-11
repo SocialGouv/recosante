@@ -16,7 +16,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     searchRef,
     onClearPress,
     onOpenSuggestionsList,
-    locationsList,
+    addressList,
   } = useAutoComplete();
 
   return (
@@ -27,7 +27,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         dropdownController.current = controller;
       }}
       // direction={Platform.select({ ios: 'down' })}
-      dataSet={locationsList}
+      dataSet={addressList}
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
         if (!item) return;
