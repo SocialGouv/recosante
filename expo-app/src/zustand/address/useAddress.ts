@@ -4,29 +4,29 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { MUNICPALITY_STORAGE } from '~/constants/municipality';
 import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
 import API from '~/services/api';
-import { Municipality } from '~/types/municipality';
+import { LocationType } from '~/types/location';
 
-interface MuniciaplityState {
-  municipality: Municipality | null;
-  setCommune: (municipality: Municipality) => void;
+interface LocationState {
+  address: LocationType | null;
+  setAddress: (location: LocationType) => void;
   _hasHydrated: boolean;
   setHasHydrated: (hydrationState: boolean) => void;
 }
 
-const useCommune = create<MuniciaplityState>()(
+export const useAddress = create<LocationState>()(
   persist(
     (set, _get) => ({
-      municipality: null,
-      setCommune: async (municipality) => {
-        set({ municipality });
+      address: null,
+      setAddress: async (address) => {
+        set({ address });
         const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
         API.post({
           path: '/user',
           body: {
             matomo_id,
-            municipality_insee_code: municipality.code,
-            municipality_nom: municipality.nom,
-            municipality_zip_code: JSON.stringify(municipality.codesPostaux),
+            municipality_insee_code: address.citycode,
+            municipality_nom: address.city,
+            municipality_zip_code: address.postcode,
           },
           // TODO: handle error
         });
@@ -47,5 +47,3 @@ const useCommune = create<MuniciaplityState>()(
     },
   ),
 );
-
-export default useCommune;

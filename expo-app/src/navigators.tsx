@@ -7,7 +7,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { navigationRef } from '~/services/navigation';
 
 import { initMatomo, logEvent } from './services/logEventsWithMatomo';
-import useMunicipality from './zustand/municipality/useMunicipality';
 import { HomeIcon } from '~/assets/icons/home';
 import { SettingsIcon } from '~/assets/icons/settings';
 import { ShareIcon } from '~/assets/icons/share';
@@ -19,6 +18,7 @@ import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
 import { LocationPage } from '~/scenes/location';
+import { useAddress } from './zustand/address/useAddress';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -106,10 +106,8 @@ function Home() {
 const RootStack = createNativeStackNavigator();
 
 export function Navigators() {
-  const hasHydrated = useMunicipality((state) => state._hasHydrated);
-  const hasCommune = useMunicipality(
-    (state) => !!state.municipality?.nom && !!state.municipality?.code,
-  );
+  const { _hasHydrated, address } = useAddress((state) => state);
+  const hasAddress = !!address?.citycode;
 
   async function onReady() {
     await initMatomo();
@@ -130,7 +128,7 @@ export function Navigators() {
     logEvent({ category: 'NAVIGATION', action: route.name });
   }
 
-  if (!hasHydrated) return null;
+  if (!_hasHydrated) return null;
 
   return (
     <AutocompleteDropdownContextProvider>
@@ -141,7 +139,7 @@ export function Navigators() {
       >
         <RootStack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={hasCommune ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+          initialRouteName={hasAddress ? RouteEnum.HOME : RouteEnum.ONBOARDING}
         >
           <RootStack.Screen
             name={RouteEnum.ONBOARDING}

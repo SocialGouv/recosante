@@ -13,9 +13,7 @@ export function IndicatorSelectorSheet(props: IndicatorSelectorSheetProps) {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
-  const handleSheetChanges = useCallback((index: number) => {
-    // console.log('handleSheetChanges', index);
-  }, []);
+  const handleSheetChanges = useCallback((index: number) => {}, []);
 
   function closeBottomSheet() {
     bottomSheetRef.current?.close();

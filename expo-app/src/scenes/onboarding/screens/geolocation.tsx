@@ -5,13 +5,12 @@ import MyText from '~/components/ui/my-text';
 import { Skip } from '../skip';
 import { Illu_2 } from '~/assets/onboarding/illu_2';
 import { LocationService } from '~/services/location';
-import useCommune from '~/zustand/municipality/useMunicipality';
-import { CommuneService } from '~/services/commune';
 import { OnboardingRouteEnum, RouteEnum } from '~/constants/route';
 import { registerForPushNotificationsAsync } from '~/services/expo-push-notifs';
+import { useAddress } from '~/zustand/address/useAddress';
 
 export function Geolocation({ navigation }: { navigation: any }) {
-  const saveCommune = useCommune((state) => state.setCommune);
+  const { setAddress } = useAddress((state) => state);
 
   const onNext = async () => {
     const token = await registerForPushNotificationsAsync({
@@ -48,13 +47,19 @@ export function Geolocation({ navigation }: { navigation: any }) {
         <Button
           onPress={async () => {
             const location = await LocationService.requestLocation();
-            const municipality =
-              await CommuneService.getCommuneByLocation(location);
-            if (!municipality) {
-              Alert.alert('Erreur', 'Impossible de trouver votre commune');
+            if (!location) {
+              Alert.alert('Erreur', 'Impossible de trouver votre position');
               return;
             }
-            saveCommune(municipality);
+            const adress = await LocationService.getAdressByCoordinates(
+              location.coords.latitude,
+              location.coords.longitude,
+            );
+            if (!adress) {
+              Alert.alert('Erreur', 'Impossible de trouver votre position');
+              return;
+            }
+            setAddress(adress);
             onNext();
           }}
           viewClassName="bg-app-yellow p-4"

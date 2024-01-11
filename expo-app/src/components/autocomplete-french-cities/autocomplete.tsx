@@ -3,20 +3,20 @@ import { Dimensions, Text, Platform, StyleSheet } from 'react-native';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import { useAutoComplete } from './hooks/autocomplete.hooks';
 import { Municipality } from '~/types/municipality';
+import { LocationType } from '~/types/location';
 
 interface AutoCompleteProps {
-  setSelectedCommune: (municipality: Municipality) => void;
+  setAddress: (location: LocationType) => void;
 }
 export default function AutoComplete(props: AutoCompleteProps) {
   const {
     loading,
-    suggestionsList,
     getSuggestions,
     dropdownController,
     searchRef,
     onClearPress,
     onOpenSuggestionsList,
-    adressList,
+    locationsList,
   } = useAutoComplete();
 
   return (
@@ -27,13 +27,12 @@ export default function AutoComplete(props: AutoCompleteProps) {
         dropdownController.current = controller;
       }}
       // direction={Platform.select({ ios: 'down' })}
-      dataSet={adressList}
+      dataSet={locationsList}
       onChangeText={getSuggestions}
       onSelectItem={(item) => {
-        console.log('item', item);
         if (!item) return;
-        const selectedItem = item as unknown as Municipality;
-        props.setSelectedCommune(selectedItem);
+        const selectedAdress = item as LocationType;
+        props.setAddress(selectedAdress);
       }}
       debounce={600}
       suggestionsListMaxHeight={Dimensions.get('window').height * 0.4}

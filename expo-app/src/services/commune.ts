@@ -1,5 +1,7 @@
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
+import { LocationType, Property } from '~/types/location';
+import { LocationService } from './location';
 
 export namespace CommuneService {
   export async function getCommuneByLocation(
@@ -15,7 +17,6 @@ export namespace CommuneService {
     url.searchParams.append('lon', location.coords.longitude.toString());
     url.searchParams.append('lat', location.coords.latitude.toString());
     const response = await fetch(url).then((res) => res.json());
-    // if (response?.length) setSelectedCommune(response[0]);
     if (!response?.length) {
       Alert.alert('Erreur', 'Impossible de trouver votre ville');
     }
