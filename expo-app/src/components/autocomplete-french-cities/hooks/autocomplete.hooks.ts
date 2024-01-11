@@ -1,4 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
+import { LocationService } from '~/services/location';
+import { Feature, Address } from '~/types/location';
 
 type SuggestionType = {
   id: string;
@@ -9,68 +11,42 @@ type SuggestionType = {
   _score: number;
   displayCodesPostaux: string;
 };
+
 export function useAutoComplete() {
   const [loading, setLoading] = useState(false);
-  const [suggestionsList, setSuggestionsList] = useState<SuggestionType[]>([]);
+  const [addressList, setAddressList] = useState<Address[]>([]);
   const dropdownController = useRef(null);
-
   const searchRef = useRef(null);
 
   const getSuggestions = useCallback(async (query: string | number) => {
     if (typeof query !== 'string' || query.length < 3) {
-      setSuggestionsList([]);
+      setAddressList([]);
       return;
     }
 
-    const filterToken = query.toLowerCase();
+    const search = query.toLowerCase();
     setLoading(true);
-    const url = new URL('https://geo.api.gouv.fr/communes');
-    url.searchParams.append('boost', 'population');
-    url.searchParams.append('limit', '5');
-    url.searchParams.append('fields', 'nom,code,codesPostaux');
-    // TODO: can not work, filterToken is a string
-    // @ts-ignore
-    if (Number(filterToken) == filterToken) {
-      url.searchParams.append('codePostal', filterToken);
-    } else {
-      url.searchParams.append('nom', filterToken);
-    }
+    const url = new URL('https://api-adresse.data.gouv.fr/search/');
+    url.searchParams.append('q', search);
+
     const response = await fetch(url);
     const items = await response.json();
-    const suggestions: SuggestionType[] = items.map(
-      (item: {
-        code: string;
-        nom: string;
-        codesPostaux: string[];
-        _score: number;
-      }) => ({
-        id: item.code,
-        title: item.nom,
-        code: item.code,
-        nom: item.nom,
-        codesPostaux: item.codesPostaux,
-        _score: item._score,
-        displayCodesPostaux:
-          item.codesPostaux.length > 2
-            ? `${item.codesPostaux[0]}..${item.codesPostaux.at(-1)}`
-            : item.codesPostaux.length === 2
-              ? `${item.codesPostaux[0]}, ${item.codesPostaux[1]}`
-              : item.codesPostaux[0],
-      }),
-    );
-    setSuggestionsList(suggestions);
+    const adressReponse: Address[] = items.features.map((feature: Feature) => {
+      return LocationService.formatPropertyToAddress(feature.properties);
+    });
+    setAddressList(adressReponse);
     setLoading(false);
   }, []);
 
   const onClearPress = useCallback(() => {
-    setSuggestionsList([]);
+    setAddressList([]);
   }, []);
 
   const onOpenSuggestionsList = useCallback(() => {}, []);
 
   return {
+    addressList,
     loading,
-    suggestionsList,
     getSuggestions,
     dropdownController,
     searchRef,

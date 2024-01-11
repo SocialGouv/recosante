@@ -16,14 +16,12 @@ export function IndicatorDetail() {
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
   const isOpenedRef = useRef(false);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
     if (index < 0) {
       isOpenedRef.current = false;
     }
   }, []);
 
   function closeBottomSheet() {
-    console.log('closeBottomSheet');
     bottomSheetRef.current?.close();
     if (selectedIndicator?.slug) setSelectedIndicator(null);
     isOpenedRef.current = false;
@@ -32,8 +30,6 @@ export function IndicatorDetail() {
     bottomSheetRef.current?.expand();
     isOpenedRef.current = true;
   }
-
-  console.log(selectedIndicator?.slug);
 
   useEffect(() => {
     if (!!selectedIndicator?.slug && !isOpenedRef.current) {
@@ -51,7 +47,6 @@ export function IndicatorDetail() {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           onClose={() => {
-            console.log('onClose');
             closeBottomSheet();
           }}
           handleStyle={{
@@ -80,7 +75,6 @@ export function IndicatorDetail() {
             </View>
             <Pressable
               onPress={() => {
-                console.log('onPress');
                 closeBottomSheet();
               }}
               className="absolute right-2 top-0"

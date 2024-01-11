@@ -3,12 +3,12 @@ import { IndicatorItem, IndicatorDay } from '~/types/indicator';
 import MyText from '../ui/my-text';
 import { IndicatorService } from '~/services/indicator';
 import dayjs from 'dayjs';
-import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { cn } from '~/utils/tailwind';
 import { Info } from '~/assets/icons/info';
 import { LineChart } from './graphs/line';
 import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
+import { useAddress } from '~/zustand/address/useAddress';
 
 interface IndicatorPreviewProps {
   indicator: IndicatorItem;
@@ -17,7 +17,7 @@ interface IndicatorPreviewProps {
 }
 
 export function IndicatorPreview(props: IndicatorPreviewProps) {
-  const { municipality } = useMunicipality((state) => state);
+  const { address } = useAddress((state) => state);
   const { setSelectedIndicator } = useSelectedIndicator((state) => state);
 
   const { indicatorsDto } = useIndicatorsDto((state) => state);
@@ -69,7 +69,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
             className=" mb-4 text-xs uppercase text-gray-500"
             font="MarianneRegular"
           >
-            {municipality?.nom} {municipality?.codesPostaux[0]} -{' '}
+            {address?.label}
             {dayjs().format('DD/MM')}
           </MyText>
           <LineChart value={IndicatorDataInCurrentDay?.value} />

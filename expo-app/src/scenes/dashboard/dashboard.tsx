@@ -5,25 +5,25 @@ import { LocationIcon } from '~/assets/icons/location';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import API from '~/services/api';
-import useMunicipality from '~/zustand/municipality/useMunicipality';
 import { IndicatorDetail } from './indicator-detail';
 import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import dayjs from 'dayjs';
 import { RouteEnum } from '~/constants/route';
+import { useAddress } from '~/zustand/address/useAddress';
 
 export function DashboardPage({ navigation }: { navigation: any }) {
   const { favoriteIndicator, indicators } = useIndicatorsList((state) => state);
   const { setIndicatorsDto } = useIndicatorsDto((state) => state);
-  const { municipality } = useMunicipality((state) => state);
+  const { address } = useAddress((state) => state);
   const [error, setError] = useState<string>('');
   useEffect(() => {
-    if (!municipality?.code) return;
+    if (!address?.citycode) return;
     let ignore = false;
     API.get({
       path: '/indicators',
       query: {
-        municipality_insee_code: municipality?.code,
+        municipality_insee_code: address?.citycode,
         date_ISO: dayjs().toISOString(),
       },
     }).then((response) => {
@@ -34,7 +34,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
     return () => {
       ignore = true;
     };
-  }, [municipality?.code]);
+  }, [address?.citycode]);
 
   if (error) {
     return (
@@ -62,13 +62,13 @@ export function DashboardPage({ navigation }: { navigation: any }) {
           <MyText font="MarianneBold" className="text-2xl text-black">
             Découvrez {'\n'}vos indicateurs favoris !
           </MyText>
-          {municipality?.nom ? (
+          {address?.city ? (
             <View className="flex flex-row items-center">
               <MyText
                 font="MarianneRegular"
                 className="text-md mt-2 uppercase text-app-gray-100"
               >
-                {municipality?.nom}
+                {address?.label ?? address?.city}
               </MyText>
               <View className="relative -bottom-1 ml-2 ">
                 <LocationIcon fill="#AEB1B7" stroke="#AEB1B7" />

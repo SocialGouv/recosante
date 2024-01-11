@@ -11,19 +11,23 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MyText from '~/components/ui/my-text';
 import Button from '~/components/ui/button';
-import useCommune from '~/zustand/municipality/useMunicipality';
 import * as Location from 'expo-location';
 import AutoComplete from '~/components/autocomplete-french-cities/autocomplete';
+import { useAddress } from '~/zustand/address/useAddress';
+import { Address } from '~/types/location';
+import { LocationService } from '~/services/location';
 
 interface LocationPageProps {
   navigation: any;
   route: any;
 }
 export function LocationPage(props: LocationPageProps) {
-  const setCommune = useCommune((state) => state.setCommune);
-  const municipality = useCommune((state) => state.municipality);
-  const [selectedCommune, setSelectedCommune] = useState(municipality);
-  const isOnboarding = props.route.params?.isOnboarding;
+  const { setAddress } = useAddress((state) => state);
+
+  function handleSelect(address: Address) {
+    setAddress(address);
+    props.navigation.goBack();
+  }
 
   return (
     <ScrollView
@@ -53,7 +57,7 @@ export function LocationPage(props: LocationPageProps) {
               </MyText>
             </View>
             <View className="z-10 flex-row items-center px-4">
-              <AutoComplete setSelectedCommune={setSelectedCommune} />
+              <AutoComplete setAddress={handleSelect} />
             </View>
           </View>
           <View className="mt-4 flex w-full items-center justify-center ">
@@ -81,19 +85,15 @@ export function LocationPage(props: LocationPageProps) {
                     }
                     const location = await Location.getCurrentPositionAsync({});
                     const { latitude, longitude } = location.coords;
-                    const url = new URL('https://geo.api.gouv.fr/communes');
-                    url.searchParams.append('boost', 'population');
-                    url.searchParams.append('limit', '1');
-                    url.searchParams.append('fields', 'nom,code,codesPostaux');
-                    url.searchParams.append('lon', longitude.toString());
-                    url.searchParams.append('lat', latitude.toString());
-                    const response = await fetch(url).then((res) => res.json());
-                    if (response?.length) setSelectedCommune(response[0]);
-                    if (!response?.length)
-                      Alert.alert(
-                        'Erreur',
-                        'Impossible de trouver votre ville',
+
+                    const formatedAdress =
+                      await LocationService.getAdressByCoordinates(
+                        latitude,
+                        longitude,
                       );
+                    if (formatedAdress) {
+                      handleSelect(formatedAdress);
+                    }
                   },
                 );
               }}
