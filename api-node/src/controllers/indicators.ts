@@ -8,7 +8,7 @@ import type { CustomError } from '~/types/error';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
 import { indicatorsList } from '~/getters/indicators_list';
-
+import indicatorMocks from './mocks/indicators.json';
 const router = express.Router();
 
 router.get(
@@ -75,10 +75,8 @@ router.get(
           municipality_insee_code,
           date_ISO,
         }),
-        bathing_water: example,
-        indice_atmospheric: example,
-        pollen_allergy: example,
-        weather_alert: example,
+        // temporary mocks and types
+        ...(indicatorMocks as any),
         // episode_pollution_atmospheric: example,
         // tap_water: example,
       };
