@@ -132,7 +132,7 @@ export function Navigators() {
     await logEvent({ category: 'APP', action: 'APP_OPEN' });
   }
 
-  const prevCurrentRouteName = useRef(null);
+  const prevCurrentRouteName = useRef<string>(null);
   async function onNavigationStateChange() {
     if (!navigationRef.isReady()) return;
     const route = navigationRef.getCurrentRoute();
@@ -172,15 +172,22 @@ export function Navigators() {
                 isOnboarding: true,
               }}
             />
-            <RootStack.Screen name={RouteEnum.HOME} component={Home} />
+            <RootStack.Screen
+              name={RouteEnum.HOME}
+              // TODO
+              // @ts-ignore
+              component={Home}
+            />
             <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
             <RootStack.Screen
               name={RouteEnum.INDICATORS_SELECTOR}
+              // TODO
+              // @ts-ignore
               component={IndicatorSelectorSheet}
               options={() => ({
                 headerShown: false,
                 presentation: 'transparentModal',
-                //  animation non on enter, fade on exit
+                //  TODO/FIXME: animation non on enter, fade on exit
                 animation: prevCurrentRouteName.current?.includes(
                   RouteEnum.INDICATORS_SELECTOR,
                 )
