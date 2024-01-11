@@ -1,6 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  type NativeStackScreenProps,
+  createNativeStackNavigator,
+} from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,17 +16,22 @@ import { ShareIcon } from '~/assets/icons/share';
 
 import MyText from './components/ui/my-text';
 import { DashboardPage } from './scenes/dashboard/dashboard';
-import { RouteEnum } from './constants/route';
+import { RouteEnum, type RootStackParamList } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
 import { LocationPage } from '~/scenes/location';
 import { useAddress } from './zustand/address/useAddress';
+import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
+import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
   focused: boolean;
 }
+
 function TabBarLabel(props: TabBarLabelProps) {
   return (
     <MyText
@@ -38,10 +46,19 @@ function TabBarLabel(props: TabBarLabelProps) {
   );
 }
 
-const BottomTab = createBottomTabNavigator();
-function Home() {
+type HomeProps = NativeStackScreenProps<RootStackParamList, RouteEnum.HOME>;
+const HomeBottomTab = createBottomTabNavigator();
+function Home(props: HomeProps) {
+  const { favoriteIndicator } = useIndicatorsList((state) => state);
+
+  useEffect(() => {
+    if (!favoriteIndicator) {
+      props.navigation.navigate(RouteEnum.INDICATORS_SELECTOR);
+    }
+  }, []);
+
   return (
-    <BottomTab.Navigator
+    <HomeBottomTab.Navigator
       sceneContainerStyle={{ backgroundColor: '#3343BD' }}
       screenOptions={{
         headerShown: false,
@@ -63,7 +80,7 @@ function Home() {
         lazy: false,
       }}
     >
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.DASHBOARD}
         options={{
           tabBarLabel: (props) => (
@@ -75,7 +92,7 @@ function Home() {
         }}
         component={DashboardPage}
       />
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.SHARE}
         options={{
           tabBarLabel: (props) => (
@@ -87,7 +104,7 @@ function Home() {
         }}
         component={SharePage}
       />
-      <BottomTab.Screen
+      <HomeBottomTab.Screen
         name={RouteEnum.SETTINGS}
         component={SettingsPage}
         options={{
@@ -99,12 +116,11 @@ function Home() {
           ),
         }}
       />
-    </BottomTab.Navigator>
+    </HomeBottomTab.Navigator>
   );
 }
-
+// AsyncStorage.clear();
 const RootStack = createNativeStackNavigator();
-
 export function Navigators() {
   const { _hasHydrated, address } = useAddress((state) => state);
   const hasAddress = !!address?.citycode;
@@ -115,7 +131,7 @@ export function Navigators() {
     await logEvent({ category: 'APP', action: 'APP_OPEN' });
   }
 
-  const prevCurrentRouteName = useRef(null);
+  const prevCurrentRouteName = useRef<string>(null);
   async function onNavigationStateChange() {
     if (!navigationRef.isReady()) return;
     const route = navigationRef.getCurrentRoute();
@@ -127,39 +143,55 @@ export function Navigators() {
     prevCurrentRouteName.current = route.name;
     logEvent({ category: 'NAVIGATION', action: route.name });
   }
-
   if (!_hasHydrated) return null;
 
   return (
     <AutocompleteDropdownContextProvider>
-      <NavigationContainer
-        onStateChange={onNavigationStateChange}
-        onReady={onReady}
-        ref={navigationRef}
-      >
-        <RootStack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName={hasAddress ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+      <BottomSheetModalProvider>
+        <NavigationContainer
+          onStateChange={onNavigationStateChange}
+          onReady={onReady}
+          ref={navigationRef}
         >
-          <RootStack.Screen
-            name={RouteEnum.ONBOARDING}
-            component={Onboarding}
-          />
-          <RootStack.Screen
-            name={RouteEnum.LOCATION}
-            component={LocationPage}
-            initialParams={{
-              isOnboarding: true,
-            }}
-          />
-          <RootStack.Screen name={RouteEnum.HOME} component={Home} />
-          <RootStack.Screen
-            name={RouteEnum.DASHBOARD}
-            component={DashboardPage}
-          />
-          <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
-        </RootStack.Navigator>
-      </NavigationContainer>
+          <RootStack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={
+              hasAddress ? RouteEnum.HOME : RouteEnum.ONBOARDING
+            }
+          >
+            <RootStack.Screen
+              name={RouteEnum.ONBOARDING}
+              component={Onboarding}
+            />
+            <RootStack.Screen
+              name={RouteEnum.LOCATION}
+              component={LocationPage}
+              initialParams={{
+                isOnboarding: true,
+              }}
+            />
+            <RootStack.Screen
+              name={RouteEnum.HOME}
+              // TODO
+              // @ts-ignore
+              component={Home}
+            />
+            <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
+            <RootStack.Screen
+              name={RouteEnum.INDICATORS_SELECTOR}
+              // TODO
+              // @ts-ignore
+              component={IndicatorSelectorSheet}
+              options={() => ({
+                headerShown: false,
+                presentation: 'transparentModal',
+                //  TODO/FIXME: animation non on enter, fade on exit
+                // animation: 'none',
+              })}
+            />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </BottomSheetModalProvider>
     </AutocompleteDropdownContextProvider>
   );
 }

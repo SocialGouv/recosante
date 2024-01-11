@@ -6,7 +6,6 @@ import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import API from '~/services/api';
 import { IndicatorDetail } from './indicator-detail';
-import { IndicatorSelectorSheet } from './indicator-selector-sheet';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import dayjs from 'dayjs';
 import { RouteEnum } from '~/constants/route';
@@ -76,11 +75,6 @@ export function DashboardPage({ navigation }: { navigation: any }) {
             </View>
           ) : null}
         </View>
-
-        {favoriteIndicator ? null : (
-          <IndicatorSelectorSheet indicators={indicators} />
-        )}
-
         <IndicatorDetail />
       </View>
       <IndicatorsListPreview
