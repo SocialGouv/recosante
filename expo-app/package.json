@@ -12,16 +12,16 @@
     "ts:check": "tsc",
     "format": "prettier --write . --ignore-unknown",
     "format-check": "prettier --check .",
-    "build:android-aab": "npx eas build -p android --local",
-    "build:ios-ipa": "npx eas build -p ios --local",
-    "build:android-apk": "npx eas build -p android --profile preview --local",
-    "submit:ios": "npx eas submit -p ios --latest",
-    "submit:android": "npx eas submit -p android --latest",
-    "deploy:ios": "npm run build:ios-ipa && npm run submit:ios",
-    "deploy:android": "npm run build:android-apk && npm run submit:android"
+    "build-local:android-aab": "eas build -p android --local",
+    "build-local:ios-ipa": "eas build -p ios --local",
+    "build-local:android-apk": "eas build -p android --profile preview --local",
+    "submit:ios": "eas submit -p ios",
+    "submit:android": "eas submit -p android",
+    "build-eas-then-deploy:ios": "eas build -p ios && eas submit -p ios --latest",
+    "build-eas-then-deploy:android": "eas build -p android && eas submit -p android --latest"
   },
   "dependencies": {
-    "@gorhom/bottom-sheet": "^4",
+    "@gorhom/bottom-sheet": "^4.6.0",
     "@gorhom/portal": "^1.0.14",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/netinfo": "9.3.10",
@@ -37,16 +37,14 @@
     "expo-constants": "~14.4.2",
     "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",
+    "expo-image": "^1.5.1",
     "expo-linking": "~5.0.2",
     "expo-location": "~16.1.0",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "nativewind": "^2.0.11",
-    "prettier": "^3.1.1",
-    "prettier-plugin-tailwindcss": "^0.5.9",
     "react": "18.2.0",
-    "react-dom": "^18.2.0",
     "react-native": "0.72.6",
     "react-native-autocomplete-dropdown": "^3.1.0",
     "react-native-gesture-handler": "~2.12.0",
@@ -60,12 +58,14 @@
     "react-native-webview": "13.2.2",
     "sentry-expo": "~7.1.0",
     "tailwind-merge": "^2.2.0",
-    "typescript": "^5.1.3",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "tailwindcss": "3.3.2"
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "tailwindcss": "3.3.2",
+    "typescript": "^5.1.3"
   },
   "engines": {
     "npm": "please-use-yarn"

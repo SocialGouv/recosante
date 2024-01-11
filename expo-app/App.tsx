@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PortalProvider } from '@gorhom/portal';
+
 SplashScreen.preventAutoHideAsync();
 
 Sentry.init({
