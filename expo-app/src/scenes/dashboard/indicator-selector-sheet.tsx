@@ -1,14 +1,11 @@
-import { InteractionManager, View } from 'react-native';
-import { Portal, PortalHost } from '@gorhom/portal';
+import { View } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useRef, useMemo, useCallback, useEffect, useState } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import MyText from '~/components/ui/my-text';
 import { IndicatorsSelector } from '~/components/indicators/indicators-selector';
-import { IndicatorItem } from '~/types/indicator';
 import { RouteEnum, type RootStackParamList } from '~/constants/route';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { withModalProvider } from '~/utils/withModalProvider';
 
 type IndicatorSelectorSheetProps = NativeStackScreenProps<
   RootStackParamList,
@@ -23,7 +20,6 @@ export function IndicatorSelectorSheet({
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   useEffect(() => {
-    console.log('lol');
     bottomSheetRef.current?.expand();
   }, []);
 
@@ -31,6 +27,7 @@ export function IndicatorSelectorSheet({
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
     setTimeout(() => {
+      // to make animation smoother
       navigation.goBack();
     }, 500);
   }

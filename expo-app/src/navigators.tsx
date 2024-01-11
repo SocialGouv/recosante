@@ -16,7 +16,7 @@ import { ShareIcon } from '~/assets/icons/share';
 
 import MyText from './components/ui/my-text';
 import { DashboardPage } from './scenes/dashboard/dashboard';
-// import { RouteEnum, type RootStackParamList } from './constants/route';
+import { RouteEnum, type RootStackParamList } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
@@ -25,30 +25,7 @@ import { useAddress } from './zustand/address/useAddress';
 import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
 import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export enum RouteEnum {
-  DASHBOARD = 'DASHBOARD',
-  INDICATORS_SELECTOR = 'INDICATORS_SELECTOR',
-  SETTINGS = 'SETTINGS',
-  HOME = 'HOME',
-  ONBOARDING = 'ONBOARDING',
-  LOCATION = 'LOCATION',
-  SHARE = 'SHARE',
-}
-
-export type RootStackParamList = {
-  [RouteEnum.LOCATION]: undefined;
-  [RouteEnum.HOME]: undefined;
-  [RouteEnum.SHARE]: undefined;
-  [RouteEnum.INDICATORS_SELECTOR]: undefined;
-};
-
-export enum OnboardingRouteEnum {
-  WELCOME = 'WELCOME',
-  GEOLOCATION = 'GEOLOCATION',
-  NOTIFICATIONS = 'NOTIFICATIONS',
-}
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface TabBarLabelProps {
   children: React.ReactNode;
