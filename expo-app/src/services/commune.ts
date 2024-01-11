@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 import { Alert } from 'react-native';
-import { LocationType, Property } from '~/types/location';
+import { Address, Property } from '~/types/location';
 import { LocationService } from './location';
 
 export namespace CommuneService {

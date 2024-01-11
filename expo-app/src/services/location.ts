@@ -1,6 +1,6 @@
 import * as Location from 'expo-location';
 import { Alert, Linking } from 'react-native';
-import { LocationType, Property } from '~/types/location';
+import { Address, Property } from '~/types/location';
 
 export namespace LocationService {
   export async function requestLocation(): Promise<
@@ -28,9 +28,7 @@ export namespace LocationService {
     return await Location.getCurrentPositionAsync({});
   }
 
-  export function formatPropertyToLocationType(
-    property: Property,
-  ): LocationType {
+  export function formatPropertyToAddress(property: Property): Address {
     return {
       id: property.id,
       title: property.label,
@@ -45,7 +43,7 @@ export namespace LocationService {
   export async function getAdressByCoordinates(
     latitude: number,
     longitude: number,
-  ): Promise<LocationType | undefined> {
+  ): Promise<Address | undefined> {
     const url = new URL('https://api-adresse.data.gouv.fr/reverse/');
 
     url.searchParams.append('lon', longitude.toString());
@@ -57,7 +55,7 @@ export namespace LocationService {
       Alert.alert('Erreur', 'Impossible de trouver votre ville');
     } else {
       const formatedAdress =
-        LocationService.formatPropertyToLocationType(currentAdress);
+        LocationService.formatPropertyToAddress(currentAdress);
       return formatedAdress;
     }
   }

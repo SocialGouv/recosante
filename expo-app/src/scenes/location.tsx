@@ -14,7 +14,7 @@ import Button from '~/components/ui/button';
 import * as Location from 'expo-location';
 import AutoComplete from '~/components/autocomplete-french-cities/autocomplete';
 import { useAddress } from '~/zustand/address/useAddress';
-import { LocationType } from '~/types/location';
+import { Address } from '~/types/location';
 import { LocationService } from '~/services/location';
 
 interface LocationPageProps {
@@ -24,7 +24,7 @@ interface LocationPageProps {
 export function LocationPage(props: LocationPageProps) {
   const { setAddress } = useAddress((state) => state);
 
-  function handleSelect(address: LocationType) {
+  function handleSelect(address: Address) {
     setAddress(address);
     props.navigation.goBack();
   }

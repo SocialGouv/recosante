@@ -1,4 +1,4 @@
-export type LocationType = {
+export type Address = {
   id: string;
   title: string;
   label: string;
