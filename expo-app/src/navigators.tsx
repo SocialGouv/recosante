@@ -16,7 +16,7 @@ import { ShareIcon } from '~/assets/icons/share';
 
 import MyText from './components/ui/my-text';
 import { DashboardPage } from './scenes/dashboard/dashboard';
-import { RouteEnum, type RootStackParamList } from './constants/route';
+// import { RouteEnum, type RootStackParamList } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
@@ -24,6 +24,31 @@ import { LocationPage } from '~/scenes/location';
 import { useAddress } from './zustand/address/useAddress';
 import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
 import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export enum RouteEnum {
+  DASHBOARD = 'DASHBOARD',
+  INDICATORS_SELECTOR = 'INDICATORS_SELECTOR',
+  SETTINGS = 'SETTINGS',
+  HOME = 'HOME',
+  ONBOARDING = 'ONBOARDING',
+  LOCATION = 'LOCATION',
+  SHARE = 'SHARE',
+}
+
+export type RootStackParamList = {
+  [RouteEnum.LOCATION]: undefined;
+  [RouteEnum.HOME]: undefined;
+  [RouteEnum.SHARE]: undefined;
+  [RouteEnum.INDICATORS_SELECTOR]: undefined;
+};
+
+export enum OnboardingRouteEnum {
+  WELCOME = 'WELCOME',
+  GEOLOCATION = 'GEOLOCATION',
+  NOTIFICATIONS = 'NOTIFICATIONS',
+}
 
 interface TabBarLabelProps {
   children: React.ReactNode;
@@ -118,7 +143,7 @@ function Home(props: HomeProps) {
     </HomeBottomTab.Navigator>
   );
 }
-
+// AsyncStorage.clear();
 const RootStack = createNativeStackNavigator();
 export function Navigators() {
   const { _hasHydrated, address } = useAddress((state) => state);
@@ -134,6 +159,7 @@ export function Navigators() {
   async function onNavigationStateChange() {
     if (!navigationRef.isReady()) return;
     const route = navigationRef.getCurrentRoute();
+
     if (route?.name === prevCurrentRouteName.current) return;
     if (!prevCurrentRouteName) return;
     if (!route?.name) return;
@@ -142,42 +168,52 @@ export function Navigators() {
     prevCurrentRouteName.current = route.name;
     logEvent({ category: 'NAVIGATION', action: route.name });
   }
-
   if (!_hasHydrated) return null;
 
   return (
     <AutocompleteDropdownContextProvider>
-      <NavigationContainer
-        onStateChange={onNavigationStateChange}
-        onReady={onReady}
-        ref={navigationRef}
-      >
-        <RootStack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName={hasAddress ? RouteEnum.HOME : RouteEnum.ONBOARDING}
+      <BottomSheetModalProvider>
+        <NavigationContainer
+          onStateChange={onNavigationStateChange}
+          onReady={onReady}
+          ref={navigationRef}
         >
-          <RootStack.Screen
-            name={RouteEnum.ONBOARDING}
-            component={Onboarding}
-          />
-          <RootStack.Screen
-            name={RouteEnum.LOCATION}
-            component={LocationPage}
-            initialParams={{
-              isOnboarding: true,
-            }}
-          />
-          <RootStack.Screen name={RouteEnum.HOME} component={Home} />
-          <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
-          <RootStack.Screen
-            name={RouteEnum.INDICATORS_SELECTOR}
-            component={IndicatorSelectorSheet}
-            options={{
-              presentation: 'transparentModal',
-            }}
-          />
-        </RootStack.Navigator>
-      </NavigationContainer>
+          <RootStack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={
+              hasAddress ? RouteEnum.HOME : RouteEnum.ONBOARDING
+            }
+          >
+            <RootStack.Screen
+              name={RouteEnum.ONBOARDING}
+              component={Onboarding}
+            />
+            <RootStack.Screen
+              name={RouteEnum.LOCATION}
+              component={LocationPage}
+              initialParams={{
+                isOnboarding: true,
+              }}
+            />
+            <RootStack.Screen name={RouteEnum.HOME} component={Home} />
+            <RootStack.Screen name={RouteEnum.SHARE} component={SharePage} />
+            <RootStack.Screen
+              name={RouteEnum.INDICATORS_SELECTOR}
+              component={IndicatorSelectorSheet}
+              options={() => ({
+                headerShown: false,
+                presentation: 'transparentModal',
+                //  animation non on enter, fade on exit
+                animation: prevCurrentRouteName.current?.includes(
+                  RouteEnum.INDICATORS_SELECTOR,
+                )
+                  ? 'fade'
+                  : 'none',
+              })}
+            />
+          </RootStack.Navigator>
+        </NavigationContainer>
+      </BottomSheetModalProvider>
     </AutocompleteDropdownContextProvider>
   );
 }

@@ -9,7 +9,9 @@ export enum RouteEnum {
 }
 
 export type RootStackParamList = {
-  [RouteEnum.LOCATION]: undefined;
+  [RouteEnum.LOCATION]: {
+    isOnboarding: true;
+  };
   [RouteEnum.HOME]: undefined;
   [RouteEnum.SHARE]: undefined;
   [RouteEnum.INDICATORS_SELECTOR]: undefined;
