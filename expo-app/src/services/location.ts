@@ -4,7 +4,7 @@ import { type Address, type Property } from '~/types/location';
 
 export namespace LocationService {
   export async function requestLocation(): Promise<
-  Location.LocationObject | undefined
+    Location.LocationObject | undefined
   > {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {

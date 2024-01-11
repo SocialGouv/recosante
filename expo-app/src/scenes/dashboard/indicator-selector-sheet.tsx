@@ -8,9 +8,9 @@ import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type IndicatorSelectorSheetProps = NativeStackScreenProps<
-// @ts-expect-error TODO
-RootStackParamList,
-RouteEnum.INDICATORS_SELECTOR
+  // @ts-expect-error TODO
+  RootStackParamList,
+  RouteEnum.INDICATORS_SELECTOR
 >;
 
 export function IndicatorSelectorSheet({
