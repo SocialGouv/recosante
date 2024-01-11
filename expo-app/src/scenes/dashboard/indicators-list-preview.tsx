@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { IndicatorPreview } from '~/components/indicators/indicator-preview';
 import { IndicatorItem } from '~/types/indicator';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { DayEnum } from '~/types/day';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -53,6 +54,7 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
 
   return (
     <Tab.Navigator
+      initialRouteName={tabsEnum.TODAY}
       screenOptions={{
         tabBarStyle: { backgroundColor: '#ECF1FB' },
         tabBarLabelStyle: { fontWeight: 'bold' },
@@ -61,12 +63,12 @@ export function IndicatorsListPreview(props: IndicatorsListPreviewProps) {
       <Tab.Screen
         name={tabsEnum.TODAY}
         component={IndicatorListView}
-        initialParams={{ day: 'j0' }}
+        initialParams={{ day: DayEnum.TODAY }}
       />
       <Tab.Screen
         name={tabsEnum.TOMORROW}
         component={IndicatorListView}
-        initialParams={{ day: 'j1' }}
+        initialParams={{ day: DayEnum.TOMORROW }}
       />
     </Tab.Navigator>
   );

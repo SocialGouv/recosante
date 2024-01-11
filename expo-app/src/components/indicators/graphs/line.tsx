@@ -13,7 +13,8 @@ export function LineChart(props: LineChartProps) {
       <View
         className={`-top-3 flex h-3  rounded-full bg-[#FF797A]`}
         style={{
-          width: `${value}%`,
+          // temporary
+          width: `${value * 5}%`,
         }}
       ></View>
     </View>

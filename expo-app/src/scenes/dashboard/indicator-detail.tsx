@@ -6,13 +6,17 @@ import MyText from '~/components/ui/my-text';
 import { useSelectedIndicator } from '~/zustand/indicator/useSelectedIndicator';
 import { Close } from '~/assets/icons/close';
 import { LineChart } from '~/components/indicators/graphs/line';
+import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
+import { DateService } from '~/services/date';
+import { useDay } from '~/zustand/day/useDay';
 
 export function IndicatorDetail() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const { selectedIndicator, setSelectedIndicator } = useSelectedIndicator(
     (state) => state,
   );
-
+  const { day } = useDay((state) => state);
+  const { indicatorsDto } = useIndicatorsDto((state) => state);
   const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
   const isOpenedRef = useRef(false);
   const handleSheetChanges = useCallback((index: number) => {
@@ -37,6 +41,17 @@ export function IndicatorDetail() {
       openBottomSheet();
     }
   }, [selectedIndicator?.slug]);
+
+  const indicatorData = useMemo(
+    () =>
+      selectedIndicator?.slug ? indicatorsDto[selectedIndicator?.slug] : null,
+    [selectedIndicator?.slug, indicatorsDto],
+  );
+
+  const currentDayIndicatorData = useMemo(
+    () => indicatorData?.[day],
+    [indicatorData, day],
+  );
 
   return (
     <View>
@@ -64,13 +79,14 @@ export function IndicatorDetail() {
 "
             >
               <MyText font="MarianneBold" className=" text-2xl text-white">
-                {selectedIndicator?.name}
+                {indicatorData?.name}
               </MyText>
               <MyText
                 font="MarianneRegular"
                 className="pb-2 text-sm text-white"
               >
-                Mise à jour le 12/12/2021
+                Mise à jour le{' '}
+                {DateService.getTimeFromNow(indicatorData?.created_at)}
               </MyText>
             </View>
             <Pressable
@@ -82,37 +98,24 @@ export function IndicatorDetail() {
               <Close />
             </Pressable>
             <View className="px-6 pt-12">
-              <LineChart value={45} />
-              <Title label="Nos recommandations" />
-
-              <View className="mt-2 rounded-md bg-white p-2">
-                <MyText className=" text-xs">
-                  🚶‍♂️Lors de vos trajets à pied ou à vélo, préférez les chemins
-                  secondaires et les itinéraires moins fréquentés, ce qui vous
-                  permettra d'éviter les zones à fort trafic et de limiter votre
-                  exposition à la pollution atmosphérique.
-                </MyText>
-              </View>
-              <View className="mt-2 rounded-md bg-white p-2">
-                <MyText className=" text-xs">
-                  🏋️‍♂️ Limitez les activités physiques intenses en extérieur
-                  pendant les périodes de vigilance météo pour réduire
-                  l'exposition aux polluants atmosphériques et préserver votre
-                  santé.
-                </MyText>
-              </View>
-              <Title label="à propos de la qualité de l’air et l’indice ATMO" />
-              <MyText className=" mt-2 ">
-                L’indice ATMO est un indicateur journalier de la qualité de
-                l’air calculé à partir des concentrations dans l’air de
-                polluants réglementés tels que le dioxyde de soufre (SO2), le
-                dioxyde d’azote (NO2), l’ozone (O3) et les particules fines...
-                Il qualifie la qualité de l’air sur une échelle de « bon à
-                extrêmement mauvais » pour informer les citoyens. En cas de
-                données insuffisantes, il affichera « indisponible » ; en cas
-                d’incident engendrant des émissions atmosphériques spécifiques,
-                il affichera « événement ».
+              <MyText font="MarianneBold" className=" text-sm uppercase">
+                {currentDayIndicatorData?.value}
               </MyText>
+              <LineChart value={currentDayIndicatorData?.value} />
+              <Title label="Nos recommandations" />
+              {indicatorData?.recommendations?.map((recommendation) => {
+                return (
+                  <View
+                    key={recommendation}
+                    className="mt-2 flex flex-row items-center rounded-md bg-white p-2"
+                  >
+                    <MyText className=" text-xs">{recommendation}</MyText>
+                  </View>
+                );
+              })}
+
+              <Title label="à propos de la qualité de l’air et l’indice ATMO" />
+              <MyText className=" mt-2 ">{indicatorData?.about}</MyText>
               <MyText className=" mt-2 ">En savoir plus</MyText>
             </View>
           </View>
