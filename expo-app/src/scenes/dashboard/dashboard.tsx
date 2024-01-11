@@ -5,7 +5,6 @@ import { LocationIcon } from '~/assets/icons/location';
 import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import API from '~/services/api';
-import { IndicatorDetail } from './indicator-detail';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
 import dayjs from 'dayjs';
 import { RouteEnum } from '~/constants/route';

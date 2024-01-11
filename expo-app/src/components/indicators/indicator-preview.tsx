@@ -25,7 +25,7 @@ export function IndicatorPreview(props: IndicatorPreviewProps) {
 
   function handleSelect() {
     if (!currentIndicatorData) return;
-    // @ts-ignore
+    // @ts-expect-error TODO
     navigation.navigate(RouteEnum.INDICATOR_DETAIL, {
       indicator: currentIndicatorData,
       day: props.day,

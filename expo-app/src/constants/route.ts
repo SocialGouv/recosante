@@ -1,5 +1,5 @@
-import { DayEnum } from '~/types/day';
-import { IndicatorCommonData } from '~/types/indicator';
+import type { DayEnum } from '~/types/day';
+import type { IndicatorCommonData } from '~/types/indicator';
 
 export enum RouteEnum {
   DASHBOARD = 'DASHBOARD',

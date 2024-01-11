@@ -188,8 +188,7 @@ export function Navigators() {
             />
             <RootStack.Screen
               name={RouteEnum.INDICATOR_DETAIL}
-              // TODO
-              // @ts-ignore
+              // @ts-expect-error TODOe
               component={IndicatorDetail}
               options={() => ({
                 headerShown: false,
