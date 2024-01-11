@@ -6,11 +6,11 @@ RUN mkdir /app-node && chown 1000:1000 /app-node \
 WORKDIR /app-node
 USER 1000
 
-COPY api-node/yarn.lock api-node/.yarnrc.yml ./
-COPY --chown=1000:1000 api-node/.yarn .yarn
+COPY ./yarn.lock ./.yarnrc.yml ./
+COPY --chown=1000:1000 ./.yarn .yarn
 RUN yarn fetch --immutable
 
-COPY --chown=1000:1000 api-node/. .
+COPY --chown=1000:1000 . .
 
 ENV NODE_ENV=production
 
