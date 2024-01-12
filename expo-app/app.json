@@ -11,13 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#3643b6"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.recosante.recosante",
-      "buildNumber": "3"
+      "bundleIdentifier": "com.recosante.recosante"
     },
     "android": {
       "adaptiveIcon": {
@@ -43,7 +40,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow recosanté to use your location."
+          "locationAlwaysAndWhenInUsePermission": "Permettez à Recosanté d'accéder à votre position afin de préremplir votre adresse dans les formulaires."
         }
       ]
     ],
@@ -52,8 +49,8 @@
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "TO_FILL_LATER",
-            "project": "TO_FILL_LATER"
+            "organization": "SENTRY_ORG",
+            "project": "SENTRY_PROJECT"
           }
         }
       ]
