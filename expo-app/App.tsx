@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
 import { Navigators } from './src/navigators';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { initMatomo } from '~/services/logEventsWithMatomo';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,7 +16,7 @@ Sentry.init({
   debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
   tracesSampleRate: 0.05,
 });
-
+initMatomo();
 function App() {
   const [fontsLoaded] = useFonts({
     MarianneBold: require('./src/assets/fonts/Marianne-Bold.otf'),

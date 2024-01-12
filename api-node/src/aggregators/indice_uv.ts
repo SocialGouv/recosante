@@ -68,8 +68,8 @@ export async function getIndiceUVIndicator() {
     const data = fs.readFileSync(dir, {
       encoding: 'utf8',
     });
-    logStep('Closed the connection');
     client.close();
+    logStep('Closed the connection');
 
     // Step4: Format the file
     const rawFormatedJson = csv2json(data, {
@@ -113,7 +113,7 @@ export async function getIndiceUVIndicator() {
       });
     });
     // Step 7: format data by department to iterate quickly on municipalities
-    const indiceUVByDepartment: Record<
+    const indiceUVByInseeCode: Record<
       DepartmentCode,
       {
         UV_J0: number | null;
@@ -128,16 +128,14 @@ export async function getIndiceUVIndicator() {
         continue;
       }
 
-      const formattedDepCode = row.insee.toString().slice(0, 2);
-      // we need to format the department code to have a 2 digits string
-
-      function formatUV(uv: number | '') {
+      function formatUV(uv: number | string): number | null {
         if (uv === '') {
           return null;
         }
-        return uv;
+        return Number(uv);
       }
-      indiceUVByDepartment[formattedDepCode] = {
+      const inseeCode = row.insee.toString();
+      indiceUVByInseeCode[inseeCode] = {
         UV_J0: formatUV(row.UV_J0),
         UV_J1: formatUV(row.UV_J1),
         UV_J2: formatUV(row.UV_J2),
@@ -148,8 +146,13 @@ export async function getIndiceUVIndicator() {
     logStep('fetching municipalities DONE');
     // Step 8: loop on municipalities and create rows to insert
     const indiceUVByMunicipalityRows = [];
+    let missingData = 0;
     for (const municipality of municipalities) {
-      const indiceUvData = indiceUVByDepartment[municipality.DEP];
+      // for corsica, the insee code in the indice_uv file is formatted like this: 2A001 for the city Afa
+      // but in the indice_uv file, the insee code is formatted like this: 20001 for the city Afa
+      // a rough analysis tells us that all the A or B in the insee dictionnary are replaced by 0 in the indice_uv file
+      const inseeCodeWithNoLetter = municipality.COM.replace(/[AB]/g, '0');
+      const indiceUvData = indiceUVByInseeCode[inseeCodeWithNoLetter];
 
       // if no data for this department, we say that data is not available.
       if (!indiceUvData) {
@@ -160,6 +163,7 @@ export async function getIndiceUVIndicator() {
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
         });
+        missingData++;
         continue;
       }
       indiceUVByMunicipalityRows.push({
@@ -182,6 +186,9 @@ export async function getIndiceUVIndicator() {
     });
     logStep(
       `DONE INSERTING INDICE UV : ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+    );
+    logStep(
+      `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
     );
     // Step: Delete the file
     fs.rmSync(folder, { recursive: true, force: true });

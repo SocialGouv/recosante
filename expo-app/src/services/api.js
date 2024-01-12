@@ -3,6 +3,9 @@ import NetInfo from '@react-native-community/netinfo';
 import * as Application from 'expo-application';
 import { getRoute } from './navigation';
 import { API_SCHEME, API_HOST } from '../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { STORAGE_MATOMO_ID } from '~/constants/matamo';
+// AsyncStorage.clear();
 
 export const checkNetwork = async (test = false) => {
   const isConnected = await NetInfo.fetch().then((state) => state.isConnected);
@@ -30,6 +33,7 @@ class ApiService {
     body = null,
   }) => {
     try {
+      const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_ID);
       const config = {
         method,
         headers: {
@@ -38,6 +42,7 @@ class ApiService {
           appversion: Application.nativeBuildVersion,
           appdevice: Platform.OS,
           currentroute: getRoute(),
+          authorization: matomo_id,
           ...headers,
         },
         body: body ? JSON.stringify(body) : null,

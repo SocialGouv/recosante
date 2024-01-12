@@ -49,8 +49,9 @@
         {
           "file": "sentry-expo/upload-sourcemaps",
           "config": {
-            "organization": "SENTRY_ORG",
-            "project": "SENTRY_PROJECT"
+            "organization": "incubateur",
+            "project": "recosante-expo-app",
+            "url": "https://sentry.fabrique.social.gouv.fr/"
           }
         }
       ]

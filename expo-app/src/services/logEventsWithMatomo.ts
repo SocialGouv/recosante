@@ -4,24 +4,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Matomo from './matomo';
 import { MATOMO_URL, MATOMO_IDSITE } from '../config';
 import API from './api';
+import { STORAGE_MATOMO_ID } from '~/constants/matamo';
 
-// storage.delete('STORAGE_MATOMO_USER_ID');
+// storage.delete('STORAGE_MATOMO_ID');
 export const initMatomo = async () => {
-  let userId = await AsyncStorage.getItem('STORAGE_MATOMO_USER_ID');
-  if (!userId) {
-    userId = Matomo.makeid();
-    AsyncStorage.setItem('STORAGE_MATOMO_USER_ID', userId);
+  let matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_ID);
+  if (!matomo_id) {
+    matomo_id = Matomo.makeid();
+    AsyncStorage.setItem(STORAGE_MATOMO_ID, matomo_id);
     API.post({
       path: '/user',
       body: {
-        matomoId: userId,
+        matomo_id,
       },
     });
   }
-  Sentry.setUser({ id: userId });
-  // TODO:
-  // @ts-expect-error userId does not exist on API :/
-  API.userId = userId;
+  Sentry.setUser({ id: matomo_id });
 
   const prevVisits = await AsyncStorage.getItem('STORAGE_MATOMO_VISITS');
   const newVisits = prevVisits ? Number(prevVisits) + 1 : 1;
@@ -30,7 +28,7 @@ export const initMatomo = async () => {
   Matomo.init({
     baseUrl: MATOMO_URL,
     idsite: MATOMO_IDSITE,
-    userId,
+    userId: matomo_id,
     _idvc: newVisits,
   });
 

@@ -9,7 +9,7 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import * as SplashScreen from 'expo-splash-screen';
 import { navigationRef } from '~/services/navigation';
 
-import { initMatomo, logEvent } from './services/logEventsWithMatomo';
+import { logEvent } from './services/logEventsWithMatomo';
 import { HomeIcon } from '~/assets/icons/home';
 import { SettingsIcon } from '~/assets/icons/settings';
 import { ShareIcon } from '~/assets/icons/share';
@@ -127,7 +127,6 @@ export function Navigators() {
   const hasAddress = !!address?.citycode;
 
   async function onReady() {
-    await initMatomo();
     await SplashScreen.hideAsync();
     await logEvent({ category: 'APP', action: 'APP_OPEN' });
   }

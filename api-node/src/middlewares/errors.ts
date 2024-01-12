@@ -1,6 +1,7 @@
 import { type CustomError } from '~/types/error';
 import { capture } from '../third-parties/sentry.js';
 import type express from 'express';
+import type { RequestWithUser } from '~/types/request';
 /*
   Catch Errors Handler
 
@@ -8,21 +9,21 @@ import type express from 'express';
   Instead of using try{} catch(e) {} in each controller, we wrap the function in
   catchErrors(), catch any errors they throw, and pass it along to our express middleware with next()
 */
-const catchErrors = (
-  fn: (
+type MiddlewareFn<T extends express.Request> = (
+  req: T,
+  res: express.Response,
+  next: express.NextFunction,
+) => Promise<void> | void;
+
+function catchErrors<T extends express.Request>(fn: MiddlewareFn<T>) {
+  return (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
-  ) => Promise<any>,
-) => {
-  return async function (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ) {
-    return await fn(req, res, next).catch(next);
+  ) => {
+    Promise.resolve(fn(req as T, res, next)).catch(next);
   };
-};
+}
 
 /*
   Not Found Error Handler
@@ -30,7 +31,7 @@ const catchErrors = (
   If we hit a route that is not found, we mark it as 404 and pass it along to the next error handler to display
 */
 const notFound = (
-  req: express.Request,
+  req: express.Request | RequestWithUser,
   _res: express.Response,
   next: express.NextFunction,
 ) => {
@@ -48,12 +49,12 @@ const notFound = (
 const sendError = (
   // TODO: Check this error type
   err: CustomError,
-  req: express.Request,
+  req: express.Request | RequestWithUser,
   res: express.Response,
   _next: express.NextFunction,
 ) => {
   const { body, query, params, route, method, originalUrl, headers } = req;
-  const { appversion, appdevice } = headers;
+  const { auth, appversion, appdevice } = headers;
   capture(err, {
     extra: {
       body,
@@ -64,7 +65,10 @@ const sendError = (
       originalUrl,
       appversion,
       appdevice,
+      auth,
+      headers,
     },
+    user: (req as RequestWithUser).user,
   });
 
   return res.status(err.status ?? 500).send({

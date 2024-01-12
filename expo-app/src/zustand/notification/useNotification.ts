@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
-// import API from '~/services/api';
 import { NOTIFICATION_STORAGE } from '~/constants/notification';
 import API from '~/services/api';
 
@@ -19,11 +17,9 @@ export const useNotification = create<State>()(
       selectedNotifications: [],
       setSelectedNotifications: async (notifications) => {
         set({ selectedNotifications: notifications });
-        const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
-        API.post({
+        API.put({
           path: '/user',
           body: {
-            matomo_id,
             notifications_preference: notifications,
           },
           // TODO: handle error

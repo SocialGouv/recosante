@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { MUNICPALITY_STORAGE } from '~/constants/municipality';
-import { STORAGE_MATOMO_USER_ID } from '~/constants/matamo';
 import API from '~/services/api';
 import { type Address } from '~/types/location';
 
@@ -19,13 +18,11 @@ export const useAddress = create<LocationState>()(
       address: null,
       setAddress: async (address) => {
         set({ address });
-        const matomo_id = await AsyncStorage.getItem(STORAGE_MATOMO_USER_ID);
-        API.post({
+        API.put({
           path: '/user',
           body: {
-            matomo_id,
             municipality_insee_code: address.citycode,
-            municipality_nom: address.city,
+            municipality_name: address.city,
             municipality_zip_code: address.postcode,
           },
           // TODO: handle error
@@ -43,6 +40,17 @@ export const useAddress = create<LocationState>()(
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
+        if (state?.address?.citycode) {
+          API.put({
+            path: '/user',
+            body: {
+              municipality_insee_code: state.address.citycode,
+              municipality_name: state.address.city,
+              municipality_zip_code: state.address.postcode,
+            },
+          });
+          // TODO: handle error
+        }
       },
     },
   ),

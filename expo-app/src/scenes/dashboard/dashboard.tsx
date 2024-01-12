@@ -6,9 +6,9 @@ import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import API from '~/services/api';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
-import dayjs from 'dayjs';
 import { RouteEnum } from '~/constants/route';
 import { useAddress } from '~/zustand/address/useAddress';
+import { registerForPushNotificationsAsync } from '~/services/expo-push-notifs';
 
 export function DashboardPage({ navigation }: { navigation: any }) {
   const { favoriteIndicator, indicators } = useIndicatorsList((state) => state);
@@ -18,19 +18,24 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   useEffect(() => {
     if (!address?.citycode) return;
     let ignore = false;
-    API.get({
-      path: '/indicators',
-      query: {
-        municipality_insee_code: address?.citycode,
-        date_ISO: dayjs().toISOString(),
-      },
-    }).then((response) => {
+    API.get({ path: '/indicators' }).then((response) => {
       if (ignore) return;
       if (!response.ok) {
         setError(response.error);
         return;
       }
       setIndicatorsDto(response.data);
+    });
+    registerForPushNotificationsAsync({
+      force: false,
+      expo: true,
+    }).then((token) => {
+      if (ignore) return;
+      if (!token) return;
+      API.put({
+        path: '/user',
+        body: { push_notif_token: JSON.stringify(token) },
+      });
     });
     return () => {
       ignore = true;
@@ -48,7 +53,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   return (
     <>
       <View className="flex  items-center justify-start bg-app-gray px-4 py-4">
-        <View className="relative  top-8  flex w-full items-end ">
+        <View className="relative top-8 flex w-full items-end">
           <Pressable
             className="w-fit rounded-full bg-app-primary p-3 text-sm text-white"
             onPress={() => navigation.navigate(RouteEnum.LOCATION)}
