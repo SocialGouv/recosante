@@ -47,7 +47,11 @@
     "hooks": {
       "postPublish": [
         {
-          "file": "sentry-expo/upload-sourcemaps"
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "TO_FILL_LATER",
+            "project": "TO_FILL_LATER"
+          }
         }
       ]
     }
