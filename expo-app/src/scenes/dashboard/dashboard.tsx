@@ -6,7 +6,6 @@ import { useIndicatorsList } from '~/zustand/indicator/useIndicatorsList';
 import { IndicatorsListPreview } from './indicators-list-preview';
 import API from '~/services/api';
 import { useIndicatorsDto } from '~/zustand/indicator/useIndicatorsDto';
-import dayjs from 'dayjs';
 import { RouteEnum } from '~/constants/route';
 import { useAddress } from '~/zustand/address/useAddress';
 
@@ -18,13 +17,7 @@ export function DashboardPage({ navigation }: { navigation: any }) {
   useEffect(() => {
     if (!address?.citycode) return;
     let ignore = false;
-    API.get({
-      path: '/indicators',
-      query: {
-        municipality_insee_code: address?.citycode,
-        date_ISO: dayjs().toISOString(),
-      },
-    }).then((response) => {
+    API.get({ path: '/indicators' }).then((response) => {
       if (ignore) return;
       if (!response.ok) {
         setError(response.error);

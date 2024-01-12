@@ -17,7 +17,7 @@ import indicatorsRouter from './controllers/indicators.ts';
 
 // import getPollensIndicator from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
-import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
+// import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
 // import { getAtmoIndicator } from './aggregators/atmo.ts';
 
 // Put together a schema
@@ -82,9 +82,9 @@ app.use(helmet());
 
 // sentry context/user
 app.use(async (req, res, next) => {
-  const { matomoId } = req.body || {};
+  const { matomo_id } = req.body || {};
   const { appversion, appdevice, currentroute } = req.headers || {};
-  if (matomoId) Sentry.setUser({ id: matomoId });
+  if (matomo_id) Sentry.setUser({ id: matomo_id });
   if (appversion) Sentry.setTag('appversion', appversion as string);
   if (appdevice) Sentry.setTag('appdevice', appdevice as string);
   if (currentroute) Sentry.setTag('currentroute', currentroute as string);
@@ -98,7 +98,7 @@ app.post('/sentry-check', async (req, res) => {
 
 // getPollensIndicator();
 // getWeatherAlert();
-getIndiceUVIndicator();
+// getIndiceUVIndicator();
 // getAtmoIndicator();
 
 // check version before checking other controllers

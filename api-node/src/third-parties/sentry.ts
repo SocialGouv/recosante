@@ -11,7 +11,7 @@ function capture(
   },
 ) {
   if (!sentryEnabled) {
-    console.log('capture', error, JSON.stringify(context));
+    console.log('capture', error, JSON.stringify(context, null, 2));
     return;
   }
 

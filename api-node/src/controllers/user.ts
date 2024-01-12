@@ -4,15 +4,46 @@ import { catchErrors } from '../middlewares/errors';
 import prisma from '../prisma.js';
 import { type CustomError } from '~/types/error';
 import { type User } from '@prisma/client';
+import { withUser } from '~/middlewares/auth.js';
+import type { RequestWithUser } from '~/types/request';
 const router = express.Router();
 
 router.post(
   '/',
   catchErrors(
     async (
-      req: {
-        body: User;
-      },
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      try {
+        z.object({
+          matomo_id: z.string().length(16),
+        }).parse(req.body);
+      } catch (zodError) {
+        const customError = new Error(
+          `Invalid request in post user: ${
+            zodError instanceof Error ? zodError.message : 'Unknown error'
+          }`,
+        ) as CustomError;
+        customError.status = 400;
+        next(customError);
+        return;
+      }
+
+      const matomo_id = req.body.matomo_id as User['matomo_id'];
+      await prisma.user.create({ data: { matomo_id } });
+      res.status(200).send({ ok: true });
+    },
+  ),
+);
+
+router.put(
+  '/',
+  withUser,
+  catchErrors(
+    async (
+      req: RequestWithUser,
       res: express.Response,
       next: express.NextFunction,
     ) => {
@@ -39,49 +70,34 @@ router.post(
 
       const updatedUser: Partial<User> = {};
       const { matomo_id } = req.body;
-      if (Object.prototype.hasOwnProperty.call(req.body, 'matomo_id')) {
-        updatedUser.matomo_id = req.body.matomo_id;
+      function bodyHasProperty(property: string) {
+        return Object.prototype.hasOwnProperty.call(req.body, property);
       }
-      if (
-        Object.prototype.hasOwnProperty.call(req.body, 'municipality_zip_code')
-      ) {
+
+      if (bodyHasProperty('municipality_zip_code')) {
         updatedUser.municipality_zip_code = req.body.municipality_zip_code;
       }
-      if (Object.prototype.hasOwnProperty.call(req.body, 'municipality_name')) {
+      if (bodyHasProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;
       }
-      if (
-        Object.prototype.hasOwnProperty.call(req.body, 'municipality_zip_code')
-      ) {
+      if (bodyHasProperty('municipality_zip_code')) {
         updatedUser.municipality_zip_code = req.body.municipality_zip_code;
       }
-      if (Object.prototype.hasOwnProperty.call(req.body, 'push_notif_token')) {
+      if (bodyHasProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
       }
-      if (
-        Object.prototype.hasOwnProperty.call(req.body, 'favorite_indicator')
-      ) {
+      if (bodyHasProperty('favorite_indicator')) {
         updatedUser.favorite_indicator = req.body.favorite_indicator;
       }
-      if (
-        Object.prototype.hasOwnProperty.call(
-          req.body,
-          'notifications_preference',
-        )
-      ) {
+      if (bodyHasProperty('notifications_preference')) {
         updatedUser.notifications_preference =
           req.body.notifications_preference;
       }
 
-      console.log('updatedUser', updatedUser);
-
       await prisma.user
-        .upsert({
+        .update({
           where: { matomo_id },
-          update: updatedUser,
-          create: {
-            ...(updatedUser as User),
-          },
+          data: updatedUser,
         })
         .then((user) => {
           console.log('user', user);
@@ -89,7 +105,7 @@ router.post(
         .catch((error) => {
           console.log('error', error);
         });
-      return res.status(200).send({ ok: true });
+      res.status(200).send({ ok: true });
     },
   ),
 );
