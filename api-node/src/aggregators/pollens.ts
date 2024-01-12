@@ -1,3 +1,4 @@
+// @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import { type PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
 import prisma from '~/prisma';

@@ -80,7 +80,7 @@ router.post(
           where: { matomo_id },
           update: updatedUser,
           create: {
-            ...updatedUser,
+            ...(updatedUser as User),
           },
         })
         .then((user) => {
