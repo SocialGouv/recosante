@@ -17,7 +17,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
     onOpenSuggestionsList,
     addressList,
   } = useAutoComplete();
-
   return (
     <AutocompleteDropdown
       ref={searchRef}
@@ -94,6 +93,8 @@ const styles = StyleSheet.create({
   suggestionStyle: {
     color: '#000',
     padding: 16,
+    zIndex: 9000,
+    position: 'absolute',
   },
   communeName: {
     fontWeight: 'bold',

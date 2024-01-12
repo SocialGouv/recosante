@@ -162,13 +162,7 @@ export function Navigators() {
               name={RouteEnum.ONBOARDING}
               component={Onboarding}
             />
-            <RootStack.Screen
-              name={RouteEnum.LOCATION}
-              component={LocationPage}
-              initialParams={{
-                isOnboarding: true,
-              }}
-            />
+
             <RootStack.Screen
               name={RouteEnum.HOME}
               // @ts-expect-error TODO
@@ -190,6 +184,16 @@ export function Navigators() {
               name={RouteEnum.INDICATOR_DETAIL}
               // @ts-expect-error TODOe
               component={IndicatorDetail}
+              options={() => ({
+                headerShown: false,
+                presentation: 'transparentModal',
+                //  TODO/FIXME: animation non on enter, fade on exit
+                // animation: 'none',
+              })}
+            />
+            <RootStack.Screen
+              name={RouteEnum.LOCATION}
+              component={LocationPage}
               options={() => ({
                 headerShown: false,
                 presentation: 'transparentModal',
