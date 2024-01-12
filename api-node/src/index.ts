@@ -82,9 +82,7 @@ app.use(helmet());
 
 // sentry context/user
 app.use(async (req, res, next) => {
-  const { matomo_id } = req.body || {};
   const { appversion, appdevice, currentroute } = req.headers || {};
-  if (matomo_id) Sentry.setUser({ id: matomo_id });
   if (appversion) Sentry.setTag('appversion', appversion as string);
   if (appdevice) Sentry.setTag('appdevice', appdevice as string);
   if (currentroute) Sentry.setTag('currentroute', currentroute as string);

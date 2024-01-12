@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node';
 import type express from 'express';
 import prisma from '~/prisma';
 import type { RequestWithUser } from '~/types/request';
@@ -17,6 +18,7 @@ export async function withUser(
     next(new Error('User not found'));
     return;
   }
+  Sentry.setUser(user);
   (req as unknown as RequestWithUser).user = user;
   next();
 }
