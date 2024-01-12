@@ -1,7 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
-import { IndicatorsSlugEnum } from '@prisma/client';
-import dayjs from 'dayjs';
+import { type IndicatorsSlugEnum } from '@prisma/client';
 import { catchErrors } from '~/middlewares/errors';
 import type { IndicatorCommonData } from '~/types/api/indicator';
 import type { CustomError } from '~/types/error';
@@ -34,41 +33,18 @@ router.get(
         }).parse(_req.query);
       } catch (zodError) {
         const error = new Error(
-          `Invalid request in GET /indicators/: ${zodError}`,
+          `Invalid request in GET /indicators/: ${
+            zodError instanceof Error ? zodError.message : 'Unknown error'
+          }`,
         ) as CustomError;
         error.status = 400;
-        return next(error);
+        next(error);
+        return;
       }
 
       const municipality_insee_code = _req.query
         .municipality_insee_code as MunicipalityJSON['COM']; // OR: just retrieve the municipality_insee_code from user row in DB ? IDK
       const date_ISO = _req.query.date_ISO as string;
-
-      const example = {
-        id: '1234',
-        name: 'Indice ATMO',
-        slug: IndicatorsSlugEnum.indice_atmospheric,
-        municipality_insee_code,
-        validity_start: dayjs(date_ISO).startOf('day').toDate(),
-        validity_end: dayjs(date_ISO).endOf('day').toDate(),
-        diffusion_date: dayjs(date_ISO).startOf('day').toDate(),
-        created_at: dayjs(date_ISO).startOf('day').toDate(),
-        updated_at: dayjs(date_ISO).startOf('day').toDate(),
-        recommendations: ['blasbla', 'blibli'],
-        about: 'bloblo',
-        j0: {
-          value: 3,
-          color: '#207900',
-          label: 'Fort',
-          recommendation: 'blablabla',
-        },
-        j1: {
-          value: 3,
-          color: '#207900',
-          label: 'Fort',
-          recommendation: 'blablabla',
-        },
-      };
 
       const data: Record<IndicatorsSlugEnum, IndicatorCommonData> = {
         indice_uv: await getIndiceUvFromMunicipalityAndDate({

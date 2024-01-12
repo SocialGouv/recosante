@@ -1,15 +1,14 @@
-// @ts-ignore
 import csv2json from 'csvjson-csv2json/csv2json.js';
-import { PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
+import { type PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
 import prisma from '~/prisma';
 import fs from 'fs';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-dayjs.extend(customParseFormat);
 import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
 
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
+dayjs.extend(customParseFormat);
 
 const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
@@ -95,28 +94,26 @@ export default async function getPollensIndicator() {
   for (const row of data) {
     const departmentCode = row[date];
     // we need to format the department code to have a 2 digits string
-    let formattedDepCode =
-      departmentCode < 10 && departmentCode != '2A' && departmentCode != '2B'
+    const formattedDepCode =
+      departmentCode < 10 && departmentCode !== '2A' && departmentCode !== '2B'
         ? '0' + departmentCode
         : '' + departmentCode;
-    delete row[date];
-    pollensByDepartment[formattedDepCode] = row;
+    const rowWithoutDate = { ...row, date };
+    pollensByDepartment[formattedDepCode] = rowWithoutDate;
   }
 
   // Step 5: grab the municipalities list
   logStep('formatting pollens by department DONE');
-  const municipalities: Array<MunicipalityJSON> = await new Promise(
-    (resolve) => {
-      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
-      });
-    },
-  );
+  const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
+    fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const municipalities = JSON.parse(data);
+      resolve(municipalities);
+    });
+  });
 
   // Step 6: loop on municipalities and create rows to insert
   logStep('fetching municipalities DONE');

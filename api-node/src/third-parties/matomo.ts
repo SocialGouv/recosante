@@ -14,10 +14,10 @@ class _MatomoBackend {
   }
 
   makeid(length = 16) {
-    var result = '';
-    var characters = '01234567890abcdefABCDEF';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
+    let result = '';
+    const characters = '01234567890abcdefABCDEF';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
@@ -33,7 +33,7 @@ class _MatomoBackend {
   computeCustomDimensions(dimensions) {
     // Get something like this:
     const d = {};
-    for (let [key, value] of Object.entries(dimensions)) {
+    for (const [key, value] of Object.entries(dimensions)) {
       d[`dimension${key}`] = value;
     }
     return d;
@@ -46,7 +46,7 @@ class _MatomoBackend {
       rand: Date.now(),
       // _idvc: this._idvc,
       ...params,
-      //...this.computeCustomDimensions(this.dimensions),
+      // ...this.computeCustomDimensions(this.dimensions),
     };
     return Object.keys(params).reduce((paramString, key, index) => {
       const computedParam = `${key}=${params[key]}`;

@@ -1,6 +1,6 @@
-import express from 'express';
+import type express from 'express';
 
-const MINIMUM_MOBILE_APP_VERSION = 75;
+// const MINIMUM_MOBILE_APP_VERSION = 75;
 
 export default function (
   {
@@ -24,5 +24,5 @@ export default function (
   //       { cancelable: true },
   //     ],
   //   });
-  return next();
+  next();
 }

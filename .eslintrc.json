@@ -31,6 +31,8 @@
     "multiline-ternary": "off",
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/indent": "off",
-    "@typescript-eslint/consistent-type-definitions": "off"
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "no-tabs": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }

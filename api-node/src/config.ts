@@ -1,19 +1,19 @@
 import packageJson from '../package.json';
 const version = packageJson.version;
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT ?? 3000;
 const ENVIRONMENT =
-  process.env.ENVIRONMENT || process.env.NODE_ENV || 'development';
+  process.env.ENVIRONMENT ?? process.env.NODE_ENV ?? 'development';
 
 const PGHOST = process.env.PGHOST;
 const PGPORT = process.env.PGPORT;
 const PGUSER = process.env.PGUSER;
-const PGPASSWORD = process.env.PGPASSWORD || null;
+const PGPASSWORD = process.env.PGPASSWORD ?? null;
 const PGDATABASE = process.env.PGDATABASE;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 const SENTRY_KEY =
-  process.env.SENTRY_KEY ||
+  process.env.SENTRY_KEY ??
   'https://3451d3d9799d44d59ef0e63eb0f2cdf7@sentry.fabrique.social.gouv.fr/95';
 
 const VERSION = version;
@@ -25,6 +25,10 @@ const TIPIMAIL_EMAIL_FROM = process.env.TIPIMAIL_EMAIL_FROM;
 
 const MATOMO_URL = process.env.MATOMO_URL;
 const MATOMO_IDSITE_1 = '100';
+
+const PORTAL_API_METEOFRANCE_API_KEY =
+  process.env.PORTAL_API_METEOFRANCE_API_KEY ?? '';
+const AIRPARIF_API_KEY = process.env.AIRPARIF_API_KEY ?? '';
 
 export {
   PORT,
@@ -43,4 +47,6 @@ export {
   TIPIMAIL_EMAIL_FROM,
   MATOMO_URL,
   MATOMO_IDSITE_1,
+  PORTAL_API_METEOFRANCE_API_KEY,
+  AIRPARIF_API_KEY,
 };

@@ -1,11 +1,14 @@
-// @ts-ignore
+// @ts-expect-error csvtojson
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import fs from 'fs';
-import ftp, { FileInfo } from 'basic-ftp';
+import ftp from 'basic-ftp';
 import dayjs from 'dayjs';
 import { DataAvailabilityEnum } from '@prisma/client';
 import prisma from '~/prisma';
-import { DepartmentCode, MunicipalityJSON } from '~/types/municipality';
+import {
+  type DepartmentCode,
+  type MunicipalityJSON,
+} from '~/types/municipality';
 
 let now = Date.now();
 function logStep(step: string) {
@@ -38,7 +41,7 @@ export async function getIndiceUVIndicator() {
     logStep('Connected to FTP');
     // Step2: Access to the file of the day
     // File name format: (YYYYMMDD.csv)
-    const response = (await client.list()) as FileInfo[];
+    const response = await client.list();
     const today_name = dayjs().format('YYYYMMDD');
     const file = response.find((file) => file.name.includes(today_name));
 
@@ -99,18 +102,16 @@ export async function getIndiceUVIndicator() {
     }
     // Step 6: grab the municipalities list
     logStep('formatting indice UV by department DONE');
-    const municipalities: Array<MunicipalityJSON> = await new Promise(
-      (resolve) => {
-        fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          const municipalities = JSON.parse(data);
-          resolve(municipalities);
-        });
-      },
-    );
+    const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
+      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const municipalities = JSON.parse(data);
+        resolve(municipalities);
+      });
+    });
     // Step 7: format data by department to iterate quickly on municipalities
     const indiceUVByDepartment: Record<
       DepartmentCode,

@@ -6,7 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import logger from 'morgan';
 
-import { PORT, VERSION } from './config.ts';
+import { ENVIRONMENT, PORT, SENTRY_KEY, VERSION } from './config.ts';
 import { sendError } from './middlewares/errors.ts';
 import versionCheck from './middlewares/version-check';
 import { capture } from './third-parties/sentry.ts';
@@ -22,9 +22,31 @@ import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
 
 // Put together a schema
 const app = express();
-// if (process.env.NODE_ENV === "development") {
+
 app.use(logger('dev'));
-// }
+
+const sentryEnabled = ENVIRONMENT !== 'development' && ENVIRONMENT !== 'test';
+
+if (sentryEnabled) {
+  Sentry.init({
+    dsn: SENTRY_KEY,
+    environment: `api-${ENVIRONMENT}`,
+    release: VERSION,
+    integrations: [
+      // enable HTTP calls tracing
+      new Sentry.Integrations.Http({ tracing: true }),
+      // enable Express.js middleware tracing
+      new Sentry.Integrations.Express({ app }),
+      // Automatically instrument Node.js libraries and frameworks
+      ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+    ],
+
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 0.05,
+  });
+}
 
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
@@ -33,7 +55,7 @@ app.use(cors());
 
 // kube probe
 app.get('/healthz', async (req, res) => {
-  res.send(`Hello World`);
+  res.send('Hello World');
 });
 
 // hello world
@@ -53,11 +75,6 @@ app.use((_req, res, next) => {
   next();
 });
 
-//
-app.set('json replacer', (k: string, v: string) =>
-  v === null ? undefined : v,
-);
-
 // Pre middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '50mb' }));
@@ -76,7 +93,7 @@ app.use(async (req, res, next) => {
 
 app.post('/sentry-check', async (req, res) => {
   capture('sentry-check', { extra: { test: 'test' } });
-  res.status(200).send({ ok: true, data: `Sentry checked!` });
+  res.status(200).send({ ok: true, data: 'Sentry checked!' });
 });
 
 // getPollensIndicator();
@@ -97,4 +114,6 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
 // Start the server
-app.listen(PORT, () => console.log(`RUN ON PORT ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`RUN ON PORT ${PORT}`);
+});

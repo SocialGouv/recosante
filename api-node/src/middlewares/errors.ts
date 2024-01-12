@@ -1,6 +1,6 @@
-import { CustomError } from '~/types/error';
+import { type CustomError } from '~/types/error';
 import { capture } from '../third-parties/sentry.js';
-import express from 'express';
+import type express from 'express';
 /*
   Catch Errors Handler
 
@@ -8,19 +8,19 @@ import express from 'express';
   Instead of using try{} catch(e) {} in each controller, we wrap the function in
   catchErrors(), catch any errors they throw, and pass it along to our express middleware with next()
 */
-const catchErrors = (fn: {
-  (
+const catchErrors = (
+  fn: (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
-  ): Promise<any>;
-}) => {
-  return function (
+  ) => Promise<any>,
+) => {
+  return async function (
     req: express.Request,
     res: express.Response,
     next: express.NextFunction,
   ) {
-    return fn(req, res, next).catch(next);
+    return await fn(req, res, next).catch(next);
   };
 };
 
@@ -67,7 +67,7 @@ const sendError = (
     },
   });
 
-  return res.status(err.status || 500).send({
+  return res.status(err.status ?? 500).send({
     ok: false,
     code: 'SERVER_ERROR',
     error: "Désolé, une erreur est survenue, l'équipe technique est prévenue.",

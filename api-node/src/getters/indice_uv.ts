@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { CustomError } from '~/types/error';
+import { type CustomError } from '~/types/error';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
@@ -38,7 +38,9 @@ async function getIndiceUvFromMunicipalityAndDate({
     });
   } catch (zodError) {
     const error = new Error(
-      `Invalid request in GET /indice_uv/:municipality_insee_code/:date_ISO: ${zodError}`,
+      `Invalid request in GET /indice_uv/:municipality_insee_code/:date_ISO: ${
+        zodError instanceof Error ? zodError.message : 'Unknown error'
+      }`,
     ) as CustomError;
     error.status = 400;
     throw error;
@@ -55,7 +57,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  if (!indice_uv || indice_uv.uv_j0 == null) {
+  if (indice_uv?.uv_j0 == null) {
     const error = new Error(
       `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_ISO=${date_ISO}`,
     ) as CustomError;

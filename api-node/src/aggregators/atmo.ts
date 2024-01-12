@@ -1,8 +1,10 @@
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import dotenv from 'dotenv';
-import { MunicipalityJSON } from '~/types/municipality';
-import fs from 'fs';
+import { type MunicipalityJSON } from '~/types/municipality';
+import municipalitiesJson from './../../data/municipalities.json';
+import { AIRPARIF_API_KEY } from '~/config';
+import { capture } from '~/third-parties/sentry';
 
 dotenv.config({ path: './.env' });
 dayjs.extend(utc);
@@ -49,19 +51,17 @@ type Response = {
   };
 };
 
-type AtmoSchema = {
-  [key: string]: {
+type AtmoSchema = Record<
+  string,
+  {
     no2: number;
     so2: number;
     o3: number;
     pm10: number;
     pm25: number;
     max_value: number;
-  };
-};
-import municipalitiesJson from './../../data/municipalities.json';
-import prisma from '~/prisma';
-import { DataAvailabilityEnum } from '@prisma/client';
+  }
+>;
 
 // URL \\
 const CORSE_URL =
@@ -348,31 +348,33 @@ export async function getAtmoIndicator() {
   const getNouvelleAquitaineAtmo = await fetch(NOUVELLE_AQUITAINE_URL).then(
     async (response) => {
       if (!response.ok) {
-        throw new Error(
-          `getNouvelleAquitaineAtmo error! status: ${response.status}`,
-        );
+        capture(`getNouvelleAquitaineAtmo error! status: ${response.status}`, {
+          extra: { response },
+        });
+        return [];
       }
 
-      type AquitaineResponse = {
-        type: string;
-        id: string;
-        geometry: null;
-        properties: {
-          code_zone: string;
-          lib_zone: string;
-          date_ech: string;
-          date_dif: string;
-          code_pol: string;
-          lib_pol: string;
-          etat: string;
-          couleur: string;
-          com_court: string | null;
-          com_long: string | null;
-        };
-      };
+      // type AquitaineResponse = {
+      //   type: string;
+      //   id: string;
+      //   geometry: null;
+      //   properties: {
+      //     code_zone: string;
+      //     lib_zone: string;
+      //     date_ech: string;
+      //     date_dif: string;
+      //     code_pol: string;
+      //     lib_pol: string;
+      //     etat: string;
+      //     couleur: string;
+      //     com_court: string | null;
+      //     com_long: string | null;
+      //   };
+      // };
 
       const data = await response.json();
       logStep('getNouvelleAquitaineAtmo DONE');
+      return data;
     },
   );
   const getPaysDeLaLoireAtmo = await fetch(PAYS_DE_LA_LOIRE_URL).then(
@@ -440,7 +442,10 @@ export async function getAtmoIndicator() {
   const getSudAtmo: AtmoSchema[] = await fetch(SUD_URL).then(
     async (response) => {
       if (!response.ok) {
-        throw new Error(`getSudAtmo error! status: ${response.status}`);
+        capture(`getSudAtmo error! status: ${response.status}`, {
+          extra: { response },
+        });
+        return [];
       }
       type SudResponse = {
         type: 'Feature';
@@ -505,7 +510,7 @@ export async function getAtmoIndicator() {
   );
   const getIleDeFranceAtmo = await fetch(ILE_DE_FRANCE_URL, {
     headers: {
-      'X-Api-Key': process.env.AIRPARIF_API_KEY as string,
+      'X-Api-Key': AIRPARIF_API_KEY,
     },
   }).then(async (response) => {
     if (!response.ok) {
@@ -522,12 +527,10 @@ export async function getAtmoIndicator() {
       indice: string;
     };
 
-    type IleDeFranceResponse = {
-      [key: string]: IleDeFranceItem[];
-    };
+    type IleDeFranceResponse = Record<string, IleDeFranceItem[]>;
     const data = await response.json();
     logStep('getIleDeFranceAtmo DONE');
-    return data as Array<IleDeFranceResponse>;
+    return data as IleDeFranceResponse[];
   });
   Promise.all([
     getCorseAtmo,
@@ -541,19 +544,17 @@ export async function getAtmoIndicator() {
     getSudAtmo,
     getIleDeFranceAtmo,
   ]).then(async (responses) => {
-    type AtmoByDepartment = {
-      [key: string]: {
-        no2: number;
-        so2: number;
-        o3: number;
-        pm10: number;
-        pm25: number;
-        max_value: number;
-      };
-    };
+    // type AtmoByDepartment = Record<string, {
+    //     no2: number;
+    //     so2: number;
+    //     o3: number;
+    //     pm10: number;
+    //     pm25: number;
+    //     max_value: number;
+    //   }>;
     let atmoByDepartment = responses.flat();
     atmoByDepartment = Object.entries(atmoByDepartment).flat();
-
+    return atmoByDepartment;
     // TODO: Il y'a des doublons dans les données
     // 1. Une des causes est que certaines api retournent des données pour deux jours (ile de france notamment)
     // 2. Une autre cause est que certaines api retournent des données pour plusieurs communes

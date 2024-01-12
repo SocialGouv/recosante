@@ -1,18 +1,22 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: './.env' });
 import { capture } from '~/third-parties/sentry';
 import fs from 'fs';
 
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
-import { DepartmentCode, MunicipalityJSON } from '~/types/municipality';
+import {
+  type DepartmentCode,
+  type MunicipalityJSON,
+} from '~/types/municipality';
 import {
   CodeAlertEnums,
   DataAvailabilityEnum,
   PhenomenonsEnum,
 } from '@prisma/client';
-import { WeatherAlertResponse } from '~/types/api/weather-alert';
+import { type WeatherAlertResponse } from '~/types/api/weather-alert';
+import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
+dotenv.config({ path: './.env' });
 
 const URL =
   'https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours';
@@ -29,7 +33,7 @@ export async function getWeatherAlert() {
   logStep('Fetching Weather Alert Data');
   const data: WeatherAlertResponse = await fetch(URL, {
     headers: {
-      apiKey: process.env.PORTAL_API_METEOFRANCE_API_KEY!,
+      apiKey: PORTAL_API_METEOFRANCE_API_KEY,
     },
   }).then(async (response) => {
     if (!response.ok) {
@@ -117,7 +121,7 @@ export async function getWeatherAlert() {
   });
   if (existingWeatherAlert > 0) {
     logStep(
-      `WeatherAlert already fetched for diffusionDate ${diffusionDate}: ${existingWeatherAlert} rows`,
+      `WeatherAlert already fetched for diffusionDate ${diffusionDate.toDateString()}: ${existingWeatherAlert} rows`,
     );
     return;
   }
@@ -180,7 +184,7 @@ export async function getWeatherAlert() {
       if (cantonCode === 'FRA') {
         continue;
       }
-      let formattedDepCode = cantonCode.slice(0, 2);
+      const formattedDepCode = cantonCode.slice(0, 2);
       weatherAlertByDepartment[formattedDepCode] = {
         code_alert: getPhenomenonColorById(domain.max_color_id),
         phenomenon: getPhenomenonNameById(
@@ -203,18 +207,16 @@ export async function getWeatherAlert() {
   }
   // Step 5: grab the municipalities list
   logStep('formatting weatherAlert by department DONE');
-  const municipalities: Array<MunicipalityJSON> = await new Promise(
-    (resolve) => {
-      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
-      });
-    },
-  );
+  const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
+    fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      const municipalities = JSON.parse(data);
+      resolve(municipalities);
+    });
+  });
 
   // Step 6: loop on municipalities and create rows to insert
   logStep('fetching municipalities DONE');

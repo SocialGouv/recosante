@@ -29,6 +29,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@sentry/react-native": "5.10.0",
+    "@types/react": "~18.2.14",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
     "expo": "^49.0.21",
