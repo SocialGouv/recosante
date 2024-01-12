@@ -80,7 +80,8 @@ export namespace IndicatorService {
       case IndicatorsSlugEnum.bathing_water:
         return <Swimming />;
       default:
-        throw new Error('No picto found');
+        console.log('No picto found');
+      // throw new Error('No picto found');
     }
   }
 

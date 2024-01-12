@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Alert, Pressable, View } from 'react-native';
+import { ScrollView, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Email } from '~/assets/share/email';
 import { Illu } from '~/assets/share/illu';
@@ -7,6 +7,7 @@ import { Message } from '~/assets/share/message';
 import { More } from '~/assets/share/more';
 import { Whatsapp } from '~/assets/share/whatsapp';
 import MyText from '~/components/ui/my-text';
+import { ShareService } from '~/services/share';
 
 const buttons = [
   {
@@ -58,27 +59,8 @@ export function SharePage({ navigation }: { navigation: any }) {
               <Pressable
                 key={button.label}
                 className="mb-4 rounded-full bg-app-yellow p-6"
-                onPress={() => {
-                  Alert.alert(
-                    'Partager',
-                    'Partager l’app avec vos proches',
-                    [
-                      {
-                        text: 'Annuler',
-                        onPress: () => {
-                          console.log('Cancel Pressed');
-                        },
-                        style: 'cancel',
-                      },
-                      {
-                        text: 'Not Implemented',
-                        onPress: () => {
-                          console.log('OK Pressed');
-                        },
-                      },
-                    ],
-                    { cancelable: false },
-                  );
+                onPress={async () => {
+                  await ShareService.shareApp();
                 }}
               >
                 {button.icon}
