@@ -25,7 +25,11 @@ export function SettingsPage({ navigation }: { navigation: any }) {
 
         <TextRow
           text="Votre indicateur favoris"
-          onPress={() => navigation.navigate(RouteEnum.INDICATORS_SELECTOR)}
+          onPress={() =>
+            navigation.navigate(RouteEnum.INDICATORS_SELECTOR, {
+              enablePanDownToClose: true,
+            })
+          }
         />
 
         <Pressable

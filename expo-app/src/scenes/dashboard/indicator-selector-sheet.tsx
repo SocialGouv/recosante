@@ -19,7 +19,7 @@ export function IndicatorSelectorSheet({
 }: IndicatorSelectorSheetProps) {
   const { indicators } = useIndicatorsList((state) => state);
   const bottomSheetRef = useRef<BottomSheet>(null);
-
+  const { enablePanDownToClose } = route.params;
   useEffect(() => {
     // bottomSheetRef.current?.expand();
   }, []);
@@ -36,7 +36,15 @@ export function IndicatorSelectorSheet({
 
   return (
     <View className="flex-1 bg-black/80">
-      <BottomSheet ref={bottomSheetRef} index={2} snapPoints={snapPoints}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={2}
+        snapPoints={snapPoints}
+        enablePanDownToClose={enablePanDownToClose}
+        onClose={() => {
+          closeBottomSheet();
+        }}
+      >
         <View className="flex h-full w-full flex-1 bg-app-primary p-6">
           <MyText className="mb-4 text-white">
             Sélectionnez votre indicateur favori&nbsp;?

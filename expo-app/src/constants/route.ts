@@ -18,7 +18,9 @@ export interface RootStackParamList {
   };
   [RouteEnum.HOME]: undefined;
   [RouteEnum.SHARE]: undefined;
-  [RouteEnum.INDICATORS_SELECTOR]: undefined;
+  [RouteEnum.INDICATORS_SELECTOR]: {
+    enablePanDownToClose: boolean;
+  };
   [RouteEnum.INDICATOR_DETAIL]: {
     indicator: IndicatorCommonData;
     day: DayEnum;
