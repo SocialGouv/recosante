@@ -70,5 +70,15 @@
   },
   "engines": {
     "npm": "please-use-yarn"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all",
+    "semi": true,
+    "printWidth": 80,
+    "tabWidth": 2,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }

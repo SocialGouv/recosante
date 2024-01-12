@@ -6,6 +6,8 @@
   "author": "Fabrique des ministères sociaux",
   "repository": "git@github.com:SocialGouv/recosante.git",
   "workspaces": [
+    "api-node",
+    "expo-app",
     "api",
     "frontend",
     "libs/*",
@@ -21,7 +23,7 @@
     "lint": "eslint  --fix \"./expo-app/src/**/*.ts*\" && eslint  --fix \"./api-node/src/**/*.ts*\" ",
     "lint-check": "eslint \"./expo-app/src/**/*.ts*\" --no-fix --max-warnings 0 && eslint \"./api-node/src/**/*.ts*\" --no-fix --max-warnings 0",
     "format": "prettier  --write . --ignore-unknown",
-    "format-check": "prettier --check . "
+    "format-check": "prettier --check ."
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
