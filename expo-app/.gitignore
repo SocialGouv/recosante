@@ -7,6 +7,8 @@ node_modules/
 .expo/
 dist/
 web-build/
+*.aab
+*.ipa
 
 # Native
 *.orig.*
