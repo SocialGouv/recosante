@@ -45,8 +45,9 @@ export function LocationPage(props: LocationPageProps) {
 
   return (
     <BottomSheet
+      enablePanDownToClose={true}
       ref={bottomSheetRef}
-      index={0}
+      index={1}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       onClose={() => {

@@ -53,7 +53,9 @@ function Home(props: HomeProps) {
 
   useEffect(() => {
     if (!favoriteIndicator) {
-      props.navigation.navigate(RouteEnum.INDICATORS_SELECTOR);
+      props.navigation.navigate(RouteEnum.INDICATORS_SELECTOR, {
+        enablePanDownToClose: false,
+      });
     }
   }, []);
 
