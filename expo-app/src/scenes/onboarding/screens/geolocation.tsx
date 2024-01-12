@@ -8,6 +8,7 @@ import { LocationService } from '~/services/location';
 import { OnboardingRouteEnum, RouteEnum } from '~/constants/route';
 import { registerForPushNotificationsAsync } from '~/services/expo-push-notifs';
 import { useAddress } from '~/zustand/address/useAddress';
+import API from '~/services/api';
 
 export function Geolocation({ navigation }: { navigation: any }) {
   const { setAddress } = useAddress((state) => state);
@@ -18,6 +19,10 @@ export function Geolocation({ navigation }: { navigation: any }) {
       expo: true,
     });
     if (token) {
+      API.put({
+        path: '/user',
+        body: { push_notif_token: JSON.stringify(token) },
+      });
       navigation.navigate(RouteEnum.HOME);
     } else {
       navigation.navigate(OnboardingRouteEnum.NOTIFICATIONS);

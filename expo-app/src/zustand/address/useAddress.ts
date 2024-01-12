@@ -22,7 +22,7 @@ export const useAddress = create<LocationState>()(
           path: '/user',
           body: {
             municipality_insee_code: address.citycode,
-            municipality_nom: address.city,
+            municipality_name: address.city,
             municipality_zip_code: address.postcode,
           },
           // TODO: handle error
@@ -40,6 +40,17 @@ export const useAddress = create<LocationState>()(
       storage: createJSONStorage(() => AsyncStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
+        if (state?.address?.citycode) {
+          API.put({
+            path: '/user',
+            body: {
+              municipality_insee_code: state.address.citycode,
+              municipality_name: state.address.city,
+              municipality_zip_code: state.address.postcode,
+            },
+          });
+          // TODO: handle error
+        }
       },
     },
   ),

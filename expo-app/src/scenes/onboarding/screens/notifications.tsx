@@ -6,6 +6,7 @@ import { Skip } from '../skip';
 import { Illu_4 } from '~/assets/onboarding/illu_4';
 import { registerForPushNotificationsAsync } from '~/services/expo-push-notifs';
 import { RouteEnum } from '~/constants/route';
+import API from '~/services/api';
 
 export function Notifications({ navigation }: { navigation: any }) {
   return (
@@ -31,10 +32,16 @@ export function Notifications({ navigation }: { navigation: any }) {
       <View>
         <Button
           onPress={async () => {
-            await registerForPushNotificationsAsync({
+            const token = await registerForPushNotificationsAsync({
               force: true,
               expo: true,
             });
+            if (token) {
+              API.put({
+                path: '/user',
+                body: { push_notif_token: JSON.stringify(token) },
+              });
+            }
             navigation.navigate(RouteEnum.HOME);
           }}
           viewClassName="bg-app-yellow p-4"

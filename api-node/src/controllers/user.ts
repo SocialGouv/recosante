@@ -49,7 +49,6 @@ router.put(
     ) => {
       try {
         z.object({
-          matomo_id: z.string(),
           municipality_insee_code: z.string().optional(),
           municipality_name: z.string().optional(),
           municipality_zip_code: z.string().optional(),
@@ -69,13 +68,12 @@ router.put(
       }
 
       const updatedUser: Partial<User> = {};
-      const { matomo_id } = req.body;
       function bodyHasProperty(property: string) {
         return Object.prototype.hasOwnProperty.call(req.body, property);
       }
 
-      if (bodyHasProperty('municipality_zip_code')) {
-        updatedUser.municipality_zip_code = req.body.municipality_zip_code;
+      if (bodyHasProperty('municipality_insee_code')) {
+        updatedUser.municipality_insee_code = req.body.municipality_insee_code;
       }
       if (bodyHasProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;
@@ -96,11 +94,11 @@ router.put(
 
       await prisma.user
         .update({
-          where: { matomo_id },
+          where: { matomo_id: req.user.matomo_id },
           data: updatedUser,
         })
-        .then((user) => {
-          console.log('user', user);
+        .then(() => {
+          console.log('User has been updated');
         })
         .catch((error) => {
           console.log('error', error);
