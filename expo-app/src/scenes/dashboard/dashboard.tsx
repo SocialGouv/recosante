@@ -58,10 +58,10 @@ export function DashboardPage({ navigation }: { navigation: any }) {
             className="w-fit rounded-full bg-app-primary p-3 text-sm text-white"
             onPress={() => navigation.navigate(RouteEnum.LOCATION)}
             hitSlop={{
-              top: 20,
-              bottom: 20,
-              left: 20,
-              right: 20,
+              top: 60,
+              bottom: 60,
+              left: 60,
+              right: 60,
             }}
           >
             <LocationIcon />

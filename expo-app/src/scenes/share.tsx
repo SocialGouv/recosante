@@ -1,32 +1,10 @@
 import React from 'react';
 import { ScrollView, Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Email } from '~/assets/share/email';
+import { ShareLink } from '~/assets/icons/share-link';
 import { Illu } from '~/assets/share/illu';
-import { Message } from '~/assets/share/message';
-import { More } from '~/assets/share/more';
-import { Whatsapp } from '~/assets/share/whatsapp';
 import MyText from '~/components/ui/my-text';
 import { ShareService } from '~/services/share';
-
-const buttons = [
-  {
-    icon: <Message />,
-    label: 'Message',
-  },
-  {
-    icon: <Whatsapp />,
-    label: 'Whatsapp',
-  },
-  {
-    icon: <Email />,
-    label: 'Email',
-  },
-  {
-    icon: <More />,
-    label: 'Plus',
-  },
-];
 
 export function SharePage({ navigation }: { navigation: any }) {
   return (
@@ -54,25 +32,17 @@ export function SharePage({ navigation }: { navigation: any }) {
           </MyText>
         </View>
         <View className="flex flex-row space-x-6">
-          {buttons.map((button) => (
-            <View key={button.label}>
-              <Pressable
-                key={button.label}
-                className="mb-4 rounded-full bg-app-yellow p-6"
-                onPress={async () => {
-                  await ShareService.shareApp();
-                }}
-              >
-                {button.icon}
-              </Pressable>
-              <MyText
-                font="MarianneRegular"
-                className="-mt-2 text-center text-xs"
-              >
-                {button.label}
-              </MyText>
-            </View>
-          ))}
+          <View>
+            <Pressable
+              className="mb-4 flex flex-row items-center justify-center space-x-4 rounded-full bg-app-yellow p-6"
+              onPress={async () => {
+                await ShareService.shareApp();
+              }}
+            >
+              <ShareLink />
+              <MyText font="MarianneBold">Partager l’application</MyText>
+            </Pressable>
+          </View>
         </View>
       </SafeAreaView>
     </ScrollView>
