@@ -62,7 +62,8 @@ async function getIndiceUvFromMunicipalityAndDate({
       `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_ISO=${date_ISO}`,
     ) as CustomError;
     error.status = 404;
-    throw error;
+    return error;
+    // throw error;
   }
 
   const data: IndiceUVAPIData = {
