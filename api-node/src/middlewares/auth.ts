@@ -9,6 +9,10 @@ export async function withUser(
   next: express.NextFunction,
 ) {
   const matomo_id = req.headers.authorization;
+  if (!matomo_id) {
+    next(new Error('Missing matomo_id'));
+    return;
+  }
   const user = await prisma.user.findUnique({
     where: {
       matomo_id,

@@ -1,10 +1,9 @@
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import * as Sentry from 'sentry-expo';
 import { Navigators } from './src/navigators';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { initMatomo } from '~/services/logEventsWithMatomo';
 
 SplashScreen.preventAutoHideAsync();
@@ -43,6 +42,7 @@ function App() {
   );
 }
 
+// eslint-disable-next-line react/display-name
 export default function () {
   return (
     <SafeAreaProvider>
