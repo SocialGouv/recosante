@@ -58,6 +58,7 @@ export function IndicatorDetail(props: IndicatorSelectorSheetProps) {
         handleIndicatorStyle={{
           backgroundColor: '#3343BD',
         }}
+        enablePanDownToClose
       >
         <View className="flex flex-1 bg-app-gray ">
           <View
@@ -80,9 +81,6 @@ export function IndicatorDetail(props: IndicatorSelectorSheetProps) {
             <Close />
           </Pressable>
           <View className="px-6 pt-12">
-            <MyText font="MarianneBold" className=" text-sm uppercase">
-              {currentDayIndicatorData?.value}
-            </MyText>
             <LineChart value={currentDayIndicatorData?.value} />
             <Title label="Nos recommandations" />
             {indicator?.recommendations?.map((recommendation) => {
