@@ -66,10 +66,7 @@ interface TextRowProps {
 }
 function TextRow(props: TextRowProps) {
   return (
-    <View className="-mt-2 flex flex-row items-center justify-between pr-8">
-      <MyText font="MarianneRegular" className=" mt-4 text-lg ">
-        {props.text}
-      </MyText>
+    <View>
       <Pressable
         onPress={props.onPress}
         hitSlop={{
@@ -78,7 +75,11 @@ function TextRow(props: TextRowProps) {
           left: 20,
           right: 20,
         }}
+        className="-mt-2 flex flex-row items-center justify-between pr-8"
       >
+        <MyText font="MarianneRegular" className=" mt-4 text-lg ">
+          {props.text}
+        </MyText>
         <View className="mt-4">
           <Arrow />
         </View>
