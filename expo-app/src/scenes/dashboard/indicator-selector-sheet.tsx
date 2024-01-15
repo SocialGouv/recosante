@@ -24,7 +24,7 @@ export function IndicatorSelectorSheet({
     // bottomSheetRef.current?.expand();
   }, []);
 
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], []);
+  const snapPoints = useMemo(() => ['30%', '60%', '90%'], []);
 
   function closeBottomSheet() {
     bottomSheetRef.current?.close();
@@ -37,12 +37,21 @@ export function IndicatorSelectorSheet({
   return (
     <View className="flex-1 bg-black/80">
       <BottomSheet
+        // enableDynamicSizing={true}
         ref={bottomSheetRef}
-        index={2}
+        index={1}
         snapPoints={snapPoints}
         enablePanDownToClose={enablePanDownToClose}
         onClose={() => {
           closeBottomSheet();
+        }}
+        handleStyle={{
+          backgroundColor: '#3343BD',
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: '#3343BD',
         }}
       >
         <View className="flex h-full w-full flex-1 bg-app-primary p-6">
