@@ -54,8 +54,8 @@ export function IndicatorSelectorSheet({
           backgroundColor: '#3343BD',
         }}
       >
-        <View className="flex h-full w-full flex-1 bg-app-primary p-6">
-          <MyText className="mb-4 text-white">
+        <View className="flex h-full w-full flex-1 bg-app-primary p-2">
+          <MyText className="mx-2 mb-4 text-white">
             Sélectionnez votre indicateur favori&nbsp;?
           </MyText>
           <IndicatorsSelector

@@ -30,7 +30,7 @@
   },
   "indice_atmospheric": {
     "id": "1234",
-    "name": "Indice Atmo",
+    "name": "Atmo",
     "slug": "indice_atmospheric",
     "municipality_insee_code": "12345",
     "validity_start": "2020-01-01T00:00:00.000Z",
@@ -88,7 +88,7 @@
   },
   "weather_alert": {
     "id": "1234",
-    "name": "Alerte météo",
+    "name": "Vigilance météo",
     "slug": "weather_alert",
     "municipality_insee_code": "12345",
     "validity_start": "2020-01-01T00:00:00.000Z",

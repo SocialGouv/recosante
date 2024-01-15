@@ -3,7 +3,7 @@ import type { Indicator } from '~/types/api/indicator';
 
 const indicatorsObject: Record<IndicatorsSlugEnum, Indicator> = {
   [IndicatorsSlugEnum.indice_atmospheric]: {
-    name: 'Indice ATMO',
+    name: "Pollution de l'air",
     slug: IndicatorsSlugEnum.indice_atmospheric,
   },
   [IndicatorsSlugEnum.indice_uv]: {
@@ -15,7 +15,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, Indicator> = {
     slug: IndicatorsSlugEnum.pollen_allergy,
   },
   [IndicatorsSlugEnum.weather_alert]: {
-    name: 'Alerte Météo',
+    name: 'Vigilance Météo',
     slug: IndicatorsSlugEnum.weather_alert,
   },
   // [IndicatorsSlugEnum.episode_pollution_atmospheric]: {
@@ -23,7 +23,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, Indicator> = {
   //   slug: IndicatorsSlugEnum.episode_pollution_atmospheric,
   // },
   [IndicatorsSlugEnum.bathing_water]: {
-    name: 'Eau de baignades',
+    name: 'Eau',
     slug: IndicatorsSlugEnum.bathing_water,
   },
   // [IndicatorsSlugEnum.tap_water]: {

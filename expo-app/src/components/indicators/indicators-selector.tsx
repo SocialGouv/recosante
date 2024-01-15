@@ -25,7 +25,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
     props.onSubmit();
   }
   return (
-    <View className="flex items-start">
+    <View className="flex h-full flex-row flex-wrap items-start ">
       {props.indicators?.map((indicator) => {
         const isFavorite = state?.slug === indicator.slug;
         return (
@@ -35,7 +35,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
             }}
             viewClassName={cn(
               `${isFavorite ? 'bg-app-yellow' : ''}
-               border-white border-2 rounded-full px-4 py-2 my-2 items-center`,
+               border-white border-2 rounded-full  m-2  items-center flex`,
             )}
             textClassName="text-white text-base"
             key={indicator.slug}
@@ -49,7 +49,7 @@ export function IndicatorsSelector(props: IndicatorsSelectorProps) {
         <View className="mx-auto mt-2">
           <Button
             onPress={handleSubmit}
-            viewClassName="bg-app-yellow p-4"
+            viewClassName="bg-app-yellow px-4 py-3 mt-4"
             textClassName="text-black"
             font="MarianneMedium"
           >
