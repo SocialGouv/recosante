@@ -20,7 +20,7 @@ import { RouteEnum, type RootStackParamList } from './constants/route';
 import { Onboarding } from './scenes/onboarding/onboarding';
 import { SharePage } from './scenes/share';
 import { SettingsPage } from './scenes/settings/settings';
-import { LocationPage } from '~/scenes/location';
+import { LocationPage } from '~/scenes/location/location';
 import { useAddress } from './zustand/address/useAddress';
 import { IndicatorSelectorSheet } from './scenes/dashboard/indicator-selector-sheet';
 import { useIndicatorsList } from './zustand/indicator/useIndicatorsList';
