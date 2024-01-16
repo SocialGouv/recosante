@@ -128,8 +128,8 @@ export async function getAtmoIndicator() {
     operator: '=',
     value: dayjs().add(-1, 'day').format('YYYY-MM-DD'),
   };
-  const rawQuery: Record<string, { operator: Operator; value: string }> = {
-    date: dateQuery,
+  const rawQuery: Record<'date_ech', { operator: Operator; value: string }> = {
+    date_ech: dateQuery,
   };
   const query = JSON.stringify(rawQuery);
   const url = `https://admindata.atmo-france.org/api/data/${indiceDataId}/${query}?withGeom=false`;
