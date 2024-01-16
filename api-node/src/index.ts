@@ -17,9 +17,9 @@ import eventRouter from './controllers/event.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 
-// import getPollensIndicator from './aggregators/pollens.ts';
+import { getPollensIndicator } from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
-// import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
+import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
 // import { getAtmoIndicator } from './aggregators/atmo.ts';
 
 // Put together a schema
@@ -96,9 +96,9 @@ app.post('/sentry-check', async (req, res) => {
   res.status(200).send({ ok: true, data: 'Sentry checked!' });
 });
 
-// getPollensIndicator();
+getPollensIndicator();
 // getWeatherAlert();
-// getIndiceUVIndicator();
+getIndiceUVIndicator();
 // getAtmoIndicator();
 
 // check version before checking other controllers

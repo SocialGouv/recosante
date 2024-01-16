@@ -9,6 +9,7 @@ import {
   type DepartmentCode,
   type MunicipalityJSON,
 } from '~/types/municipality';
+import { capture } from '~/third-parties/sentry';
 
 let now = Date.now();
 function logStep(step: string) {
@@ -82,7 +83,7 @@ export async function getIndiceUVIndicator() {
     // Step5: Check if the data exists in the database
 
     const date = rawFormatedJson[0].date;
-    const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toDate();
+    const diffusionDate = dayjs(date).startOf('day').toDate();
     const validityEnd = dayjs(diffusionDate).endOf('day').toDate();
 
     logStep('Checked if the data exists in the database');
@@ -193,7 +194,7 @@ export async function getIndiceUVIndicator() {
     // Step: Delete the file
     fs.rmSync(folder, { recursive: true, force: true });
     logStep('Deleted the file');
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    capture(error, { extra: { functionCall: 'getPollensIndicator' } });
   }
 }
