@@ -1,1 +1,0 @@
-export const STORAGE_MATOMO_ID = 'STORAGE_MATOMO_ID';
