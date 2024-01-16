@@ -19,7 +19,7 @@ import indicatorsRouter from './controllers/indicators.ts';
 import { getPollensIndicator } from './aggregators/pollens.ts';
 // import { getWeatherAlert } from './aggregators/weather-alert.ts';
 import { getIndiceUVIndicator } from './aggregators/indice_uv.ts';
-// import { getAtmoIndicator } from './aggregators/atmo.ts';
+import { getAtmoIndicator } from './aggregators/atmo/atmo-france.ts';
 
 // Put together a schema
 const app = express();
@@ -95,7 +95,7 @@ app.post('/sentry-check', async (req, res) => {
   res.status(200).send({ ok: true, data: 'Sentry checked!' });
 });
 
-getPollensIndicator();
+// getPollensIndicator();
 // getWeatherAlert();
 // getIndiceUVIndicator();
 // getAtmoIndicator();

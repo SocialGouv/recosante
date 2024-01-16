@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import dotenv from 'dotenv';
 import { type MunicipalityJSON } from '~/types/municipality';
-import municipalitiesJson from './../../data/municipalities.json';
+import municipalitiesJson from '../../../data/municipalities.json';
 import { AIRPARIF_API_KEY } from '~/config';
 import { capture } from '~/third-parties/sentry';
 
