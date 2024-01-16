@@ -6,8 +6,8 @@ import fs from 'fs';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
-import type { YYYYMMDD } from '~/types/api/indice_atmo';
 import { IndiceAtmoAPIDataIdsEnum } from '~/types/api/indice_atmo';
+import type { YYYYMMDD, IndiceAtmoAPIResponse } from '~/types/api/indice_atmo';
 
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
@@ -99,52 +99,77 @@ application, et ajouter l’indice du jour, selon l’exemple précédent.
 */
 
 export async function getAtmoIndicator() {
-  // Step 1: Fetch data
+  try {
+    // Documentation:
+    // https://admindata.atmo-france.org/api/doc
+    // https://www.atmo-france.org/article/les-portails-regionaux-open-data-des-aasqa
+    // https://www.atmo-france.org/actualite/une-faq-pour-bien-utiliser-lapi-datmo-data
+    // https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
 
-  // Documentation:
-  // https://admindata.atmo-france.org/api/doc
-  // https://www.atmo-france.org/article/les-portails-regionaux-open-data-des-aasqa
-  // https://www.atmo-france.org/actualite/une-faq-pour-bien-utiliser-lapi-datmo-data
-  // https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
+    logStep('Fetching Atmo JWT Token');
+    const loginRes = await fetch(
+      'https://admindata.atmo-france.org/api/login',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: ATMODATA_USERNAME,
+          password: ATMODATA_PASSWORD,
+        }),
+      },
+    ).then(async (response) => await response.json());
 
-  logStep('Fetching Atmo JWT Token');
-  const loginRes = await fetch('https://admindata.atmo-france.org/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: ATMODATA_USERNAME,
-      password: ATMODATA_PASSWORD,
-    }),
-  }).then(async (response) => await response.json());
+    logStep('Fetched Atmo JWT Token');
+    const atmoJWTToken: string = loginRes.token;
 
-  const atmoJWTToken = loginRes.token;
+    type Operator = '=' | '!=' | '<' | '<=' | '>' | '>=' | 'IN' | 'NOT IN';
 
-  type Operator = '=' | '!=' | '<' | '<=' | '>' | '>=' | 'IN' | 'NOT IN';
+    const indiceDataId = IndiceAtmoAPIDataIdsEnum.indice_current_year;
+    const dateQuery: { operator: Operator; value: YYYYMMDD } = {
+      operator: '=',
+      value: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+    };
+    const rawQuery: Record<'date_ech', { operator: Operator; value: string }> =
+      {
+        date_ech: dateQuery,
+      };
+    const query = JSON.stringify(rawQuery);
+    const url = `https://admindata.atmo-france.org/api/data/${indiceDataId}/${query}?withGeom=false`;
 
-  const indiceDataId = IndiceAtmoAPIDataIdsEnum.indice_current_year;
-  const dateQuery: { operator: Operator; value: YYYYMMDD } = {
-    operator: '=',
-    value: dayjs().add(-1, 'day').format('YYYY-MM-DD'),
-  };
-  const rawQuery: Record<'date_ech', { operator: Operator; value: string }> = {
-    date_ech: dateQuery,
-  };
-  const query = JSON.stringify(rawQuery);
-  const url = `https://admindata.atmo-france.org/api/data/${indiceDataId}/${query}?withGeom=false`;
+    const indicesRes: IndiceAtmoAPIResponse = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${atmoJWTToken}`,
+      },
+    }).then(async (response) => {
+      console.log({ response });
+      return await response.json();
+    });
+    logStep('Fetched Atmo data');
 
-  console.log({ url });
+    const data = indicesRes.features;
 
-  const indicesRes = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${atmoJWTToken}`,
-    },
-  }).then(async (response) => {
-    console.log({ response });
-    return await response.json();
-  });
+    if (!data?.length) {
+      capture('No atmo data found', {
+        extra: { functionCall: 'getAtmoIndicator', data },
+      });
+      return;
+    }
 
-  console.log(JSON.stringify(indicesRes, null, 2));
+    // const diffusionDate = dayjs(date).startOf('day').toDate();
+    // const validityEnd = dayjs(diffusionDate).endOf('day').toDate();
+
+    logStep('Checked if the data exists in the database');
+    // const existingIndiceUVData = await prisma.indiceUv.count({
+    //   where: {
+    //     diffusion_date: diffusionDate,
+    //   },
+    // });
+
+    console.log(JSON.stringify(indicesRes, null, 2));
+  } catch (error: any) {
+    capture(error, { extra: { functionCall: 'getAtmoIndicator' } });
+  }
 }

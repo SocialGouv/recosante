@@ -1,4 +1,4 @@
-import type { MunicipalityJSON } from '~/types/municipality';
+import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 
 export enum IndiceAtmoAPIDataIdsEnum {
   indice_current_year = 112,
@@ -13,21 +13,74 @@ export type YYYYMMDD = string; // Expected format: YYYY-MM-DD
 // - de 1 (bon) à 6 (extrêmement mauvais)
 // - avec 0 (indisponible)
 // - et 8 (événement).
-type PolluantQualificatifs = {
-  NotAvailable: '0';
-  SpecialEvent: '8';
-  Specified: '1' | '2' | '3' | '4' | '5' | '6';
-};
+export enum PolluantQualificatifsNumberEnum {
+  NotAvailable = 0,
+  SpecialEvent = 8,
+  Good = 1,
+  Fair = 2,
+  Moderate = 3,
+  Poor = 4,
+  VeryPoor = 5,
+  ExtremelyPoor = 6,
+}
+
+export enum PolluantQualificatifsLabelEnum {
+  Good = 'Bon',
+  Fair = 'Moyen',
+  Moderate = 'Dégradé',
+  Poor = 'Mauvais',
+  VeryPoor = 'Très Mauvais',
+  ExtremelyPoor = 'Extrêmement Mauvais',
+}
+
+// source: https://www.atmo-auvergnerhonealpes.fr/sites/aura/files/content/migrated/atoms/files/atmo_ppt-kit-com-nouvel-indice-v2_0.pdf
+export enum PolluantQualificatifsColorEnum {
+  Good = '#50f0e6',
+  Fair = '#50ccaa',
+  Moderate = '#f0e641',
+  Poor = '#ff5050',
+  VeryPoor = '#960032',
+  ExtremelyPoor = '#872181',
+}
+
+export enum SourcesEnum {
+  QualitairCorse = 'Qualitair Corse',
+  AtmoSud = 'AtmoSud',
+  AtmoAuvergneRhoneAlpes = 'Atmo Auvergne-Rhône-Alpes',
+  AtmoOccitanie = 'Atmo-Occitanie',
+  AtmoNouvelleAquitaine = 'Atmo Nouvelle-Aquitaine',
+  AirBreizh = 'Air Breizh',
+  AirPaysDeLaLoire = 'Air Pays de la Loire',
+  AtmoGrandEst = 'Atmo Grand Est',
+  AtmoHDF = 'Atmo HDF',
+  AtmoGuyane = 'Atmo Guyane',
+  ATMOBourgogneFrancheComte = 'ATMO Bourgogne-Franche-Comté',
+  LigAir = "Lig'Air",
+  Madininair = 'Madininair',
+  GwadAir = "Gwad'Air",
+  Airparif = 'Airparif',
+}
+
+export enum TypeZoneEnum {
+  Commune = 'commune',
+  EPCI = 'EPCI',
+}
+
+export enum ESPGEnum {
+  Lambert93 = '2154',
+  WGS84 = '4326',
+  Lambert93Alt = '5490',
+}
 
 type IndiceAtmoSearchOperatorIndice = {
   code_zone: MunicipalityJSON['COM']; // code commune ou EPCI selon l’INSEE ;
   date_ech: YYYYMMDD; // date de l’indice, au format international (YYYY-MM-DD) ;
-  code_no2: PolluantQualificatifs; // qualificatif pour le sous-indice du polluant NO₂ ;
-  code_o3: PolluantQualificatifs; // qualificatif pour le sous-indice du polluant l’indice O₃ ;
-  code_pm10: PolluantQualificatifs; // qualificatif pour le sous-indice du polluant PM10 ;
-  code_pm25: PolluantQualificatifs; // qualificatif pour le sous-indice du polluant PM2,5 ;
-  code_so2: PolluantQualificatifs; // qualificatif pour le sous-indice du polluant l’indice SO₂ ;
-  code_qual: PolluantQualificatifs; // qualificatif de l’indice ATMO.
+  code_no2: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant NO₂ ;
+  code_o3: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant l’indice O₃ ;
+  code_pm10: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant PM10 ;
+  code_pm25: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant PM2,5 ;
+  code_so2: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant l’indice SO₂ ;
+  code_qual: PolluantQualificatifsNumberEnum; // qualificatif de l’indice ATMO.
 };
 
 type IndiceAtmoLibPol = 'PM2.5' | 'PM10' | 'O3' | 'NO2' | 'SO2';
@@ -65,3 +118,43 @@ export interface IndiceAtmoSearchOperator {
   episodes_pollution_yesterday_today_tomorrow: IndiceAtmoSearchOperatorEpisodePollution;
   emissions_regions: IndiceAtmoEmissionsRegions;
 }
+
+export type IndiceAtmoAPIResponse = {
+  type: 'FeatureCollection';
+  name: 'national_data.national_ind_atmo';
+  crs: {
+    type: 'name';
+    properties: {
+      name: string; // example: 'urn:ogc:def:crs:EPSG::3857';
+    };
+  };
+  features: Array<{
+    type: 'Feature';
+    geometry: null;
+    properties: {
+      gml_id: number; // example: 835197777; no idea what this is
+      aasqa: MunicipalityJSON['DEP'];
+      date_maj: string; // example: '2024/01/16 12:11:49.728+01';
+      partition_field: string; // example: '112024w3'; no idea what this is
+      code_no2: PolluantQualificatifsNumberEnum;
+      code_o3: PolluantQualificatifsNumberEnum;
+      code_pm10: PolluantQualificatifsNumberEnum;
+      code_pm25: PolluantQualificatifsNumberEnum;
+      code_qual: PolluantQualificatifsNumberEnum;
+      code_so2: PolluantQualificatifsNumberEnum;
+      code_zone: MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+      coul_qual: PolluantQualificatifsColorEnum;
+      date_dif: string; // example: '2024/01/16';
+      date_ech: string; // example: '2024-01-15';
+      epsg_reg: ESPGEnum; // EPSG Geodetic Parameter Dataset
+      lib_qual: PolluantQualificatifsLabelEnum;
+      lib_zone: string; // Municipality or EPCI. example: 'Gastins';
+      source: SourcesEnum;
+      type_zone: TypeZoneEnum;
+      x_reg: number; // example: 650403.898030424;
+      x_wgs84: number; // example: 3.01999928628953;
+      y_reg: number; // example: 2403379.42595027;
+      y_wgs84: number; // example: 48.6270847202683;
+    };
+  }>;
+};

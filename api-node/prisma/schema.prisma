@@ -139,6 +139,17 @@ model WeatherAlert {
   phenomenon PhenomenonsEnum?
 }
 
+enum PolluantQualificatifsNumberEnum {
+  NotAvailable // Non disponible : 0
+  SpecialEvent // Evénement particulier : 8
+  Good // Bon : 1
+  Fair // Moyen : 2
+  Moderate // Dégradé : 3
+  Poor // Mauvais : 4
+  VeryPoor // Très mauvais : 5
+  ExtremelyPoor // Extrêmement mauvais : 6
+}
+
 model IndiceAtmosperic {
   id String @id @default(uuid())
 
@@ -151,12 +162,30 @@ model IndiceAtmosperic {
   municipality_insee_code String
   data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
-  no2                     Int
-  so2                     Int
-  o3                      Int
-  pm10                    Int
-  pm25                    Int
-  max_value               Int // max value between no2, so2, o3, pm10, pm25
+
+  gml_id          Number // example: 835197777; no idea what this is
+  aasqa           String
+  date_maj        String // example: '2024/01/16 12:11:49.728+01';
+  partition_field String // example: '112024w3'; no idea what this is
+  code_no2: PolluantQualificatifsNumberEnum;
+  code_o3: PolluantQualificatifsNumberEnum;
+  code_pm10: PolluantQualificatifsNumberEnum;
+  code_pm25: PolluantQualificatifsNumberEnum;
+  code_qual: PolluantQualificatifsNumberEnum;
+  code_so2: PolluantQualificatifsNumberEnum;
+  code_zone: MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+  coul_qual: PolluantQualificatifsColorEnum;
+  date_dif        String // example: '2024/01/16';
+  date_ech        String // example: '2024-01-15';
+  epsg_reg: ESPGEnum; // EPSG Geodetic Parameter Dataset
+  lib_qual: PolluantQualificatifsLabelEnum;
+  lib_zone        String // Municipality or EPCI. example: 'Gastins';
+  source: SourcesEnum;
+  type_zone: TypeZoneEnum;
+  x_reg: number; // example: 650403.898030424;
+  x_wgs84: number; // example: 3.01999928628953;
+  y_reg: number; // example: 2403379.42595027;
+  y_wgs84: number; // example: 48.6270847202683;
 }
 
 enum PollutionStateEnum {
