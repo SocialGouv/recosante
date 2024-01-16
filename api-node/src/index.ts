@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import '~/prisma';
+
 
 import * as Sentry from '@sentry/node';
 import express from 'express';
