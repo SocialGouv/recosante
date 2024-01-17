@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import '~/prisma';
 
-
 import * as Sentry from '@sentry/node';
 import express from 'express';
 import cors from 'cors';
@@ -98,7 +97,7 @@ app.post('/sentry-check', async (req, res) => {
 
 getPollensIndicator();
 // getWeatherAlert();
-getIndiceUVIndicator();
+// getIndiceUVIndicator();
 // getAtmoIndicator();
 
 // check version before checking other controllers

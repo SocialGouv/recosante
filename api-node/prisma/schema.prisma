@@ -77,26 +77,26 @@ model PollenAllergyRisk {
   municipality_insee_code String
   data_availability       DataAvailabilityEnum? @default(AVAILABLE)
   // specific fields for this indicator
-  cypres                  Int?                  @default(0)
-  noisetier               Int?                  @default(0)
-  aulne                   Int?                  @default(0)
-  peuplier                Int?                  @default(0)
-  saule                   Int?                  @default(0)
-  frene                   Int?                  @default(0)
-  charme                  Int?                  @default(0)
-  bouleau                 Int?                  @default(0)
-  platane                 Int?                  @default(0)
-  chene                   Int?                  @default(0)
-  olivier                 Int?                  @default(0)
-  tilleul                 Int?                  @default(0)
-  chataignier             Int?                  @default(0)
-  rumex                   Int?                  @default(0)
-  graminees               Int?                  @default(0)
-  plantain                Int?                  @default(0)
-  urticacees              Int?                  @default(0)
-  armoises                Int?                  @default(0)
-  ambroisies              Int?                  @default(0)
-  total                   Int?                  @default(0)
+  cypres                  Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  noisetier               Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  aulne                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  peuplier                Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  saule                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  frene                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  charme                  Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  bouleau                 Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  platane                 Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  chene                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  olivier                 Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  tilleul                 Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  chataignier             Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  rumex                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  graminees               Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  plantain                Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  urticacees              Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  armoises                Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  ambroisies              Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+  total                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
 }
 
 enum CodeAlertEnums {
