@@ -5,9 +5,13 @@ import prisma from '~/prisma';
 import fs from 'fs';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
+import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 import { IndiceAtmoAPIDataIdsEnum } from '~/types/api/indice_atmo';
-import type { YYYYMMDD, IndiceAtmoAPIResponse } from '~/types/api/indice_atmo';
+import type {
+  YYYYMMDD,
+  IndiceAtmoAPIResponse,
+  IndiceAtmoByCodeZone,
+} from '~/types/api/indice_atmo';
 
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
@@ -100,13 +104,20 @@ application, et ajouter l’indice du jour, selon l’exemple précédent.
 
 export async function getAtmoIndicator() {
   try {
+    logStep('Getting Atmo indicator');
     // Documentation:
     // https://admindata.atmo-france.org/api/doc
     // https://www.atmo-france.org/article/les-portails-regionaux-open-data-des-aasqa
     // https://www.atmo-france.org/actualite/une-faq-pour-bien-utiliser-lapi-datmo-data
     // https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
 
-    logStep('Fetching Atmo JWT Token');
+    /*
+    *
+    *
+    Step 1: Fetch Atmo JWT Token
+    *
+    *
+    */
     const loginRes = await fetch(
       'https://admindata.atmo-france.org/api/login',
       {
@@ -120,9 +131,16 @@ export async function getAtmoIndicator() {
         }),
       },
     ).then(async (response) => await response.json());
-
-    logStep('Fetched Atmo JWT Token');
     const atmoJWTToken: string = loginRes.token;
+    logStep('Step 1: Fetched Atmo JWT Token');
+
+    /*
+    *
+    *
+    Step 2: Fetch Atmo Data
+    *
+    *
+    */
 
     type Operator = '=' | '!=' | '<' | '<=' | '>' | '>=' | 'IN' | 'NOT IN';
 
@@ -147,7 +165,7 @@ export async function getAtmoIndicator() {
       console.log({ response });
       return await response.json();
     });
-    logStep('Fetched Atmo data');
+    logStep('Step 2: Fetched Atmo data');
 
     const data = indicesRes.features;
 
@@ -158,15 +176,136 @@ export async function getAtmoIndicator() {
       return;
     }
 
-    // const diffusionDate = dayjs(date).startOf('day').toDate();
-    // const validityEnd = dayjs(diffusionDate).endOf('day').toDate();
+    /*
+    *
+    *
+    Step 3: Load municipalities and EPCIS
+    *
+    *
+    */
 
-    logStep('Checked if the data exists in the database');
-    // const existingIndiceUVData = await prisma.indiceUv.count({
-    //   where: {
-    //     diffusion_date: diffusionDate,
-    //   },
-    // });
+    const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
+      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const municipalities = JSON.parse(data);
+        resolve(municipalities);
+      });
+    });
+    logStep('Step 3: Loaded municipalities');
+
+    const epcis: EPCIJSON[] = await new Promise((resolve) => {
+      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        const municipalities = JSON.parse(data);
+        resolve(municipalities);
+      });
+    });
+
+    // we create an object that list all the municipalities Insee Codes by EPCI Code
+    // then when we loop on the data, we can easily find all the municipalities Insee Code for a given EPCI Code
+    const epcisObject: Record<
+      EPCIJSON['EPCI'],
+      Array<MunicipalityJSON['COM']>
+    > = {};
+    for (const epci of epcis) {
+      if (!epcisObject[epci.EPCI]) {
+        epcisObject[epci.EPCI] = [];
+      }
+      epcisObject[epci.EPCI].push(epci.CODGEO);
+    }
+    logStep('Step 4: Loaded and formatted EPCIS');
+
+    /*
+    *
+    *
+    Step 4: Loop on data and organize it by municipality Insee Code
+    so that when we loop over all the municipalities, we can easily find the data for each municipality
+    (we reduce complexity from O(n^2) to O(n))
+    *
+    *
+    */
+
+    const indiceAtmoByMunicipalityInseeCode: Record<
+      MunicipalityJSON['COM'],
+      IndiceAtmoByCodeZone
+    > = {};
+
+    for (const row of data) {
+      const isEPCI = row.properties.type_zone === 'EPCI';
+      if (isEPCI) {
+        const epciCode = row.properties.code_zone;
+        const epci = epcisObject[epciCode];
+        if (!epci) {
+          capture('[INDICE ATMO AGGREGATION] No EPCI found for code', {
+            extra: { functionCall: 'getAtmoIndicator', data: row.properties },
+          });
+          continue;
+        }
+        for (const municipalityInseeCode of epci) {
+          indiceAtmoByMunicipalityInseeCode[municipalityInseeCode] =
+            row.properties;
+          continue;
+        }
+        continue;
+      }
+      const isMunicipality = row.properties.type_zone === 'commune';
+      if (!isMunicipality) {
+        capture('[INDICE ATMO AGGREGATION] Unknown type_zone', {
+          extra: { functionCall: 'getAtmoIndicator', data: row.properties },
+        });
+        continue;
+      }
+      const municipalityInseeCode = row.properties.code_zone;
+      indiceAtmoByMunicipalityInseeCode[municipalityInseeCode] = row.properties;
+    }
+
+    /*
+    *
+    *
+    Step 5: Loop on municipalities and create rows to insert
+    *
+    *
+    */
+
+    const diffusionDate = dayjs().startOf('day').toDate();
+    const validityEnd = dayjs(diffusionDate).endOf('day').toDate();
+
+    const indiceAtmoByMunicipalityRows = [];
+    let missingData = 0;
+    for (const municipality of municipalities) {
+      const indiceAtmoData =
+        indiceAtmoByMunicipalityInseeCode[municipality.COM];
+      // if no data for this department, we say that data is not available.
+      if (!indiceAtmoData) {
+        indiceAtmoByMunicipalityRows.push({
+          diffusion_date: diffusionDate,
+          validity_start: diffusionDate,
+          validity_end: validityEnd,
+          municipality_insee_code: municipality.COM,
+          data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+        });
+        missingData++;
+        continue;
+      }
+      indiceAtmoByMunicipalityRows.push({
+        diffusion_date: diffusionDate,
+        validity_start: diffusionDate,
+        validity_end: validityEnd,
+        municipality_insee_code: municipality.COM,
+        data_availability: DataAvailabilityEnum.AVAILABLE,
+        uv_j0: indiceUvData.UV_J0,
+        uv_j1: indiceUvData.UV_J1,
+        uv_j2: indiceUvData.UV_J2,
+        uv_j3: indiceUvData.UV_J3,
+      });
+    }
+    // Step 9: insert data
 
     console.log(JSON.stringify(indicesRes, null, 2));
   } catch (error: any) {
