@@ -128,6 +128,7 @@ export async function getPollensIndicator() {
     // Step 6: loop on municipalities and create rows to insert
     logStep('fetching municipalities DONE');
     const pollensRows = [];
+    let missingData = 0;
     for (const municipality of municipalities) {
       const pollenData = pollensByDepartment[municipality.DEP];
       // if no data for this department, we say that data is not available.
@@ -139,6 +140,7 @@ export async function getPollensIndicator() {
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
         });
+        missingData++;
         continue;
       }
       pollensRows.push({
@@ -178,6 +180,9 @@ export async function getPollensIndicator() {
 
     logStep(
       `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+    );
+    logStep(
+      `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
     );
   } catch (error: any) {
     capture(error, { extra: { functionCall: 'getPollensIndicator' } });
