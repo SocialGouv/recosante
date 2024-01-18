@@ -9,6 +9,7 @@ export type Indicator = {
 export type IndicatorDay = 'j0' | 'j1';
 
 export interface IndicatorData {
+  name: string;
   value: number;
   color: string;
   label: string;
@@ -17,11 +18,11 @@ export interface IndicatorData {
 }
 export interface IndicatorDataDay {
   id: string;
-  validity_start: Date;
-  validity_end: Date;
-  diffusion_date: Date;
-  created_at: Date;
-  updated_at: Date;
+  validity_start: Date | string;
+  validity_end: Date | string;
+  diffusion_date: Date | string;
+  created_at: Date | string;
+  updated_at: Date | string;
   summary: IndicatorData;
   values: IndicatorData[];
 }

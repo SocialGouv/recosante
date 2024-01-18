@@ -82,6 +82,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     j0: {
       id: indice_uv.id,
       summary: {
+        name: 'Indice UV',
         value: indice_uv.uv_j0,
         color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
         label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
@@ -101,6 +102,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     data.j1 = {
       id: indice_uv.id,
       summary: {
+        name: 'Indice UV',
         value: indice_uv.uv_j1,
         color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
         label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
