@@ -6,6 +6,16 @@ import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 
 console.log('Inside aggregators cronjobs');
+
+/*
+*
+*
+Launch Cron Job function
+
+In order to prevent the same cron to be launched twice, we use a cronJob table in the database.
+If a cron is already running, we don't launch it again.
+
+*/
 type TaskFn = () => Promise<void>;
 
 async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
@@ -45,6 +55,17 @@ async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
   return false;
 }
 
+/*
+*
+*
+Setpup Cron Job function
+Each cron job has the same parameters:
+- we launch it on init
+- we start it (all are activated)
+- we set the timezone to Europe/Paris
+
+*/
+
 interface SetupCronJob {
   cronTime: string;
   name: string;
@@ -70,6 +91,19 @@ async function setupCronJob({
     });
   });
 }
+
+/*
+*
+*
+
+Initialization of the cron jobs
+We call them one after the other,
+in order to avoid to launch them all at the same time
+and have logs that are mixed and not readable.
+
+Test it: run `npm run dev-cronjobs` and check the logs
+
+*/
 
 Promise.resolve()
   .then(() => {
