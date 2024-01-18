@@ -3,7 +3,7 @@ import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
+import type { MunicipalityJSON } from '~/types/municipality';
 import { IndiceAtmoAPIDataIdsEnum } from '~/types/api/indice_atmo';
 import type {
   DATE_CALENDAR_YYYY_MM_DD,

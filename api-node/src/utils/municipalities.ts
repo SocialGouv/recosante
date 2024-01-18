@@ -71,6 +71,7 @@ type GeoApiCommune = {
   population: number;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function populateMunicipalitiesDepartments() {
   const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
     fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
@@ -123,7 +124,7 @@ async function populateMunicipalitiesDepartments() {
     municipalitiesObject[municipality.COM] = municipality;
   }
 
-  await new Promise((res) => {
+  await new Promise((resolve) => {
     fs.writeFile(
       './data/municipalities-object-temp.json',
       JSON.stringify(municipalitiesObject),
@@ -133,7 +134,7 @@ async function populateMunicipalitiesDepartments() {
           throw err;
         }
         console.log('File has been saved.');
-        res('File has been saved.');
+        resolve('File has been saved.');
       },
     );
   });
@@ -184,7 +185,7 @@ async function populateMunicipalitiesDepartments() {
 
   const munNoDep = nextMunicipalities.filter((m) => !m.DEP);
   console.log('munNoDep', munNoDep.length);
-  await new Promise((res) => {
+  await new Promise((resolve) => {
     fs.writeFile(
       './data/municipalities-consolidated.json',
       JSON.stringify(nextMunicipalities),
@@ -194,7 +195,7 @@ async function populateMunicipalitiesDepartments() {
           throw err;
         }
         console.log('File has been saved.');
-        res('File has been saved.');
+        resolve('File has been saved.');
       },
     );
   });
