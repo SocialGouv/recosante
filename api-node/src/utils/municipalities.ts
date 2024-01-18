@@ -15,8 +15,7 @@ export async function grabMunicipalities(): Promise<MunicipalityJSON[]> {
           console.error(err);
           return;
         }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
+        resolve(JSON.parse(data));
       },
     );
   });
@@ -30,8 +29,7 @@ export async function grabEPCIs(): Promise<EPCIJSON[]> {
         console.error(err);
         return;
       }
-      const municipalities = JSON.parse(data);
-      resolve(municipalities);
+      resolve(JSON.parse(data));
     });
   });
 
@@ -175,11 +173,11 @@ async function populateMunicipalitiesDepartments() {
 
   console.log('numberOfComEqualtComparent', numberOfComEqualtComparent);
 
-  const nextMunicipalities = municipalities.map((m) => {
-    if (m.DEP) return m;
-    const DEP = findDepartmentRecursive(m);
+  const nextMunicipalities = municipalities.map((municipality) => {
+    if (municipality.DEP) return municipality;
+    const DEP = findDepartmentRecursive(municipality);
     return {
-      ...m,
+      ...municipality,
       DEP,
     };
   });

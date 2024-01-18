@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 import { IndiceAtmoAPIDataIdsEnum } from '~/types/api/indice_atmo';
 import type {
-  YYYYMMDD,
+  DATE_CALENDAR_YYYY_MM_DD,
   IndiceAtmoAPIResponse,
   IndiceAtmoByCodeZone,
   IndiceAtmoNotAvailable,
@@ -176,7 +176,7 @@ export async function getAtmoIndicator() {
     const indiceDataId = IndiceAtmoAPIDataIdsEnum.indice_current_year;
     const indiceForDate = dayjs().add(-1, 'day').utc().startOf('day');
 
-    const dateQuery: { operator: Operator; value: YYYYMMDD } = {
+    const dateQuery: { operator: Operator; value: DATE_CALENDAR_YYYY_MM_DD } = {
       operator: '=',
       value: indiceForDate.format('YYYY-MM-DD'),
     };

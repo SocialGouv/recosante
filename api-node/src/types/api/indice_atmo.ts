@@ -1,14 +1,21 @@
 import type { IndiceAtmospheric } from '@prisma/client';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 
+// Documentation:
+// https://admindata.atmo-france.org/api/doc
+// https://www.atmo-france.org/article/les-portails-regionaux-open-data-des-aasqa
+// https://www.atmo-france.org/actualite/une-faq-pour-bien-utiliser-lapi-datmo-data
+// https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
+// https://www.atmo-france.org/sites/federation/files/medias/documents/2022-03/notice_decembre2020.pdf
+
 export enum IndiceAtmoAPIDataIdsEnum {
-  indice_current_year = 112,
-  episodes_pollution_current_year = 113,
-  episodes_pollution_yesterday_today_tomorrow = 114,
-  emissions_regions = 119,
+  indice_current_year = 112, // Les indices de la qualité de l’air « indice ATMO » depuis le début de l’année passée
+  episodes_pollution_current_year = 113, // Les épisodes de pollution constatés sur l’année passée
+  episodes_pollution_yesterday_today_tomorrow = 114, // Les épisodes de pollution constatés pour la veille et le jour même, et prévu pour le lendemain
+  emissions_regions = 119, // Les émissions des régions
 }
 
-export type YYYYMMDD = string; // Expected format: YYYY-MM-DD
+export type DATE_CALENDAR_YYYY_MM_DD = string; // Expected format: YYYY-MM-DD
 
 // Pour les qualificatifs des sous-indices et de l’indice ATMO, les valeurs possibles vont
 // - de 1 (bon) à 6 (extrêmement mauvais)
@@ -77,7 +84,7 @@ export enum ESPGEnum {
 
 type IndiceAtmoSearchOperatorIndice = {
   code_zone: MunicipalityJSON['COM']; // code commune ou EPCI selon l’INSEE ;
-  date_ech: YYYYMMDD; // date de l’indice, au format international (YYYY-MM-DD) ;
+  date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’indice, au format international (YYYY-MM-DD) ;
   code_no2: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant NO₂ ;
   code_o3: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant l’indice O₃ ;
   code_pm10: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant PM10 ;
@@ -90,7 +97,7 @@ type IndiceAtmoLibPol = 'PM2.5' | 'PM10' | 'O3' | 'NO2' | 'SO2';
 
 export type IndiceAtmoSearchOperatorEpisodePollution = {
   code_zone: MunicipalityJSON['DEP']; // code département selon l’INSEE;
-  date_ech: YYYYMMDD; // date de l’alerte, au format international (YYYY-DD-MM);
+  date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’alerte, au format international (YYYY-DD-MM);
   etat: 'information et recommandation' | 'alerte sur persistance' | 'alerte'; // niveau d’alerte
   lib_pol: IndiceAtmoLibPol; // le polluant déclencheur
 };
