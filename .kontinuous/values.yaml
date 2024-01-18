@@ -50,6 +50,8 @@ api-node:
   envFrom:
     - secretRef:
         name: "{{ .Values.global.pgApiNodeSecretName }}"
+    - secretRef:
+      name: api-node-sealed-secret
   resources:
     requests:
       cpu: 0.1
@@ -171,7 +173,7 @@ cronjobs:
     - secretRef:
         name: "pg-api-node-app"
     - secretRef:
-        name: api-node
+      name: api-node-sealed-secret
 
 
 jobs:
