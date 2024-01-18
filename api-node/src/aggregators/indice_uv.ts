@@ -5,17 +5,15 @@ import ftp from 'basic-ftp';
 import dayjs from 'dayjs';
 import { DataAvailabilityEnum } from '@prisma/client';
 import prisma from '~/prisma';
-import {
-  type DepartmentCode,
-  type MunicipalityJSON,
-} from '~/types/municipality';
+import { type DepartmentCode } from '~/types/municipality';
 import { capture } from '~/third-parties/sentry';
 import utc from 'dayjs/plugin/utc';
+import { grabMunicipalities } from '~/utils/municipalities';
 dayjs.extend(utc);
 
 let now = Date.now();
 function logStep(step: string) {
-  console.info(`[INDICE UV] Duration: ${Date.now() - now}ms`.padEnd(20), step);
+  console.info(`[INDICE UV] Duration: ${Date.now() - now}ms`.padEnd(40), step);
   now = Date.now();
 }
 
@@ -107,16 +105,7 @@ export async function getIndiceUVIndicator() {
     }
     // Step 6: grab the municipalities list
     logStep('formatting indice UV by department DONE');
-    const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
-      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
-      });
-    });
+    const municipalities = await grabMunicipalities();
     // Step 7: format data by department to iterate quickly on municipalities
     const indiceUVByInseeCode: Record<
       DepartmentCode,

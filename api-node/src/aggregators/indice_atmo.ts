@@ -26,7 +26,7 @@ dayjs.extend(utc);
 let now = Date.now();
 function logStep(step: string) {
   console.info(
-    `[INDICE ATMO] Duration: ${Date.now() - now}ms`.padEnd(20),
+    `[INDICE ATMO] Duration: ${Date.now() - now}ms`.padEnd(40),
     step,
   );
   now = Date.now();
@@ -94,11 +94,38 @@ export async function getAtmoIndicator() {
     *
     *
     */
+    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().utc().startOf('day'));
+
+    logStep('Step 2: Fetched Atmo data for today');
+
+    await getAtmoIndicatorForDate(
+      atmoJWTToken,
+      dayjs().add(1, 'day').utc().startOf('day'),
+    );
+    logStep('Step 3: Fetched Atmo data for tomorrow');
+  } catch (error: any) {
+    capture(error, { extra: { functionCall: 'getAtmoIndicator' } });
+  }
+}
+
+export async function getAtmoIndicatorForDate(
+  atmoJWTToken: string,
+  indiceForDate: dayjs.Dayjs,
+) {
+  try {
+    logStep(`Getting Atmo indicator for date ${indiceForDate.toISOString()}`);
+
+    /*
+    *
+    *
+    Step A: Fetch Atmo Data
+    *
+    *
+    */
 
     type Operator = '=' | '!=' | '<' | '<=' | '>' | '>=' | 'IN' | 'NOT IN';
 
     const indiceDataId = IndiceAtmoAPIDataIdsEnum.indice_current_year;
-    const indiceForDate = dayjs().add(-1, 'day').utc().startOf('day');
 
     const dateQuery: { operator: Operator; value: DATE_CALENDAR_YYYY_MM_DD } = {
       operator: '=',
@@ -118,7 +145,7 @@ export async function getAtmoIndicator() {
       },
     }).then(async (response) => await response.json());
     logStep(
-      `Step 2: Fetched Atmo data for ${indiceForDate.format(
+      `Step A: Fetched Atmo data for ${indiceForDate.format(
         'YYYY-MM-DD dddd',
       )}`,
     );
@@ -146,22 +173,22 @@ export async function getAtmoIndicator() {
     /*
     *
     *
-    Step 3: Load municipalities and EPCIS
+    Step B: Load municipalities and EPCIS
     *
     *
     */
 
     const municipalities = await grabMunicipalities();
-    logStep('Step 3: Loaded municipalities');
+    logStep('Step B.i: Loaded municipalities');
 
     const municipalitiesINSEECodeByEPCI =
       await grabMunicipalitiesINSEECodeByEPCI();
-    logStep('Step 3: Loaded and formatted EPCIS');
+    logStep('Step B.ii: Loaded and formatted EPCIS');
 
     /*
     *
     *
-    Step 4: Loop on data and organize it by municipality Insee Code
+    Step C: Loop on data and organize it by municipality Insee Code
     so that when we loop over all the municipalities, we can easily find the data for each municipality
     (we reduce complexity from O(n^2) to O(n))
     *
@@ -248,14 +275,14 @@ export async function getAtmoIndicator() {
       indiceAtmoByMunicipalityInseeCode[municipalityInseeCode] = row.properties;
     }
     logStep(
-      `Step 4: Loop on data and organized it by municipality Insee Code: ${
+      `Step C: Loop on data and organized it by municipality Insee Code: ${
         Object.keys(indiceAtmoByMunicipalityInseeCode).length
       } rows upon ${municipalities.length} municipalities`,
     );
     /*
     *
     *
-    Step 5: Loop on municipalities and create rows to insert
+    Step D: Loop on municipalities and create rows to insert
     *
     *
     */
@@ -331,12 +358,12 @@ export async function getAtmoIndicator() {
       });
     }
     logStep(
-      `Step 5: Looped on municipalities and created rows to insert: ${indiceAtmoByMunicipalityRows.length} rows upon ${municipalities.length} municipalities`,
+      `Step D: Looped on municipalities and created rows to insert: ${indiceAtmoByMunicipalityRows.length} rows upon ${municipalities.length} municipalities`,
     );
     /*
     *
     *
-    Step 6: insert data
+    Step E: insert data
     *
     *
     */
@@ -351,7 +378,7 @@ export async function getAtmoIndicator() {
     /*
     *
     *
-    Step 7: final logs
+    Step F: final logs
     *
     *
     */
@@ -373,7 +400,7 @@ export async function getAtmoIndicator() {
     /*
     *
     *
-    Step 8: log missing departments
+    Step G: log missing departments
     *
     *
     */
@@ -386,6 +413,8 @@ export async function getAtmoIndicator() {
       `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
     );
   } catch (error: any) {
-    capture(error, { extra: { functionCall: 'getAtmoIndicator' } });
+    capture(error, {
+      extra: { functionCall: 'getAtmoIndicatorForDate', indiceForDate },
+    });
   }
 }

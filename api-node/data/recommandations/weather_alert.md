@@ -1,2 +1,0 @@
-- 🚶‍♂️Lors de vos trajets à pied ou à vélo, préférez les **chemins secondaires** et les **itinéraires** moins fréquentés, ce qui vous permettra d'éviter les zones à fort trafic et de limiter votre exposition à la pollution atmosphérique.
-- 🏋️‍♂️ Limitez les activités physiques intenses en extérieur pendant les périodes de vigilance météo pour réduire l'exposition aux polluants atmosphériques et préserver votre santé.

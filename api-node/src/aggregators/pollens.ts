@@ -1,16 +1,16 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import { DataAvailabilityEnum } from '@prisma/client';
-import fs from 'fs';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 import prisma from '~/prisma';
-import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
+import type { DepartmentCode } from '~/types/municipality';
 import type { PollensAPIData } from '~/types/api/pollens';
 import { capture } from '~/third-parties/sentry';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
+import { grabMunicipalities } from '~/utils/municipalities';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -18,7 +18,7 @@ const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
 let now = Date.now();
 function logStep(step: string) {
-  console.info(`[POLLENS] Duration: ${Date.now() - now}ms`.padEnd(20), step);
+  console.info(`[POLLENS] Duration: ${Date.now() - now}ms`.padEnd(40), step);
   now = Date.now();
 }
 
@@ -121,16 +121,7 @@ export async function getPollensIndicator() {
 
     // Step 5: grab the municipalities list
     logStep('formatting pollens by department DONE');
-    const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
-      fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        const municipalities = JSON.parse(data);
-        resolve(municipalities);
-      });
-    });
+    const municipalities = await grabMunicipalities();
 
     // Step 6: loop on municipalities and create rows to insert
     logStep('fetching municipalities DONE');

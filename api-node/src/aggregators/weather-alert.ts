@@ -1,14 +1,10 @@
 import dotenv from 'dotenv';
 import { capture } from '~/third-parties/sentry';
-import fs from 'fs';
 
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
-import {
-  type DepartmentCode,
-  type MunicipalityJSON,
-} from '~/types/municipality';
+import { type DepartmentCode } from '~/types/municipality';
 import {
   CodeAlertEnums,
   DataAvailabilityEnum,
@@ -16,6 +12,7 @@ import {
 } from '@prisma/client';
 import { type WeatherAlertResponse } from '~/types/api/weather-alert';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
+import { grabMunicipalities } from '~/utils/municipalities';
 dotenv.config({ path: './.env' });
 
 const URL =
@@ -24,7 +21,7 @@ const URL =
 let now = Date.now();
 function logStep(step: string) {
   console.info(
-    `[WEATHER ALERT] Duration: ${Date.now() - now}ms`.padEnd(20),
+    `[WEATHER ALERT] Duration: ${Date.now() - now}ms`.padEnd(40),
     step,
   );
   now = Date.now();
@@ -211,16 +208,7 @@ export async function getWeatherAlert() {
   }
   // Step 5: grab the municipalities list
   logStep('formatting weatherAlert by department DONE');
-  const municipalities: MunicipalityJSON[] = await new Promise((resolve) => {
-    fs.readFile('./data/municipalities.json', 'utf8', async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      const municipalities = JSON.parse(data);
-      resolve(municipalities);
-    });
-  });
+  const municipalities = await grabMunicipalities();
 
   // Step 6: loop on municipalities and create rows to insert
   logStep('fetching municipalities DONE');
