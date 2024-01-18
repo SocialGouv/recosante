@@ -21,16 +21,20 @@ dotenv.config({ path: './.env' });
 const URL =
   'https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours';
 
-// Doc => https://meteofrance-api.readthedocs.io/_/downloads/en/latest/pdf/
 let now = Date.now();
 function logStep(step: string) {
-  console.log(Date.now() - now, step);
+  console.info(
+    `[WEATHER ALERT] Duration: ${Date.now() - now}ms`.padEnd(20),
+    step,
+  );
   now = Date.now();
 }
 
+// Doc => https://meteofrance-api.readthedocs.io/_/downloads/en/latest/pdf/
 export async function getWeatherAlert() {
   // Step 1: Fetch data
-  logStep('Fetching Weather Alert Data');
+  now = Date.now();
+  logStep('Getting Weather Alert');
   const data: WeatherAlertResponse = await fetch(URL, {
     headers: {
       apiKey: PORTAL_API_METEOFRANCE_API_KEY,

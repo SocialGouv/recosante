@@ -4,8 +4,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "npm run prisma-setup && cross-env NODE_ENV=development npx prisma db push && npm run format && npm run ts:check && tsx watch ./src/index.ts",
+    "pre:dev": "npm run prisma-setup && cross-env NODE_ENV=development npx prisma db push && npm run format && npm run ts:check",
+    "dev": "npm run pre:dev && tsx watch ./src/index.ts",
+    "dev-cronjobs": "npm run pre:dev && tsx watch ./src/cronjobs/index.ts",
     "start": "cross-env NODE_ENV=production npm run prisma-setup && npm run prisma-deploy && tsx ./src/index.ts",
+    "start-cronjobs": "cross-env NODE_ENV=production npm run prisma-setup && tsx ./src/cronjobs/index.ts",
     "prisma-setup": "prisma generate && prisma migrate deploy",
     "prisma-create-migration": "cross-env NODE_ENV=development npx prisma migrate dev --name",
     "prisma-deploy": "NODE_ENV=production npx prisma migrate deploy",
@@ -20,6 +23,7 @@
     "basic-ftp": "^5.0.4",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "cron": "^3.1.6",
     "cross-env": "^7.0.3",
     "csvjson-csv2json": "^5.0.6",
     "date-fns": "^2.30.0",
@@ -29,7 +33,6 @@
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
-    "node-cron": "^3.0.3",
     "node-pushnotifications": "^2.1.0",
     "zod": "^3.22.4"
   },
