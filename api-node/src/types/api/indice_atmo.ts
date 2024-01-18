@@ -1,5 +1,6 @@
-import type { IndicatorsSlugEnum, IndiceAtmospheric } from '@prisma/client';
+import type { IndiceAtmospheric } from '@prisma/client';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
+import type { IndicatorCommonData, DataDay } from './indicator';
 
 // Documentation:
 // https://admindata.atmo-france.org/api/doc
@@ -39,6 +40,8 @@ export enum PolluantQualificatifsLabelEnum {
   POOR = 'Mauvais',
   VERY_POOR = 'Très Mauvais',
   EXTREMELY_POOR = 'Extrêmement Mauvais',
+  NOT_AVAILABLE = 'Non disponible',
+  SPECIAL_EVENT = 'Événement spécial',
 }
 
 // source: https://www.atmo-auvergnerhonealpes.fr/sites/aura/files/content/migrated/atoms/files/atmo_ppt-kit-com-nouvel-indice-v2_0.pdf
@@ -49,6 +52,8 @@ export enum PolluantQualificatifsColorEnum {
   POOR = '#ff5050',
   VERY_POOR = '#960032',
   EXTREMELY_POOR = '#872181',
+  NOT_AVAILABLE = '#000000',
+  SPECIAL_EVENT = '#000000',
 }
 
 export enum SourcesEnum {
@@ -210,13 +215,15 @@ export interface IndiceAtmoAvailable
     'id' | 'created_at' | 'updated_at' | 'url' | 'x'
   > {}
 
-export type IndiceAtmoDay = {
+export interface IndiceAtmoDay extends DataDay {
   code_no2: PolluantQualificatifsNumberEnum;
   code_o3: PolluantQualificatifsNumberEnum;
   code_pm10: PolluantQualificatifsNumberEnum;
   code_pm25: PolluantQualificatifsNumberEnum;
   code_so2: PolluantQualificatifsNumberEnum;
-  code_qual: PolluantQualificatifsNumberEnum;
-  recommendation: string;
-  date_maj: string;
-};
+}
+
+export interface IndiceAtmoAPIData extends IndicatorCommonData {
+  j0: IndiceAtmoDay;
+  j1?: IndiceAtmoDay;
+}

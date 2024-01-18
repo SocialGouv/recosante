@@ -3,8 +3,8 @@ import { type CustomError } from '~/types/error';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
-import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
-import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
+import { getIndiceAtmoLabel, getIndiceAtmoColor } from '~/utils/indice_atmo';
+import type { IndiceAtmoAPIData } from '~/types/api/indice_atmo';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
@@ -53,7 +53,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  if (!indice_atmo_j0) {
+  if (indice_atmo_j0?.code_qual == null) {
     const error = new Error(
       `No indice_atmo_j0 found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
     ) as CustomError;
@@ -77,10 +77,10 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  const data: IndiceUVAPIData = {
+  const data: IndiceAtmoAPIData = {
     id: indice_atmo_j0.id,
-    slug: IndicatorsSlugEnum.indice_uv,
-    name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
+    slug: IndicatorsSlugEnum.indice_atmospheric,
+    name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
     municipality_insee_code,
     recommendations: [
       "Toutes les autres recommandations pour ces conditions d'indice, de saison, de date, de lieu",
@@ -89,9 +89,9 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     ],
     about: indiceAtmoAboutMd,
     j0: {
-      value: indice_atmo_j0.code_qual ?? 0,
-      color: getIndiceUVColor(indice_atmo_j0.code_qual as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_atmo_j0.code_qual as IndiceUVNumber),
+      value: indice_atmo_j0.code_qual,
+      color: getIndiceAtmoLabel(indice_atmo_j0.code_qual),
+      label: getIndiceAtmoColor(indice_atmo_j0.code_qual),
       recommendation:
         "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
       validity_start: indice_atmo_j0.validity_start,
@@ -99,14 +99,19 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       diffusion_date: indice_atmo_j0.diffusion_date,
       created_at: indice_atmo_j0.created_at,
       updated_at: indice_atmo_j0.updated_at,
+      code_no2: indice_atmo_j0.code_no2 ?? 0,
+      code_o3: indice_atmo_j0.code_o3 ?? 0,
+      code_pm10: indice_atmo_j0.code_pm10 ?? 0,
+      code_pm25: indice_atmo_j0.code_pm25 ?? 0,
+      code_so2: indice_atmo_j0.code_so2 ?? 0,
     },
   };
 
-  if (indice_atmo_j1?.code_qual) {
+  if (!!indice_atmo_j1 && indice_atmo_j1?.code_qual !== null) {
     data.j1 = {
-      value: indice_atmo_j1.code_qual ?? 0,
-      color: getIndiceUVColor(indice_atmo_j1.code_qual as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_atmo_j1.code_qual as IndiceUVNumber),
+      value: indice_atmo_j1.code_qual,
+      color: getIndiceAtmoLabel(indice_atmo_j1.code_qual),
+      label: getIndiceAtmoColor(indice_atmo_j1.code_qual),
       recommendation:
         "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
       validity_start: indice_atmo_j1.validity_start,
@@ -114,6 +119,11 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       diffusion_date: indice_atmo_j1.diffusion_date,
       created_at: indice_atmo_j1.created_at,
       updated_at: indice_atmo_j1.updated_at,
+      code_no2: indice_atmo_j1.code_no2 ?? 0,
+      code_o3: indice_atmo_j1.code_o3 ?? 0,
+      code_pm10: indice_atmo_j1.code_pm10 ?? 0,
+      code_pm25: indice_atmo_j1.code_pm25 ?? 0,
+      code_so2: indice_atmo_j1.code_so2 ?? 0,
     };
   }
   return data;

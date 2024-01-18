@@ -8,7 +8,7 @@ export type Indicator = {
 
 export type IndicatorDay = 'j0' | 'j1';
 
-type DataDay = {
+export interface DataDay {
   validity_start: Date;
   validity_end: Date;
   diffusion_date: Date;
@@ -18,7 +18,7 @@ type DataDay = {
   color: string;
   label: string;
   recommendation: string;
-};
+}
 
 export interface IndicatorCommonData {
   id: string;

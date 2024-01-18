@@ -1,4 +1,3 @@
-import type { IndicatorsSlugEnum, IndiceUv } from '@prisma/client';
 import type { IndicatorCommonData } from './indicator';
 
 // règles correspondantes: ./src/utils/indice_uv.ts

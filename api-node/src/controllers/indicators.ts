@@ -10,6 +10,7 @@ import { indicatorsList } from '~/getters/indicators_list';
 import indicatorMocks from './mocks/indicators.json';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
+import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -42,14 +43,16 @@ router.get(
       const municipality_insee_code = req.user.municipality_insee_code;
 
       const data: Record<IndicatorsSlugEnum, IndicatorCommonData> = {
+        // temporary mocks and types
+        ...(indicatorMocks as any),
         indice_uv: await getIndiceUvFromMunicipalityAndDate({
           municipality_insee_code,
           date_UTC_ISO: dayjs().utc().toISOString(),
         }),
-        // temporary mocks and types
-        ...(indicatorMocks as any),
-        // episode_pollution_atmospheric: example,
-        // tap_water: example,
+        indice_atmospheric: await getIndiceAtmoFromMunicipalityAndDate({
+          municipality_insee_code,
+          date_UTC_ISO: dayjs().utc().toISOString(),
+        }),
       };
 
       res.status(200).send({ ok: true, data });
