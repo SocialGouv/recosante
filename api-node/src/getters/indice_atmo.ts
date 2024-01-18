@@ -11,9 +11,12 @@ import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 
-const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
+const indiceAtmoAboutMd = fs.readFileSync(
+  './data/about/indice_atmo.md',
+  'utf8',
+);
 
-async function getIndiceUvFromMunicipalityAndDate({
+async function getIndiceAtmoFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
 }: {
@@ -31,7 +34,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     });
   } catch (zodError) {
     const error = new Error(
-      `Invalid request in getIndiceUvFromMunicipalityAndDate ${
+      `Invalid request in getIndiceAtmoFromMunicipalityAndDate ${
         zodError instanceof Error ? zodError.message : 'Unknown error'
       }`,
     ) as CustomError;
@@ -39,7 +42,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     throw error;
   }
 
-  const indice_uv = await prisma.indiceUv.findFirst({
+  const indice_atmo_j0 = await prisma.indiceAtmospheric.findFirst({
     where: {
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
@@ -50,67 +53,70 @@ async function getIndiceUvFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  if (indice_uv?.uv_j0 == null) {
+  if (!indice_atmo_j0) {
     const error = new Error(
-      `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
+      `No indice_atmo_j0 found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
     ) as CustomError;
     error.status = 404;
     return error;
     // throw error;
   }
 
+  const indice_atmo_j1 = await prisma.indiceAtmospheric.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        gte: dayjs(date_UTC_ISO)
+          .add(1, 'day')
+          .utc()
+          .startOf('day')
+          .toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+  });
+
   const data: IndiceUVAPIData = {
-    id: indice_uv.id,
+    id: indice_atmo_j0.id,
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
-    municipality_insee_code: indice_uv.municipality_insee_code,
-<<<<<<< HEAD
-    validity_start: indice_uv.validity_start,
-    validity_end: indice_uv.validity_end,
-    diffusion_date: indice_uv.diffusion_date,
-    created_at: indice_uv.created_at,
-    updated_at: indice_uv.updated_at,
-    recommendations: ['blablabla', 'blablabla'],
-=======
+    municipality_insee_code,
     recommendations: [
       "Toutes les autres recommandations pour ces conditions d'indice, de saison, de date, de lieu",
       'Par exemple, une autre',
       'Stockée sur un Google Sheet, il faut aller la chercher',
     ],
->>>>>>> 5989cd5 (ongoing)
-    about: indiceUvAboutMd,
+    about: indiceAtmoAboutMd,
     j0: {
-      value: indice_uv.uv_j0,
-      color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
+      value: indice_atmo_j0.code_qual ?? 0,
+      color: getIndiceUVColor(indice_atmo_j0.code_qual as IndiceUVNumber),
+      label: getIndiceUVLabel(indice_atmo_j0.code_qual as IndiceUVNumber),
       recommendation:
         "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-      validity_start: indice_uv.validity_start,
-      validity_end: indice_uv.validity_end,
-      diffusion_date: indice_uv.diffusion_date,
-      created_at: indice_uv.created_at,
-      updated_at: indice_uv.updated_at,
+      validity_start: indice_atmo_j0.validity_start,
+      validity_end: indice_atmo_j0.validity_end,
+      diffusion_date: indice_atmo_j0.diffusion_date,
+      created_at: indice_atmo_j0.created_at,
+      updated_at: indice_atmo_j0.updated_at,
     },
   };
 
-  if (indice_uv.uv_j1) {
+  if (indice_atmo_j1?.code_qual) {
     data.j1 = {
-      value: indice_uv.uv_j1,
-      color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
+      value: indice_atmo_j1.code_qual ?? 0,
+      color: getIndiceUVColor(indice_atmo_j1.code_qual as IndiceUVNumber),
+      label: getIndiceUVLabel(indice_atmo_j1.code_qual as IndiceUVNumber),
       recommendation:
         "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
-      validity_start: dayjs(indice_uv.validity_start).add(1, 'day').toDate(),
-      validity_end: dayjs(indice_uv.validity_start)
-        .add(1, 'day')
-        .endOf('day')
-        .toDate(),
-      diffusion_date: indice_uv.diffusion_date,
-      created_at: indice_uv.created_at,
-      updated_at: indice_uv.updated_at,
+      validity_start: indice_atmo_j1.validity_start,
+      validity_end: indice_atmo_j1.validity_end,
+      diffusion_date: indice_atmo_j1.diffusion_date,
+      created_at: indice_atmo_j1.created_at,
+      updated_at: indice_atmo_j1.updated_at,
     };
   }
   return data;
 }
 
-export { getIndiceUvFromMunicipalityAndDate };
+export { getIndiceAtmoFromMunicipalityAndDate };

@@ -1,4 +1,4 @@
-import type { IndiceAtmospheric } from '@prisma/client';
+import type { IndicatorsSlugEnum, IndiceAtmospheric } from '@prisma/client';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 
 // Documentation:
@@ -209,3 +209,14 @@ export interface IndiceAtmoAvailable
     IndiceAtmospheric,
     'id' | 'created_at' | 'updated_at' | 'url' | 'x'
   > {}
+
+export type IndiceAtmoDay = {
+  code_no2: PolluantQualificatifsNumberEnum;
+  code_o3: PolluantQualificatifsNumberEnum;
+  code_pm10: PolluantQualificatifsNumberEnum;
+  code_pm25: PolluantQualificatifsNumberEnum;
+  code_so2: PolluantQualificatifsNumberEnum;
+  code_qual: PolluantQualificatifsNumberEnum;
+  recommendation: string;
+  date_maj: string;
+};

@@ -1,4 +1,5 @@
 import type { IndicatorsSlugEnum, IndiceUv } from '@prisma/client';
+import type { IndicatorCommonData } from './indicator';
 
 // règles correspondantes: ./src/utils/indice_uv.ts
 
@@ -42,18 +43,15 @@ export type IndiceUVDay = {
   color: string;
   label: IndiceUVLabel;
   recommendation: string;
+  validity_start: Date;
+  validity_end: Date;
+  diffusion_date: Date;
+  created_at: Date;
+  updated_at: Date;
 };
 
 // omit created_at updated_at uv_j0 uv_j1 uv_j2 uv_j3
-export interface IndiceUVAPIData
-  extends Omit<
-    IndiceUv,
-    'data_availability' | 'uv_j0' | 'uv_j1' | 'uv_j2' | 'uv_j3'
-  > {
-  slug: IndicatorsSlugEnum;
-  name: string;
-  recommendations: Array<string>;
-  about: string;
+export interface IndiceUVAPIData extends IndicatorCommonData {
   j0: IndiceUVDay;
   j1?: IndiceUVDay;
 }
