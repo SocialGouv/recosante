@@ -140,7 +140,7 @@ model WeatherAlert {
   phenomenon PhenomenonsEnum?
 }
 
-model IndiceAtmosperic {
+model IndiceAtmospheric {
   id                      String               @id @default(uuid())
   // we define a unique composed key to avoid duplicates
   unique_composed_key     String               @unique(map: "municipality_insee_code+date_maj+date_ech")
@@ -167,7 +167,7 @@ model IndiceAtmosperic {
   date_maj                String? // example: '2024/01/16 12:11:49.728+01';
   date_dif                String? // example: '2024/01/16'; this is the day we fetched the data
   date_ech                String? // example: '2024-01-15'; this is the validity day of the data
-  code_zone               Int? // MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+  code_zone               String? // MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
   source                  String? // SourcesEnum
   type_zone               String? // TypeZoneEnum
   // unused fields from the API

@@ -1,3 +1,4 @@
+import type { IndiceAtmospheric } from '@prisma/client';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
 
 export enum IndiceAtmoAPIDataIdsEnum {
@@ -63,6 +64,8 @@ export enum SourcesEnum {
 
 export enum TypeZoneEnum {
   MUNICIPALITY = 'commune',
+  MUNICIPALITY_UPPERCASE = 'COMMUNE',
+  MUNICIPALITY_CAPITALIZED = 'Commune',
   EPCI = 'EPCI',
 }
 
@@ -160,3 +163,42 @@ export type IndiceAtmoAPIResponse = {
     properties: IndiceAtmoByCodeZone;
   }>;
 };
+
+export interface IndiceAtmoNotAvailable
+  extends Omit<
+    IndiceAtmospheric,
+    | 'id'
+    | 'created_at'
+    | 'updated_at'
+    | 'code_no2'
+    | 'code_o3'
+    | 'code_pm10'
+    | 'code_pm25'
+    | 'code_so2'
+    | 'code_qual'
+    | 'lib_qual'
+    | 'date_maj'
+    | 'date_dif'
+    | 'date_ech'
+    | 'code_zone'
+    | 'source'
+    | 'type_zone'
+    | 'partition_field'
+    | 'coul_qual'
+    | 'lib_zone'
+    | 'aasqa'
+    | 'gml_id'
+    | 'epsg_reg'
+    | 'x_reg'
+    | 'x_wgs84'
+    | 'y_reg'
+    | 'y_wgs84'
+    | 'url'
+    | 'x'
+  > {}
+
+export interface IndiceAtmoAvailable
+  extends Omit<
+    IndiceAtmospheric,
+    'id' | 'created_at' | 'updated_at' | 'url' | 'x'
+  > {}

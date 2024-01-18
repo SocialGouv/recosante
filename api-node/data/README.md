@@ -10,6 +10,9 @@ Le lien de téléchargement est le suivant: https://www.insee.fr/fr/statistiques
 
 La conversion vers `./municipalities.json` a été faite avec le service fourni par https://csvjson.com/csv2json.
 
+Certaines municipalités n'ont pas de code département (`DEP`), c'est pourquoi il faut les rajouter manuellement, ce que nous avons fait via le script `populateMunicipalitiesDepartments` situé dans `./src/utils/municipalities.ts:populateMunicipalitiesDepartments`.
+Nous aurions pu juste tronquer le code COM aux deux premiers chiffres, mais nous avons préféré faire une recherche manuelle pour être sûr de ne pas faire d'erreur.
+
 ### Liste des EPCI fournie par l'INSEE
 
 Les établissements publics de coopération intercommunale (EPCI) sont des regroupements de communes. Il s'agit des communautés urbaines, des communautés d'agglomération, des communautés de communes et des métropoles. Seuls ces EPCI sont disponibles dans les résultats. Les syndicats de communes et les syndicats mixtes sont des EPCI sans fiscalité propre. Les métropoles d'Aix-Marseille-Provence et du Grand Paris sont deux métropoles à statut particulier. La métropole de Lyon, créée par la loi MAPTAM, est une collectivité territoriale et non une intercommunalité. Elle n'est donc pas une métropole au sens de la loi de 2010. Elle est intégrée dans ce fichier aux EPCI avec une nature spécifique (METLYON).
