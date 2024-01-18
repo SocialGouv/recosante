@@ -52,9 +52,9 @@ model IndiceUv {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
-  created_at              DateTime              @default(now())
-  updated_at              DateTime              @default(now()) @updatedAt
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  created_at              DateTime             @default(now())
+  updated_at              DateTime             @default(now()) @updatedAt
   // specific fields for this indicator
   uv_j0                   Int? // the day of validity_start
   uv_j1                   Int? // the day + 1 of validity_start
@@ -66,16 +66,17 @@ model IndiceUv {
 }
 
 // REAP - Risque d'Exposition aux Allergènes Polliniques
+
 model PollenAllergyRisk {
-  id                      String                @id @default(uuid())
+  id                      String               @id @default(uuid())
   // common fields for all indicators
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime              @default(now())
-  updated_at              DateTime              @default(now()) @updatedAt
+  created_at              DateTime             @default(now())
+  updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   cypres                  Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
   noisetier               Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
@@ -126,10 +127,10 @@ model WeatherAlert {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime              @default(now())
-  updated_at              DateTime              @default(now()) @updatedAt
+  created_at              DateTime             @default(now())
+  updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   // a row will be created ONLY if there is an alert
   // an alert is a combination of a code_alert and a phenomenon
@@ -139,24 +140,49 @@ model WeatherAlert {
   phenomenon PhenomenonsEnum?
 }
 
-model IndiceAtmosperic {
-  id String @id @default(uuid())
-
+model IndiceAtmospheric {
+  id                      String               @id @default(uuid())
+  // we define a unique composed key to avoid duplicates
+  unique_composed_key     String               @unique(map: "municipality_insee_code+date_maj+date_ech")
   // common fields for all indicators
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime              @default(now())
-  updated_at              DateTime              @default(now()) @updatedAt
+  created_at              DateTime             @default(now())
+  updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
-  // specific fields for this indicator
-  no2                     Int
-  so2                     Int
-  o3                      Int
-  pm10                    Int
-  pm25                    Int
-  max_value               Int // max value between no2, so2, o3, pm10, pm25
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  // specific fields for this indicator, raw data extracted from the API
+  // note: we couldn't use Prisma enum here because
+  // Prisma enum are restricted to: start with letter, no space, etc.
+  // the API returns numbers, letters, spaces, etc. soo
+  // we specify out TypeScript types in comment instead
+  code_no2                Int? // PolluantQualificatifsNumberEnum
+  code_o3                 Int? // PolluantQualificatifsNumberEnum
+  code_pm10               Int? // PolluantQualificatifsNumberEnum
+  code_pm25               Int? // PolluantQualificatifsNumberEnum
+  code_so2                Int? // PolluantQualificatifsNumberEnum
+  code_qual               Int? // PolluantQualificatifsNumberEnum - average of all polluants
+  lib_qual                String? // PolluantQualificatifsLabelEnum
+  date_maj                String? // example: '2024/01/16 12:11:49.728+01';
+  date_dif                String? // example: '2024/01/16'; this is the day we fetched the data
+  date_ech                String? // example: '2024-01-15'; this is the validity day of the data
+  code_zone               String? // MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+  source                  String? // SourcesEnum
+  type_zone               String? // TypeZoneEnum
+  // unused fields from the API
+  partition_field         String? // example: '112024w3'; no idea what this is
+  coul_qual               String? // PolluantQualificatifsColorEnum
+  lib_zone                String? // Label/name of Municipality or EPCI. example: 'Gastins';
+  aasqa                   String? // MunicipalityJSON['DEP'];
+  gml_id                  Int? // example: 835197777; no idea what this is
+  epsg_reg                String? // ESPGEnum
+  x_reg                   Float? // example: 650403.898030424;
+  x_wgs84                 Float? // example: 3.01999928628953;
+  y_reg                   Float? // example: 2403379.42595027;
+  y_wgs84                 Float? // example: 48.6270847202683;
+
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "indice_atmo_insee_code_diffusion_date_validity_start")
 }
 
 enum PollutionStateEnum {
@@ -183,10 +209,10 @@ model AlertPollutionAtmospheric {
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  created_at              DateTime              @default(now())
-  updated_at              DateTime              @default(now()) @updatedAt
+  created_at              DateTime             @default(now())
+  updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
-  data_availability       DataAvailabilityEnum? @default(AVAILABLE)
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   state                   PollutionStateEnum
   code                    PollutionCodeEnum

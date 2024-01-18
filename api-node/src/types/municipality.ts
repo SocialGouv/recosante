@@ -25,3 +25,12 @@ type TNCC =
   | '6' // Article = AUX	charnière = DES
   | '7' // Article = LAS	charnière = DE LAS
   | '8'; // Article = LOS	charnière = DE LOS
+
+export interface EPCIJSON {
+  CODGEO: MunicipalityJSON['COM']; // Code géographique
+  LIBGEO: MunicipalityJSON['LIBELLE']; // Libellé géographique
+  EPCI: string; // Code EPCI - Code géographique de l'établissement public à fiscalité propre ou métropole
+  LIBEPCI: string; // Libellé de l'EPCI ou métropole
+  DEP: MunicipalityJSON['DEP']; // Code département
+  REG: MunicipalityJSON['REG']; // Code région
+}
