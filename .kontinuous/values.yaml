@@ -157,8 +157,22 @@ flower:
     - name: FLOWER_PERSISTENT
       value: "True"
 
+
 pg-api-node:
   ~chart: pg
+
+cronjobs:
+  ~chart: daemon
+  ~needs: [build-api-node, pg-api-node]
+  imagePackage: app
+  replicas: 1
+  entrypoint: ["tsx", "./src/cronjobs/index.ts"]
+  envFrom:
+    - secretRef:
+        name: "pg-api-node-app"
+    - secretRef:
+        name: api-node
+
 
 jobs:
   runs:
