@@ -171,7 +171,7 @@ cronjobs:
   entrypoint: ["tsx", "./src/cronjobs/index.ts"]
   envFrom:
     - secretRef:
-        name: "pg-api-node-app"
+      name: "pg-api-node-app"
     - secretRef:
       name: api-node-sealed-secret
 
