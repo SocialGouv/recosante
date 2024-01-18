@@ -18,14 +18,15 @@ const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
 let now = Date.now();
 function logStep(step: string) {
-  console.log(Date.now() - now, step);
+  console.info(`[POLLENS] Duration: ${Date.now() - now}ms`.padEnd(20), step);
   now = Date.now();
 }
 
 export async function getPollensIndicator() {
   try {
     // Step 1: Fetch data
-    logStep('Fetching Pollens Data');
+    now = Date.now();
+    logStep('Getting Pollens');
     const data = await fetch(URL).then(async (response) => {
       if (!response.ok) {
         throw new Error(

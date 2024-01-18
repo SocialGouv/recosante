@@ -219,3 +219,12 @@ model AlertPollutionAtmospheric {
   comment_short           String
   comment_long            String
 }
+
+model CronJob {
+  id         String   @id @default(uuid())
+  unique_key String   @unique
+  name       String
+  active     Boolean  @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+}

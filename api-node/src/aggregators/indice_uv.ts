@@ -15,7 +15,7 @@ dayjs.extend(utc);
 
 let now = Date.now();
 function logStep(step: string) {
-  console.log(Date.now() - now, step);
+  console.info(`[INDICE UV] Duration: ${Date.now() - now}ms`.padEnd(20), step);
   now = Date.now();
 }
 
@@ -34,6 +34,8 @@ type IndiceUVRow = {
 
 export async function getIndiceUVIndicator() {
   try {
+    now = Date.now();
+    logStep('Getting Indice UV');
     // Step1: Connect to FTP
     await client.access({
       host: process.env.FS_BUCKET_URL,
