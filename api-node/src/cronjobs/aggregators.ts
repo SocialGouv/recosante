@@ -6,8 +6,9 @@ import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 
 console.log('Inside aggregators cronjobs');
+type TaskFn = () => Promise<void>;
 
-async function launchCronJob(name: string, job: Function): Promise<boolean> {
+async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
   try {
     const activeCronJob = await prisma.cronJob.findFirst({
       where: {
@@ -47,7 +48,7 @@ async function launchCronJob(name: string, job: Function): Promise<boolean> {
 interface SetupCronJob {
   cronTime: string;
   name: string;
-  job: Function;
+  job: TaskFn;
 }
 
 async function setupCronJob({
