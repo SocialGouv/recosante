@@ -51,6 +51,15 @@ async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
     return true;
   } catch (cronError: any) {
     capture(cronError, { level: 'error', extra: { name } });
+    prisma.cronJob.updateMany({
+      where: {
+        name,
+        active: true,
+      },
+      data: {
+        active: false,
+      },
+    });
   }
   return false;
 }
