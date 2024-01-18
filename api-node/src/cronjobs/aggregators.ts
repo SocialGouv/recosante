@@ -4,7 +4,9 @@ import prisma from '~/prisma';
 import { getAtmoIndicator } from '~/aggregators/indice_atmo.ts';
 import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
-
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 console.log('Inside aggregators cronjobs');
 
 /*
@@ -20,26 +22,27 @@ type TaskFn = () => Promise<void>;
 
 async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
   try {
-    const activeCronJob = await prisma.cronJob.findFirst({
+    const cronJobAlreadyExisting = await prisma.cronJob.findUnique({
       where: {
-        name,
-        active: true,
+        unique_key: `${dayjs().utc().format('YYYY-MM-DD:HH:mm')}_${name}`,
       },
     });
-    if (activeCronJob) {
-      capture(new Error(`Cron job ${name} already running`), {
+    if (cronJobAlreadyExisting) {
+      capture(new Error(`Cron job ${name} already existing`), {
         level: 'error',
       });
       return false;
     }
     const cronJob = await prisma.cronJob.create({
       data: {
+        unique_key: `${dayjs().utc().format('YYYY-MM-DD:HH:mm')}_${name}`,
         name,
         active: true,
       },
     });
 
     await job();
+
     await prisma.cronJob.update({
       where: {
         id: cronJob.id,
@@ -51,15 +54,6 @@ async function launchCronJob(name: string, job: TaskFn): Promise<boolean> {
     return true;
   } catch (cronError: any) {
     capture(cronError, { level: 'error', extra: { name } });
-    prisma.cronJob.updateMany({
-      where: {
-        name,
-        active: true,
-      },
-      data: {
-        active: false,
-      },
-    });
   }
   return false;
 }
