@@ -8,12 +8,14 @@ import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
+import utc from 'dayjs/plugin/utc';
 const indiceUvRecommendationsMd = fs.readFileSync(
   './data/recommandations/indice_uv.md',
   'utf8',
 );
-const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
+dayjs.extend(utc);
 
+const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
 // convert md list to array of strings
 const recommendations = indiceUvRecommendationsMd
   .split('\n')

@@ -10,6 +10,8 @@ import {
   type MunicipalityJSON,
 } from '~/types/municipality';
 import { capture } from '~/third-parties/sentry';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 let now = Date.now();
 function logStep(step: string) {
@@ -83,7 +85,7 @@ export async function getIndiceUVIndicator() {
     // Step5: Check if the data exists in the database
 
     const date = rawFormatedJson[0].date;
-    const diffusionDate = dayjs(date).startOf('day').toDate();
+    const diffusionDate = dayjs(date).utc().startOf('day').toDate();
     const validityEnd = dayjs(diffusionDate).endOf('day').toDate();
 
     logStep('Checked if the data exists in the database');

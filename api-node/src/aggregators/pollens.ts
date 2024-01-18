@@ -1,16 +1,18 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import { type PollenAllergyRisk, DataAvailabilityEnum } from '@prisma/client';
-import prisma from '~/prisma';
 import fs from 'fs';
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { z } from 'zod';
+import prisma from '~/prisma';
 import type { MunicipalityJSON, DepartmentCode } from '~/types/municipality';
 import type { PollensAPIData } from '~/types/api/pollens';
-
-import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
+
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
 dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 const URL = 'https://www.pollens.fr/docs/ecosante.csv';
 
@@ -77,8 +79,12 @@ export async function getPollensIndicator() {
     }
 
     // Step 3: check if data already exists
-    const diffusionDate = dayjs(date, 'DD/MM/YYYY').startOf('day').toDate();
+    const diffusionDate = dayjs(date, 'DD/MM/YYYY')
+      .utc()
+      .startOf('day')
+      .toDate();
     const validityEnd = dayjs(diffusionDate)
+      .utc()
       .add(7, 'days')
       .endOf('day')
       .toDate();
