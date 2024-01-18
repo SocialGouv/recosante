@@ -44,7 +44,7 @@ router.get(
 
       const data: Record<IndicatorsSlugEnum, IndicatorCommonData> = {
         // temporary mocks and types
-        ...(indicatorMocks as any),
+        ...(indicatorMocks as Record<IndicatorsSlugEnum, IndicatorCommonData>),
         indice_uv: await getIndiceUvFromMunicipalityAndDate({
           municipality_insee_code,
           date_UTC_ISO: dayjs().utc().toISOString(),

@@ -1,7 +1,4 @@
-import type { IndicatorCommonData } from './indicator';
-
 // règles correspondantes: ./src/utils/indice_uv.ts
-
 export type IndiceUVNumber =
   | 0 // 'Nul'
   | 1 // 'Faible'
