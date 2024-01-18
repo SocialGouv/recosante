@@ -24,23 +24,23 @@ const recommendations = indiceUvRecommendationsMd
 
 async function getIndiceUvFromMunicipalityAndDate({
   municipality_insee_code,
-  date_ISO,
+  date_UTC_ISO,
 }: {
   municipality_insee_code: MunicipalityJSON['COM'];
-  date_ISO: string;
+  date_UTC_ISO: string;
 }) {
   try {
     z.object({
       municipality_insee_code: z.string().length(5),
-      date_ISO: z.string().length(24),
+      date_UTC_ISO: z.string().length(24),
       // matomo_id: z.string().length(16), // at least for auth
     }).parse({
       municipality_insee_code,
-      date_ISO,
+      date_UTC_ISO,
     });
   } catch (zodError) {
     const error = new Error(
-      `Invalid request in GET /indice_uv/:municipality_insee_code/:date_ISO: ${
+      `Invalid request in GET /indice_uv/:municipality_insee_code/:date_UTC_ISO: ${
         zodError instanceof Error ? zodError.message : 'Unknown error'
       }`,
     ) as CustomError;
@@ -53,7 +53,7 @@ async function getIndiceUvFromMunicipalityAndDate({
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
-        gte: dayjs(date_ISO).startOf('day').toISOString(),
+        gte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
@@ -61,7 +61,7 @@ async function getIndiceUvFromMunicipalityAndDate({
 
   if (indice_uv?.uv_j0 == null) {
     const error = new Error(
-      `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_ISO=${date_ISO}`,
+      `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
     ) as CustomError;
     error.status = 404;
     return error;

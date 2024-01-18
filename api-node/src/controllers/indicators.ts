@@ -9,6 +9,8 @@ import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
 import { indicatorsList } from '~/getters/indicators_list';
 import indicatorMocks from './mocks/indicators.json';
 import { withUser } from '~/middlewares/auth';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 const router = express.Router();
 
@@ -42,7 +44,7 @@ router.get(
       const data: Record<IndicatorsSlugEnum, IndicatorCommonData> = {
         indice_uv: await getIndiceUvFromMunicipalityAndDate({
           municipality_insee_code,
-          date_ISO: dayjs().toISOString(),
+          date_UTC_ISO: dayjs().utc().toISOString(),
         }),
         // temporary mocks and types
         ...(indicatorMocks as any),
