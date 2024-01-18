@@ -4,7 +4,8 @@ import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
-import type { IndiceUVNumber, IndiceUVAPIData } from '~/types/api/indice_uv';
+import type { IndiceUVNumber } from '~/types/api/indice_uv';
+import type { IndicatorDataTodayAndTomorrow } from '~/types/api/indicator';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
@@ -59,8 +60,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     // throw error;
   }
 
-  const data: IndiceUVAPIData = {
-    id: indice_uv.id,
+  const data: IndicatorDataTodayAndTomorrow = {
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
     municipality_insee_code: indice_uv.municipality_insee_code,
@@ -80,26 +80,33 @@ async function getIndiceUvFromMunicipalityAndDate({
 >>>>>>> 5989cd5 (ongoing)
     about: indiceUvAboutMd,
     j0: {
-      value: indice_uv.uv_j0,
-      color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
-      recommendation:
-        "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+      id: indice_uv.id,
+      summary: {
+        value: indice_uv.uv_j0,
+        color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
+        label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
+        recommendation:
+          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+      },
       validity_start: indice_uv.validity_start,
       validity_end: indice_uv.validity_end,
       diffusion_date: indice_uv.diffusion_date,
       created_at: indice_uv.created_at,
       updated_at: indice_uv.updated_at,
+      values: [],
     },
   };
 
   if (indice_uv.uv_j1) {
     data.j1 = {
-      value: indice_uv.uv_j1,
-      color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
-      label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
-      recommendation:
-        "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
+      id: indice_uv.id,
+      summary: {
+        value: indice_uv.uv_j1,
+        color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
+        label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
+        recommendation:
+          "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
+      },
       validity_start: dayjs(indice_uv.validity_start).add(1, 'day').toDate(),
       validity_end: dayjs(indice_uv.validity_start)
         .add(1, 'day')
@@ -108,6 +115,7 @@ async function getIndiceUvFromMunicipalityAndDate({
       diffusion_date: indice_uv.diffusion_date,
       created_at: indice_uv.created_at,
       updated_at: indice_uv.updated_at,
+      values: [],
     };
   }
   return data;

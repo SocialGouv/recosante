@@ -8,25 +8,30 @@ export type Indicator = {
 
 export type IndicatorDay = 'j0' | 'j1';
 
-export interface DataDay {
+export interface IndicatorData {
+  value: number;
+  color: string;
+  label: string;
+  recommendation?: string;
+  about?: string;
+}
+export interface IndicatorDataDay {
+  id: string;
   validity_start: Date;
   validity_end: Date;
   diffusion_date: Date;
   created_at: Date;
   updated_at: Date;
-  value: number;
-  color: string;
-  label: string;
-  recommendation: string;
+  summary: IndicatorData;
+  values: IndicatorData[];
 }
 
-export interface IndicatorCommonData {
-  id: string;
+export interface IndicatorDataTodayAndTomorrow {
   slug: IndicatorsSlugEnum;
   name: string;
-  municipality_insee_code: MunicipalityJSON['COM'];
+  municipality_insee_code: string;
   recommendations: string[];
   about: string;
-  j0: DataDay; // specific to each indicator
-  j1?: DataDay; // specific to each indicator
+  j0: IndicatorDataDay;
+  j1?: IndicatorDataDay;
 }

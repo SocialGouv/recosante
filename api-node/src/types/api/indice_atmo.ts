@@ -1,6 +1,5 @@
 import type { IndiceAtmospheric } from '@prisma/client';
 import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
-import type { IndicatorCommonData, DataDay } from './indicator';
 
 // Documentation:
 // https://admindata.atmo-france.org/api/doc
@@ -214,16 +213,3 @@ export interface IndiceAtmoAvailable
     IndiceAtmospheric,
     'id' | 'created_at' | 'updated_at' | 'url' | 'x'
   > {}
-
-export interface IndiceAtmoDay extends DataDay {
-  code_no2: PolluantQualificatifsNumberEnum;
-  code_o3: PolluantQualificatifsNumberEnum;
-  code_pm10: PolluantQualificatifsNumberEnum;
-  code_pm25: PolluantQualificatifsNumberEnum;
-  code_so2: PolluantQualificatifsNumberEnum;
-}
-
-export interface IndiceAtmoAPIData extends IndicatorCommonData {
-  j0: IndiceAtmoDay;
-  j1?: IndiceAtmoDay;
-}

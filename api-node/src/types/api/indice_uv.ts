@@ -36,21 +36,3 @@ export type IndiceUVLabel =
   | 'Modéré'
   | 'Faible'
   | 'Nul';
-
-export type IndiceUVDay = {
-  value: number;
-  color: string;
-  label: IndiceUVLabel;
-  recommendation: string;
-  validity_start: Date;
-  validity_end: Date;
-  diffusion_date: Date;
-  created_at: Date;
-  updated_at: Date;
-};
-
-// omit created_at updated_at uv_j0 uv_j1 uv_j2 uv_j3
-export interface IndiceUVAPIData extends IndicatorCommonData {
-  j0: IndiceUVDay;
-  j1?: IndiceUVDay;
-}

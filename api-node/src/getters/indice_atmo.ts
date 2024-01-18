@@ -4,7 +4,7 @@ import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import { getIndiceAtmoLabel, getIndiceAtmoColor } from '~/utils/indice_atmo';
-import type { IndiceAtmoAPIData } from '~/types/api/indice_atmo';
+import type { IndicatorDataTodayAndTomorrow } from '~/types/api/indicator';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
@@ -77,8 +77,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  const data: IndiceAtmoAPIData = {
-    id: indice_atmo_j0.id,
+  const data: IndicatorDataTodayAndTomorrow = {
     slug: IndicatorsSlugEnum.indice_atmospheric,
     name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
     municipality_insee_code,
@@ -89,41 +88,101 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     ],
     about: indiceAtmoAboutMd,
     j0: {
-      value: indice_atmo_j0.code_qual,
-      color: getIndiceAtmoLabel(indice_atmo_j0.code_qual),
-      label: getIndiceAtmoColor(indice_atmo_j0.code_qual),
-      recommendation:
-        "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+      id: indice_atmo_j0.id,
+      summary: {
+        value: indice_atmo_j0.code_qual,
+        color: getIndiceAtmoLabel(indice_atmo_j0.code_qual),
+        label: getIndiceAtmoColor(indice_atmo_j0.code_qual),
+        recommendation:
+          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+      },
       validity_start: indice_atmo_j0.validity_start,
       validity_end: indice_atmo_j0.validity_end,
       diffusion_date: indice_atmo_j0.diffusion_date,
       created_at: indice_atmo_j0.created_at,
       updated_at: indice_atmo_j0.updated_at,
-      code_no2: indice_atmo_j0.code_no2 ?? 0,
-      code_o3: indice_atmo_j0.code_o3 ?? 0,
-      code_pm10: indice_atmo_j0.code_pm10 ?? 0,
-      code_pm25: indice_atmo_j0.code_pm25 ?? 0,
-      code_so2: indice_atmo_j0.code_so2 ?? 0,
+      values: [
+        {
+          value: indice_atmo_j0.code_no2 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j0.code_no2 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j0.code_no2 ?? 0),
+          about: 'About NO2',
+        },
+        {
+          value: indice_atmo_j0.code_o3 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j0.code_o3 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j0.code_o3 ?? 0),
+          about: 'About O3',
+        },
+        {
+          value: indice_atmo_j0.code_pm10 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j0.code_pm10 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j0.code_pm10 ?? 0),
+          about: 'About PM10',
+        },
+        {
+          value: indice_atmo_j0.code_pm25 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j0.code_pm25 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j0.code_pm25 ?? 0),
+          about: 'About PM25',
+        },
+        {
+          value: indice_atmo_j0.code_so2 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j0.code_so2 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j0.code_so2 ?? 0),
+          about: 'About SO2',
+        },
+      ],
     },
   };
 
   if (!!indice_atmo_j1 && indice_atmo_j1?.code_qual !== null) {
     data.j1 = {
-      value: indice_atmo_j1.code_qual,
-      color: getIndiceAtmoLabel(indice_atmo_j1.code_qual),
-      label: getIndiceAtmoColor(indice_atmo_j1.code_qual),
-      recommendation:
-        "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
+      id: indice_atmo_j1.id,
+      summary: {
+        value: indice_atmo_j1.code_qual,
+        color: getIndiceAtmoLabel(indice_atmo_j1.code_qual),
+        label: getIndiceAtmoColor(indice_atmo_j1.code_qual),
+        recommendation:
+          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+      },
       validity_start: indice_atmo_j1.validity_start,
       validity_end: indice_atmo_j1.validity_end,
       diffusion_date: indice_atmo_j1.diffusion_date,
       created_at: indice_atmo_j1.created_at,
       updated_at: indice_atmo_j1.updated_at,
-      code_no2: indice_atmo_j1.code_no2 ?? 0,
-      code_o3: indice_atmo_j1.code_o3 ?? 0,
-      code_pm10: indice_atmo_j1.code_pm10 ?? 0,
-      code_pm25: indice_atmo_j1.code_pm25 ?? 0,
-      code_so2: indice_atmo_j1.code_so2 ?? 0,
+      values: [
+        {
+          value: indice_atmo_j1.code_no2 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j1.code_no2 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j1.code_no2 ?? 0),
+          about: 'About NO2',
+        },
+        {
+          value: indice_atmo_j1.code_o3 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j1.code_o3 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j1.code_o3 ?? 0),
+          about: 'About O3',
+        },
+        {
+          value: indice_atmo_j1.code_pm10 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j1.code_pm10 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j1.code_pm10 ?? 0),
+          about: 'About PM10',
+        },
+        {
+          value: indice_atmo_j1.code_pm25 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j1.code_pm25 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j1.code_pm25 ?? 0),
+          about: 'About PM25',
+        },
+        {
+          value: indice_atmo_j1.code_so2 ?? 0,
+          color: getIndiceAtmoLabel(indice_atmo_j1.code_so2 ?? 0),
+          label: getIndiceAtmoColor(indice_atmo_j1.code_so2 ?? 0),
+          about: 'About SO2',
+        },
+      ],
     };
   }
   return data;
