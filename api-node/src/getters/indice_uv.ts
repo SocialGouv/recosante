@@ -64,20 +64,11 @@ async function getIndiceUvFromMunicipalityAndDate({
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
     municipality_insee_code: indice_uv.municipality_insee_code,
-<<<<<<< HEAD
-    validity_start: indice_uv.validity_start,
-    validity_end: indice_uv.validity_end,
-    diffusion_date: indice_uv.diffusion_date,
-    created_at: indice_uv.created_at,
-    updated_at: indice_uv.updated_at,
-    recommendations: ['blablabla', 'blablabla'],
-=======
     recommendations: [
       "Toutes les autres recommandations pour ces conditions d'indice, de saison, de date, de lieu",
       'Par exemple, une autre',
       'Stockée sur un Google Sheet, il faut aller la chercher',
     ],
->>>>>>> 5989cd5 (ongoing)
     about: indiceUvAboutMd,
     j0: {
       id: indice_uv.id,
