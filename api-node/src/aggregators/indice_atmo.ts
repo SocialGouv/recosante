@@ -302,10 +302,10 @@ export async function getAtmoIndicatorForDate(
     let missingData = 0;
     const missingDepartments: Record<Municipality['DEP'], number> = {};
     for (const municipality of municipalities) {
-      const indiceAtmoData =
-        indiceAtmoByMunicipalityInseeCode[municipality.COM];
+      let indiceAtmoData = indiceAtmoByMunicipalityInseeCode[municipality.COM];
       if (!indiceAtmoData && municipality.COMPARENT) {
-        indiceAtmoByMunicipalityInseeCode[municipality.COMPARENT];
+        indiceAtmoData =
+          indiceAtmoByMunicipalityInseeCode[municipality.COMPARENT];
       }
       // if no data for this department, we say that data is not available.
 
