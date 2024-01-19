@@ -4,7 +4,7 @@ import type {
   IndiceUVColor,
 } from '~/types/api/indice_uv';
 
-function getIndiceUVLabel(indice_uv: IndiceUVNumber): IndiceUVLabel {
+function getIndiceUVStatus(indice_uv: IndiceUVNumber): IndiceUVLabel {
   if (indice_uv >= 11) {
     return 'Extrême';
   } else if (indice_uv >= 8) {
@@ -36,4 +36,4 @@ function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
   }
 }
 
-export { getIndiceUVLabel, getIndiceUVColor };
+export { getIndiceUVStatus, getIndiceUVColor };

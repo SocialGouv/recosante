@@ -1,32 +1,40 @@
 import type { IndicatorsSlugEnum } from '@prisma/client';
-import type { MunicipalityJSON } from '~/types/municipality';
 
-export type Indicator = {
+export type IndicatorItem = {
   name: string;
+  short_name: string;
   slug: IndicatorsSlugEnum;
 };
 
 export type IndicatorDay = 'j0' | 'j1';
 
-type DataDay = {
-  value: number;
-  color: string;
-  label: string;
-  recommendation: string;
-};
-
-export type IndicatorCommonData = {
+export interface IndicatorByPeriod {
   id: string;
-  slug: string;
+  validity_start: string;
+  validity_end: string;
+  diffusion_date: string;
+  created_at: string;
+  updated_at: string;
+  summary: {
+    value: number;
+    status: string;
+    status_description?: string;
+    recommendations?: string[];
+  };
+  values?: Array<{
+    slug: string;
+    name: string;
+    value: number;
+  }>;
+}
+
+export interface Indicator {
+  slug: IndicatorsSlugEnum;
   name: string;
-  municipality_insee_code: MunicipalityJSON['COM'];
-  validity_start: Date;
-  validity_end: Date;
-  diffusion_date: Date;
-  created_at: Date;
-  updated_at: Date;
-  recommendations: Array<string>;
-  about: string;
-  j0: DataDay; // specific to each indicator
-  j1?: DataDay; // specific to each indicator
-};
+  short_name: string;
+  municipality_insee_code: string;
+  about_title: string;
+  about_description: string;
+  j0: IndicatorByPeriod;
+  j1?: IndicatorByPeriod;
+}

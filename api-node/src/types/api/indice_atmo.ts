@@ -39,6 +39,8 @@ export enum PolluantQualificatifsLabelEnum {
   POOR = 'Mauvais',
   VERY_POOR = 'Très Mauvais',
   EXTREMELY_POOR = 'Extrêmement Mauvais',
+  NOT_AVAILABLE = 'Non disponible',
+  SPECIAL_EVENT = 'Événement spécial',
 }
 
 // source: https://www.atmo-auvergnerhonealpes.fr/sites/aura/files/content/migrated/atoms/files/atmo_ppt-kit-com-nouvel-indice-v2_0.pdf
@@ -49,6 +51,8 @@ export enum PolluantQualificatifsColorEnum {
   POOR = '#ff5050',
   VERY_POOR = '#960032',
   EXTREMELY_POOR = '#872181',
+  NOT_AVAILABLE = '#000000',
+  SPECIAL_EVENT = '#000000',
 }
 
 export enum SourcesEnum {
