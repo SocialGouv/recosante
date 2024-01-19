@@ -15,6 +15,7 @@ import { capture } from './third-parties/sentry.ts';
 import eventRouter from './controllers/event.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
+import packageJson from '../package.json';
 
 // Put together a schema
 const app = express();
@@ -57,7 +58,9 @@ app.get('/healthz', async (req, res) => {
 // hello world
 const now = new Date();
 app.get('/', async (req, res) => {
-  res.send(`Hella World at ${now.toISOString()}`);
+  res.send(
+    `Hello World at ${now.toISOString()} version ${packageJson.version}`,
+  );
 });
 app.get('/config.js', async (req, res) => {
   res.send({ VERSION });
