@@ -1,9 +1,8 @@
-import { DataAvailabilityEnum } from '@prisma/client';
+import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import type { MunicipalityJSON } from '~/types/municipality';
 import { IndiceAtmoAPIDataIdsEnum } from '~/types/api/indice_atmo';
 import type {
   DATE_CALENDAR_YYYY_MM_DD,
@@ -16,10 +15,6 @@ import type {
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
-import {
-  grabMunicipalitiesINSEECodeByEPCI,
-  grabMunicipalities,
-} from '~/utils/municipalities';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -178,11 +173,18 @@ export async function getAtmoIndicatorForDate(
     *
     */
 
-    const municipalities = await grabMunicipalities();
+    const municipalities = await prisma.municipality.findMany();
     logStep('Step B.i: Loaded municipalities');
 
-    const municipalitiesINSEECodeByEPCI =
-      await grabMunicipalitiesINSEECodeByEPCI();
+    const municipalitiesINSEECodeByEPCI: Record<
+      Exclude<Municipality['EPCI'], null>,
+      Array<Municipality['COM']>
+    > = await prisma.$queryRaw`
+      SELECT EPCI, array_agg(COM) as COM
+      FROM "Municipality"
+      GROUP BY EPCI;
+    `;
+
     logStep('Step B.ii: Loaded and formatted EPCIS');
 
     /*
@@ -196,7 +198,7 @@ export async function getAtmoIndicatorForDate(
     */
 
     const indiceAtmoByMunicipalityInseeCode: Record<
-      MunicipalityJSON['COM'],
+      Municipality['COM'],
       IndiceAtmoByCodeZone
     > = {};
 
@@ -250,7 +252,6 @@ export async function getAtmoIndicatorForDate(
               functionCall: 'getAtmoIndicator',
               epciCode,
               municipalityInseeCodes,
-              // municipalitiesINSEECodeByEPCI,
               data: row.properties,
             },
           });
@@ -293,7 +294,7 @@ export async function getAtmoIndicatorForDate(
       IndiceAtmoNotAvailable | IndiceAtmoAvailable
     > = [];
     let missingData = 0;
-    const missingDepartments: Record<MunicipalityJSON['DEP'], number> = {};
+    const missingDepartments: Record<Municipality['DEP'], number> = {};
     for (const municipality of municipalities) {
       const indiceAtmoData =
         indiceAtmoByMunicipalityInseeCode[municipality.COM] ??

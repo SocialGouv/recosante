@@ -49,6 +49,7 @@ model IndiceUv {
 
   // common fields for all indicators
   municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
@@ -76,6 +77,7 @@ model PollenAllergyRisk {
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   cypres                  Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
@@ -130,6 +132,7 @@ model WeatherAlert {
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   // a row will be created ONLY if there is an alert
@@ -151,6 +154,7 @@ model IndiceAtmospheric {
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator, raw data extracted from the API
   // note: we couldn't use Prisma enum here because
@@ -212,6 +216,7 @@ model AlertPollutionAtmospheric {
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
   municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   state                   PollutionStateEnum
@@ -227,4 +232,33 @@ model CronJob {
   active     Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
+}
+
+enum MunicipalityTypeComEnum {
+  ARM // Arrondissement municipal
+  COM // Commune
+  COMD // Commune déléguée
+}
+
+model Municipality {
+  COM                       String                      @id // Code commune
+  TYPECOM                   MunicipalityTypeComEnum // Type de commune
+  REG                       String // Code région
+  DEP                       String // Code département
+  CTCD                      String? // Code de la collectivité territoriale ayant les compétences départementales
+  ARR                       String? // Code arrondissement
+  CAN                       String? // Code canton. Pour les communes « multi-cantonales », code décliné de 99 à 90 (pseudo-canton) ou de 89 à 80 (communes nouvelles)
+  EPCI                      String? // Code EPCI
+  LIBEPCI                   String? // Nom de l'EPCI ou métropole
+  NCC                       String? // Nom en clair (majuscules)
+  NCCENR                    String? // Nom en clair (typographie riche)
+  LIBELLE                   String? // Nom en clair (typographie riche) avec article
+  COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
+  ParentMunicipality        Municipality?               @relation("MunicipalityParentMunicipality", fields: [COMPARENT], references: [COM])
+  ChildrenMunicipality      Municipality[]              @relation("MunicipalityParentMunicipality")
+  IndiceUv                  IndiceUv[]
+  PollenAllergyRisk         PollenAllergyRisk[]
+  WeatherAlert              WeatherAlert[]
+  IndiceAtmospheric         IndiceAtmospheric[]
+  AlertPollutionAtmospheric AlertPollutionAtmospheric[]
 }

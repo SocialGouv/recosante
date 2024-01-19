@@ -1,16 +1,14 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
-import { DataAvailabilityEnum } from '@prisma/client';
+import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 import prisma from '~/prisma';
-import type { DepartmentCode } from '~/types/municipality';
 import type { PollensAPIData } from '~/types/api/pollens';
 import { capture } from '~/third-parties/sentry';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
-import { grabMunicipalities } from '~/utils/municipalities';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -105,7 +103,7 @@ export async function getPollensIndicator() {
     }
 
     // Step 4: format data by department to iterate quickly on municipalities
-    const pollensByDepartment: Record<DepartmentCode, PollensAPIData> = {};
+    const pollensByDepartment: Record<Municipality['DEP'], PollensAPIData> = {};
     for (const row of data) {
       const departmentCode = row[date];
       // we need to format the department code to have a 2 digits string
@@ -121,7 +119,7 @@ export async function getPollensIndicator() {
 
     // Step 5: grab the municipalities list
     logStep('formatting pollens by department DONE');
-    const municipalities = await grabMunicipalities();
+    const municipalities = await prisma.municipality.findMany();
 
     // Step 6: loop on municipalities and create rows to insert
     logStep('fetching municipalities DONE');

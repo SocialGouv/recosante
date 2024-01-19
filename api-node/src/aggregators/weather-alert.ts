@@ -1,19 +1,16 @@
-import dotenv from 'dotenv';
 import { capture } from '~/third-parties/sentry';
 
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
-import { type DepartmentCode } from '~/types/municipality';
 import {
   CodeAlertEnums,
   DataAvailabilityEnum,
   PhenomenonsEnum,
+  type Municipality,
 } from '@prisma/client';
 import { type WeatherAlertResponse } from '~/types/api/weather-alert';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
-import { grabMunicipalities } from '~/utils/municipalities';
-dotenv.config({ path: './.env' });
 
 const URL =
   'https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours';
@@ -170,7 +167,7 @@ export async function getWeatherAlert() {
 
   // Step 4: format data by department to iterate quickly on municipalities
   const weatherAlertByDepartment: Record<
-    DepartmentCode,
+    Municipality['DEP'],
     { code_alert: CodeAlertEnums; phenomenon: PhenomenonsEnum }
   > = {};
   for (const row of data.product.periods) {
@@ -208,8 +205,7 @@ export async function getWeatherAlert() {
   }
   // Step 5: grab the municipalities list
   logStep('formatting weatherAlert by department DONE');
-  const municipalities = await grabMunicipalities();
-
+  const municipalities = await prisma.municipality.findMany();
   // Step 6: loop on municipalities and create rows to insert
   logStep('fetching municipalities DONE');
   const weatherAlertRows = [];

@@ -1,5 +1,4 @@
-import type { IndiceAtmospheric } from '@prisma/client';
-import type { MunicipalityJSON, EPCIJSON } from '~/types/municipality';
+import type { IndiceAtmospheric, Municipality } from '@prisma/client';
 
 // Documentation:
 // https://admindata.atmo-france.org/api/doc
@@ -87,7 +86,7 @@ export enum ESPGEnum {
 }
 
 type IndiceAtmoSearchOperatorIndice = {
-  code_zone: MunicipalityJSON['COM']; // code commune ou EPCI selon l’INSEE ;
+  code_zone: Municipality['COM']; // code commune ou EPCI selon l’INSEE ;
   date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’indice, au format international (YYYY-MM-DD) ;
   code_no2: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant NO₂ ;
   code_o3: PolluantQualificatifsNumberEnum; // qualificatif pour le sous-indice du polluant l’indice O₃ ;
@@ -100,7 +99,7 @@ type IndiceAtmoSearchOperatorIndice = {
 type IndiceAtmoLibPol = 'PM2.5' | 'PM10' | 'O3' | 'NO2' | 'SO2';
 
 export type IndiceAtmoSearchOperatorEpisodePollution = {
-  code_zone: MunicipalityJSON['DEP']; // code département selon l’INSEE;
+  code_zone: Municipality['DEP']; // code département selon l’INSEE;
   date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’alerte, au format international (YYYY-DD-MM);
   etat: 'information et recommandation' | 'alerte sur persistance' | 'alerte'; // niveau d’alerte
   lib_pol: IndiceAtmoLibPol; // le polluant déclencheur
@@ -116,7 +115,7 @@ type IndiceAtmoCodePCAET = {
 };
 
 interface IndiceAtmoEmissionsRegions {
-  code: MunicipalityJSON['REG']; //  code région selon l’INSEE
+  code: Municipality['REG']; //  code région selon l’INSEE
   code_pcaet: IndiceAtmoCodePCAET; // Les codes des secteurs au format PCAET
   ges: string; // Emissions de gaz à effet de serre
   nox: string; // Emissions d’oxydes d’azote
@@ -135,7 +134,7 @@ export interface IndiceAtmoSearchOperator {
 
 export interface IndiceAtmoByCodeZone {
   gml_id: number; // example: 835197777; no idea what this is
-  aasqa: MunicipalityJSON['DEP'];
+  aasqa: Municipality['DEP'];
   date_maj: string; // example: '2024/01/16 12:11:49.728+01';
   partition_field: string; // example: '112024w3'; no idea what this is
   code_no2: PolluantQualificatifsNumberEnum;
@@ -144,7 +143,7 @@ export interface IndiceAtmoByCodeZone {
   code_pm25: PolluantQualificatifsNumberEnum;
   code_qual: PolluantQualificatifsNumberEnum;
   code_so2: PolluantQualificatifsNumberEnum;
-  code_zone: MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+  code_zone: Municipality['COM'] | Municipality['EPCI'];
   coul_qual: PolluantQualificatifsColorEnum;
   date_dif: string; // example: '2024/01/16';
   date_ech: string; // example: '2024-01-15';

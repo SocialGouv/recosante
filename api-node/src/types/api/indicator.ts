@@ -1,4 +1,4 @@
-import type { IndicatorsSlugEnum } from '@prisma/client';
+import type { IndicatorsSlugEnum, Municipality } from '@prisma/client';
 
 export type IndicatorItem = {
   name: string;
@@ -32,7 +32,7 @@ export interface Indicator {
   slug: IndicatorsSlugEnum;
   name: string;
   short_name: string;
-  municipality_insee_code: string;
+  municipality_insee_code: Municipality['COM'];
   about_title: string;
   about_description: string;
   j0: IndicatorByPeriod;
