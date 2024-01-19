@@ -4,7 +4,7 @@ import {
   PolluantQualificatifsColorEnum,
 } from '~/types/api/indice_atmo';
 
-function getIndiceAtmoLabel(
+function getIndiceAtmoStatus(
   code_indice_atmo: PolluantQualificatifsNumberEnum,
 ): PolluantQualificatifsLabelEnum {
   switch (code_indice_atmo) {
@@ -52,4 +52,4 @@ function getIndiceAtmoColor(
   }
 }
 
-export { getIndiceAtmoLabel, getIndiceAtmoColor };
+export { getIndiceAtmoStatus, getIndiceAtmoColor };

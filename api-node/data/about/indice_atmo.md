@@ -1,1 +1,0 @@
-L’indice ATMO YOUPI

@@ -1,18 +1,15 @@
-import fs from 'fs';
 import { type CustomError } from '~/types/error';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
-import { getIndiceUVColor, getIndiceUVLabel } from '~/utils/indice_uv';
+import { getIndiceUVStatus } from '~/utils/indice_uv';
 import type { IndiceUVNumber } from '~/types/api/indice_uv';
-import type { IndicatorDataTodayAndTomorrow } from '~/types/api/indicator';
+import type { Indicator } from '~/types/api/indicator';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
-
-const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
 
 async function getIndiceUvFromMunicipalityAndDate({
   municipality_insee_code,
@@ -60,58 +57,54 @@ async function getIndiceUvFromMunicipalityAndDate({
     // throw error;
   }
 
-  const data: IndicatorDataTodayAndTomorrow = {
+  const indiceUvIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].short_name,
     municipality_insee_code: indice_uv.municipality_insee_code,
-    recommendations: [
-      "Toutes les autres recommandations pour ces conditions d'indice, de saison, de date, de lieu",
-      'Par exemple, une autre',
-      'Stockée sur un Google Sheet, il faut aller la chercher',
-    ],
-    about: indiceUvAboutMd,
+    about_title: 'à propos de la qualité de l’air et l’indice ATMO',
+    about_description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor, nisl eget ultricies aliquam, nunc nisl aliquet nunc, nec aliquam nisl nunc nec nisl.',
     j0: {
       id: indice_uv.id,
       summary: {
-        name: 'Indice UV',
         value: indice_uv.uv_j0,
-        color: getIndiceUVColor(indice_uv.uv_j0 as IndiceUVNumber),
-        label: getIndiceUVLabel(indice_uv.uv_j0 as IndiceUVNumber),
-        recommendation:
+        status: getIndiceUVStatus(indice_uv.uv_j0 as IndiceUVNumber),
+        recommendations: [
           "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+        ],
       },
-      validity_start: indice_uv.validity_start,
-      validity_end: indice_uv.validity_end,
-      diffusion_date: indice_uv.diffusion_date,
-      created_at: indice_uv.created_at,
-      updated_at: indice_uv.updated_at,
-      values: [],
+      validity_start: indice_uv.validity_start.toISOString(),
+      validity_end: indice_uv.validity_end.toISOString(),
+      diffusion_date: indice_uv.diffusion_date.toISOString(),
+      created_at: indice_uv.created_at.toISOString(),
+      updated_at: indice_uv.updated_at.toISOString(),
     },
   };
 
   if (indice_uv.uv_j1) {
-    data.j1 = {
+    indiceUvIndicator.j1 = {
       id: indice_uv.id,
       summary: {
-        name: 'Indice UV',
         value: indice_uv.uv_j1,
-        color: getIndiceUVColor(indice_uv.uv_j1 as IndiceUVNumber),
-        label: getIndiceUVLabel(indice_uv.uv_j1 as IndiceUVNumber),
-        recommendation:
+        status: getIndiceUVStatus(indice_uv.uv_j1 as IndiceUVNumber),
+        recommendations: [
           "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
+        ],
       },
-      validity_start: dayjs(indice_uv.validity_start).add(1, 'day').toDate(),
+      validity_start: dayjs(indice_uv.validity_start)
+        .add(1, 'day')
+        .toISOString(),
       validity_end: dayjs(indice_uv.validity_start)
         .add(1, 'day')
         .endOf('day')
-        .toDate(),
-      diffusion_date: indice_uv.diffusion_date,
-      created_at: indice_uv.created_at,
-      updated_at: indice_uv.updated_at,
-      values: [],
+        .toISOString(),
+      diffusion_date: indice_uv.diffusion_date.toISOString(),
+      created_at: indice_uv.created_at.toISOString(),
+      updated_at: indice_uv.updated_at.toISOString(),
     };
   }
-  return data;
+  return indiceUvIndicator;
 }
 
 export { getIndiceUvFromMunicipalityAndDate };

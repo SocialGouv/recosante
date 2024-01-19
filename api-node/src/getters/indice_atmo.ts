@@ -1,20 +1,14 @@
-import fs from 'fs';
 import { type CustomError } from '~/types/error';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
-import { getIndiceAtmoLabel, getIndiceAtmoColor } from '~/utils/indice_atmo';
-import type { IndicatorDataTodayAndTomorrow } from '~/types/api/indicator';
+import { getIndiceAtmoStatus } from '~/utils/indice_atmo';
+import type { Indicator } from '~/types/api/indicator';
 import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
-
-const indiceAtmoAboutMd = fs.readFileSync(
-  './data/about/indice_atmo.md',
-  'utf8',
-);
 
 async function getIndiceAtmoFromMunicipalityAndDate({
   municipality_insee_code,
@@ -77,127 +71,105 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
-  const data: IndicatorDataTodayAndTomorrow = {
+  const indiceAtmoIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_atmospheric,
     name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
+    short_name:
+      indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].short_name,
     municipality_insee_code,
-    recommendations: [
-      "Toutes les autres recommandations pour ces conditions d'indice, de saison, de date, de lieu",
-      'Par exemple, une autre',
-      'Stockée sur un Google Sheet, il faut aller la chercher',
-    ],
-    about: indiceAtmoAboutMd,
+    about_title: 'à propos de la qualité de l’air et l’indice ATMO',
+    about_description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor, nisl eget ultricies aliquam, nunc nisl aliquet nunc, nec aliquam nisl nunc nec nisl.',
     j0: {
       id: indice_atmo_j0.id,
       summary: {
-        name: 'Indice ATMO',
         value: indice_atmo_j0.code_qual,
-        label: getIndiceAtmoLabel(indice_atmo_j0.code_qual),
-        color: getIndiceAtmoColor(indice_atmo_j0.code_qual),
-        recommendation:
+        status: getIndiceAtmoStatus(indice_atmo_j0.code_qual),
+        recommendations: [
           "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+          "La recommandation 2 tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+        ],
       },
-      validity_start: indice_atmo_j0.validity_start,
-      validity_end: indice_atmo_j0.validity_end,
-      diffusion_date: indice_atmo_j0.diffusion_date,
-      created_at: indice_atmo_j0.created_at,
-      updated_at: indice_atmo_j0.updated_at,
+      validity_start: indice_atmo_j0.validity_start.toISOString(),
+      validity_end: indice_atmo_j0.validity_end.toISOString(),
+      diffusion_date: indice_atmo_j0.diffusion_date.toISOString(),
+      created_at: indice_atmo_j0.created_at.toISOString(),
+      updated_at: indice_atmo_j0.updated_at.toISOString(),
       values: [
         {
+          slug: 'code_no2',
           name: 'NO2',
           value: indice_atmo_j0.code_no2 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j0.code_no2 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j0.code_no2 ?? 0),
-          about: 'About NO2',
         },
         {
+          slug: 'code_o3',
           name: 'O3',
           value: indice_atmo_j0.code_o3 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j0.code_o3 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j0.code_o3 ?? 0),
-          about: 'About O3',
         },
         {
+          slug: 'code_pm10',
           name: 'PM10',
           value: indice_atmo_j0.code_pm10 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j0.code_pm10 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j0.code_pm10 ?? 0),
-          about: 'About PM10',
         },
         {
+          slug: 'code_pm25',
           name: 'PM25',
           value: indice_atmo_j0.code_pm25 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j0.code_pm25 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j0.code_pm25 ?? 0),
-          about: 'About PM25',
         },
         {
+          slug: 'code_so2',
           name: 'SO2',
           value: indice_atmo_j0.code_so2 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j0.code_so2 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j0.code_so2 ?? 0),
-          about: 'About SO2',
         },
       ],
     },
   };
 
   if (!!indice_atmo_j1 && indice_atmo_j1?.code_qual !== null) {
-    data.j1 = {
+    indiceAtmoIndicator.j1 = {
       id: indice_atmo_j1.id,
       summary: {
-        name: 'Indice ATMO',
         value: indice_atmo_j1.code_qual,
-        label: getIndiceAtmoLabel(indice_atmo_j1.code_qual),
-        color: getIndiceAtmoColor(indice_atmo_j1.code_qual),
-        recommendation:
+        status: getIndiceAtmoStatus(indice_atmo_j1.code_qual),
+        recommendations: [
           "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
+        ],
       },
-      validity_start: indice_atmo_j1.validity_start,
-      validity_end: indice_atmo_j1.validity_end,
-      diffusion_date: indice_atmo_j1.diffusion_date,
-      created_at: indice_atmo_j1.created_at,
-      updated_at: indice_atmo_j1.updated_at,
+      validity_start: indice_atmo_j1.validity_start.toISOString(),
+      validity_end: indice_atmo_j1.validity_end.toISOString(),
+      diffusion_date: indice_atmo_j1.diffusion_date.toISOString(),
+      created_at: indice_atmo_j1.created_at.toISOString(),
+      updated_at: indice_atmo_j1.updated_at.toISOString(),
       values: [
         {
+          slug: 'code_no2',
           name: 'NO2',
           value: indice_atmo_j1.code_no2 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j1.code_no2 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j1.code_no2 ?? 0),
-          about: 'About NO2',
         },
         {
+          slug: 'code_o3',
           name: 'O3',
           value: indice_atmo_j1.code_o3 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j1.code_o3 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j1.code_o3 ?? 0),
-          about: 'About O3',
         },
         {
+          slug: 'code_pm10',
           name: 'PM10',
           value: indice_atmo_j1.code_pm10 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j1.code_pm10 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j1.code_pm10 ?? 0),
-          about: 'About PM10',
         },
         {
+          slug: 'code_pm25',
           name: 'PM25',
           value: indice_atmo_j1.code_pm25 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j1.code_pm25 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j1.code_pm25 ?? 0),
-          about: 'About PM25',
         },
         {
+          slug: 'code_so2',
           name: 'SO2',
           value: indice_atmo_j1.code_so2 ?? 0,
-          label: getIndiceAtmoLabel(indice_atmo_j1.code_so2 ?? 0),
-          color: getIndiceAtmoColor(indice_atmo_j1.code_so2 ?? 0),
-          about: 'About SO2',
         },
       ],
     };
   }
-  return data;
+  return indiceAtmoIndicator;
 }
 
 export { getIndiceAtmoFromMunicipalityAndDate };
