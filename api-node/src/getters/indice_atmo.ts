@@ -45,7 +45,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
-        gte: dayjs(date_UTC_ISO).startOf('day').utc().toISOString(),
+        gte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
@@ -67,9 +67,9 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
         gte: dayjs(date_UTC_ISO)
+          .utc()
           .add(1, 'day')
           .startOf('day')
-          .utc()
           .toISOString(),
       },
     },
