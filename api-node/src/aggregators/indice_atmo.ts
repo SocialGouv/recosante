@@ -15,6 +15,7 @@ import type {
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
+import { grabEPCIsWithINSEEMunicipalityCodes } from '~/utils/epci';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -89,13 +90,13 @@ export async function getAtmoIndicator() {
     *
     *
     */
-    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().startOf('day').utc());
+    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().utc().startOf('day'));
 
     logStep('Step 2: Fetched Atmo data for today');
 
     await getAtmoIndicatorForDate(
       atmoJWTToken,
-      dayjs().add(1, 'day').startOf('day').utc(),
+      dayjs().utc().add(1, 'day').startOf('day'),
     );
     logStep('Step 3: Fetched Atmo data for tomorrow');
   } catch (error: any) {
@@ -176,15 +177,8 @@ export async function getAtmoIndicatorForDate(
     const municipalities = await prisma.municipality.findMany();
     logStep('Step B.i: Loaded municipalities');
 
-    const municipalitiesINSEECodeByEPCI: Record<
-      Exclude<Municipality['EPCI'], null>,
-      Array<Municipality['COM']>
-    > = await prisma.$queryRaw`
-      SELECT EPCI, array_agg(COM) as COM
-      FROM "Municipality"
-      GROUP BY EPCI;
-    `;
-
+    const municipalitiesINSEECodeByEPCIObject =
+      await grabEPCIsWithINSEEMunicipalityCodes();
     logStep('Step B.ii: Loaded and formatted EPCIS');
 
     /*
@@ -244,8 +238,9 @@ export async function getAtmoIndicatorForDate(
       }
       const isEPCI = row.properties.type_zone === 'EPCI';
       if (isEPCI) {
-        const epciCode = Number(row.properties.code_zone);
-        const municipalityInseeCodes = municipalitiesINSEECodeByEPCI[epciCode];
+        const epciCode = String(row.properties.code_zone);
+        const municipalityInseeCodes =
+          municipalitiesINSEECodeByEPCIObject[epciCode];
         if (!municipalityInseeCodes?.length) {
           capture('[INDICE ATMO AGGREGATION] No EPCI found for code', {
             extra: {

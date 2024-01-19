@@ -188,7 +188,7 @@ async function fillMunicipalityDB() {
     municipalitiesEPCIByINSEECode[epci.CODGEO] = epci.EPCI;
   }
 
-  const municipalitiesWithEPCI = municipalitiesJSON.map((municipality) => {
+  const municipalitiesWithEPCI = municipalitiesWithDEP.map((municipality) => {
     if (!municipalitiesEPCIByINSEECode[municipality.COM]) return municipality;
     return {
       ...municipality,
