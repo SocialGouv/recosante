@@ -9,18 +9,10 @@ import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
-const indiceUvRecommendationsMd = fs.readFileSync(
-  './data/recommandations/indice_uv.md',
-  'utf8',
-);
+
 dayjs.extend(utc);
 
 const indiceUvAboutMd = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
-// convert md list to array of strings
-const recommendations = indiceUvRecommendationsMd
-  .split('\n')
-  .filter((line) => line.startsWith('- '))
-  .map((line) => line.replace('- ', ''));
 
 async function getIndiceUvFromMunicipalityAndDate({
   municipality_insee_code,
@@ -78,7 +70,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     diffusion_date: indice_uv.diffusion_date,
     created_at: indice_uv.created_at,
     updated_at: indice_uv.updated_at,
-    recommendations,
+    recommendations: ['blablabla', 'blablabla'],
     about: indiceUvAboutMd,
     j0: {
       value: indice_uv.uv_j0,
