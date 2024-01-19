@@ -171,14 +171,14 @@ model IndiceAtmospheric {
   date_maj                String? // example: '2024/01/16 12:11:49.728+01';
   date_dif                String? // example: '2024/01/16'; this is the day we fetched the data
   date_ech                String? // example: '2024-01-15'; this is the validity day of the data
-  code_zone               String? // MunicipalityJSON['COM'] | EPCIJSON['EPCI'];
+  code_zone               String? // Municipality['COM'] | Municipality['EPCI'];
   source                  String? // SourcesEnum
   type_zone               String? // TypeZoneEnum
   // unused fields from the API
   partition_field         String? // example: '112024w3'; no idea what this is
   coul_qual               String? // PolluantQualificatifsColorEnum
   lib_zone                String? // Label/name of Municipality or EPCI. example: 'Gastins';
-  aasqa                   String? // MunicipalityJSON['DEP'];
+  aasqa                   String? // Municipality['DEP'];
   gml_id                  Int? // example: 835197777; no idea what this is
   epsg_reg                String? // ESPGEnum
   x_reg                   Float? // example: 650403.898030424;
