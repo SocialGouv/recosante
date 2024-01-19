@@ -234,15 +234,9 @@ model CronJob {
   updated_at DateTime @default(now()) @updatedAt
 }
 
-enum MunicipalityTypeComEnum {
-  ARM // Arrondissement municipal
-  COM // Commune
-  COMD // Commune déléguée
-}
-
 model Municipality {
   COM                       String                      @id // Code commune
-  TYPECOM                   MunicipalityTypeComEnum // Type de commune
+  TYPECOM                   String
   REG                       String // Code région
   DEP                       String // Code département
   CTCD                      String? // Code de la collectivité territoriale ayant les compétences départementales
@@ -255,8 +249,6 @@ model Municipality {
   NCCENR                    String? // Nom en clair (typographie riche)
   LIBELLE                   String? // Nom en clair (typographie riche) avec article
   COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
-  ParentMunicipality        Municipality?               @relation("MunicipalityParentMunicipality", fields: [COMPARENT], references: [COM])
-  ChildrenMunicipality      Municipality[]              @relation("MunicipalityParentMunicipality")
   IndiceUv                  IndiceUv[]
   PollenAllergyRisk         PollenAllergyRisk[]
   WeatherAlert              WeatherAlert[]

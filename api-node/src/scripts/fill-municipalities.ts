@@ -5,7 +5,7 @@ import fs from 'fs';
 interface EPCIJSON {
   CODGEO: Municipality['COM']; // Code géographique
   LIBGEO: Municipality['LIBELLE']; // Libellé géographique
-  EPCI: string; // Code EPCI - Code géographique de l'établissement public à fiscalité propre ou métropole
+  EPCI: number; // Code EPCI - Code géographique de l'établissement public à fiscalité propre ou métropole
   LIBEPCI: string; // Libellé de l'EPCI ou métropole
   DEP: Municipality['DEP']; // Code département
   REG: Municipality['REG']; // Code région
@@ -22,15 +22,22 @@ type GeoApiCommune = {
   population: number;
 };
 
+let now = Date.now();
+function logStep(step: string) {
+  console.info(
+    `[FILL MUNICIPALITIES] Duration: ${Date.now() - now}ms`.padEnd(40),
+    step,
+  );
+  now = Date.now();
+}
 async function fillMunicipalityDB() {
   /*
   Steps:
   1. grab the municipalities list (around 37500 in 2023)
-  2. filter out municipalities without DEP (around 570)
-  3. fetch the DEP from the Geo API for municipalities without DEP and without COMPARENT (around 570)
-  4. grab the DEP from the COMPARENT for municipalities without DEP and with COMPARENT
-  5: add the EPCI Code to the municipalities which need one
-  6: save that in the database
+  2. fetch the DEP from the Geo API for municipalities without DEP and without COMPARENT (around 570)
+  3. grab the DEP from the COMPARENT for municipalities without DEP and with COMPARENT
+  4: add the EPCI Code to the municipalities which need one
+  5: save that in the database
   */
 
   /*
@@ -53,11 +60,12 @@ async function fillMunicipalityDB() {
       resolve(municipalities);
     });
   });
+  logStep('Step 1: grabbed the municipalities list (around 37500 in 2023)');
   /*
    *
    *
    *
-   * Step 3: fetch the DEP from the Geo API for municipalities without DEP and without COMPARENT (around 570)
+   * Step 2: fetch the DEP from the Geo API for municipalities without DEP and without COMPARENT (around 570)
    *
    */
 
@@ -73,12 +81,12 @@ async function fillMunicipalityDB() {
       ).then(async (res) => await res.json());
       // limit: 50 request per second https://geo.api.gouv.fr/faq
       await new Promise((resolve) => setTimeout(resolve, 30));
-      console.log(
-        'municipality',
-        municipality.COM,
-        municipality.LIBELLE,
-        commune.codeDepartement,
-      );
+      // console.log(
+      //   'municipality',
+      //   municipality.COM,
+      //   municipality.LIBELLE,
+      //   commune.codeDepartement,
+      // );
       municipalitiesObject[municipality.COM] = {
         ...municipality,
         DEP: commune.codeDepartement,
@@ -87,12 +95,14 @@ async function fillMunicipalityDB() {
     }
     municipalitiesObject[municipality.COM] = municipality;
   }
-
+  logStep(
+    'Step 2: fetched the DEP from the Geo API for municipalities without DEP and without COMPARENT (around 570)',
+  );
   /*
    *
    *
    *
-   * Step 4. grab the DEP from the COMPARENT for municipalities without DEP and with COMPARENT
+   * Step 3. grab the DEP from the COMPARENT for municipalities without DEP and with COMPARENT
    *
    */
 
@@ -141,12 +151,15 @@ async function fillMunicipalityDB() {
   console.assert(municipalitiesWithDEP.filter((m) => !m.DEP).length === 0);
 
   // now all the municipalities have a DEP
+  logStep(
+    'Step 3: grabbed the DEP from the COMPARENT for municipalities without DEP and with COMPARENT',
+  );
 
   /*
    *
    *
    *
-   * Step 5: add the EPCI Code to the municipalities which need one
+   * Step 4: add the EPCI Code to the municipalities which need one
    *
    */
 
@@ -179,15 +192,17 @@ async function fillMunicipalityDB() {
     if (!municipalitiesEPCIByINSEECode[municipality.COM]) return municipality;
     return {
       ...municipality,
-      EPCI: municipalitiesEPCIByINSEECode[municipality.COM],
+      EPCI: `${municipalitiesEPCIByINSEECode[municipality.COM]}`,
     };
   });
+
+  logStep('Step 4: added the EPCI Code to the municipalities which need one');
 
   /*
    *
    *
    *
-   * Step 6: save that in the database
+   * Step 5: save that in the database
    *
    */
 
@@ -195,6 +210,7 @@ async function fillMunicipalityDB() {
     data: municipalitiesWithEPCI,
     skipDuplicates: true,
   });
+  logStep('Step 5: saved that in the database');
 }
 
 fillMunicipalityDB();
