@@ -45,7 +45,7 @@ async function getPollensFromMunicipalityAndDate({
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
-        gte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
+        lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
@@ -60,16 +60,6 @@ async function getPollensFromMunicipalityAndDate({
     });
     return null;
   }
-
-  const pollensIndicator: Indicator = {
-    slug: IndicatorsSlugEnum.pollen_allergy,
-    name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].name,
-    short_name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].short_name,
-    municipality_insee_code: pollensJ0.municipality_insee_code,
-    about_title: 'à propos du pollen',
-    about_description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor, nisl eget ultricies aliquam, nunc nisl aliquet nunc, nec aliquam nisl nunc nec nisl.',
-  };
 
   const formattedPollensJ0 = {
     id: pollensJ0.id,
@@ -88,7 +78,16 @@ async function getPollensFromMunicipalityAndDate({
     values: formatPollensAPIValues(pollensJ0),
   };
 
-  pollensIndicator.j0 = formattedPollensJ0;
+  const pollensIndicator: Indicator = {
+    slug: IndicatorsSlugEnum.pollen_allergy,
+    name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].short_name,
+    municipality_insee_code: pollensJ0.municipality_insee_code,
+    about_title: 'à propos du pollen',
+    about_description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor, nisl eget ultricies aliquam, nunc nisl aliquet nunc, nec aliquam nisl nunc nec nisl.',
+    j0: formattedPollensJ0,
+  };
 
   if (
     dayjs()
@@ -102,7 +101,7 @@ async function getPollensFromMunicipalityAndDate({
         municipality_insee_code,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         validity_start: {
-          gte: dayjs(date_UTC_ISO)
+          lte: dayjs(date_UTC_ISO)
             .utc()
             .add(1, 'day')
             .startOf('day')
