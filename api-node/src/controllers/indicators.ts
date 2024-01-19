@@ -51,7 +51,7 @@ router.get(
         next(indice_uv);
         return;
       }
-      indicators.push(indice_uv);
+      if (indice_uv) indicators.push(indice_uv);
 
       const indice_atmo = await getIndiceAtmoFromMunicipalityAndDate({
         municipality_insee_code,
@@ -61,7 +61,8 @@ router.get(
         next(indice_atmo);
         return;
       }
-      indicators.push(indice_atmo);
+      if (indice_atmo) indicators.push(indice_atmo);
+
       indicators.push(...indicatorsMock);
 
       res.status(200).send({ ok: true, data: indicators });

@@ -37,6 +37,6 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
   // },
 };
 
-const indicatorsList: Indicator[] = Object.values(indicatorsObject);
+const indicatorsList: IndicatorItem[] = Object.values(indicatorsObject);
 
 export { indicatorsList, indicatorsObject };
