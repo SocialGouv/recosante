@@ -3,12 +3,10 @@ import csv2json from 'csvjson-csv2json/csv2json.js';
 import fs from 'fs';
 import ftp from 'basic-ftp';
 import dayjs from 'dayjs';
-import { DataAvailabilityEnum } from '@prisma/client';
+import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
 import prisma from '~/prisma';
-import { type DepartmentCode } from '~/types/municipality';
 import { capture } from '~/third-parties/sentry';
 import utc from 'dayjs/plugin/utc';
-import { grabMunicipalities } from '~/utils/municipalities';
 dayjs.extend(utc);
 
 let now = Date.now();
@@ -105,10 +103,10 @@ export async function getIndiceUVIndicator() {
     }
     // Step 6: grab the municipalities list
     logStep('formatting indice UV by department DONE');
-    const municipalities = await grabMunicipalities();
+    const municipalities = await prisma.municipality.findMany();
     // Step 7: format data by department to iterate quickly on municipalities
     const indiceUVByInseeCode: Record<
-      DepartmentCode,
+      Municipality['DEP'],
       {
         UV_J0: number | null;
         UV_J1: number | null;

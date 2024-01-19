@@ -13,6 +13,7 @@
     "prisma-create-migration": "cross-env NODE_ENV=development npx prisma migrate dev --name",
     "prisma-deploy": "NODE_ENV=production npx prisma migrate deploy",
     "prisma-reset-db": "rm -rf prisma/migrations && npx prisma migrate reset --force && npm run prisma-setup",
+    "fill-municipalities-in-db": "cross-env NODE_ENV=development tsx ./src/scripts/fill-municipalities.ts",
     "ts:check": "tsc",
     "format": "prettier --write . --ignore-unknown"
   },

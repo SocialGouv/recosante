@@ -4,8 +4,11 @@ import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import { getIndiceAtmoStatus } from '~/utils/indice_atmo';
 import type { Indicator } from '~/types/api/indicator';
-import type { MunicipalityJSON } from '~/types/municipality';
-import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
+import {
+  DataAvailabilityEnum,
+  IndicatorsSlugEnum,
+  type Municipality,
+} from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
 import { capture } from '~/third-parties/sentry';
@@ -15,7 +18,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
 }: {
-  municipality_insee_code: MunicipalityJSON['COM'];
+  municipality_insee_code: Municipality['COM'];
   date_UTC_ISO: string;
 }) {
   try {
