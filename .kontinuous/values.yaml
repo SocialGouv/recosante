@@ -51,7 +51,7 @@ api-node:
     - secretRef:
         name: "{{ .Values.global.pgApiNodeSecretName }}"
     - secretRef:
-      name: api-node-sealed-secret
+        name: api-node-sealed-secret
   resources:
     requests:
       cpu: 0.1
