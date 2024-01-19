@@ -81,13 +81,13 @@ export async function getPollensIndicator() {
 
     // Step 3: check if data already exists
     const diffusionDate = dayjs(date, 'DD/MM/YYYY')
-      .utc()
       .startOf('day')
+      .utc()
       .toDate();
     const validityEnd = dayjs(diffusionDate)
-      .utc()
       .add(7, 'days')
       .endOf('day')
+      .utc()
       .toDate();
 
     const existingPollens = await prisma.pollenAllergyRisk.count({

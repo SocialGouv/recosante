@@ -9,6 +9,7 @@ import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
+import { capture } from '~/third-parties/sentry';
 dayjs.extend(utc);
 
 async function getIndiceUvFromMunicipalityAndDate({
@@ -42,19 +43,20 @@ async function getIndiceUvFromMunicipalityAndDate({
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
-        gte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
+        gte: dayjs(date_UTC_ISO).startOf('day').utc().toISOString(),
       },
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
   if (indice_uv?.uv_j0 == null) {
-    const error = new Error(
-      `No indice_uv found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
-    ) as CustomError;
-    error.status = 404;
-    return error;
-    // throw error;
+    capture('No indice_uv found', {
+      extra: {
+        municipality_insee_code,
+        date_UTC_ISO,
+      },
+    });
+    return null;
   }
 
   const indiceUvIndicator: Indicator = {

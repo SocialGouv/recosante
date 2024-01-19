@@ -94,13 +94,13 @@ export async function getAtmoIndicator() {
     *
     *
     */
-    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().utc().startOf('day'));
+    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().startOf('day').utc());
 
     logStep('Step 2: Fetched Atmo data for today');
 
     await getAtmoIndicatorForDate(
       atmoJWTToken,
-      dayjs().add(1, 'day').utc().startOf('day'),
+      dayjs().add(1, 'day').startOf('day').utc(),
     );
     logStep('Step 3: Fetched Atmo data for tomorrow');
   } catch (error: any) {
@@ -287,7 +287,7 @@ export async function getAtmoIndicatorForDate(
     *
     */
 
-    const validityEnd = dayjs(indiceForDate).utc().endOf('day').toDate();
+    const validityEnd = dayjs(indiceForDate).endOf('day').utc().toDate();
 
     const indiceAtmoByMunicipalityRows: Array<
       IndiceAtmoNotAvailable | IndiceAtmoAvailable

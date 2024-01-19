@@ -8,6 +8,7 @@ import type { MunicipalityJSON } from '~/types/municipality';
 import { DataAvailabilityEnum, IndicatorsSlugEnum } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
+import { capture } from '~/third-parties/sentry';
 dayjs.extend(utc);
 
 async function getIndiceAtmoFromMunicipalityAndDate({
@@ -41,19 +42,20 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       municipality_insee_code,
       data_availability: DataAvailabilityEnum.AVAILABLE,
       validity_start: {
-        gte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
+        gte: dayjs(date_UTC_ISO).startOf('day').utc().toISOString(),
       },
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
   if (indice_atmo_j0?.code_qual == null) {
-    const error = new Error(
-      `No indice_atmo_j0 found for municipality_insee_code=${municipality_insee_code} and date_UTC_ISO=${date_UTC_ISO}`,
-    ) as CustomError;
-    error.status = 404;
-    return error;
-    // throw error;
+    capture('No indice_atmo_j0 found', {
+      extra: {
+        municipality_insee_code,
+        date_UTC_ISO,
+      },
+    });
+    return null;
   }
 
   const indice_atmo_j1 = await prisma.indiceAtmospheric.findFirst({
@@ -63,8 +65,8 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       validity_start: {
         gte: dayjs(date_UTC_ISO)
           .add(1, 'day')
-          .utc()
           .startOf('day')
+          .utc()
           .toISOString(),
       },
     },
