@@ -250,6 +250,7 @@ model Municipality {
   CAN                       String? // Code canton. Pour les communes « multi-cantonales », code décliné de 99 à 90 (pseudo-canton) ou de 89 à 80 (communes nouvelles)
   EPCI                      String? // Code EPCI
   LIBEPCI                   String? // Nom de l'EPCI ou métropole
+  TNCC                      String? //  Type de nom en clair (majuscules) (https://www.insee.fr/fr/information/2114773)
   NCC                       String? // Nom en clair (majuscules)
   NCCENR                    String? // Nom en clair (typographie riche)
   LIBELLE                   String? // Nom en clair (typographie riche) avec article

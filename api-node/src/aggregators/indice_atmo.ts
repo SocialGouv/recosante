@@ -273,6 +273,12 @@ export async function getAtmoIndicatorForDate(
         continue;
       }
       const municipalityInseeCode = row.properties.code_zone;
+      if (!municipalityInseeCode) {
+        capture('[INDICE ATMO AGGREGATION] municipalityInseeCode null', {
+          extra: { functionCall: 'getAtmoIndicator', data: row.properties },
+        });
+        continue;
+      }
       indiceAtmoByMunicipalityInseeCode[municipalityInseeCode] = row.properties;
     }
     logStep(
