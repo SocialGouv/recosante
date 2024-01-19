@@ -1,4 +1,5 @@
-// 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+import type { PollenAllergyRisk } from '@prisma/client';
+
 export enum PollensRiskNumberEnum {
   NO_RISK = 0,
   VERY_LOW = 1,
@@ -6,6 +7,15 @@ export enum PollensRiskNumberEnum {
   MODERATE = 3,
   HIGH = 4,
   VERY_HIGH = 5,
+}
+
+export enum PollensRiskStatusEnum {
+  NO_RISK = 'Nul',
+  VERY_LOW = 'Très faible',
+  LOW = 'Faible',
+  MODERATE = 'Moyen',
+  HIGH = 'Élevé',
+  VERY_HIGH = 'Très élevé',
 }
 
 export interface PollensAPIData {

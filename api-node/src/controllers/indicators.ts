@@ -10,6 +10,7 @@ import { indicatorsMock } from './mocks/indicators';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
 import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
+import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -62,6 +63,16 @@ router.get(
         return;
       }
       if (indice_atmo) indicators.push(indice_atmo);
+
+      const pollens = await getPollensFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (pollens instanceof Error) {
+        next(pollens);
+        return;
+      }
+      if (pollens) indicators.push(pollens);
 
       indicators.push(...indicatorsMock);
 
