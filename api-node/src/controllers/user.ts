@@ -103,10 +103,6 @@ router.put(
         .catch((error) => {
           console.log('error', error);
         });
-      const nextUser = await prisma.user.findUnique({
-        where: { matomo_id: req.user.matomo_id },
-      });
-      console.log(nextUser?.municipality_insee_code);
       res.status(200).send({ ok: true });
     },
   ),
