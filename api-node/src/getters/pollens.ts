@@ -95,6 +95,7 @@ async function getPollensFromMunicipalityAndDate({
   const pollensIndicator: Indicator = {
     slug: IndicatorsSlugEnum.pollen_allergy,
     name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].long_name,
     short_name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].short_name,
     municipality_insee_code: pollensJ0.municipality_insee_code,
     about_title: 'à propos du pollen',

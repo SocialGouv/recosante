@@ -3,6 +3,7 @@ import type { IndicatorsSlugEnum, Municipality } from '@prisma/client';
 export type IndicatorItem = {
   name: string;
   short_name: string;
+  long_name: string;
   slug: IndicatorsSlugEnum;
 };
 
@@ -33,6 +34,7 @@ export interface Indicator {
   slug: IndicatorsSlugEnum;
   name: string;
   short_name: string;
+  long_name: string;
   municipality_insee_code: Municipality['COM'];
   about_title: string;
   about_description: string;

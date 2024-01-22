@@ -82,6 +82,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
     short_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].short_name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].long_name,
     municipality_insee_code: indice_uv.municipality_insee_code,
     about_title: 'à propos de la qualité de l’air et l’indice ATMO',
     about_description:

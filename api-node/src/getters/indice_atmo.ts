@@ -95,6 +95,8 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   const indiceAtmoIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_atmospheric,
     name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
+    long_name:
+      indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].long_name,
     short_name:
       indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].short_name,
     municipality_insee_code,
