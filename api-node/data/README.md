@@ -2,6 +2,10 @@
 
 ## Municipalités
 
+### Où se trouvent les données utilisées par l'app ?
+
+Nous avions fait le choix initial d'avoir les données en fichier .json pour faciliter le développement,
+
 ### Liste des communes fournie par l'INSEE
 
 La liste des communes est tirée du "INSEE - Code officiel géographique au 1er janvier 2023" sur https://www.insee.fr/fr/information/6800675.
@@ -10,8 +14,11 @@ Le lien de téléchargement est le suivant: https://www.insee.fr/fr/statistiques
 
 La conversion vers `./municipalities.json` a été faite avec le service fourni par https://csvjson.com/csv2json.
 
-Certaines municipalités n'ont pas de code département (`DEP`), c'est pourquoi il faut les rajouter manuellement, ce que nous avons fait via le script `populateMunicipalitiesDepartments` situé dans `./src/utils/municipalities.ts:populateMunicipalitiesDepartments`.
-Nous aurions pu juste tronquer le code COM aux deux premiers chiffres, mais nous avons préféré faire une recherche manuelle pour être sûr de ne pas faire d'erreur.
+Certaines municipalités n'ont pas de code département (`DEP`), c'est pourquoi il faut les rajouter manuellement. Nous aurions pu juste tronquer le code COM aux deux premiers chiffres, mais nous avons préféré faire une recherche manuelle via l'api Géo pour être sûr de ne pas faire d'erreur.
+
+Nous avons ensuite rajouté le code EPCI le cas échéant, en utilisant le fichier `./epci.json` (voir plus bas).
+
+Puis nous avons enregistré toutes les municipalités dans la base de données Postgres, avec le script `./src/scripts/fill-municipalities.ts`.
 
 ### Liste des EPCI fournie par l'INSEE
 
