@@ -211,6 +211,8 @@ async function fillMunicipalityDB() {
     skipDuplicates: true,
   });
   logStep('Step 5: saved that in the database');
+  // exit
+  process.exit(0);
 }
 
 fillMunicipalityDB();
