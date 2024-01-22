@@ -62,6 +62,22 @@ async function getIndiceUvFromMunicipalityAndDate({
     return null;
   }
 
+  const recommandationsJ0 = await prisma.recommandation
+    .findMany({
+      where: {
+        indicator: IndicatorsSlugEnum.indice_uv,
+        indicator_value: indice_uv.uv_j0,
+      },
+      select: {
+        recommandation_content: true,
+      },
+    })
+    .then((recommandations) =>
+      recommandations.map(
+        (recommandation) => recommandation.recommandation_content,
+      ),
+    );
+
   const indiceUvIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
@@ -75,9 +91,7 @@ async function getIndiceUvFromMunicipalityAndDate({
       summary: {
         value: indice_uv.uv_j0,
         status: getIndiceUVStatus(indice_uv.uv_j0 as IndiceUVNumber),
-        recommendations: [
-          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-        ],
+        recommendations: recommandationsJ0,
       },
       validity_start: indice_uv.validity_start.toISOString(),
       validity_end: indice_uv.validity_end.toISOString(),
@@ -88,14 +102,28 @@ async function getIndiceUvFromMunicipalityAndDate({
   };
 
   if (indice_uv.uv_j1) {
+    const recommandationsJ1 = await prisma.recommandation
+      .findMany({
+        where: {
+          indicator: IndicatorsSlugEnum.indice_uv,
+          indicator_value: indice_uv.uv_j1,
+        },
+        select: {
+          recommandation_content: true,
+        },
+      })
+      .then((recommandations) =>
+        recommandations.map(
+          (recommandation) => recommandation.recommandation_content,
+        ),
+      );
+
     indiceUvIndicator.j1 = {
       id: indice_uv.id,
       summary: {
         value: indice_uv.uv_j1,
         status: getIndiceUVStatus(indice_uv.uv_j1 as IndiceUVNumber),
-        recommendations: [
-          "La recommandation tirée au sort pile pour demain, pour ces conditions d'indice, de saison, de date, de lieu",
-        ],
+        recommendations: recommandationsJ1,
       },
       validity_start: dayjs(indice_uv.validity_start)
         .add(1, 'day')

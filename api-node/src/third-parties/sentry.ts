@@ -5,7 +5,7 @@ const sentryEnabled = ENVIRONMENT !== 'development' && ENVIRONMENT !== 'test';
 
 function capture(
   error: string | Error,
-  context: {
+  context?: {
     extra?: any;
     [key: string]: unknown;
   },
@@ -20,7 +20,7 @@ function capture(
   } else {
     context = JSON.parse(JSON.stringify(context));
   }
-  if (!!context.extra && typeof context.extra !== 'string') {
+  if (!!context && !!context.extra && typeof context.extra !== 'string') {
     try {
       const newExtra = {};
       for (const [extraKey, extraValue] of Object.entries(context.extra)) {

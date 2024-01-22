@@ -259,3 +259,16 @@ model Municipality {
   IndiceAtmospheric         IndiceAtmospheric[]
   AlertPollutionAtmospheric AlertPollutionAtmospheric[]
 }
+
+model Recommandation {
+  unique_key             String             @id @unique // the key is the combination of indicator + indicator_value + recommandation_id
+  recommandation_id      String
+  recommandation_content String
+  indicator              IndicatorsSlugEnum
+  indicator_value        Int
+  type_weather_alert     String? // only for WeatherAlert
+  created_at             DateTime           @default(now())
+  updated_at             DateTime           @default(now()) @updatedAt
+
+  @@index([indicator, indicator_value], name: "recommandation_indeicator_indicator_value")
+}

@@ -166,7 +166,7 @@ pg-api-node:
 cronjobs:
   ~chart: daemon
   ~needs: [build-api-node, pg-api-node]
-  imagePackage: app
+  imagePackage: api-node
   replicas: 1
   entrypoint: ["tsx", "./src/cronjobs/index.ts"]
   envFrom:

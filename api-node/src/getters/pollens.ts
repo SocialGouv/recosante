@@ -61,14 +61,28 @@ async function getPollensFromMunicipalityAndDate({
     return null;
   }
 
+  const recommandationsJ0 = await prisma.recommandation
+    .findMany({
+      where: {
+        indicator: IndicatorsSlugEnum.pollen_allergy,
+        indicator_value: pollensJ0.total ?? 0,
+      },
+      select: {
+        recommandation_content: true,
+      },
+    })
+    .then((recommandations) =>
+      recommandations.map(
+        (recommandation) => recommandation.recommandation_content,
+      ),
+    );
+
   const formattedPollensJ0 = {
     id: pollensJ0.id,
     summary: {
       value: pollensJ0.total ?? 0,
       status: getPollensStatus(pollensJ0.total ?? 0),
-      recommendations: [
-        "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-      ],
+      recommendations: recommandationsJ0,
     },
     validity_start: pollensJ0.validity_start.toISOString(),
     validity_end: pollensJ0.validity_end.toISOString(),
@@ -110,15 +124,30 @@ async function getPollensFromMunicipalityAndDate({
       },
       orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
     });
+
     if (pollensJ1) {
+      const recommandationsJ1 = await prisma.recommandation
+        .findMany({
+          where: {
+            indicator: IndicatorsSlugEnum.pollen_allergy,
+            indicator_value: pollensJ1.total ?? 0,
+          },
+          select: {
+            recommandation_content: true,
+          },
+        })
+        .then((recommandations) =>
+          recommandations.map(
+            (recommandation) => recommandation.recommandation_content,
+          ),
+        );
+
       pollensIndicator.j1 = {
         id: pollensJ1.id,
         summary: {
           value: pollensJ1.total ?? 0,
           status: getPollensStatus(pollensJ1.total ?? 0),
-          recommendations: [
-            "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-          ],
+          recommendations: recommandationsJ1,
         },
         validity_start: pollensJ1.validity_start.toISOString(),
         validity_end: pollensJ1.validity_end.toISOString(),
