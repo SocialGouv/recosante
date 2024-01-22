@@ -100,6 +100,8 @@ model PollenAllergyRisk {
   armoises                Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
   ambroisies              Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
   total                   Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
+
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "pollen_municipality_insee_code_diffusion_date_validity_start")
 }
 
 enum CodeAlertEnums {
@@ -141,6 +143,8 @@ model WeatherAlert {
 
   code_alert CodeAlertEnums?
   phenomenon PhenomenonsEnum?
+
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "weather_municipality_insee_code_diffusion_date_validity_start")
 }
 
 model IndiceAtmospheric {
