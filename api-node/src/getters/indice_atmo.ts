@@ -76,6 +76,22 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
   });
 
+  const recommandationsJ0 = await prisma.recommandation
+    .findMany({
+      where: {
+        indicator: IndicatorsSlugEnum.indice_atmospheric,
+        indicator_value: indice_atmo_j0.code_qual,
+      },
+      select: {
+        recommandation_content: true,
+      },
+    })
+    .then((recommandations) =>
+      recommandations.map(
+        (recommandation) => recommandation.recommandation_content,
+      ),
+    );
+
   const indiceAtmoIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_atmospheric,
     name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
@@ -90,10 +106,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       summary: {
         value: indice_atmo_j0.code_qual,
         status: getIndiceAtmoStatus(indice_atmo_j0.code_qual),
-        recommendations: [
-          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-          "La recommandation 2 tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-        ],
+        recommendations: recommandationsJ0,
       },
       validity_start: indice_atmo_j0.validity_start.toISOString(),
       validity_end: indice_atmo_j0.validity_end.toISOString(),
@@ -131,14 +144,28 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   };
 
   if (!!indice_atmo_j1 && indice_atmo_j1?.code_qual !== null) {
+    const recommandationsJ1 = await prisma.recommandation
+      .findMany({
+        where: {
+          indicator: IndicatorsSlugEnum.indice_atmospheric,
+          indicator_value: indice_atmo_j1.code_qual,
+        },
+        select: {
+          recommandation_content: true,
+        },
+      })
+      .then((recommandations) =>
+        recommandations.map(
+          (recommandation) => recommandation.recommandation_content,
+        ),
+      );
+
     indiceAtmoIndicator.j1 = {
       id: indice_atmo_j1.id,
       summary: {
         value: indice_atmo_j1.code_qual,
         status: getIndiceAtmoStatus(indice_atmo_j1.code_qual),
-        recommendations: [
-          "La recommandation tirée au sort pile pour aujourd'hui, pour ces conditions d'indice, de saison, de date, de lieu",
-        ],
+        recommendations: recommandationsJ1,
       },
       validity_start: indice_atmo_j1.validity_start.toISOString(),
       validity_end: indice_atmo_j1.validity_end.toISOString(),
