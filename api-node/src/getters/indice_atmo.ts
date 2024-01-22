@@ -85,6 +85,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       select: {
         recommandation_content: true,
       },
+      take: 2,
     })
     .then((recommandations) =>
       recommandations.map(
@@ -155,6 +156,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         select: {
           recommandation_content: true,
         },
+        take: 2,
       })
       .then((recommandations) =>
         recommandations.map(

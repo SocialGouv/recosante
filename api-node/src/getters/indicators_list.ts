@@ -11,13 +11,13 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
   [IndicatorsSlugEnum.indice_uv]: {
     name: 'Indice UV',
     short_name: 'Indice UV',
-    long_name: "L'indice UV",
+    long_name: 'Le risque UV',
     slug: IndicatorsSlugEnum.indice_uv,
   },
   [IndicatorsSlugEnum.pollen_allergy]: {
     name: 'Allergie aux Pollens',
     short_name: 'Pollens',
-    long_name: "L'Allergie aux pollens",
+    long_name: "Le risque d'allergie aux pollens",
     slug: IndicatorsSlugEnum.pollen_allergy,
   },
   [IndicatorsSlugEnum.weather_alert]: {
