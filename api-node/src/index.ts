@@ -81,8 +81,9 @@ app.use(helmet());
 
 // sentry context/user
 app.use(async (req, res, next) => {
-  const { appversion, appdevice, currentroute } = req.headers || {};
+  const { appversion, appbuild, appdevice, currentroute } = req.headers || {};
   if (appversion) Sentry.setTag('appversion', appversion as string);
+  if (appbuild) Sentry.setTag('appbuild', appbuild as string);
   if (appdevice) Sentry.setTag('appdevice', appdevice as string);
   if (currentroute) Sentry.setTag('currentroute', currentroute as string);
   next();

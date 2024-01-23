@@ -54,7 +54,7 @@ const sendError = (
   _next: express.NextFunction,
 ) => {
   const { body, query, params, route, method, originalUrl, headers } = req;
-  const { auth, appversion, appdevice } = headers;
+  const { auth, appversion, appbuild, appdevice } = headers;
   capture(err, {
     extra: {
       body,
@@ -64,6 +64,7 @@ const sendError = (
       method,
       originalUrl,
       appversion,
+      appbuild,
       appdevice,
       auth,
       headers,

@@ -4,10 +4,14 @@ import type express from 'express';
 
 export default function (
   {
-    headers: { appversion },
+    headers: { appversion, appbuild, appdevice, currentroute, authorization },
   }: {
     headers: {
       appversion: string;
+      appbuild: string;
+      appdevice: string;
+      currentroute: string;
+      authorization: string;
     };
   },
   res: express.Response,
