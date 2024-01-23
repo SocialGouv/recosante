@@ -168,7 +168,7 @@ cronjobs:
   ~needs: [build-api-node, pg-api-node]
   imagePackage: api-node
   replicas: 1
-  entrypoint: ["tsx", "./src/cronjobs/index.ts"]
+  entrypoint: ["yarn", "start-cronjobs"]
   envFrom:
     - secretRef:
         name: "pg-api-node-app"
