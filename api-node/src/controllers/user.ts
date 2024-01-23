@@ -93,9 +93,13 @@ router.put(
       }
 
       await prisma.user
-        .update({
+        .upsert({
           where: { matomo_id: req.user.matomo_id },
-          data: updatedUser,
+          update: updatedUser,
+          create: {
+            matomo_id: req.user.matomo_id,
+            ...updatedUser,
+          },
         })
         .then(() => {
           console.log('User has been updated');
