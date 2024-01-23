@@ -1,5 +1,3 @@
-import type { PollenAllergyRisk } from '@prisma/client';
-
 export enum PollensRiskNumberEnum {
   NO_RISK = 0,
   VERY_LOW = 1,
