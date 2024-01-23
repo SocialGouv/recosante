@@ -18,18 +18,20 @@ export type IndiceUVNumber =
   | 15 // 'Extrême'
   | 16; // 'Extrême'
 
-export type IndiceUVColor =
-  | '#757575' // 'Nul'
-  | '#207900' // 'Faible'
-  | '#EFD100' // 'Modéré'
-  | '#EB5000' // 'Fort'
-  | '#D8001D' // 'Très fort'
-  | '#B600AE'; // 'Extrême'
+export enum IndiceUVColor {
+  NUL = '#D9D9EF', // 'Nul'
+  FAIBLE = '#b1f3ef', // 'Faible'
+  MODERE = '#73c8ae', // 'Modéré'
+  FORT = '#ee817e', // 'Fort'
+  TRES_FORT = '#a7546d', // 'Très fort'
+  EXTREME = '#965f9b', // 'Extrême'
+}
 
-export type IndiceUVLabel =
-  | 'Extrême'
-  | 'Très fort'
-  | 'Fort'
-  | 'Modéré'
-  | 'Faible'
-  | 'Nul';
+export enum IndiceUVLabel {
+  NUL = 'Extrême',
+  FAIBLE = 'Très fort',
+  MODERE = 'Fort',
+  FORT = 'Modéré',
+  TRES_FORT = 'Faible',
+  EXTREME = 'Nul',
+}

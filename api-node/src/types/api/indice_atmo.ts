@@ -44,14 +44,14 @@ export enum PolluantQualificatifsLabelEnum {
 
 // source: https://www.atmo-auvergnerhonealpes.fr/sites/aura/files/content/migrated/atoms/files/atmo_ppt-kit-com-nouvel-indice-v2_0.pdf
 export enum PolluantQualificatifsColorEnum {
-  GOOD = '#50f0e6',
-  FAIR = '#50ccaa',
-  MODERATE = '#f0e641',
-  POOR = '#ff5050',
-  VERY_POOR = '#960032',
-  EXTREMELY_POOR = '#872181',
-  NOT_AVAILABLE = '#000000',
-  SPECIAL_EVENT = '#000000',
+  GOOD = '#b1f3ef',
+  FAIR = '#73c8ae',
+  MODERATE = '#fef799',
+  POOR = '#ee817e',
+  VERY_POOR = '#a7546d',
+  EXTREMELY_POOR = '#965f9b',
+  NOT_AVAILABLE = '#D9D9EF',
+  SPECIAL_EVENT = '#D9D9EF',
 }
 
 export enum SourcesEnum {

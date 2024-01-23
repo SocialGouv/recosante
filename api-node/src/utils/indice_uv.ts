@@ -1,38 +1,38 @@
-import type {
-  IndiceUVNumber,
-  IndiceUVLabel,
+import {
   IndiceUVColor,
+  IndiceUVLabel,
+  type IndiceUVNumber,
 } from '~/types/api/indice_uv';
 
 function getIndiceUVStatus(indice_uv: IndiceUVNumber): IndiceUVLabel {
   if (indice_uv >= 11) {
-    return 'Extrême';
+    return IndiceUVLabel.EXTREME;
   } else if (indice_uv >= 8) {
-    return 'Très fort';
+    return IndiceUVLabel.TRES_FORT;
   } else if (indice_uv >= 6) {
-    return 'Fort';
+    return IndiceUVLabel.FORT;
   } else if (indice_uv >= 3) {
-    return 'Modéré';
+    return IndiceUVLabel.MODERE;
   } else if (indice_uv >= 1) {
-    return 'Faible';
+    return IndiceUVLabel.FAIBLE;
   } else {
-    return 'Nul';
+    return IndiceUVLabel.NUL;
   }
 }
 
 function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
   if (indice_uv >= 11) {
-    return '#B600AE';
+    return IndiceUVColor.EXTREME;
   } else if (indice_uv >= 8) {
-    return '#D8001D';
+    return IndiceUVColor.TRES_FORT;
   } else if (indice_uv >= 6) {
-    return '#EB5000';
+    return IndiceUVColor.FORT;
   } else if (indice_uv >= 3) {
-    return '#EFD100';
+    return IndiceUVColor.MODERE;
   } else if (indice_uv >= 1) {
-    return '#207900';
+    return IndiceUVColor.FAIBLE;
   } else {
-    return '#757575';
+    return IndiceUVColor.NUL;
   }
 }
 
