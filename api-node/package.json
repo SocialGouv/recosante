@@ -52,9 +52,6 @@
     "typescript": "5.3.2"
   },
   "prettier": {
-    "plugins": [
-      "./node_modules/prettier-plugin-prisma"
-    ],
     "singleQuote": true,
     "trailingComma": "all",
     "semi": true,
