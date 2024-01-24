@@ -78,7 +78,6 @@ async function getIndiceUvFromMunicipalityAndDate({
         (recommandation) => recommandation.recommandation_content,
       ),
     );
-  console.log({ recommandationsJ0 });
 
   const indiceUvIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_uv,

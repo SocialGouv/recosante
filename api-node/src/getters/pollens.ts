@@ -79,11 +79,6 @@ async function getPollensFromMunicipalityAndDate({
       ),
     );
 
-  console.log({
-    recommandationsJ0,
-    pollensJ0,
-  });
-
   const formattedPollensJ0 = {
     id: pollensJ0.id,
     summary: {
