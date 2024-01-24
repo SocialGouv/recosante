@@ -23,7 +23,7 @@ router.get(
       return;
     }
 
-    const current_app_buildversion_in_production = 5;
+    const current_app_buildversion_in_production = 7;
 
     if (
       parseInt(appbuild as string, 10) > current_app_buildversion_in_production
@@ -41,7 +41,9 @@ router.get(
       ok: true,
       data: {
         environment: 'production',
-        api_host: 'api-node.recosante.beta.gouv.fr',
+        api_host: 'api-node-recosante-preprod.dev.fabrique.social.gouv.fr',
+        // api_host: 'api-node.recosante.beta.gouv.fr',
+        // api_host: 'api-node.recosante.beta.gouv.fr',
       },
     });
   }),
