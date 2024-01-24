@@ -13,8 +13,12 @@ router.get(
       });
       return;
     }
-    console.log(parseInt(appbuild as string, 10));
-    if (parseInt(appbuild as string, 10) > 5) {
+
+    const current_app_buildversion_in_production = 5;
+
+    if (
+      parseInt(appbuild as string, 10) > current_app_buildversion_in_production
+    ) {
       res.status(200).send({
         ok: true,
         data: {
