@@ -28,10 +28,10 @@ export enum IndiceUVColor {
 }
 
 export enum IndiceUVLabel {
-  NUL = 'Extrême',
-  FAIBLE = 'Très fort',
-  MODERE = 'Fort',
-  FORT = 'Modéré',
-  TRES_FORT = 'Faible',
-  EXTREME = 'Nul',
+  NUL = 'Pas de risque',
+  FAIBLE = 'Faible',
+  MODERE = 'Modéré',
+  FORT = 'Fort',
+  TRES_FORT = 'Très fort',
+  EXTREME = 'Extrême',
 }
