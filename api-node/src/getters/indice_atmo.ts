@@ -1,4 +1,5 @@
 import { type CustomError } from '~/types/error';
+import fs from 'fs';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
@@ -93,6 +94,11 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       ),
     );
 
+  const about_description = fs.readFileSync(
+    './data/about/indice_atmo.md',
+    'utf8',
+  );
+
   const indiceAtmoIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_atmospheric,
     name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
@@ -102,8 +108,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
       indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].short_name,
     municipality_insee_code,
     about_title: 'à propos de la qualité de l’air et l’indice ATMO',
-    about_description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut auctor, nisl eget ultricies aliquam, nunc nisl aliquet nunc, nec aliquam nisl nunc nec nisl.',
+    about_description,
     j0: {
       id: indice_atmo_j0.id,
       summary: {
