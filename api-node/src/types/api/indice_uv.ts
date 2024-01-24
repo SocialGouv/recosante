@@ -28,7 +28,7 @@ export enum IndiceUVColor {
 }
 
 export enum IndiceUVLabel {
-  NUL = 'Pas de risque',
+  NUL = 'Risque nul',
   FAIBLE = 'Faible',
   MODERE = 'Modéré',
   FORT = 'Fort',

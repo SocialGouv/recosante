@@ -18,7 +18,9 @@ export async function getRecommandationsFromGoogleSheet() {
     const recommandation_id = value[0];
     const recommandation_content = value[1];
     const indicator = value[2] as IndicatorsSlugEnum;
-    const indicator_values = value[3].split(', ');
+    const indicator_values = value[3]
+      .split(',')
+      .map((indicator_value) => indicator_value.trim());
     const type_weather_alert = value[4];
 
     for (const indicator_value of indicator_values) {
