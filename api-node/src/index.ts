@@ -13,6 +13,7 @@ import versionCheck from './middlewares/version-check';
 import { capture } from './third-parties/sentry.ts';
 
 import eventRouter from './controllers/event.ts';
+import environmentRouter from './controllers/environment.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 import packageJson from '../package.json';
@@ -99,6 +100,7 @@ app.post('/sentry-check', async (req, res) => {
 app.use(versionCheck);
 
 // Routes
+app.use('/environment', environmentRouter);
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/indicators', indicatorsRouter);
