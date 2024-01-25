@@ -4,16 +4,33 @@ import { z } from 'zod';
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
 import {
-  CodeAlertEnums,
+  type CodeAlertEnums,
   DataAvailabilityEnum,
-  PhenomenonsEnum,
+  type PhenomenonsEnum,
   type Municipality,
 } from '@prisma/client';
-import { type WeatherAlertResponse } from '~/types/api/weather-alert';
+import {
+  WeatherAlertColorId,
+  WeatherAlertPhenomenonId,
+  type WeatherAlertResponse,
+} from '~/types/api/weather-alert';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
+import { departments, departmentsCoastalArea } from '~/utils/departments';
+import {
+  getPhenomenonColorById,
+  getPhenomenonNameById,
+} from '~/utils/weather-alert';
 
-const URL =
-  'https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours';
+/*
+Documentation:
+Réponse de l'api: https://donneespubliques.meteofrance.fr/client/document/descriptiftechnique_vigilancemetropole_donneespubliques_v4_20230911_307.pdf
+Autre:
+https://portail-api.meteofrance.fr/web/en/api/DonneesPubliquesVigilance
+https://donneespubliques.meteofrance.fr
+https://donneespubliques.meteofrance.fr/?fond=produit&id_produit=305&id_rubrique=50
+https://meteofrance-api.readthedocs.io/_/downloads/en/latest/pdf/
+https://donneespubliques.meteofrance.fr/?fond=produit&id_produit=305&id_rubrique=50
+*/
 
 let now = Date.now();
 function logStep(step: string) {
@@ -24,16 +41,18 @@ function logStep(step: string) {
   now = Date.now();
 }
 
-// Doc => https://meteofrance-api.readthedocs.io/_/downloads/en/latest/pdf/
 export async function getWeatherAlert() {
   // Step 1: Fetch data
   now = Date.now();
   logStep('Getting Weather Alert');
-  const data: WeatherAlertResponse = await fetch(URL, {
-    headers: {
-      apiKey: PORTAL_API_METEOFRANCE_API_KEY,
+  const data: WeatherAlertResponse = await fetch(
+    'https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours',
+    {
+      headers: {
+        apiKey: PORTAL_API_METEOFRANCE_API_KEY,
+      },
     },
-  }).then(async (response) => {
+  ).then(async (response) => {
     if (!response.ok) {
       throw new Error(
         `getWeatherAlert error! status: ${response.status} ${response.statusText}`,
@@ -46,54 +65,57 @@ export async function getWeatherAlert() {
   const diffusion_date = data.product.update_time;
   // Step 2: Validate data
   try {
-    const TimelapsItemSchema = z.object({
-      begin_time: z.string(),
-      end_time: z.string(),
-      color_id: z.number(),
-    });
-
-    const PhenomenonItemSchema = z.object({
-      phenomenon_id: z.string(),
-      phenomenon_max_color_id: z.number(),
-      timelaps_items: z.array(TimelapsItemSchema),
-    });
-
-    const DomainIdSchema = z.object({
-      domain_id: z.string(),
-      max_color_id: z.number(),
-      phenomenon_items: z.array(PhenomenonItemSchema),
-    });
-
-    const TextItemsSchema = z.object({
-      title: z.string(),
-      text: z.array(z.string()),
-    });
-
-    const PeriodSchema = z.object({
-      echeance: z.string(),
-      begin_validity_time: z.string(),
-      end_validity_time: z.string(),
-      text_items: TextItemsSchema,
-      timelaps: z.object({
-        domain_ids: z.array(DomainIdSchema),
-      }),
-    });
-
     z.object({
       product: z.object({
-        warning_type: z.string(),
-        type_cdp: z.string(),
-        version_vigilance: z.string(),
-        version_cdp: z.string(),
-        update_time: z.string(),
-        domain_id: z.string(),
-        global_max_color_id: z.string(),
-        periods: z.array(PeriodSchema),
+        warning_type: z.literal('vigilance'),
+        type_cdp: z.literal('cdp_carte_externe'),
+        version_vigilance: z.literal('V6'),
+        version_cdp: z.literal('1.0.0'),
+        update_time: z.string().datetime(),
+        domain_id: z.literal('FRA'),
+        global_max_color_id: z.nativeEnum(WeatherAlertColorId),
+        periods: z.array(
+          z.object({
+            echeance: z.union([z.literal('j0'), z.literal('j1')]),
+            begin_validity_time: z.string().datetime(),
+            end_validity_time: z.string().datetime(),
+            text_items: z.object({
+              title: z.string(),
+              text: z.array(z.string()),
+            }),
+            timelaps: z.object({
+              domain_ids: z.array(
+                z.object({
+                  domain_id: z.enum([
+                    ...departments,
+                    'FRA',
+                    ...departmentsCoastalArea,
+                  ]),
+                  max_color_id: z.nativeEnum(WeatherAlertColorId),
+                  phenomenon_items: z.array(
+                    z.object({
+                      phenomenon_id: z.nativeEnum(WeatherAlertPhenomenonId),
+                      phenomenon_max_color_id:
+                        z.nativeEnum(WeatherAlertColorId),
+                      timelaps_items: z.array(
+                        z.object({
+                          begin_time: z.string().datetime(),
+                          end_time: z.string().datetime(),
+                          color_id: z.nativeEnum(WeatherAlertColorId),
+                        }),
+                      ),
+                    }),
+                  ),
+                }),
+              ),
+            }),
+          }),
+        ),
       }),
       meta: z.object({
         snapshot_id: z.string(),
-        product_datetime: z.string(),
-        generation_timestamp: z.string(),
+        product_datetime: z.string().datetime(),
+        generation_timestamp: z.string().datetime(),
       }),
     }).parse(data);
   } catch (error: any) {
@@ -122,47 +144,6 @@ export async function getWeatherAlert() {
       `WeatherAlert already fetched for diffusionDate ${diffusionDate.toDateString()}: ${existingWeatherAlert} rows`,
     );
     return;
-  }
-
-  function getPhenomenonNameById(id: string) {
-    switch (id) {
-      case '1':
-        return PhenomenonsEnum.VIOLENT_WIND;
-      case '2':
-        return PhenomenonsEnum.RAIN_FLOOD;
-      case '3':
-        return PhenomenonsEnum.STORM;
-      case '4':
-        return PhenomenonsEnum.FLOOD;
-      case '5':
-        return PhenomenonsEnum.SNOW_ICE;
-      case '6':
-        return PhenomenonsEnum.HEAT_WAVE;
-      case '7':
-        return PhenomenonsEnum.COLD_WAVE;
-      case '8':
-        return PhenomenonsEnum.AVALANCHE;
-      case '9':
-        return PhenomenonsEnum.WAVES_SUBMERSION;
-      default:
-        throw new Error(`Phenomenon id ${id} not found`);
-    }
-  }
-
-  function getPhenomenonColorById(id: number) {
-    switch (id) {
-      case 1:
-        return CodeAlertEnums.GREEN;
-      case 2:
-        return CodeAlertEnums.YELLOW;
-      case 3:
-        return CodeAlertEnums.ORANGE;
-      case 4:
-        return CodeAlertEnums.RED;
-
-      default:
-        throw new Error(`Phenomenon id ${id} not found`);
-    }
   }
 
   // Step 4: format data by department to iterate quickly on municipalities
