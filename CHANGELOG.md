@@ -1,3 +1,20 @@
+# [1.15.0](https://github.com/SocialGouv/recosante/compare/v1.14.0...v1.15.0) (2024-01-25)
+
+
+### Bug Fixes
+
+* indice atmo about ([14f0c7e](https://github.com/SocialGouv/recosante/commit/14f0c7ef26905f5992d657b99219170c770bda56))
+* install state yarn ([d7ed94a](https://github.com/SocialGouv/recosante/commit/d7ed94ac5283335246802ded79df34850a8cddf9))
+* pas de risque ([ae00622](https://github.com/SocialGouv/recosante/commit/ae006226df7a6968201d38ee26f5a61a6ed699bb))
+* recos ([9806fdb](https://github.com/SocialGouv/recosante/commit/9806fdb6255bad20f2c03f4336ad004de3819e76))
+* remove apiNodeHost with beta.gouv ([693f09d](https://github.com/SocialGouv/recosante/commit/693f09d2c53b59ca619c08d1b77f3ce87e194b92))
+* trim value google sheet; ([27bb568](https://github.com/SocialGouv/recosante/commit/27bb5685dfd9a5a3803b4e22a50389c64ea0e127))
+
+
+### Features
+
+* api environment ([#376](https://github.com/SocialGouv/recosante/issues/376)) ([fe51e87](https://github.com/SocialGouv/recosante/commit/fe51e87612384682e417c964092610e020176538))
+
 # [1.14.0](https://github.com/SocialGouv/recosante/compare/v1.13.1...v1.14.0) (2024-01-23)
 
 
