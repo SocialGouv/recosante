@@ -41,7 +41,7 @@ router.get(
       ok: true,
       data: {
         environment: 'production',
-        api_host: 'api-node-recosante-preprod.dev.fabrique.social.gouv.fr',
+        api_host: 'recosante-api-node.fabrique.social.gouv.fr',
         // api_host: 'api-node.recosante.beta.gouv.fr',
         // api_host: 'api-node.recosante.beta.gouv.fr',
       },
