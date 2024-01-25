@@ -1,3 +1,18 @@
+# [1.16.0](https://github.com/SocialGouv/recosante/compare/v1.15.1...v1.16.0) (2024-01-25)
+
+
+### Bug Fixes
+
+* bump prod api version ([72f9a56](https://github.com/SocialGouv/recosante/commit/72f9a5607b277cd2d63823ef5a422a886d432edb))
+* bump prod api version ([51db06e](https://github.com/SocialGouv/recosante/commit/51db06e4ee205907ee9e3a6b6c7831a5069fa54e))
+* prod api-node url ([aad25ed](https://github.com/SocialGouv/recosante/commit/aad25ede3fb6dc725a9d03f60e4ff251cff86260))
+* upsert user ([f7b1d1f](https://github.com/SocialGouv/recosante/commit/f7b1d1fccf83d9ae4419068da87156b7f2097652))
+
+
+### Features
+
+* download link ([#377](https://github.com/SocialGouv/recosante/issues/377)) ([24f0389](https://github.com/SocialGouv/recosante/commit/24f0389d8cb87a99e81cae35faa3e499198f5bf6))
+
 ## [1.15.1](https://github.com/SocialGouv/recosante/compare/v1.15.0...v1.15.1) (2024-01-25)
 
 
