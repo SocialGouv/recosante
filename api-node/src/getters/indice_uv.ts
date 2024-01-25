@@ -1,4 +1,5 @@
 import { type CustomError } from '~/types/error';
+import fs from 'fs';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
@@ -79,6 +80,11 @@ async function getIndiceUvFromMunicipalityAndDate({
       ),
     );
 
+  const about_description = fs.readFileSync(
+    './data/about/indice_uv.md',
+    'utf8',
+  );
+
   const indiceUvIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_uv,
     name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
@@ -86,9 +92,7 @@ async function getIndiceUvFromMunicipalityAndDate({
     long_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].long_name,
     municipality_insee_code: indice_uv.municipality_insee_code,
     about_title: "à propos de l'indice UV",
-    about_description: `Les ultraviolets naturels (UV) font partie des rayonnements émis par le soleil. Si une exposition occasionnelle présente un effet bénéfique (vitamine D), une exposition trop importante peut engendrer des risques immédiats (coups de soleil) ou de long terme (cancer de la peau).
-Pour communiquer sur le niveau de risque d’une exposition au soleil, l’Organisation mondiale de la météorologie et l’Organisation mondiale de la santé recommandent d’utiliser une échelle universelle appelée « Indice UV ».
-Cet indice chiffré (de 1 à 11+) reflète l’intensité du rayonnement ultraviolet et son impact sanitaire sur la peau. En général, l’information communiquée est la valeur maximale de l’indice sur la journée, atteinte dans une tranche de 2 à 4 heures autour du midi solaire. Plus l’indice UV est élevé, plus le risque de lésions cutanées et oculaires est important.`,
+    about_description,
     j0: {
       id: indice_uv.id,
       summary: {
