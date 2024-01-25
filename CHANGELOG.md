@@ -1,3 +1,10 @@
+## [1.15.1](https://github.com/SocialGouv/recosante/compare/v1.15.0...v1.15.1) (2024-01-25)
+
+
+### Bug Fixes
+
+* use fabrique url for prod node-api ([531f5c9](https://github.com/SocialGouv/recosante/commit/531f5c9b1c21d20d12bad9f168a80e16a21a1fc5))
+
 # [1.15.0](https://github.com/SocialGouv/recosante/compare/v1.14.0...v1.15.0) (2024-01-25)
 
 
