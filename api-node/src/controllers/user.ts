@@ -32,7 +32,11 @@ router.post(
       }
 
       const matomo_id = req.body.matomo_id as User['matomo_id'];
-      await prisma.user.create({ data: { matomo_id } });
+      await prisma.user.upsert({
+        where: { matomo_id },
+        update: { matomo_id },
+        create: { matomo_id },
+      });
       res.status(200).send({ ok: true });
     },
   ),
