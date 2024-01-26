@@ -50,7 +50,7 @@ async function getIndiceUvFromMunicipalityAndDate({
         lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
 
   if (indice_uv?.uv_j0 == null) {

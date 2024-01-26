@@ -11,6 +11,7 @@ import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
 import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
 import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
+import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -73,6 +74,17 @@ router.get(
         return;
       }
       if (pollens) indicators.push(pollens);
+
+      const weatherAlert = await getWeatherAlertFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (weatherAlert instanceof Error) {
+        next(weatherAlert);
+        return;
+      }
+      console.log('weatherAlert', weatherAlert);
+      if (weatherAlert) indicators.push(weatherAlert);
 
       indicators.push(...indicatorsMock);
 

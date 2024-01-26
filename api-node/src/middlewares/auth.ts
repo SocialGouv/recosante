@@ -23,8 +23,14 @@ export async function withUser(
     capture('Unexpected user not found so we create a new one', {
       extra: { matomo_id },
     });
-    user = await prisma.user.create({
-      data: {
+    user = await prisma.user.upsert({
+      where: {
+        matomo_id,
+      },
+      update: {
+        matomo_id,
+      },
+      create: {
         matomo_id,
       },
     });

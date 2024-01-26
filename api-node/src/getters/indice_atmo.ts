@@ -49,7 +49,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
 
   if (indice_atmo_j0?.code_qual == null) {
@@ -74,7 +74,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
           .toISOString(),
       },
     },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
 
   const recommandationsJ0 = await prisma.recommandation
