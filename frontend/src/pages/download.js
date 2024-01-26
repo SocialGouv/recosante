@@ -41,34 +41,6 @@ export default function Download() {
         <meta property="al:android:package" content={ANDROID_APP_ID} />
         <meta property="al:web:url" content={ROOT_URL} />
         <meta property="al:web:should_fallback" content="false" />
-        <Script
-          id="redirect-to-stores"
-          dangerouslySetInnerHTML={{
-            __html: `
-  function redirect() {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    var ios = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
-    if (ios) {
-      window.location = recosante://welcome;
-      window.setTimeout(() => {
-        window.location.replace('${IOS_URL}');
-      }, 25)
-      return
-    }
-    var android = /android/i.test(userAgent);
-    if (android) {
-      window.location = recosante://welcome;
-      window.setTimeout(() => {
-        window.location.replace('${ANDROID_URL}');
-      }, 25)
-      return
-    }
-    // window.location.replace('${ROOT_URL}')
-  }
-  redirect()
-`,
-          }}
-        />
       </Helmet>
       <section className="relative mx-auto flex max-w-sm flex-col px-4 pt-10 md:max-w-6xl md:px-6 xl:pt-20">
         <div className="mx-auto">
@@ -100,6 +72,26 @@ export default function Download() {
           </div>
         </div>
       </section>
+      <Script id="redirect-to-stores">
+        {`
+var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+var ios = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+if (ios) {
+  window.location = 'recosante://welcome';
+  window.setTimeout(() => {
+    window.location.replace('${IOS_URL}');
+  }, 25);
+} else {
+  var android = /android/i.test(userAgent);
+  if (android) {
+    window.location = 'recosante://welcome';
+    window.setTimeout(() => {
+      window.location.replace('${ANDROID_URL}');
+    }, 25);
+  }
+}
+`}
+      </Script>
     </Web>
   );
 }
