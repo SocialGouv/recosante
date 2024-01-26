@@ -26,8 +26,6 @@ export function getPhenomenonDBKeyById(
     case WeatherAlertPhenomenonIdEnum.WAVES_SUBMERSION:
       return WeatherAlertPhenomenonDBKeyEnum.WAVES_SUBMERSION;
     default:
-      throw new Error(
-        `Phenomenon id ${id as WeatherAlertPhenomenonDBKeyEnum} not found`,
-      );
+      throw new Error(`Phenomenon id ${id as string} not found`);
   }
 }
