@@ -3,6 +3,7 @@ import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
+import { getWeatherAlert } from '~/aggregators/weather-alert';
 
 /*
 *
@@ -54,6 +55,16 @@ export async function initAggregators() {
           // Data is available for the current day, J+1 and J+2
           cronTime: '10 8 * * *', // every day at 8:10am
           job: getIndiceUVIndicator,
+        }),
+    )
+    .then(
+      async () =>
+        await setupCronJob({
+          name: 'Weather Alerts',
+          // The data is a CSV issued every day at 6am or 7am
+          // Data is available for the current day, J+1 and J+2
+          cronTime: '20 * * * *', // every day every hour at HH:20
+          job: getWeatherAlert,
         }),
     )
     .then(() => {
