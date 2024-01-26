@@ -1,3 +1,11 @@
+## [1.17.2](https://github.com/SocialGouv/recosante/compare/v1.17.1...v1.17.2) (2024-01-26)
+
+
+### Bug Fixes
+
+* api-node-sealed-secret ([8d390ac](https://github.com/SocialGouv/recosante/commit/8d390ac65decea941fd4192e6f3e4fa1ced3fb23))
+* diffusion date ([2f64785](https://github.com/SocialGouv/recosante/commit/2f6478596b67029f6de1377a5395e68a073053d4))
+
 ## [1.17.1](https://github.com/SocialGouv/recosante/compare/v1.17.0...v1.17.1) (2024-01-26)
 
 
