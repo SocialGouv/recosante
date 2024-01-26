@@ -1,6 +1,6 @@
 import type express from 'express';
 
-// const MINIMUM_MOBILE_APP_VERSION = 75;
+const MINIMUM_MOBILE_APP_VERSION = 10;
 
 export default function (
   {
@@ -17,16 +17,30 @@ export default function (
   res: express.Response,
   next: express.NextFunction,
 ) {
-  // if (!appversion) return res.status(403).send({ ok: false, sendInApp: ["Veuillez mettre à jour votre application!"] });
-  // if (Number(appversion) < MINIMUM_MOBILE_APP_VERSION)
-  //   return res.status(403).send({
-  //     ok: false,
-  //     sendInApp: [
-  //       "Votre application n'est pas à jour !",
-  //       "Vous pouvez la mettre à jour en cliquant sur le lien ci-dessous",
-  //       [{ text: "Mettre à jour", link: "https://www.ozensemble.fr" }],
-  //       { cancelable: true },
-  //     ],
-  //   });
+  if (!appbuild) {
+    return res.status(403).send({
+      ok: false,
+      sendInApp: ['Veuillez mettre à jour votre application!'],
+    });
+  }
+
+  const ANDROID_APP_ID = 'com.recosante.recosante';
+  const IOS_APP_ID = '6476136888';
+  const ANDROID_URL = `https://play.google.com/store/apps/details?id=${ANDROID_APP_ID}`;
+  const IOS_URL = `https://apps.apple.com/fr/app/id${IOS_APP_ID}`;
+
+  const storeLink = appdevice === 'ios' ? IOS_URL : ANDROID_URL;
+
+  if (Number(appbuild) < MINIMUM_MOBILE_APP_VERSION) {
+    return res.status(403).send({
+      ok: false,
+      sendInApp: [
+        "Votre application n'est pas à jour !",
+        'Vous pouvez la mettre à jour en cliquant sur le lien ci-dessous',
+        [{ text: 'Mettre à jour', link: storeLink }],
+        { cancelable: true },
+      ],
+    });
+  }
   next();
 }
