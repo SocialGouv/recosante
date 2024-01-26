@@ -1,6 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import Web from "components/layout/Web";
+import { Script } from "gatsby";
 
 const ANDROID_APP_ID = "com.recosante.recosante";
 const IOS_APP_ID = "6476136888";
@@ -40,7 +41,8 @@ export default function Download() {
         <meta property="al:android:package" content={ANDROID_APP_ID} />
         <meta property="al:web:url" content={ROOT_URL} />
         <meta property="al:web:should_fallback" content="false" />
-        <script
+        <Script
+          id="redirect-to-stores"
           dangerouslySetInnerHTML={{
             __html: `
   function redirect() {
