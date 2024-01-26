@@ -3,7 +3,7 @@ import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { getWeatherAlert } from '~/aggregators/weather-alert';
+import { getWeatherAlert } from '~/aggregators/weather_alert';
 
 /*
 *

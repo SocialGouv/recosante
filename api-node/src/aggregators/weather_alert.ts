@@ -12,10 +12,10 @@ import {
   WeatherAlertColorIdEnum,
   WeatherAlertPhenomenonIdEnum,
   type WeatherAlertResponse,
-} from '~/types/api/weather-alert';
+} from '~/types/api/weather_alert';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
 import { departments, departmentsCoastalArea } from '~/utils/departments';
-import { getPhenomenonDBKeyById } from '~/utils/weather-alert';
+import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
 
 /*
 Documentation:

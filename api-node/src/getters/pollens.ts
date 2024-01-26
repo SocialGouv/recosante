@@ -49,7 +49,7 @@ async function getPollensFromMunicipalityAndDate({
         lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
       },
     },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
 
   if (!pollensJ0) {
@@ -126,7 +126,7 @@ async function getPollensFromMunicipalityAndDate({
             .toISOString(),
         },
       },
-      orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+      orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
     });
 
     if (pollensJ1) {

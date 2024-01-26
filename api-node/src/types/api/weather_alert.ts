@@ -14,6 +14,13 @@ export enum WeatherAlertColorEnum {
   RED = 'Rouge',
 }
 
+export enum WeatherAlertValuesEnum {
+  GREEN = 'Aucune',
+  YELLOW = 'Attentif',
+  ORANGE = 'Très vigilant',
+  RED = 'Vigilance absolue',
+}
+
 export enum WeatherAlertPhenomenonIdEnum {
   VIOLENT_WIND = '1',
   RAIN_FLOOD = '2',
