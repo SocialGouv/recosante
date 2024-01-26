@@ -1,3 +1,17 @@
+# [1.17.0](https://github.com/SocialGouv/recosante/compare/v1.16.0...v1.17.0) (2024-01-26)
+
+
+### Bug Fixes
+
+* gatsby script ([3aa4df7](https://github.com/SocialGouv/recosante/commit/3aa4df7890289d7379f06e7f61fd300ddc367d71))
+* gatsby script ([380bc9f](https://github.com/SocialGouv/recosante/commit/380bc9f039066281d3bae00ceb180d8fbe027962))
+* user error 500 ([a670d60](https://github.com/SocialGouv/recosante/commit/a670d60607a0e22b912b57426ffbabb0388a169b))
+
+
+### Features
+
+* weather alert aggregation ([#378](https://github.com/SocialGouv/recosante/issues/378)) ([694ff28](https://github.com/SocialGouv/recosante/commit/694ff283729ccbc254fb549611a781176916cfe1))
+
 # [1.16.0](https://github.com/SocialGouv/recosante/compare/v1.15.1...v1.16.0) (2024-01-25)
 
 
