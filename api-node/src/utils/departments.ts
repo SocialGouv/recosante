@@ -1,4 +1,4 @@
-export const departments = [
+export const departments: string[] = [
   '01',
   '02',
   '03',

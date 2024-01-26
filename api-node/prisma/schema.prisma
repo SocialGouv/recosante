@@ -104,25 +104,6 @@ model PollenAllergyRisk {
   @@index([municipality_insee_code, diffusion_date, validity_start], name: "pollen_municipality_insee_code_diffusion_date_validity_start")
 }
 
-enum CodeAlertEnums {
-  GREEN // Vigilance verte
-  YELLOW // Vigilance jaune
-  ORANGE // Vigilance orange
-  RED // Vigilance rouge
-}
-
-enum PhenomenonsEnum {
-  VIOLENT_WIND // Vent violent
-  RAIN_FLOOD // Pluie-Inondation
-  STORM // Orages
-  FLOOD // Crues
-  SNOW_ICE // Neige-verglas
-  HEAT_WAVE // Canicule
-  COLD_WAVE // Grand Froid
-  AVALANCHE // Avalanches
-  WAVES_SUBMERSION // Vagues-Submersion
-}
-
 // Vigilance Météo par MétéoFrance
 model WeatherAlert {
   id String @id @default(uuid())
@@ -137,14 +118,18 @@ model WeatherAlert {
   municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
-  // a row will be created ONLY if there is an alert
-  // an alert is a combination of a code_alert and a phenomenon
-  // example: alert HEAT_WAVE code RED
+  violent_wind            Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  rain_flood              Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  storm                   Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  flood                   Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  snow_ice                Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  heat_wave               Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  cold_wave               Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  avalanche               Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
+  waves_submersion        Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
 
-  code_alert CodeAlertEnums?
-  phenomenon PhenomenonsEnum?
-
-  @@index([municipality_insee_code, diffusion_date, validity_start], name: "weather_municipality_insee_code_diffusion_date_validity_start")
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "weather_alert_insee_code_diffusion_date_validity_start")
+  @@index([violent_wind, rain_flood, storm, flood, snow_ice, heat_wave, cold_wave, avalanche, waves_submersion])
 }
 
 model IndiceAtmospheric {

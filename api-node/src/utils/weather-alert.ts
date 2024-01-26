@@ -1,46 +1,31 @@
-import { CodeAlertEnums, PhenomenonsEnum } from '@prisma/client';
+import { capture } from '~/third-parties/sentry';
 import {
-  WeatherAlertPhenomenonId,
-  WeatherAlertColorId,
+  WeatherAlertPhenomenonIdEnum,
+  WeatherAlertPhenomenonDBKeyEnum,
 } from '~/types/api/weather-alert';
 
-export function getPhenomenonNameById(id: string) {
+export function getPhenomenonDBKeyById(id: WeatherAlertPhenomenonIdEnum) {
   switch (id) {
-    case WeatherAlertPhenomenonId.VIOLENT_WIND:
-      return PhenomenonsEnum.VIOLENT_WIND;
-    case WeatherAlertPhenomenonId.RAIN_FLOOD:
-      return PhenomenonsEnum.RAIN_FLOOD;
-    case WeatherAlertPhenomenonId.STORM:
-      return PhenomenonsEnum.STORM;
-    case WeatherAlertPhenomenonId.FLOOD:
-      return PhenomenonsEnum.FLOOD;
-    case WeatherAlertPhenomenonId.SNOW_ICE:
-      return PhenomenonsEnum.SNOW_ICE;
-    case WeatherAlertPhenomenonId.HEAT_WAVE:
-      return PhenomenonsEnum.HEAT_WAVE;
-    case WeatherAlertPhenomenonId.COLD_WAVE:
-      return PhenomenonsEnum.COLD_WAVE;
-    case WeatherAlertPhenomenonId.AVALANCHE:
-      return PhenomenonsEnum.AVALANCHE;
-    case WeatherAlertPhenomenonId.WAVES_SUBMERSION:
-      return PhenomenonsEnum.WAVES_SUBMERSION;
+    case WeatherAlertPhenomenonIdEnum.VIOLENT_WIND:
+      return WeatherAlertPhenomenonDBKeyEnum.VIOLENT_WIND;
+    case WeatherAlertPhenomenonIdEnum.RAIN_FLOOD:
+      return WeatherAlertPhenomenonDBKeyEnum.RAIN_FLOOD;
+    case WeatherAlertPhenomenonIdEnum.STORM:
+      return WeatherAlertPhenomenonDBKeyEnum.STORM;
+    case WeatherAlertPhenomenonIdEnum.FLOOD:
+      return WeatherAlertPhenomenonDBKeyEnum.FLOOD;
+    case WeatherAlertPhenomenonIdEnum.SNOW_ICE:
+      return WeatherAlertPhenomenonDBKeyEnum.SNOW_ICE;
+    case WeatherAlertPhenomenonIdEnum.HEAT_WAVE:
+      return WeatherAlertPhenomenonDBKeyEnum.HEAT_WAVE;
+    case WeatherAlertPhenomenonIdEnum.COLD_WAVE:
+      return WeatherAlertPhenomenonDBKeyEnum.COLD_WAVE;
+    case WeatherAlertPhenomenonIdEnum.AVALANCHE:
+      return WeatherAlertPhenomenonDBKeyEnum.AVALANCHE;
+    case WeatherAlertPhenomenonIdEnum.WAVES_SUBMERSION:
+      return WeatherAlertPhenomenonDBKeyEnum.WAVES_SUBMERSION;
     default:
-      throw new Error(`Phenomenon id ${id} not found`);
-  }
-}
-
-export function getPhenomenonColorById(id: number) {
-  switch (id) {
-    case WeatherAlertColorId.GREEN:
-      return CodeAlertEnums.GREEN;
-    case WeatherAlertColorId.YELLOW:
-      return CodeAlertEnums.YELLOW;
-    case WeatherAlertColorId.ORANGE:
-      return CodeAlertEnums.ORANGE;
-    case WeatherAlertColorId.RED:
-      return CodeAlertEnums.RED;
-
-    default:
-      throw new Error(`Phenomenon id ${id} not found`);
+      capture(`Phenomenon id ${id as WeatherAlertPhenomenonIdEnum} not found`);
+      return '';
   }
 }

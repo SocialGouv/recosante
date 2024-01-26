@@ -1,20 +1,20 @@
-import type { Department, DepartmentCoastalArea } from '~/utils/departments';
+import type { Department, DepartmentCoastalArea } from '~/utils/departments.ts';
 
-export enum WeatherAlertColorId {
+export enum WeatherAlertColorIdEnum {
   GREEN = 1,
   YELLOW = 2,
   ORANGE = 3,
   RED = 4,
 }
 
-enum WeatherAlertColor {
+export enum WeatherAlertColorEnum {
   GREEN = 'Vert',
   YELLOW = 'Jaune',
   ORANGE = 'Orange',
   RED = 'Rouge',
 }
 
-export enum WeatherAlertPhenomenonId {
+export enum WeatherAlertPhenomenonIdEnum {
   VIOLENT_WIND = '1',
   RAIN_FLOOD = '2',
   STORM = '3',
@@ -26,7 +26,7 @@ export enum WeatherAlertPhenomenonId {
   WAVES_SUBMERSION = '9',
 }
 
-export enum WeatherAlertPhenomenon {
+export enum WeatherAlertPhenomenonEnum {
   VIOLENT_WIND = 'Vent violent',
   RAIN_FLOOD = 'Pluie-Inondation',
   STORM = 'Orages',
@@ -36,6 +36,18 @@ export enum WeatherAlertPhenomenon {
   COLD_WAVE = 'Grand Froid',
   AVALANCHE = 'Avalanches',
   WAVES_SUBMERSION = 'Vagues-Submersion',
+}
+
+export enum WeatherAlertPhenomenonDBKeyEnum {
+  VIOLENT_WIND = 'violent_wind',
+  RAIN_FLOOD = 'rain_flood',
+  STORM = 'storm',
+  FLOOD = 'flood',
+  SNOW_ICE = 'snow_ice',
+  HEAT_WAVE = 'heat_wave',
+  COLD_WAVE = 'cold_wave',
+  AVALANCHE = 'avalanche',
+  WAVES_SUBMERSION = 'waves_submersion',
 }
 
 export interface WeatherAlertResponse {
@@ -48,7 +60,7 @@ export interface WeatherAlertResponse {
     domain_id: 'FRA';
     global_max_color_id: string;
     periods: Array<{
-      echeance: string;
+      echeance: 'J' | 'J1';
       begin_validity_time: string;
       end_validity_time: string;
       text_items: {
@@ -58,30 +70,30 @@ export interface WeatherAlertResponse {
       timelaps: {
         domain_ids: Array<{
           domain_id: Department | 'FRA' | DepartmentCoastalArea;
-          max_color_id: WeatherAlertColorId;
+          max_color_id: WeatherAlertColorIdEnum;
           phenomenon_items: Array<{
-            phenomenon_id: WeatherAlertPhenomenonId;
-            phenomenon_max_color_id: WeatherAlertColorId;
+            phenomenon_id: WeatherAlertPhenomenonIdEnum;
+            phenomenon_max_color_id: WeatherAlertColorIdEnum;
             timelaps_items: Array<{
               begin_time: string;
               end_time: string;
-              color_id: WeatherAlertColorId;
+              color_id: WeatherAlertColorIdEnum;
             }>;
           }>;
         }>;
       };
       max_count_items: Array<{
-        color_id: WeatherAlertColorId; // example: 2
-        color_name: WeatherAlertColor; // example: 'Jaune'
+        color_id: WeatherAlertColorIdEnum; // example: 2
+        color_name: WeatherAlertColorEnum; // example: 'Jaune'
         count: number; // example: 5
         text_count: string; // example: "5 départements en Jaune"
       }>;
       per_phenomenon_items: Array<{
-        phenomenon_id: WeatherAlertPhenomenonId;
+        phenomenon_id: WeatherAlertPhenomenonIdEnum;
         any_color_count: number;
         phenomenon_counts: Array<{
-          color_id: WeatherAlertColorId;
-          color_name: WeatherAlertColor;
+          color_id: WeatherAlertColorIdEnum;
+          color_name: WeatherAlertColorEnum;
           count: number;
           text_count: string;
         }>;

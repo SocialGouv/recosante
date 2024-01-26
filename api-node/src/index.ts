@@ -17,6 +17,7 @@ import environmentRouter from './controllers/environment.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 import packageJson from '../package.json';
+import { getWeatherAlert } from './aggregators/weather-alert.ts';
 
 // Put together a schema
 const app = express();
@@ -107,6 +108,8 @@ app.use('/indicators', indicatorsRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
+
+getWeatherAlert();
 
 // Start the server
 app.listen(PORT, () => {
