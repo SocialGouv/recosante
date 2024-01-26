@@ -141,11 +141,11 @@ export async function getWeatherAlert() {
     // Step 3: check if data already exists
     const diffusion_date = data.product.update_time;
 
-    const diffusionDate = dayjs(diffusion_date, 'DD/MM/YYYY').utc().toDate();
+    const diffusionDate = dayjs(diffusion_date).utc().toDate();
 
     const existingWeatherAlert = await prisma.weatherAlert.count({
       where: {
-        diffusion_date: dayjs(diffusionDate).utc().toDate(),
+        diffusion_date: diffusionDate,
       },
     });
     if (existingWeatherAlert > 0) {
