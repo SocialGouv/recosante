@@ -1,3 +1,11 @@
+## [1.17.1](https://github.com/SocialGouv/recosante/compare/v1.17.0...v1.17.1) (2024-01-26)
+
+
+### Bug Fixes
+
+* sealed secrets ([45ba808](https://github.com/SocialGouv/recosante/commit/45ba808764862e490fbd7e643c84a130e5d1cacc))
+* weatehr alert getter ([#379](https://github.com/SocialGouv/recosante/issues/379)) ([d84eb74](https://github.com/SocialGouv/recosante/commit/d84eb74d1bea5bf5b55638c54a88211beab2d41c))
+
 # [1.17.0](https://github.com/SocialGouv/recosante/compare/v1.16.0...v1.17.0) (2024-01-26)
 
 
