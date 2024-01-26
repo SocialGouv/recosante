@@ -1,10 +1,11 @@
-import { capture } from '~/third-parties/sentry';
 import {
   WeatherAlertPhenomenonIdEnum,
   WeatherAlertPhenomenonDBKeyEnum,
 } from '~/types/api/weather-alert';
 
-export function getPhenomenonDBKeyById(id: WeatherAlertPhenomenonIdEnum) {
+export function getPhenomenonDBKeyById(
+  id: WeatherAlertPhenomenonIdEnum,
+): WeatherAlertPhenomenonDBKeyEnum {
   switch (id) {
     case WeatherAlertPhenomenonIdEnum.VIOLENT_WIND:
       return WeatherAlertPhenomenonDBKeyEnum.VIOLENT_WIND;
@@ -25,7 +26,8 @@ export function getPhenomenonDBKeyById(id: WeatherAlertPhenomenonIdEnum) {
     case WeatherAlertPhenomenonIdEnum.WAVES_SUBMERSION:
       return WeatherAlertPhenomenonDBKeyEnum.WAVES_SUBMERSION;
     default:
-      capture(`Phenomenon id ${id as WeatherAlertPhenomenonIdEnum} not found`);
-      return '';
+      throw new Error(
+        `Phenomenon id ${id as WeatherAlertPhenomenonDBKeyEnum} not found`,
+      );
   }
 }

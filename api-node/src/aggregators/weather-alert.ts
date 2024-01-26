@@ -105,13 +105,15 @@ export async function getWeatherAlert() {
                         phenomenon_max_color_id: z.nativeEnum(
                           WeatherAlertColorIdEnum,
                         ),
-                        timelaps_items: z.array(
-                          z.object({
-                            begin_time: z.string().datetime(),
-                            end_time: z.string().datetime(),
-                            color_id: z.nativeEnum(WeatherAlertColorIdEnum),
-                          }),
-                        ),
+                        timelaps_items: z
+                          .array(
+                            z.object({
+                              begin_time: z.string().datetime(),
+                              end_time: z.string().datetime(),
+                              color_id: z.nativeEnum(WeatherAlertColorIdEnum),
+                            }),
+                          )
+                          .max(1),
                       }),
                     ),
                   }),
