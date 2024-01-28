@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/SocialGouv/recosante/compare/v1.18.0...v1.18.1) (2024-01-28)
+
+
+### Bug Fixes
+
+* increment prod version ([1c801a4](https://github.com/SocialGouv/recosante/commit/1c801a4eea8733d828fd99e644ce00c7e2bc3633))
+
 # [1.18.0](https://github.com/SocialGouv/recosante/compare/v1.17.2...v1.18.0) (2024-01-28)
 
 
