@@ -23,7 +23,7 @@ router.get(
       return;
     }
 
-    const current_app_buildversion_in_production = 15;
+    const current_app_buildversion_in_production = 16;
 
     if (
       parseInt(appbuild as string, 10) > current_app_buildversion_in_production
