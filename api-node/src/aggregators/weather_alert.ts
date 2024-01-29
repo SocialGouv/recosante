@@ -16,7 +16,8 @@ import {
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
 import { departments, departmentsCoastalArea } from '~/utils/departments';
 import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
-
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 /*
 Documentation:
 Réponse de l'api: https://donneespubliques.meteofrance.fr/client/document/descriptiftechnique_vigilancemetropole_donneespubliques_v4_20230911_307.pdf

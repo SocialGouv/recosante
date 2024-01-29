@@ -26,6 +26,7 @@ export async function initRecommandations() {
           name: 'Recommandations from Google Sheet',
           cronTime: '0/5 * * * *', // every 5 minutes TODO: remove this when recos are more stable
           job: getRecommandationsFromGoogleSheet,
+          runOnInit: true,
         }),
     )
     .then(() => {

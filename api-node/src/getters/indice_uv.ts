@@ -42,15 +42,9 @@ async function getIndiceUvFromMunicipalityAndDate({
     throw error;
   }
 
-  const indice_uv = await prisma.indiceUv.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const indice_uv = await getIndiceUVForJ({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   if (indice_uv?.uv_j0 == null) {
@@ -148,4 +142,25 @@ async function getIndiceUvFromMunicipalityAndDate({
   return indiceUvIndicator;
 }
 
-export { getIndiceUvFromMunicipalityAndDate };
+async function getIndiceUVForJ({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const indice_uv = await prisma.indiceUv.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return indice_uv;
+}
+
+export { getIndiceUvFromMunicipalityAndDate, getIndiceUVForJ };

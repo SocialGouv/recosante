@@ -27,6 +27,9 @@ enum IndicatorsSlugEnum {
 model User {
   id                       String              @id @default(uuid())
   matomo_id                String              @unique
+  appversion               String?
+  appbuild                 String?
+  appdevice                String?
   municipality_insee_code  String? // code INSEE
   municipality_name        String?
   municipality_zip_code    String?
@@ -35,6 +38,7 @@ model User {
   updated_at               DateTime            @default(now()) @updatedAt
   favorite_indicator       IndicatorsSlugEnum?
   notifications_preference NotifationEnum[]
+  notifications            Notification[]
 
   @@index([push_notif_token], type: Hash)
 }
@@ -256,4 +260,26 @@ model Recommandation {
   updated_at             DateTime           @default(now()) @updatedAt
 
   @@index([indicator, indicator_value], name: "recommandation_indeicator_indicator_value")
+}
+
+model Notification {
+  id               String             @id @default(uuid())
+  user_id          String
+  user             User               @relation(fields: [user_id], references: [id])
+  title            String
+  body             String
+  data             String
+  ticket           String? // for debug purpose
+  error            String? // for debug purpose
+  push_notif_token String // for debug purpose
+  appversion       String? // for debug purpose
+  appbuild         String? // for debug purpose
+  appdevice        String? // for debug purpose
+  indicatorSlug    IndicatorsSlugEnum
+  indicatorId      String
+  indicatorValue   Int
+  recommandationId String?
+  typeWeatherAlert String?
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @default(now()) @updatedAt
 }

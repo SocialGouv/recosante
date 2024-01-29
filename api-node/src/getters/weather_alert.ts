@@ -44,15 +44,9 @@ async function getWeatherAlertFromMunicipalityAndDate({
     throw error;
   }
 
-  const weatherAlertJ0 = await prisma.weatherAlert.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO).utc().toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const weatherAlertJ0 = await getWeatherAlertForJ0({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   if (!weatherAlertJ0) {
@@ -122,15 +116,9 @@ async function getWeatherAlertFromMunicipalityAndDate({
     },
   };
 
-  const weatherAlertJ1 = await prisma.weatherAlert.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO).utc().add(1, 'day').toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const weatherAlertJ1 = await getWeatherAlertForJ1({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   if (!weatherAlertJ1) {
@@ -188,4 +176,50 @@ async function getWeatherAlertFromMunicipalityAndDate({
   return weatherAlertIndicator;
 }
 
-export { getWeatherAlertFromMunicipalityAndDate };
+async function getWeatherAlertForJ0({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const weatherAlertJ0 = await prisma.weatherAlert.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return weatherAlertJ0;
+}
+
+async function getWeatherAlertForJ1({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const weatherAlertJ1 = await prisma.weatherAlert.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().add(1, 'day').toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return weatherAlertJ1;
+}
+
+export {
+  getWeatherAlertFromMunicipalityAndDate,
+  getWeatherAlertForJ0,
+  getWeatherAlertForJ1,
+};

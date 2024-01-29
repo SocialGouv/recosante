@@ -5,13 +5,13 @@ import type { Indicator } from '~/types/api/indicator';
 import type { CustomError } from '~/types/error';
 import type { RequestWithUser } from '~/types/request';
 import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
+import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
+import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
+import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 import { indicatorsList } from '~/getters/indicators_list';
 import { indicatorsMock } from './mocks/indicators';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
-import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
-import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
-import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -83,7 +83,7 @@ router.get(
         next(weatherAlert);
         return;
       }
-      console.log('weatherAlert', weatherAlert);
+
       if (weatherAlert) indicators.push(weatherAlert);
 
       indicators.push(...indicatorsMock);
