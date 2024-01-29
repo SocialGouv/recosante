@@ -438,15 +438,15 @@ async function sendEveningNotification() {
 function getNotificationTitle(indicatorSlug: IndicatorsSlugEnum) {
   switch (indicatorSlug) {
     case IndicatorsSlugEnum.indice_atmospheric:
-      return "💨 Qualité de l'air";
+      return "[TEST] 💨 Qualité de l'air";
     case IndicatorsSlugEnum.indice_uv:
-      return '☀️ Indice UV';
+      return '[TEST] ☀️ Indice UV';
     case IndicatorsSlugEnum.weather_alert:
-      return '☔ Vigilance Météo';
+      return '[TEST] ☔ Vigilance Météo';
     case IndicatorsSlugEnum.bathing_water:
-      return '🐳 Eaux de baignade';
+      return '[TEST] 🐳 Eaux de baignade';
     case IndicatorsSlugEnum.pollen_allergy:
-      return '🌿 Risque pollens';
+      return '[TEST] 🌿 Risque pollens';
   }
 }
 
