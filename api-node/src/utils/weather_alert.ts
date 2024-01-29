@@ -5,6 +5,7 @@ import {
   WeatherAlertPhenomenonEnum,
   WeatherAlertValuesEnum,
   WeatherAlertColorIdEnum,
+  type Phenomenon,
 } from '~/types/api/weather_alert';
 
 export function getPhenomenonDBKeyById(
@@ -53,11 +54,7 @@ export function getAlertValueByColorId(
 
 export function getSortedPhenomenonsByValue(
   weather_alert: WeatherAlert,
-): Array<{
-  name: WeatherAlertPhenomenonEnum;
-  slug: WeatherAlertPhenomenonDBKeyEnum;
-  value: WeatherAlertColorIdEnum;
-}> {
+): Phenomenon[] {
   if (!weather_alert) {
     return [];
   }

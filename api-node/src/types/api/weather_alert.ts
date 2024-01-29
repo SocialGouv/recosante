@@ -45,6 +45,12 @@ export enum WeatherAlertPhenomenonEnum {
   WAVES_SUBMERSION = 'Vagues-Submersion',
 }
 
+export type Phenomenon = {
+  name: WeatherAlertPhenomenonEnum;
+  slug: WeatherAlertPhenomenonDBKeyEnum;
+  value: WeatherAlertColorIdEnum;
+};
+
 export enum WeatherAlertPhenomenonDBKeyEnum {
   VIOLENT_WIND = 'violent_wind',
   RAIN_FLOOD = 'rain_flood',
