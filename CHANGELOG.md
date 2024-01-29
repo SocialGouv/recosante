@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/SocialGouv/recosante/compare/v1.18.3...v1.19.0) (2024-01-29)
+
+
+### Features
+
+* evening and morning notifs ([#380](https://github.com/SocialGouv/recosante/issues/380)) ([88808dd](https://github.com/SocialGouv/recosante/commit/88808ddfed0bbb0aa659beb59af78c72e32c9be1))
+
 ## [1.18.3](https://github.com/SocialGouv/recosante/compare/v1.18.2...v1.18.3) (2024-01-29)
 
 
