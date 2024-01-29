@@ -1,3 +1,11 @@
+## [1.19.1](https://github.com/SocialGouv/recosante/compare/v1.19.0...v1.19.1) (2024-01-29)
+
+
+### Bug Fixes
+
+* remove test for evening notification ([1c2f392](https://github.com/SocialGouv/recosante/commit/1c2f392a6dceb0a1dd85edd99583fd1ad4be1d98))
+* test evening notifications ([b7de9a6](https://github.com/SocialGouv/recosante/commit/b7de9a69b5e5377a4ac0ca9bcb14b64e0734c555))
+
 # [1.19.0](https://github.com/SocialGouv/recosante/compare/v1.18.3...v1.19.0) (2024-01-29)
 
 
