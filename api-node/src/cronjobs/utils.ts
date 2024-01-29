@@ -71,7 +71,7 @@ interface SetupCronJob {
   cronTime: string;
   name: string;
   job: TaskFn;
-  runOnInit?: boolean;
+  runOnInit: boolean;
 }
 
 export async function setupCronJob({
