@@ -1,3 +1,10 @@
+## [1.19.2](https://github.com/SocialGouv/recosante/compare/v1.19.1...v1.19.2) (2024-01-29)
+
+
+### Bug Fixes
+
+* sealed secrets tokens ([c1ac489](https://github.com/SocialGouv/recosante/commit/c1ac489001fdbc2c407fa7087565de03c4013bdf))
+
 ## [1.19.1](https://github.com/SocialGouv/recosante/compare/v1.19.0...v1.19.1) (2024-01-29)
 
 
