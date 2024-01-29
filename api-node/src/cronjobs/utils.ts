@@ -71,12 +71,14 @@ interface SetupCronJob {
   cronTime: string;
   name: string;
   job: TaskFn;
+  runOnInit?: boolean;
 }
 
 export async function setupCronJob({
   cronTime,
   name,
   job,
+  runOnInit = true,
 }: SetupCronJob): Promise<boolean> {
   return await new Promise((resolve) => {
     cron.CronJob.from({
@@ -86,9 +88,12 @@ export async function setupCronJob({
         console.log(`${name}: next run at ${cron.sendAt(cronTime).toISO()}`);
         resolve(cronStarted);
       },
-      runOnInit: true,
+      runOnInit,
       start: true,
       timeZone: 'Europe/Paris',
     });
+    if (!runOnInit) {
+      resolve(true);
+    }
   });
 }

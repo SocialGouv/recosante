@@ -35,6 +35,7 @@ export async function initAggregators() {
           // sont à effectuer 1 à 2 fois par jour, en dehors de ces horaires.
           cronTime: '15 15,18 * * *', // every day at 3:15pm and 6:15pm
           job: getAtmoIndicator,
+          runOnInit: true,
         }),
     )
     .then(
@@ -45,6 +46,7 @@ export async function initAggregators() {
           // Data is valid from the day of issue until 7 days later
           cronTime: '5 0/4 * * *', // every day starting at 00:05 every 4 hours
           job: getPollensIndicator,
+          runOnInit: true,
         }),
     )
     .then(
@@ -55,6 +57,7 @@ export async function initAggregators() {
           // Data is available for the current day, J+1 and J+2
           cronTime: '10 8 * * *', // every day at 8:10am
           job: getIndiceUVIndicator,
+          runOnInit: true,
         }),
     )
     .then(
@@ -65,10 +68,11 @@ export async function initAggregators() {
           // Data is available for the current day, J+1 and J+2
           cronTime: '20 * * * *', // every day every hour at HH:20
           job: getWeatherAlert,
+          runOnInit: true,
         }),
     )
     .then(() => {
-      console.log('All cron jobs are set up');
+      console.log('All aggregators cron jobs are set up');
     })
     .catch(capture);
 }

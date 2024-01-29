@@ -41,15 +41,9 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     throw error;
   }
 
-  const indice_atmo_j0 = await prisma.indiceAtmospheric.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const indice_atmo_j0 = await getIndiceAtmoForJ0({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   if (indice_atmo_j0?.code_qual == null) {
@@ -62,19 +56,9 @@ async function getIndiceAtmoFromMunicipalityAndDate({
     return null;
   }
 
-  const indice_atmo_j1 = await prisma.indiceAtmospheric.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO)
-          .utc()
-          .add(1, 'day')
-          .startOf('day')
-          .toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const indice_atmo_j1 = await getIndiceAtmoForJ1({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   const recommandationsJ0 = await prisma.recommandation
@@ -213,4 +197,49 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   return indiceAtmoIndicator;
 }
 
-export { getIndiceAtmoFromMunicipalityAndDate };
+async function getIndiceAtmoForJ0({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const indice_atmo_j0 = await prisma.indiceAtmospheric.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+  return indice_atmo_j0;
+}
+
+async function getIndiceAtmoForJ1({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const indice_atmo_j1 = await prisma.indiceAtmospheric.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().add(1, 'day').toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return indice_atmo_j1;
+}
+
+export {
+  getIndiceAtmoFromMunicipalityAndDate,
+  getIndiceAtmoForJ0,
+  getIndiceAtmoForJ1,
+};

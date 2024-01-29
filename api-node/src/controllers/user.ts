@@ -91,6 +91,15 @@ router.put(
       if (bodyHasProperty('favorite_indicator')) {
         updatedUser.favorite_indicator = req.body.favorite_indicator;
       }
+      if (bodyHasProperty('appversion')) {
+        updatedUser.appversion = `${req.body.appversion}`;
+      }
+      if (bodyHasProperty('appbuild')) {
+        updatedUser.appbuild = `${req.body.appbuild}`;
+      }
+      if (bodyHasProperty('appdevice')) {
+        updatedUser.appdevice = req.body.appdevice;
+      }
       if (bodyHasProperty('notifications_preference')) {
         updatedUser.notifications_preference =
           req.body.notifications_preference;

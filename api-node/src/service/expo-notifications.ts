@@ -1,37 +1,71 @@
 import { Expo } from 'expo-server-sdk';
 import { capture } from '~/third-parties/sentry';
 import type { ExpoPushMessage } from 'expo-server-sdk';
+import prisma from '~/prisma';
+import type { IndicatorsSlugEnum, User } from '@prisma/client';
 
 // Create a new Expo SDK client
 // optionally providing an access token if you have enabled push security
 const expo = new Expo({ accessToken: process.env.EXPO_ACCESS_TOKEN });
 
-console.log(process.env.EXPO_ACCESS_TOKEN);
-
 type SendPushNotificationParams = {
-  pushToken: string;
+  user: User;
   title: string;
   body: string;
-  data: any;
+  data: {
+    indicatorSlug: IndicatorsSlugEnum;
+    indicatorId: string;
+    indicatorValue: number;
+    recommandationId: string | null;
+    typeWeatherAlert: string | null;
+  };
 };
 
-export function sendPushNotification({
-  pushToken,
+type SendPushNotificationResult = {
+  notificationSent: boolean;
+  notificationInDb: boolean;
+  error: string;
+};
+
+// BE CAREFUL: only 600 notifications per second can be sent
+// https://docs.expo.dev/push-notifications/faq/#limit-of-sending-notifications
+export async function sendPushNotification({
+  user,
   title,
   body,
   data,
-}: SendPushNotificationParams) {
+}: SendPushNotificationParams): Promise<SendPushNotificationResult> {
   // Check that all your push tokens appear to be valid Expo push tokens
-  if (!Expo.isExpoPushToken(pushToken)) {
+  let push_notif_token: string = '';
+  try {
+    push_notif_token =
+      user.push_notif_token && JSON.parse(user.push_notif_token).data;
+  } catch (error: string | unknown) {
     capture('Push token is not a valid Expo push token', {
-      extra: { pushToken, title, body, data },
+      user,
+      extra: { error, push_notif_token, title, body, data },
     });
-    return;
+    return {
+      notificationSent: false,
+      notificationInDb: true,
+      error: 'Push token is not a valid Expo push token',
+    };
+  }
+  if (!push_notif_token || !Expo.isExpoPushToken(push_notif_token)) {
+    capture('Push token is not a valid Expo push token', {
+      user,
+      extra: { push_notif_token, title, body, data },
+    });
+    return {
+      notificationSent: false,
+      notificationInDb: true,
+      error: 'Push token is not a valid Expo push token',
+    };
   }
 
   // Create a message
   const message: ExpoPushMessage = {
-    to: pushToken,
+    to: push_notif_token,
     sound: 'default',
     title,
     body,
@@ -39,12 +73,74 @@ export function sendPushNotification({
   };
 
   // Send the message
-  expo
+  return await expo
     .sendPushNotificationsAsync([message])
-    .then((ticket) => {
-      console.log({ ticket });
+    .then(async (ticket) => {
+      console.log('TICKET', ticket);
+      return await prisma.notification
+        .create({
+          data: {
+            title,
+            body,
+            data: JSON.stringify(data), // later data can be different
+            push_notif_token,
+            appversion: user.appversion,
+            appbuild: user.appbuild,
+            appdevice: user.appdevice,
+            user: { connect: { id: user.id } },
+            ticket: JSON.stringify(ticket),
+            indicatorSlug: data.indicatorSlug,
+            indicatorId: data.indicatorId,
+            indicatorValue: data.indicatorValue,
+            recommandationId: data.recommandationId,
+            typeWeatherAlert: data.typeWeatherAlert,
+          },
+        })
+        .then((notification) => {
+          console.log('NOTIFICATION', notification);
+          return { notificationSent: true, notificationInDb: true, error: '' };
+        })
+        .catch((error) => {
+          console.log('ERROR', error);
+          return {
+            notificationSent: true,
+            notificationInDb: false,
+            error,
+          };
+        });
     })
-    .catch((error) => {
-      console.error(error);
+    .catch(async (error: any) => {
+      console.log('ERROR', error);
+      return await prisma.notification
+        .create({
+          data: {
+            title,
+            body,
+            data: JSON.stringify(data), // later data can be different
+            push_notif_token,
+            appversion: user.appversion,
+            appbuild: user.appbuild,
+            appdevice: user.appdevice,
+            user: { connect: { id: user.id } },
+            error: JSON.stringify(error),
+            indicatorSlug: data.indicatorSlug,
+            indicatorId: data.indicatorId,
+            indicatorValue: data.indicatorValue,
+            recommandationId: data.recommandationId,
+            typeWeatherAlert: data.typeWeatherAlert,
+          },
+        })
+        .then((notification) => {
+          console.log('NOTIFICATION', notification);
+          return { notificationSent: false, notificationInDb: true, error: '' };
+        })
+        .catch((error) => {
+          console.log('ERROR', error);
+          return {
+            notificationSent: false,
+            notificationInDb: false,
+            error,
+          };
+        });
     });
 }

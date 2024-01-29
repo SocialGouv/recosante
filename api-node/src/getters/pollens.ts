@@ -41,15 +41,9 @@ async function getPollensFromMunicipalityAndDate({
     throw error;
   }
 
-  const pollensJ0 = await prisma.pollenAllergyRisk.findFirst({
-    where: {
-      municipality_insee_code,
-      data_availability: DataAvailabilityEnum.AVAILABLE,
-      validity_start: {
-        lte: dayjs(date_UTC_ISO).utc().startOf('day').toISOString(),
-      },
-    },
-    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  const pollensJ0 = await getPollensForJ0({
+    municipality_insee_code,
+    date_UTC_ISO,
   });
 
   if (!pollensJ0) {
@@ -114,19 +108,9 @@ async function getPollensFromMunicipalityAndDate({
       .endOf('day')
       .isAfter(dayjs(pollensJ0.validity_end).utc())
   ) {
-    const pollensJ1 = await prisma.pollenAllergyRisk.findFirst({
-      where: {
-        municipality_insee_code,
-        data_availability: DataAvailabilityEnum.AVAILABLE,
-        validity_start: {
-          lte: dayjs(date_UTC_ISO)
-            .utc()
-            .add(1, 'day')
-            .startOf('day')
-            .toISOString(),
-        },
-      },
-      orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+    const pollensJ1 = await getPollensForJ1({
+      municipality_insee_code,
+      date_UTC_ISO,
     });
 
     if (pollensJ1) {
@@ -169,4 +153,46 @@ async function getPollensFromMunicipalityAndDate({
   return pollensIndicator;
 }
 
-export { getPollensFromMunicipalityAndDate };
+async function getPollensForJ0({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const pollensJ0 = await prisma.pollenAllergyRisk.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return pollensJ0;
+}
+
+async function getPollensForJ1({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string | undefined;
+}) {
+  const pollensJ1 = await prisma.pollenAllergyRisk.findFirst({
+    where: {
+      municipality_insee_code,
+      data_availability: DataAvailabilityEnum.AVAILABLE,
+      validity_start: {
+        lte: dayjs(date_UTC_ISO).utc().add(1, 'day').toISOString(),
+      },
+    },
+    orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
+  });
+
+  return pollensJ1;
+}
+
+export { getPollensFromMunicipalityAndDate, getPollensForJ0, getPollensForJ1 };
