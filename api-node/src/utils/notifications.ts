@@ -384,9 +384,7 @@ async function sendEveningNotification() {
       continue;
     }
 
-    const title = `[TEST] ${getNotificationTitle(
-      indicatorSlug,
-    )}: ${indicatorStatus}`;
+    const title = `${getNotificationTitle(indicatorSlug)}: ${indicatorStatus}`;
 
     const recommandation = await prisma.recommandation.findFirst({
       where:
