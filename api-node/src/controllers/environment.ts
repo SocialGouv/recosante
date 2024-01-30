@@ -23,20 +23,20 @@ router.get(
       return;
     }
 
-    const current_app_buildversion_in_production = 18;
+    // const current_app_buildversion_in_production = 18;
 
-    if (
-      parseInt(appbuild as string, 10) > current_app_buildversion_in_production
-    ) {
-      res.status(200).send({
-        ok: true,
-        data: {
-          environment: 'preproduction',
-          api_host: 'api-node-recosante-preprod.dev.fabrique.social.gouv.fr',
-        },
-      });
-      return;
-    }
+    // if (
+    //   parseInt(appbuild as string, 10) > current_app_buildversion_in_production
+    // ) {
+    //   res.status(200).send({
+    //     ok: true,
+    //     data: {
+    //       environment: 'preproduction',
+    //       api_host: 'api-node-recosante-preprod.dev.fabrique.social.gouv.fr',
+    //     },
+    //   });
+    //   return;
+    // }
     res.status(200).send({
       ok: true,
       data: {
