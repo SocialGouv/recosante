@@ -55,6 +55,7 @@ router.put(
         z.object({
           municipality_insee_code: z.string().optional(),
           municipality_name: z.string().optional(),
+          municipality_full_name: z.string().optional(),
           municipality_zip_code: z.string().optional(),
           push_notif_token: z.string().optional(),
           favorite_indicator: z.string().optional(),
@@ -82,6 +83,9 @@ router.put(
       if (bodyHasProperty('municipality_name')) {
         updatedUser.municipality_name = req.body.municipality_name;
       }
+      if (bodyHasProperty('municipality_full_name')) {
+        updatedUser.municipality_full_name = req.body.municipality_full_name;
+      }
       if (bodyHasProperty('municipality_zip_code')) {
         updatedUser.municipality_zip_code = req.body.municipality_zip_code;
       }
@@ -105,22 +109,16 @@ router.put(
           req.body.notifications_preference;
       }
 
-      await prisma.user
-        .upsert({
-          where: { matomo_id: req.user.matomo_id },
-          update: updatedUser,
-          create: {
-            matomo_id: req.user.matomo_id,
-            ...updatedUser,
-          },
-        })
-        .then(() => {
-          console.log('User has been updated');
-        })
-        .catch((error) => {
-          console.log('error', error);
-        });
-      res.status(200).send({ ok: true });
+      const updatedDbUser = await prisma.user.upsert({
+        where: { matomo_id: req.user.matomo_id },
+        update: updatedUser,
+        create: {
+          matomo_id: req.user.matomo_id,
+          ...updatedUser,
+        },
+      });
+
+      res.status(200).send({ ok: true, data: updatedDbUser });
     },
   ),
 );
