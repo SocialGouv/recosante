@@ -1,3 +1,10 @@
+## [1.21.1](https://github.com/SocialGouv/recosante/compare/v1.21.0...v1.21.1) (2024-01-30)
+
+
+### Bug Fixes
+
+* not morning notif by default ([72a9063](https://github.com/SocialGouv/recosante/commit/72a9063ea1ffce362ea6432d7f599b827cb044da))
+
 # [1.21.0](https://github.com/SocialGouv/recosante/compare/v1.20.1...v1.21.0) (2024-01-30)
 
 
