@@ -1,3 +1,16 @@
+# [1.20.0](https://github.com/SocialGouv/recosante/compare/v1.19.2...v1.20.0) (2024-01-30)
+
+
+### Bug Fixes
+
+* cron at 730 ([bfbc5f1](https://github.com/SocialGouv/recosante/commit/bfbc5f134decfa13a72419ba61d425655655d2cd))
+* remove test for evening notification ([#381](https://github.com/SocialGouv/recosante/issues/381)) ([2b4c4fc](https://github.com/SocialGouv/recosante/commit/2b4c4fc7de85e8292ad57415c9f668c1fe43548e))
+
+
+### Features
+
+* municipality full name for user reconciliation ([f54f795](https://github.com/SocialGouv/recosante/commit/f54f79545a44ddf147c2526b0f5db0a5f97be3b1))
+
 ## [1.19.2](https://github.com/SocialGouv/recosante/compare/v1.19.1...v1.19.2) (2024-01-29)
 
 
