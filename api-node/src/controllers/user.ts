@@ -134,7 +134,7 @@ router.put(
       if (usersWithSamePushToken.length > 0) {
         await prisma.user.updateMany({
           where: {
-            id: { in: usersWithSamePushToken.map((u) => u.id) },
+            id: { in: usersWithSamePushToken.map((user) => user.id) },
           },
           data: {
             push_notif_token: `DELETED_${pushToken}`,

@@ -209,7 +209,7 @@ async function sendMorningNotification() {
               type_weather_alert: typeWeatherAlertId,
             }
           : {
-              indicator: IndicatorsSlugEnum.weather_alert,
+              indicator: indicatorSlug,
               indicator_value: indicatorValue,
             },
       select: {
@@ -421,7 +421,7 @@ async function sendEveningNotification() {
               type_weather_alert: typeWeatherAlertId,
             }
           : {
-              indicator: IndicatorsSlugEnum.weather_alert,
+              indicator: indicatorSlug,
               indicator_value: indicatorValue,
             },
       select: {
