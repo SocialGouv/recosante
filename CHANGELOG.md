@@ -1,3 +1,14 @@
+## [1.20.1](https://github.com/SocialGouv/recosante/compare/v1.20.0...v1.20.1) (2024-01-30)
+
+
+### Bug Fixes
+
+* cron at 700 ([d5ab456](https://github.com/SocialGouv/recosante/commit/d5ab4563ca62a7fccbf8eac40c8990a393c983fd))
+* disable preprod env for app ([d9cae7a](https://github.com/SocialGouv/recosante/commit/d9cae7abb3fff5712893d155ca0da20453a2a866))
+* notification not always weather alert ([41e4ca4](https://github.com/SocialGouv/recosante/commit/41e4ca42cdc7e3147ccc7ccdc3830fbf6f361b29))
+* notification title ([2e91363](https://github.com/SocialGouv/recosante/commit/2e91363f6f5e51f460250bd729eef0e6cdee61c8))
+* push tokens duplicated ([7f0d4a9](https://github.com/SocialGouv/recosante/commit/7f0d4a96919d805d2039f4d9ecb5823dbb11f22c))
+
 # [1.20.0](https://github.com/SocialGouv/recosante/compare/v1.19.2...v1.20.0) (2024-01-30)
 
 
