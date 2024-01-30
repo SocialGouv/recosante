@@ -32,7 +32,6 @@ model User {
   appdevice                String?
   municipality_insee_code  String? // code INSEE
   municipality_name        String?
-  municipality_full_name   String?
   municipality_zip_code    String?
   push_notif_token         String?
   created_at               DateTime            @default(now())
