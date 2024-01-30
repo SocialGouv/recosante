@@ -3,15 +3,18 @@
 // api-node/node_modules/.prisma/client/index.d.ts
 
 export namespace $AlertStatus {
-  export const AlertStatusThresholdEnum: {
-    POLLENS: 4;
-    INDICE_ATMO: 6;
-    WEATHER_ALERT: 3;
-    INDICE_UV: 8;
+  export const AlertStatusThresholdEnum = {
+    POLLENS: 4,
+    INDICE_ATMO: 6,
+    WEATHER_ALERT: 3,
+    INDICE_UV: 8,
   };
-  export type AlertStatusThresholdEnum =
-    (typeof AlertStatusThresholdEnum)[keyof typeof AlertStatusThresholdEnum];
+
+  export type AlertStatusThresholdEnum = keyof typeof AlertStatusThresholdEnum;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type AlertStatusThresholdEnum = $AlertStatus.AlertStatusThresholdEnum;
-export const AlertThresholds = $AlertStatus.AlertStatusThresholdEnum;
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const AlertStatusThresholdEnum: typeof $AlertStatus.AlertStatusThresholdEnum =
+  $AlertStatus.AlertStatusThresholdEnum;
