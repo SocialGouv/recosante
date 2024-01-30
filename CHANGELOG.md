@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/SocialGouv/recosante/compare/v1.21.2...v1.22.0) (2024-01-30)
+
+
+### Features
+
+* bathing water start ([#382](https://github.com/SocialGouv/recosante/issues/382)) ([16c6bdd](https://github.com/SocialGouv/recosante/commit/16c6bddc5f0f826ed03cc9a89eb2fe0815338448))
+
 ## [1.21.2](https://github.com/SocialGouv/recosante/compare/v1.21.1...v1.21.2) (2024-01-30)
 
 
