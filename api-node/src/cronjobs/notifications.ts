@@ -27,7 +27,7 @@ export async function initNotifications() {
       async () =>
         await setupCronJob({
           name: 'Morning notifications',
-          cronTime: '0 7 * * *',
+          cronTime: '30 7 * * *',
           job: sendMorningNotification,
           runOnInit: false,
         }),
