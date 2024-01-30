@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/SocialGouv/recosante/compare/v1.22.0...v1.22.1) (2024-01-30)
+
+
+### Bug Fixes
+
+* new recommendations ([f55e41b](https://github.com/SocialGouv/recosante/commit/f55e41b74ccc12433a33c0a4f74f0c28b8da68ce))
+
 # [1.22.0](https://github.com/SocialGouv/recosante/compare/v1.21.2...v1.22.0) (2024-01-30)
 
 
