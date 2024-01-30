@@ -17,8 +17,6 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
-const URL = 'https://www.pollens.fr/docs/ecosante.csv';
-
 let now = Date.now();
 function logStep(step: string) {
   console.info(`[POLLENS] Duration: ${Date.now() - now}ms`.padEnd(40), step);
@@ -30,18 +28,20 @@ export async function getPollensIndicator() {
     // Step 1: Fetch data
     now = Date.now();
     logStep('Getting Pollens');
-    const data = await fetch(URL).then(async (response) => {
-      if (!response.ok) {
-        throw new Error(
-          `getPollensIndicator error! status: ${response.status}`,
-        );
-      }
-      const data = await response.text();
-      logStep('Formatting into json');
-      const rawFormatedJson = csv2json(data, { parseNumbers: true });
-      logStep('Formatting into json DONE');
-      return rawFormatedJson;
-    });
+    const data = await fetch('https://www.pollens.fr/docs/ecosante.csv').then(
+      async (response) => {
+        if (!response.ok) {
+          throw new Error(
+            `getPollensIndicator error! status: ${response.status}`,
+          );
+        }
+        const data = await response.text();
+        logStep('Formatting into json');
+        const rawFormatedJson = csv2json(data, { parseNumbers: true });
+        logStep('Formatting into json DONE');
+        return rawFormatedJson;
+      },
+    );
 
     // Step 2: Validate data
     const date = Object.keys(data[0])[0];

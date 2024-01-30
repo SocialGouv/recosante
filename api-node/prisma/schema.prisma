@@ -195,6 +195,34 @@ model IndiceAtmospheric {
   @@index([municipality_insee_code, diffusion_date, validity_start], name: "indice_atmo_insee_code_diffusion_date_validity_start")
 }
 
+enum BathgWaterIdCarteEnum {
+  gua
+  mar
+  guy
+  reu
+  may
+  fra
+}
+
+model BathingWater {
+  id String @id @default(uuid())
+
+  // common fields for all indicators
+  municipality_insee_code String
+  municipality            Municipality           @relation(fields: [municipality_insee_code], references: [COM])
+  validity_start          DateTime // the date is the first date of the validity period, included
+  validity_end            DateTime // the date is the last date of the validity period, included
+  diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum   @default(AVAILABLE)
+  alert_status            AlertStatusEnum        @default(NOT_ALERT_THRESHOLD)
+  created_at              DateTime               @default(now())
+  updated_at              DateTime               @default(now()) @updatedAt
+  // specific fields for this indicator
+  id_carte                BathgWaterIdCarteEnum?
+
+  @@index([municipality_insee_code, diffusion_date, validity_start], name: "bathing_water_insee_code_diffusion_date_validity_start")
+}
+
 enum PollutionStateEnum {
   ALERT // ALERTE
   INFORMATION_AND_RECOMMANDATION // INFORMATION ET RECOMMANDATION
@@ -256,11 +284,13 @@ model Municipality {
   NCCENR                    String? // Nom en clair (typographie riche)
   LIBELLE                   String? // Nom en clair (typographie riche) avec article
   COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
+  has_bathing_water_sites   Boolean                     @default(false)
   IndiceUv                  IndiceUv[]
   PollenAllergyRisk         PollenAllergyRisk[]
   WeatherAlert              WeatherAlert[]
   IndiceAtmospheric         IndiceAtmospheric[]
   AlertPollutionAtmospheric AlertPollutionAtmospheric[]
+  BathingWater              BathingWater[]
 }
 
 model Recommandation {
