@@ -25,8 +25,10 @@ import {
 import type { IndiceUVNumber } from '~/types/api/indice_uv';
 import { PolluantQualificatifsNumberEnum } from '~/types/api/indice_atmo';
 import {
-  type Phenomenon,
+  WeatherAlertPhenomenonEnum,
   WeatherAlertColorIdEnum,
+  type WeatherAlertPhenomenonIdEnum,
+  type Phenomenon,
 } from '~/types/api/weather_alert';
 import { PollensRiskNumberEnum } from '~/types/api/pollens';
 import { getIndiceUVStatus } from './indice_uv';
@@ -77,7 +79,8 @@ async function sendMorningNotification() {
     let indicatorStatus = null;
     let indicatorId = null;
     let recommandationId = null;
-    let typeWeatherAlert = null;
+    let typeWeatherAlert: WeatherAlertPhenomenonEnum | null = null;
+    let typeWeatherAlertId: WeatherAlertPhenomenonIdEnum | null = null;
 
     if (indicatorSlug === 'indice_uv') {
       const indice_uv = await getIndiceUVForJ({
@@ -160,11 +163,12 @@ async function sendMorningNotification() {
       }
       const phenomenonsJ0 = getSortedPhenomenonsByValue(weatherAlertJ0);
       const maxColorCodeIdJ0 = phenomenonsJ0[0].value;
-      const worstPhenomenonCodeIdJ0 = phenomenonsJ0[0].slug;
+      const worstPhenomenonCodeIdJ0 = phenomenonsJ0[0].id;
 
       indicatorValue = maxColorCodeIdJ0;
       indicatorStatus = getAlertValueByColorId(maxColorCodeIdJ0);
-      typeWeatherAlert = worstPhenomenonCodeIdJ0;
+      typeWeatherAlertId = worstPhenomenonCodeIdJ0;
+      typeWeatherAlert = phenomenonsJ0[0].name;
       indicatorId = weatherAlertJ0.id;
     }
 
@@ -190,7 +194,11 @@ async function sendMorningNotification() {
       continue;
     }
 
-    const title = `${getNotificationTitle(indicatorSlug)}: ${indicatorStatus}`;
+    const title = `${getNotificationTitle(
+      indicatorSlug,
+      indicatorValue,
+      typeWeatherAlert,
+    )}: ${indicatorStatus}`;
 
     const recommandation = await prisma.recommandation.findFirst({
       where:
@@ -198,7 +206,7 @@ async function sendMorningNotification() {
           ? {
               indicator: IndicatorsSlugEnum.weather_alert,
               indicator_value: indicatorValue,
-              type_weather_alert: typeWeatherAlert,
+              type_weather_alert: typeWeatherAlertId,
             }
           : {
               indicator: IndicatorsSlugEnum.weather_alert,
@@ -283,7 +291,8 @@ async function sendEveningNotification() {
     let indicatorStatus = null;
     let indicatorId = null;
     let recommandationId = null;
-    let typeWeatherAlert = null;
+    let typeWeatherAlert: WeatherAlertPhenomenonEnum | null = null;
+    let typeWeatherAlertId: WeatherAlertPhenomenonIdEnum | null = null;
 
     if (indicatorSlug === 'indice_uv') {
       const indice_uv = await getIndiceUVForJ({
@@ -366,11 +375,12 @@ async function sendEveningNotification() {
       }
       const phenomenonsJ1 = getSortedPhenomenonsByValue(weatherAlertJ1);
       const maxColorCodeIdJ1 = phenomenonsJ1[0].value;
-      const worstPhenomenonCodeIdJ1 = phenomenonsJ1[0].slug;
+      const worstPhenomenonCodeIdJ1 = phenomenonsJ1[0].id;
 
       indicatorValue = maxColorCodeIdJ1;
       indicatorStatus = getAlertValueByColorId(maxColorCodeIdJ1);
-      typeWeatherAlert = worstPhenomenonCodeIdJ1;
+      typeWeatherAlertId = worstPhenomenonCodeIdJ1;
+      typeWeatherAlert = phenomenonsJ1[0].name;
       indicatorId = weatherAlertJ1.id;
     }
 
@@ -396,7 +406,11 @@ async function sendEveningNotification() {
       continue;
     }
 
-    const title = `${getNotificationTitle(indicatorSlug)}: ${indicatorStatus}`;
+    const title = `${getNotificationTitle(
+      indicatorSlug,
+      indicatorValue,
+      typeWeatherAlert,
+    )}: ${indicatorStatus}`;
 
     const recommandation = await prisma.recommandation.findFirst({
       where:
@@ -404,7 +418,7 @@ async function sendEveningNotification() {
           ? {
               indicator: IndicatorsSlugEnum.weather_alert,
               indicator_value: indicatorValue,
-              type_weather_alert: typeWeatherAlert,
+              type_weather_alert: typeWeatherAlertId,
             }
           : {
               indicator: IndicatorsSlugEnum.weather_alert,
@@ -459,20 +473,22 @@ async function sendAlertNotification(
   let indicatorValue = null;
   let indicatorStatus = null;
   const recommandationId = null;
-  let typeWeatherAlert = null;
+  let typeWeatherAlert: WeatherAlertPhenomenonEnum | null = null;
+  let typeWeatherAlertId: WeatherAlertPhenomenonIdEnum | null = null;
   const phenomenons: Phenomenon[] = [];
 
   if (indicatorSlug === 'weather_alert') {
     indicatorRow = indicatorRow as WeatherAlert;
     const phenomenons = getSortedPhenomenonsByValue(indicatorRow);
     const maxColorCodeId = phenomenons[0].value;
-    const worstPhenomenonCodeId = phenomenons[0].slug;
+    const worstPhenomenonCodeId = phenomenons[0].id;
 
     const isAlert = maxColorCodeId >= WeatherAlertColorIdEnum.ORANGE;
     if (!isAlert) return;
     indicatorValue = maxColorCodeId;
     indicatorStatus = getAlertValueByColorId(indicatorValue);
-    typeWeatherAlert = worstPhenomenonCodeId;
+    typeWeatherAlertId = worstPhenomenonCodeId;
+    typeWeatherAlert = phenomenons[0].name;
   }
 
   if (indicatorSlug === 'indice_uv') {
@@ -514,7 +530,7 @@ async function sendAlertNotification(
 
   console.log('indicatorValue', indicatorValue);
   console.log('indicatorStatus', indicatorStatus);
-  console.log('typeWeatherAlert', typeWeatherAlert);
+  console.log('typeWeatherAlertId', typeWeatherAlertId);
   console.log('phenomenons', phenomenons);
   console.log('recommandationId', recommandationId);
 
@@ -543,7 +559,7 @@ async function sendAlertNotification(
         where: {
           indicator: IndicatorsSlugEnum.weather_alert,
           indicator_value: indicatorValue,
-          type_weather_alert: typeWeatherAlert,
+          type_weather_alert: typeWeatherAlertId,
         },
         select: {
           unique_key: true,
@@ -572,7 +588,11 @@ async function sendAlertNotification(
       }
     }
   } else {
-    const title = `${getNotificationTitle(indicatorSlug)}: ${indicatorStatus}`;
+    const title = `${getNotificationTitle(
+      indicatorSlug,
+      indicatorValue,
+      typeWeatherAlert,
+    )}: ${indicatorStatus}`;
 
     const recommandation = await prisma.recommandation.findFirst({
       where: {
@@ -613,14 +633,40 @@ async function sendAlertNotification(
   console.log('notifications in db', notificationsInDb);
 }
 
-function getNotificationTitle(indicatorSlug: IndicatorsSlugEnum) {
+function getNotificationTitle(
+  indicatorSlug: IndicatorsSlugEnum,
+  indicatorValue: number,
+  typeWeatherAlert: WeatherAlertPhenomenonEnum | null,
+) {
   switch (indicatorSlug) {
     case IndicatorsSlugEnum.indice_atmospheric:
       return "💨 Qualité de l'air";
     case IndicatorsSlugEnum.indice_uv:
       return '☀️ Indice UV';
     case IndicatorsSlugEnum.weather_alert:
-      return '☔ Vigilance Météo';
+      if (indicatorValue <= 2) return '☔ Vigilance Météo';
+      switch (typeWeatherAlert) {
+        case WeatherAlertPhenomenonEnum.VIOLENT_WIND:
+          return '🌬️ Alerte Vent violent';
+        case WeatherAlertPhenomenonEnum.RAIN_FLOOD:
+          return '🌧️ Alerte Pluie-Inondation';
+        case WeatherAlertPhenomenonEnum.STORM:
+          return '🌩️ Alerte Orages';
+        case WeatherAlertPhenomenonEnum.FLOOD:
+          return '🌊 Alerte Crues';
+        case WeatherAlertPhenomenonEnum.SNOW_ICE:
+          return '⛸️ Alerte Neige-verglas';
+        case WeatherAlertPhenomenonEnum.HEAT_WAVE:
+          return '🥵 Alerte Canicule';
+        case WeatherAlertPhenomenonEnum.COLD_WAVE:
+          return '🥶 Alerte Grand Froid';
+        case WeatherAlertPhenomenonEnum.AVALANCHE:
+          return '🌨️ Alerte Avalanches';
+        case WeatherAlertPhenomenonEnum.WAVES_SUBMERSION:
+          return '🌊 Alerte Vagues-Submersion';
+        default:
+          return '☔ Vigilance Météo';
+      }
     case IndicatorsSlugEnum.bathing_water:
       return '🐳 Eaux de baignade';
     case IndicatorsSlugEnum.pollen_allergy:

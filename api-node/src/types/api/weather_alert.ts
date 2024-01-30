@@ -46,6 +46,7 @@ export enum WeatherAlertPhenomenonEnum {
 }
 
 export type Phenomenon = {
+  id: WeatherAlertPhenomenonIdEnum;
   name: WeatherAlertPhenomenonEnum;
   slug: WeatherAlertPhenomenonDBKeyEnum;
   value: WeatherAlertColorIdEnum;

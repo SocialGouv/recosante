@@ -60,46 +60,55 @@ export function getSortedPhenomenonsByValue(
   }
   const phenomenons = [
     {
+      id: WeatherAlertPhenomenonIdEnum.VIOLENT_WIND,
       name: WeatherAlertPhenomenonEnum.VIOLENT_WIND,
       slug: WeatherAlertPhenomenonDBKeyEnum.VIOLENT_WIND,
       value: weather_alert.violent_wind ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.RAIN_FLOOD,
       name: WeatherAlertPhenomenonEnum.RAIN_FLOOD,
       slug: WeatherAlertPhenomenonDBKeyEnum.RAIN_FLOOD,
       value: weather_alert.rain_flood ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.STORM,
       name: WeatherAlertPhenomenonEnum.STORM,
       slug: WeatherAlertPhenomenonDBKeyEnum.STORM,
       value: weather_alert.storm ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.FLOOD,
       name: WeatherAlertPhenomenonEnum.FLOOD,
       slug: WeatherAlertPhenomenonDBKeyEnum.FLOOD,
       value: weather_alert.flood ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.SNOW_ICE,
       name: WeatherAlertPhenomenonEnum.SNOW_ICE,
       slug: WeatherAlertPhenomenonDBKeyEnum.SNOW_ICE,
       value: weather_alert.snow_ice ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.HEAT_WAVE,
       name: WeatherAlertPhenomenonEnum.HEAT_WAVE,
       slug: WeatherAlertPhenomenonDBKeyEnum.HEAT_WAVE,
       value: weather_alert.heat_wave ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.COLD_WAVE,
       name: WeatherAlertPhenomenonEnum.COLD_WAVE,
       slug: WeatherAlertPhenomenonDBKeyEnum.COLD_WAVE,
       value: weather_alert.cold_wave ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.AVALANCHE,
       name: WeatherAlertPhenomenonEnum.AVALANCHE,
       slug: WeatherAlertPhenomenonDBKeyEnum.AVALANCHE,
       value: weather_alert.avalanche ?? 1,
     },
     {
+      id: WeatherAlertPhenomenonIdEnum.WAVES_SUBMERSION,
       name: WeatherAlertPhenomenonEnum.WAVES_SUBMERSION,
       slug: WeatherAlertPhenomenonDBKeyEnum.WAVES_SUBMERSION,
       value: weather_alert.waves_submersion ?? 1,

@@ -66,7 +66,7 @@ async function getWeatherAlertFromMunicipalityAndDate({
 
   const phenomenonsJ0 = getSortedPhenomenonsByValue(weatherAlertJ0);
   const maxColorCodeIdJ0 = phenomenonsJ0[0].value;
-  const worstPhenomenonCodeIdJ0 = phenomenonsJ0[0].slug;
+  const worstPhenomenonCodeIdJ0 = phenomenonsJ0[0].id;
 
   const recommandationsJ0 = await prisma.recommandation
     .findMany({
@@ -133,7 +133,7 @@ async function getWeatherAlertFromMunicipalityAndDate({
 
   const phenomenonsJ1 = getSortedPhenomenonsByValue(weatherAlertJ1);
   const maxCodeIdJ1 = phenomenonsJ1[0].value;
-  const worstPhenomenonCodeIdJ1 = phenomenonsJ1[0].slug;
+  const worstPhenomenonCodeIdJ1 = phenomenonsJ1[0].id;
 
   const recommandationsJ1 = await prisma.recommandation
     .findMany({
