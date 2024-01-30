@@ -1,4 +1,9 @@
-import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
+import {
+  AlertStatusEnum,
+  DataAvailabilityEnum,
+  // IndicatorsSlugEnum,
+  type Municipality,
+} from '@prisma/client';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -16,6 +21,8 @@ import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
 import { grabEPCIsWithINSEEMunicipalityCodes } from '~/utils/epci';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+// import { sendAlertNotification } from '~/utils/notifications';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -90,15 +97,33 @@ export async function getAtmoIndicator() {
     *
     *
     */
-    await getAtmoIndicatorForDate(atmoJWTToken, dayjs().utc().startOf('day'));
+    await getAtmoIndicatorForDate(
+      atmoJWTToken,
+      dayjs().utc().startOf('day'),
+      true,
+    );
 
     logStep('Step 2: Fetched Atmo data for today');
 
     await getAtmoIndicatorForDate(
       atmoJWTToken,
       dayjs().utc().add(1, 'day').startOf('day'),
+      false,
     );
     logStep('Step 3: Fetched Atmo data for tomorrow');
+
+    // const indiceAtmoAlerts = await prisma.indiceAtmospheric.findMany({
+    //   where: {
+    //     alert_status: AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET,
+    //   },
+    //   orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'asc' }],
+    // });
+    // for (indiceAtmoAlert of indiceAtmoAlerts) {
+    //   sendAlertNotification(
+    //     IndicatorsSlugEnum.indice_atmospheric,
+    //     indiceAtmoAlerts,
+    //   );
+    // }
   } catch (error: any) {
     capture(error, { extra: { functionCall: 'getAtmoIndicator' } });
   }
@@ -107,6 +132,7 @@ export async function getAtmoIndicator() {
 export async function getAtmoIndicatorForDate(
   atmoJWTToken: string,
   indiceForDate: dayjs.Dayjs,
+  canBeAnAlert: boolean,
 ) {
   try {
     logStep(`Getting Atmo indicator for date ${indiceForDate.toISOString()}`);
@@ -314,6 +340,7 @@ export async function getAtmoIndicatorForDate(
           validity_end: validityEnd,
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
           unique_composed_key,
         });
         missingData++;
@@ -335,6 +362,11 @@ export async function getAtmoIndicatorForDate(
         validity_end: validityEnd,
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
+        alert_status:
+          canBeAnAlert &&
+          indiceAtmoData.code_qual >= AlertStatusThresholdEnum.INDICE_ATMO
+            ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         code_no2: indiceAtmoData.code_no2,
         code_o3: indiceAtmoData.code_o3,
         code_pm10: indiceAtmoData.code_pm10,

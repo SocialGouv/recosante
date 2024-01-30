@@ -1,11 +1,16 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
-import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
+import {
+  DataAvailabilityEnum,
+  AlertStatusEnum,
+  type Municipality,
+} from '@prisma/client';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import type { PollensAPIData } from '~/types/api/pollens';
 import { capture } from '~/third-parties/sentry';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
@@ -135,6 +140,7 @@ export async function getPollensIndicator() {
           validity_end: validityEnd,
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
         });
         missingData++;
         continue;
@@ -145,6 +151,10 @@ export async function getPollensIndicator() {
         validity_end: validityEnd,
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
+        alert_status:
+          pollenData.Total >= AlertStatusThresholdEnum.POLLENS
+            ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         cypres: pollenData.cypres,
         noisetier: pollenData.noisetier,
         aulne: pollenData.aulne,

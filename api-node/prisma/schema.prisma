@@ -51,6 +51,13 @@ enum DataAvailabilityEnum {
   NOT_AVAILABLE // Données non disponibles
 }
 
+enum AlertStatusEnum {
+  NOT_ALERT_THRESHOLD // Pas de dépassement du seuil d'alerte
+  ALERT_NOTIFICATION_NOT_SENT_YET // Dépassement du seuil d'alerte mais pas encore de notification envoyée
+  ALERT_NOTIFICATION_SENT // Dépassement du seuil d'alerte et notification envoyée
+  ALERT_NOTIFICATION_ERROR // Dépassement du seuil d'alerte et notification en erreur
+}
+
 model IndiceUv {
   id String @id @default(uuid())
 
@@ -61,6 +68,7 @@ model IndiceUv {
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
   data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
   // specific fields for this indicator
@@ -78,14 +86,15 @@ model IndiceUv {
 model PollenAllergyRisk {
   id                      String               @id @default(uuid())
   // common fields for all indicators
+  municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
-  municipality_insee_code String
-  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
-  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   cypres                  Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
   noisetier               Int? // 0: risque nul, 1: très faible, 2: faible, 3: moyen, 4: élevé, 5: très élevé
@@ -116,14 +125,15 @@ model WeatherAlert {
   id String @id @default(uuid())
 
   // common fields for all indicators
+  municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
-  municipality_insee_code String
-  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
-  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   violent_wind            Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
   rain_flood              Int? // NULL, 1, 2, 3, 4 - check WeatherAlertColorIdEnum
@@ -144,14 +154,15 @@ model IndiceAtmospheric {
   // we define a unique composed key to avoid duplicates
   unique_composed_key     String               @unique(map: "municipality_insee_code+date_maj+date_ech")
   // common fields for all indicators
+  municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
-  municipality_insee_code String
-  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
-  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator, raw data extracted from the API
   // note: we couldn't use Prisma enum here because
   // Prisma enum are restricted to: start with letter, no space, etc.
@@ -206,14 +217,15 @@ model AlertPollutionAtmospheric {
   id String @id @default(uuid())
 
   // common fields for all indicators
+  municipality_insee_code String
+  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
+  data_availability       DataAvailabilityEnum @default(AVAILABLE)
+  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
   created_at              DateTime             @default(now())
   updated_at              DateTime             @default(now()) @updatedAt
-  municipality_insee_code String
-  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
-  data_availability       DataAvailabilityEnum @default(AVAILABLE)
   // specific fields for this indicator
   state                   PollutionStateEnum
   code                    PollutionCodeEnum

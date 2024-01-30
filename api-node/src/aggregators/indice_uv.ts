@@ -3,10 +3,15 @@ import csv2json from 'csvjson-csv2json/csv2json.js';
 import fs from 'fs';
 import ftp from 'basic-ftp';
 import dayjs from 'dayjs';
-import { DataAvailabilityEnum, type Municipality } from '@prisma/client';
+import {
+  AlertStatusEnum,
+  DataAvailabilityEnum,
+  type Municipality,
+} from '@prisma/client';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 import utc from 'dayjs/plugin/utc';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 dayjs.extend(utc);
 
 let now = Date.now();
@@ -154,6 +159,7 @@ export async function getIndiceUVIndicator() {
           validity_end: validityEnd,
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
         });
         missingData++;
         continue;
@@ -164,6 +170,10 @@ export async function getIndiceUVIndicator() {
         validity_end: validityEnd,
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
+        alert_status:
+          (indiceUvData.UV_J0 ?? 0) >= AlertStatusThresholdEnum.INDICE_UV
+            ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         uv_j0: indiceUvData.UV_J0,
         uv_j1: indiceUvData.UV_J1,
         uv_j2: indiceUvData.UV_J2,

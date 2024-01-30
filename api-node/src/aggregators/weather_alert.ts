@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import prisma from '~/prisma';
 import {
   DataAvailabilityEnum,
+  AlertStatusEnum,
   type Municipality,
   type WeatherAlert,
 } from '@prisma/client';
@@ -13,6 +14,7 @@ import {
   WeatherAlertPhenomenonIdEnum,
   type WeatherAlertResponse,
 } from '~/types/api/weather_alert';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
 import { departments, departmentsCoastalArea } from '~/utils/departments';
 import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
@@ -203,6 +205,7 @@ export async function getWeatherAlert() {
           cold_wave: null,
           avalanche: null,
           waves_submersion: null,
+          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
         };
 
         weatherAlertsByDepartment[departmentCode] =
@@ -210,8 +213,12 @@ export async function getWeatherAlert() {
             const weatherWalertDbKey = getPhenomenonDBKeyById(
               phenomenon.phenomenon_id,
             );
-            weatherAlert[weatherWalertDbKey] =
-              phenomenon.phenomenon_max_color_id;
+            const value = phenomenon.phenomenon_max_color_id;
+            weatherAlert[weatherWalertDbKey] = value;
+            if (value >= AlertStatusThresholdEnum.WEATHER_ALERT) {
+              weatherAlert.alert_status =
+                AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET;
+            }
             return weatherAlert;
           }, weatherAlertForDepartment);
       }
@@ -242,6 +249,7 @@ export async function getWeatherAlert() {
             validity_end: defaultValidityEnd,
             municipality_insee_code: municipality.COM,
             data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
+            alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
           };
           weatherAlertRows.push(notAvailableRow);
           continue;
