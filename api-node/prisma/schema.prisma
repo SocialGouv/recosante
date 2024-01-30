@@ -40,7 +40,7 @@ model User {
   deleted_at               DateTime?
   deleted_because          String?
   favorite_indicator       IndicatorsSlugEnum?
-  notifications_preference NotifationEnum[]
+  notifications_preference NotifationEnum[]    @default([morning, evening, alert])
   notifications            Notification[]
 
   @@index([push_notif_token], type: Hash)
