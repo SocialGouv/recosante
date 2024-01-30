@@ -22,7 +22,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
   },
   [IndicatorsSlugEnum.weather_alert]: {
     name: 'Vigilance Météo',
-    long_name: 'La vigilance météo',
+    long_name: 'Vigilance météo',
     short_name: 'Météo',
     slug: IndicatorsSlugEnum.weather_alert,
   },

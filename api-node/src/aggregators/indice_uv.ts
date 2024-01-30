@@ -10,10 +10,9 @@ import {
 } from '@prisma/client';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
+// import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import utc from 'dayjs/plugin/utc';
-import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 dayjs.extend(utc);
-
 let now = Date.now();
 function logStep(step: string) {
   console.info(`[INDICE UV] Duration: ${Date.now() - now}ms`.padEnd(40), step);
@@ -171,7 +170,7 @@ export async function getIndiceUVIndicator() {
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          (indiceUvData.UV_J0 ?? 0) >= AlertStatusThresholdEnum.INDICE_UV
+          (indiceUvData.UV_J0 ?? 0) >= 6
             ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
             : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         uv_j0: indiceUvData.UV_J0,

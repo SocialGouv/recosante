@@ -293,6 +293,14 @@ model Municipality {
   BathingWater              BathingWater[]
 }
 
+enum SeasonEnum {
+  Printemps
+  Ete
+  Automne
+  Hiver
+  Toute
+}
+
 model Recommandation {
   unique_key             String             @id @unique // the key is the combination of indicator + indicator_value + recommandation_id
   recommandation_id      String
@@ -302,6 +310,7 @@ model Recommandation {
   type_weather_alert     String? // only for WeatherAlert
   created_at             DateTime           @default(now())
   updated_at             DateTime           @default(now()) @updatedAt
+  seasons                SeasonEnum[]
 
   @@index([indicator, indicator_value], name: "recommandation_indeicator_indicator_value")
 }

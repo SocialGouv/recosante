@@ -9,11 +9,14 @@ import type { Indicator } from '~/types/api/indicator';
 import {
   DataAvailabilityEnum,
   IndicatorsSlugEnum,
+  SeasonEnum,
   type Municipality,
 } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
-import utc from 'dayjs/plugin/utc';
 import { capture } from '~/third-parties/sentry';
+import utc from 'dayjs/plugin/utc';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
 
 async function getIndiceUvFromMunicipalityAndDate({
@@ -57,11 +60,23 @@ async function getIndiceUvFromMunicipalityAndDate({
     return null;
   }
 
+  const isWinter = dayjs(indice_uv.validity_start).quarter() === 1;
+  const isSpring = dayjs(indice_uv.validity_start).quarter() === 2;
+  const isSummer = dayjs(indice_uv.validity_start).quarter() === 3;
+  const isFall = dayjs(indice_uv.validity_start).quarter() === 4;
+  const seasons: Array<SeasonEnum> = [SeasonEnum.Toute];
+  if (isWinter) seasons.push(SeasonEnum.Hiver);
+  if (isSpring) seasons.push(SeasonEnum.Printemps);
+  if (isSummer) seasons.push(SeasonEnum.Ete);
+  if (isFall) seasons.push(SeasonEnum.Automne);
   const recommandationsJ0 = await prisma.recommandation
     .findMany({
       where: {
         indicator: IndicatorsSlugEnum.indice_uv,
         indicator_value: indice_uv.uv_j0,
+        seasons: {
+          hasSome: seasons,
+        },
       },
       select: {
         recommandation_content: true,
@@ -108,6 +123,9 @@ async function getIndiceUvFromMunicipalityAndDate({
         where: {
           indicator: IndicatorsSlugEnum.indice_uv,
           indicator_value: indice_uv.uv_j1,
+          seasons: {
+            hasSome: seasons,
+          },
         },
         select: {
           recommandation_content: true,

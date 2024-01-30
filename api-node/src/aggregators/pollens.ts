@@ -10,7 +10,7 @@ import { z } from 'zod';
 import prisma from '~/prisma';
 import type { PollensAPIData } from '~/types/api/pollens';
 import { capture } from '~/third-parties/sentry';
-import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+// import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
@@ -152,7 +152,7 @@ export async function getPollensIndicator() {
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          pollenData.Total >= AlertStatusThresholdEnum.POLLENS
+          pollenData.Total >= 4
             ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
             : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         cypres: pollenData.cypres,

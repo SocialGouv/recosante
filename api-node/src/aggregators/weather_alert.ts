@@ -14,7 +14,7 @@ import {
   WeatherAlertPhenomenonIdEnum,
   type WeatherAlertResponse,
 } from '~/types/api/weather_alert';
-import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+// import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
 import { departments, departmentsCoastalArea } from '~/utils/departments';
 import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
@@ -215,7 +215,7 @@ export async function getWeatherAlert() {
             );
             const value = phenomenon.phenomenon_max_color_id;
             weatherAlert[weatherWalertDbKey] = value;
-            if (value >= AlertStatusThresholdEnum.WEATHER_ALERT) {
+            if (value >= 2) {
               weatherAlert.alert_status =
                 AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET;
             }

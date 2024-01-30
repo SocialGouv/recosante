@@ -1,5 +1,5 @@
 import {
-  AlertStatusEnum,
+  // AlertStatusEnum,
   DataAvailabilityEnum,
   // IndicatorsSlugEnum,
   type Municipality,
@@ -16,12 +16,11 @@ import type {
   IndiceAtmoNotAvailable,
   IndiceAtmoAvailable,
 } from '~/types/api/indice_atmo';
-
 import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
 import { grabEPCIsWithINSEEMunicipalityCodes } from '~/utils/epci';
-import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+// import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 // import { sendAlertNotification } from '~/utils/notifications';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -340,7 +339,7 @@ export async function getAtmoIndicatorForDate(
           validity_end: validityEnd,
           municipality_insee_code: municipality.COM,
           data_availability: DataAvailabilityEnum.NOT_AVAILABLE,
-          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
+          alert_status: 'NOT_ALERT_THRESHOLD',
           unique_composed_key,
         });
         missingData++;
@@ -363,10 +362,9 @@ export async function getAtmoIndicatorForDate(
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          canBeAnAlert &&
-          indiceAtmoData.code_qual >= AlertStatusThresholdEnum.INDICE_ATMO
-            ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
-            : AlertStatusEnum.NOT_ALERT_THRESHOLD,
+          canBeAnAlert && indiceAtmoData.code_qual >= 3
+            ? 'ALERT_NOTIFICATION_NOT_SENT_YET'
+            : 'NOT_ALERT_THRESHOLD',
         code_no2: indiceAtmoData.code_no2,
         code_o3: indiceAtmoData.code_o3,
         code_pm10: indiceAtmoData.code_pm10,
