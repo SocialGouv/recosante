@@ -118,6 +118,32 @@ router.put(
         },
       });
 
+      // Cleaning of old users with the same push_notif_token
+      // https://docs.expo.dev/push-notifications/faq/#when-and-why-does-the-expopushtoken-change
+      // > The ExpoPushToken will remain the same across app upgrades.
+      // > On iOS, it will also remain the same even after uninstalling the app and reinstalling it.
+      // > On Android, this results in the push token changing.
+      const pushToken = updatedDbUser.push_notif_token;
+      const usersWithSamePushToken = await prisma.user.findMany({
+        where: {
+          id: { not: updatedDbUser.id },
+          push_notif_token: pushToken,
+        },
+      });
+
+      if (usersWithSamePushToken.length > 0) {
+        await prisma.user.updateMany({
+          where: {
+            id: { in: usersWithSamePushToken.map((u) => u.id) },
+          },
+          data: {
+            push_notif_token: `DELETED_${pushToken}`,
+            deleted_at: new Date(),
+            deleted_because: `push_notif_token taken by a more recent user (id: ${updatedDbUser.id})`,
+          },
+        });
+      }
+
       res.status(200).send({ ok: true, data: updatedDbUser });
     },
   ),

@@ -37,6 +37,8 @@ model User {
   push_notif_token         String?
   created_at               DateTime            @default(now())
   updated_at               DateTime            @default(now()) @updatedAt
+  deleted_at               DateTime?
+  deleted_because          String?
   favorite_indicator       IndicatorsSlugEnum?
   notifications_preference NotifationEnum[]
   notifications            Notification[]
