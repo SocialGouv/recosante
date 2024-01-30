@@ -1,3 +1,10 @@
+# [1.21.0](https://github.com/SocialGouv/recosante/compare/v1.20.1...v1.21.0) (2024-01-30)
+
+
+### Features
+
+* default notifs for user created ([8618ea4](https://github.com/SocialGouv/recosante/commit/8618ea45fda47ce27028fde79b4a5c1d300b99a3))
+
 ## [1.20.1](https://github.com/SocialGouv/recosante/compare/v1.20.0...v1.20.1) (2024-01-30)
 
 
