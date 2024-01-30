@@ -55,7 +55,7 @@ export async function initAggregators() {
           name: 'Indice UV',
           // The data is a CSV issued every day at 6am or 7am
           // Data is available for the current day, J+1 and J+2
-          cronTime: '10 8 * * *', // every day at 8:10am
+          cronTime: '50 6 * * *', // every day at 8:10am
           job: getIndiceUVIndicator,
           runOnInit: true,
         }),

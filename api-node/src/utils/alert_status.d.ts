@@ -12,3 +12,6 @@ export namespace $AlertStatus {
   export type AlertStatusThresholdEnum =
     (typeof AlertStatusThresholdEnum)[keyof typeof AlertStatusThresholdEnum];
 }
+
+export type AlertStatusThresholdEnum = $AlertStatus.AlertStatusThresholdEnum;
+export const AlertThresholds = $AlertStatus.AlertStatusThresholdEnum;
