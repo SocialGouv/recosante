@@ -97,6 +97,19 @@ export const departments: string[] = [
   '99',
   '2A',
   '2B',
+  '971',
+  '972',
+  '973',
+  '974',
+  '976',
+  '975',
+  '977',
+  '978',
+  '984',
+  '986',
+  '987',
+  '988',
+  '989',
 ] as const;
 
 export type Department = (typeof departments)[number];
