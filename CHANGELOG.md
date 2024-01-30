@@ -1,3 +1,12 @@
+## [1.21.2](https://github.com/SocialGouv/recosante/compare/v1.21.1...v1.21.2) (2024-01-30)
+
+
+### Bug Fixes
+
+* alert status types ([f64ab00](https://github.com/SocialGouv/recosante/commit/f64ab006e2a641b873ab54a0fc63794ded18b7cf))
+* pollens schedule ([14d63a8](https://github.com/SocialGouv/recosante/commit/14d63a844df5e7d6929b6e5db1a0ecc608786162))
+* remove municipality_full_name ([95e73fe](https://github.com/SocialGouv/recosante/commit/95e73fef674dc122345923abbc39dd901a94e0ff))
+
 ## [1.21.1](https://github.com/SocialGouv/recosante/compare/v1.21.0...v1.21.1) (2024-01-30)
 
 
