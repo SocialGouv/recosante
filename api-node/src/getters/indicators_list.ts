@@ -30,12 +30,12 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
   //   name: 'Épisode Pollution Atmosphérique',
   //   slug: IndicatorsSlugEnum.episode_pollution_atmospheric,
   // },
-  [IndicatorsSlugEnum.bathing_water]: {
-    name: 'Eau de baignade',
-    long_name: 'La qualité des eaux de baignade',
-    short_name: 'Baignade',
-    slug: IndicatorsSlugEnum.bathing_water,
-  },
+  // [IndicatorsSlugEnum.bathing_water]: {
+  //   name: 'Eau de baignade',
+  //   long_name: 'La qualité des eaux de baignade',
+  //   short_name: 'Baignade',
+  //   slug: IndicatorsSlugEnum.bathing_water,
+  // },
   // [IndicatorsSlugEnum.tap_water]: {
   //   name: 'Eau du robinet',
   //   slug: IndicatorsSlugEnum.tap_water,

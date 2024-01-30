@@ -9,7 +9,7 @@ import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
 import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
 import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 import { indicatorsList } from '~/getters/indicators_list';
-import { indicatorsMock } from './mocks/indicators';
+// import { indicatorsMock } from './mocks/indicators';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
@@ -86,7 +86,7 @@ router.get(
 
       if (weatherAlert) indicators.push(weatherAlert);
 
-      indicators.push(...indicatorsMock);
+      // indicators.push(...indicatorsMock);
 
       res.status(200).send({ ok: true, data: indicators });
     },
