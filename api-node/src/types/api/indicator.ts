@@ -5,6 +5,7 @@ export type IndicatorItem = {
   short_name: string;
   long_name: string;
   slug: IndicatorsSlugEnum;
+  active?: boolean;
 };
 
 export type IndicatorDay = 'j0' | 'j1';
