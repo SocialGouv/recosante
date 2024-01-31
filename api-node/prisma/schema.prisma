@@ -285,6 +285,8 @@ model Municipality {
   LIBELLE                   String? // Nom en clair (typographie riche) avec article
   COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
   has_bathing_water_sites   Boolean                     @default(false)
+  created_at                DateTime                    @default(now())
+  updated_at                DateTime                    @default(now()) @updatedAt
   IndiceUv                  IndiceUv[]
   PollenAllergyRisk         PollenAllergyRisk[]
   WeatherAlert              WeatherAlert[]

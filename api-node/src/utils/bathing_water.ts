@@ -67,20 +67,22 @@ async function updateMunicipalitiesWithBathingWaterSites() {
       });
       // eslint-disable-next-line @typescript-eslint/promise-function-async
       const { sites } = await fetch(url.toString()).then((res) => res.json());
-      console.log(
-        `${index} of ${municipalities.length} ${
-          municipality.COM
-        }: ${url.toString()}: ${sites.length} sites`,
-      );
-      // LOL: if no `await` here below, the row will be updated
-      await prisma.municipality.update({
-        where: {
-          COM: municipality.COM,
-        },
-        data: {
-          has_bathing_water_sites: sites.length > 0,
-        },
-      });
+      if (sites.length > 0) {
+        console.log(
+          `${index} of ${municipalities.length} ${
+            municipality.COM
+          }: ${url.toString()}: ${sites.length} sites`,
+        );
+        // LOL: if no `await` here below, the row will be updated
+        await prisma.municipality.update({
+          where: {
+            COM: municipality.COM,
+          },
+          data: {
+            has_bathing_water_sites: sites.length > 0,
+          },
+        });
+      }
     }
 
     const nextMunicipalities = await prisma.municipality.findMany({
