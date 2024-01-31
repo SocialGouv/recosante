@@ -1,3 +1,16 @@
+# [1.23.0](https://github.com/SocialGouv/recosante/compare/v1.22.1...v1.23.0) (2024-01-31)
+
+
+### Bug Fixes
+
+* deactivate bathing water ([c7ea244](https://github.com/SocialGouv/recosante/commit/c7ea244a536301716946a0bf77b8b6f5247eb2ee))
+* disable bathing water ([0faa29f](https://github.com/SocialGouv/recosante/commit/0faa29fd19db7af381f14e6c3649dd5ade5b9b79))
+
+
+### Features
+
+* fill municipalities with bathing water sites ([11669a6](https://github.com/SocialGouv/recosante/commit/11669a68b9a054f742a66af749589e59b19f094a))
+
 ## [1.22.1](https://github.com/SocialGouv/recosante/compare/v1.22.0...v1.22.1) (2024-01-30)
 
 
