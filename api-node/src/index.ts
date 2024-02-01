@@ -18,7 +18,8 @@ import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 
 import packageJson from '../package.json';
-
+// import { getBathingWaterIndicator } from './aggregators/bathing_water.ts';
+// getBathingWaterIndicator();
 // Put together a schema
 const app = express();
 

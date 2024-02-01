@@ -35,6 +35,7 @@
     "express": "^4.18.2",
     "helmet": "^7.1.0",
     "morgan": "^1.10.0",
+    "node-html-parser": "^6.1.12",
     "node-pushnotifications": "^2.1.0",
     "zod": "^3.22.4"
   },

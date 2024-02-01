@@ -219,6 +219,10 @@ model BathingWater {
   updated_at              DateTime               @default(now()) @updatedAt
   // specific fields for this indicator
   id_carte                BathgWaterIdCarteEnum?
+  name                    String? // example: "PLAN D'EAU D'ANGLEFORT"
+  isite                   String? // example: "001165"
+  dptddass                String? // example: "001" - DEP code padStarted with 0
+  idSite                  String? // composition of dptddass + isite
 
   @@index([municipality_insee_code, diffusion_date, validity_start], name: "bathing_water_insee_code_diffusion_date_validity_start")
 }
