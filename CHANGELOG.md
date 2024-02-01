@@ -1,3 +1,10 @@
+## [1.23.1](https://github.com/SocialGouv/recosante/compare/v1.23.0...v1.23.1) (2024-02-01)
+
+
+### Bug Fixes
+
+* adjust cron schedule ([cfa558c](https://github.com/SocialGouv/recosante/commit/cfa558c80405a0eb7a76d08771f5a8915c9faa31))
+
 # [1.23.0](https://github.com/SocialGouv/recosante/compare/v1.22.1...v1.23.0) (2024-01-31)
 
 
