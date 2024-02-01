@@ -338,3 +338,11 @@ model Notification {
   created_at       DateTime           @default(now())
   updated_at       DateTime           @default(now()) @updatedAt
 }
+
+model Feedback {
+  id         String   @id @default(uuid())
+  score      Int
+  message    String?
+  contact    String?
+  created_at DateTime @default(now())
+}
