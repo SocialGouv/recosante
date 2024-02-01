@@ -33,7 +33,7 @@ export async function initAggregators() {
           // (heure de Paris) jusqu’à 15h00 pour la métropole et à partir de 18h00 pour les outre-mer
           // Les serveurs d’Atmo Data connaissent donc un pic d’activité entre 13h et 15h. Les requêtes
           // sont à effectuer 1 à 2 fois par jour, en dehors de ces horaires.
-          cronTime: '15 15,18 * * *', // every day at 3:15pm and 6:15pm
+          cronTime: '15 15,20 * * *', // every day at 3:15pm and 8:15pm
           job: getAtmoIndicator,
           runOnInit: true,
         }),
@@ -55,7 +55,7 @@ export async function initAggregators() {
           name: 'Indice UV',
           // The data is a CSV issued every day at 6am or 7am
           // Data is available for the current day, J+1 and J+2
-          cronTime: '50 6 * * *', // every day at 8:10am
+          cronTime: '10 7 * * *', // every day at 7:10am
           job: getIndiceUVIndicator,
           runOnInit: true,
         }),
