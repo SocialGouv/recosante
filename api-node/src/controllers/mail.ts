@@ -66,7 +66,6 @@ mailRouter.post(
     });
 
     if (apiRes?.ok) {
-      console.log('apiRes', apiRes);
       res.status(200).json({ ok: true });
     } else {
       res.status(500).json({ ok: false, error: 'error while sending email' });
