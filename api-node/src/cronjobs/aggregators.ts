@@ -4,6 +4,7 @@ import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
 import { getWeatherAlert } from '~/aggregators/weather_alert';
+import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
 
 /*
 *
@@ -64,10 +65,19 @@ export async function initAggregators() {
       async () =>
         await setupCronJob({
           name: 'Weather Alerts',
-          // The data is a CSV issued every day at 6am or 7am
-          // Data is available for the current day, J+1 and J+2
+          // The data is an API call with no emission rule
           cronTime: '20 * * * *', // every day every hour at HH:20
           job: getWeatherAlert,
+          runOnInit: true,
+        }),
+    )
+    .then(
+      async () =>
+        await setupCronJob({
+          name: 'Bathing Water',
+          // The data is scraped from a website with no emission rule
+          cronTime: '11 11,23 * * *', // every day at 11:11am and 11:11pm
+          job: getBathingWaterIndicator,
           runOnInit: true,
         }),
     )
