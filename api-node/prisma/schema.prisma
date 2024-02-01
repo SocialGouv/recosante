@@ -223,6 +223,10 @@ model BathingWater {
   isite                   String? // example: "001165"
   dptddass                String? // example: "001" - DEP code padStarted with 0
   idSite                  String? // composition of dptddass + isite
+  result_date             DateTime? // example: "2021-06-30T00:00:00.000Z"
+  value                   String? // example: 0.0 // Bon /moyen /mauvais
+  swimming_season_start   DateTime? // example: "2021-06-01T00:00:00.000Z"
+  swimming_season_end     DateTime? // example: "2021-09-30T00:00:00.000Z"
 
   @@index([municipality_insee_code, diffusion_date, validity_start], name: "bathing_water_insee_code_diffusion_date_validity_start")
 }

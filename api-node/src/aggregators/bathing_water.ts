@@ -69,14 +69,17 @@ export async function getBathingWaterIndicator() {
           dptddass,
           site: idSite,
           annee: year,
+          plv: 'all',
         };
         Object.keys(consultSiteQuery).forEach((key) => {
           consultSiteUrl.searchParams.append(key, consultSiteQuery[key]);
         });
+        // example of consultSiteUrl: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all
         const htmlSitePage = await fetch(consultSiteUrl.toString()).then(
           (res) => res.text(),
         );
         const dom = HTMLParser.parse(htmlSitePage);
+        // TODO: Charles, tu peux faire le parsing ici ?
         console.log(dom);
       }
       return;
