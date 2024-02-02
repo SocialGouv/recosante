@@ -3,10 +3,16 @@ import {
   BathingWaterCurrentYearGradingEnum,
   BathingWaterResultEnum,
   type Municipality,
+  BathingWater,
 } from '@prisma/client';
-import type { ScrapingResult } from '~/types/api/bathing_water';
+import {
+  type ScrapingResult,
+  BathingWaterNumberValueEnum,
+  BathingWaterStatusEnum,
+} from '~/types/api/bathing_water';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
+import dayjs from 'dayjs';
 
 function getIdCarteForDepartment(
   departmendCode: Municipality['DEP'],
@@ -128,8 +134,93 @@ async function scrapeHtmlBaignadesSitePage(
   };
 }
 
+function getBathingWaterValueFromTestResult(
+  testResult: BathingWaterResultEnum,
+  grading: BathingWaterCurrentYearGradingEnum,
+): BathingWaterNumberValueEnum {
+  if (grading === BathingWaterCurrentYearGradingValueEnum)
+  switch (testResult) {
+    case BathingWaterResultEnum.GOOD:
+      return BathingWaterNumberValueEnum.GOOD;
+    case BathingWaterResultEnum.AVERAGE:
+      return BathingWaterNumber\ValueEnum.AVERAGE;
+    case BathingWaterResultEnum.POOR:
+      return BathingWaterNumberValueEnum.POOR;
+  }
+}
+
+function getBathingWaterStatusFromBathingWaterValue(
+  value: BathingWaterNumberValueEnum,
+): BathingWaterStatusEnum {
+  switch (value) {
+    case BathingWaterNumberValueEnum.EXCELLENT:
+      return BathingWaterStatusEnum.EXCELLENT;
+    case BathingWaterNumberValueEnum.GOOD:
+      return BathingWaterStatusEnum.GOOD;
+    case BathingWaterNumberValueEnum.SUFFICIENT:
+      return BathingWaterStatusEnum.SUFFICIENT;
+    case BathingWaterNumberValueEnum.POOR:
+      return BathingWaterStatusEnum.POOR;
+    case BathingWaterNumberValueEnum.UNRANKED_SITE:
+      return BathingWaterStatusEnum.UNRANKED_SITE;
+    case BathingWaterNumberValueEnum.PROHIBITION:
+      return BathingWaterStatusEnum.PROHIBITION;
+  }
+}
+
+function getBathingWaterWorstValue(
+  bathingWaterSites: Array<BathingWater>,
+): BathingWaterNumberValueEnum {
+  let worstGrading = BathingWaterNumberValueEnum.UNRANKED_SITE;
+  for (const site of bathingWaterSites) {
+    const currentYearGrading = site.current_year_grading;
+    if (!currentYearGrading) continue;
+    const value = getBathingWaterValueFromTestResult(currentYearGrading);
+    if (value > worstGrading) {
+      worstGrading = value;
+    }
+  }
+  return worstGrading;
+}
+
+function getBathingWaterLatestResultDate(
+  bathingWaterSites: Array<BathingWater>,
+): string {
+  let latestResultDate = '';
+  for (const site of bathingWaterSites) {
+    const resultDate = dayjs(site.result_date).utc().format('YYYY-MM-DD');
+    if (!resultDate) continue;
+    if (resultDate > latestResultDate) {
+      latestResultDate = resultDate;
+    }
+  }
+  return latestResultDate;
+}
+
+const consultSiteUrl = new URL(
+  'https://baignades.sante.gouv.fr/baignades/consultSite.do',
+);
+function buildBathingWaterUrl(bathingWater: BathingWater): string {
+  const consultSiteQuery: any = {
+    dptddass: bathingWater.dptddass,
+    site: bathingWater.id_site,
+    annee: dayjs().year(),
+    // plv: 'all', // CAREFUL: for 2023 it works, but for 2024 it doesn't
+  };
+  Object.keys(consultSiteQuery).forEach((key) => {
+    consultSiteUrl.searchParams.append(key, consultSiteQuery[key]);
+  });
+  // example of consultSiteUrl: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023
+  return consultSiteUrl.toString();
+}
+
 export {
   getIdCarteForDepartment,
   updateMunicipalitiesWithBathingWaterSites,
   scrapeHtmlBaignadesSitePage,
+  getBathingWaterValueFromTestResult,
+  getBathingWaterStatusFromBathingWaterValue,
+  getBathingWaterWorstValue,
+  getBathingWaterLatestResultDate,
+  buildBathingWaterUrl,
 };

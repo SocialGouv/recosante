@@ -12,6 +12,7 @@ import { indicatorsList } from '~/getters/indicators_list';
 // import { indicatorsMock } from './mocks/indicators';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
+import { getBathingWaterFromMunicipalityAndDate } from '~/getters/bathing_water';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -85,6 +86,17 @@ router.get(
       }
 
       if (weatherAlert) indicators.push(weatherAlert);
+
+      const bathingWater = await getBathingWaterFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (bathingWater instanceof Error) {
+        next(bathingWater);
+        return;
+      }
+
+      if (bathingWater) indicators.push(bathingWater);
 
       // indicators.push(...indicatorsMock);
 

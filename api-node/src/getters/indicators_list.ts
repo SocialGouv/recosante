@@ -35,7 +35,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
     long_name: 'La qualité des eaux de baignade',
     short_name: 'Baignade',
     slug: IndicatorsSlugEnum.bathing_water,
-    active: false,
+    active: true,
   },
   // [IndicatorsSlugEnum.tap_water]: {
   //   name: 'Eau du robinet',

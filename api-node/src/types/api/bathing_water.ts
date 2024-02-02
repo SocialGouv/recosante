@@ -12,17 +12,35 @@ export type ScrapingResult = {
 };
 
 export enum BathingWaterCurrentYearGradingValueEnum {
-  EXCELLENT = 'Excellent',
-  GOOD = 'Bon',
-  SUFFICIENT = 'Suffisant',
-  POOR = 'Insuffisant',
-  INSUFFICIENTLY_SAMPLED = 'Insuffisamment de prélèvements',
-  UNRANKED_SITE = 'Site non classé',
-  PROHIBITION = 'Interdiction',
+  EXCELLENT = 'Excellent', // excellente qualité
+  GOOD = 'Bon', // bonne qualité
+  SUFFICIENT = 'Suffisant', // qualité suffisante
+  POOR = 'Insuffisant', // qualité insuffisante
+  INSUFFICIENTLY_SAMPLED = 'Insuffisamment de prélèvements', // Site n'ayant pas suffisamment de prélèvements cette saison pour être classé
+  UNRANKED_SITE = 'Site non classé', // Site non classé
+  PROHIBITION = 'Interdiction', // interdiction
 }
 
 export enum BathingWaterResultValueEnum {
   GOOD = 'Bon résultat',
   AVERAGE = 'Résultat moyen',
   POOR = 'Mauvais résultat',
+}
+
+export enum BathingWaterNumberValueEnum {
+  UNRANKED_SITE = 0, // Site non classé - Site n'ayant pas suffisamment de prélèvements cette saison pour être classé
+  EXCELLENT = 1, // excellente qualité
+  GOOD = 2, // bonne qualité
+  SUFFICIENT = 3, // qualité suffisante
+  POOR = 4, // qualité insuffisante
+  PROHIBITION = 5, // interdiction
+}
+
+export enum BathingWaterStatusEnum {
+  UNRANKED_SITE = 'Site non classé',
+  EXCELLENT = 'Excellent',
+  GOOD = 'Bon',
+  SUFFICIENT = 'Suffisant',
+  POOR = 'Insuffisant',
+  PROHIBITION = 'Interdiction',
 }
