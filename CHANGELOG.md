@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/SocialGouv/recosante/compare/v1.24.0...v1.24.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* sealed secrets ([5ea9157](https://github.com/SocialGouv/recosante/commit/5ea915785f4d8576be67132a0e69a02b79a39294))
+
 # [1.24.0](https://github.com/SocialGouv/recosante/compare/v1.23.1...v1.24.0) (2024-02-02)
 
 
