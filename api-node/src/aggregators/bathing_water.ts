@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
-import HTMLParser from 'node-html-parser';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import {
@@ -69,7 +68,9 @@ export async function getBathingWaterIndicator() {
       });
       // eslint-disable-next-line @typescript-eslint/promise-function-async
       const sites: Array<Site> = await fetch(sitesListUrl.toString())
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         .then((res) => res.json())
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         .then((res) => res.sites);
       console.log(JSON.stringify(sites, null, 2));
       for (const site of sites) {
@@ -146,7 +147,7 @@ export async function getBathingWaterIndicator() {
           },
         });
       }
-      return;
+      // return;
     }
 
     logStep(

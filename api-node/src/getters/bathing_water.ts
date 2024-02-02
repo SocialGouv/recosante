@@ -1,3 +1,4 @@
+/* eslint-disable no-multiple-empty-lines */
 /*
 
 const inseeCode = '<your_insee_code>'; // replace with desired insee code

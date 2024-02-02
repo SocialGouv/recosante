@@ -16,6 +16,8 @@ import eventRouter from './controllers/event.ts';
 import environmentRouter from './controllers/environment.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
+import mailRouter from './controllers/mail.ts';
+import feedbackRouter from './controllers/feedback.ts';
 
 import packageJson from '../package.json';
 // import { getBathingWaterIndicator } from './aggregators/bathing_water.ts';
@@ -106,6 +108,8 @@ app.use('/environment', environmentRouter);
 app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/indicators', indicatorsRouter);
+app.use('/mail', mailRouter);
+app.use('/feedback', feedbackRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);

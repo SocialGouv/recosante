@@ -41,6 +41,7 @@ model User {
   favorite_indicator       IndicatorsSlugEnum?
   notifications_preference NotifationEnum[]    @default([evening, alert])
   notifications            Notification[]
+  feedbacks                Feedback[]
 
   @@index([push_notif_token], type: Hash)
 }
@@ -369,5 +370,7 @@ model Feedback {
   score      Int
   message    String?
   contact    String?
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
 }

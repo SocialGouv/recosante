@@ -8,7 +8,7 @@ import { type CustomError } from '~/types/error';
 
 import { type RequestWithUser } from '~/types/request';
 
-export const feedbackRouter = express.Router();
+const feedbackRouter = express.Router();
 
 feedbackRouter.post(
   '/',
@@ -38,9 +38,16 @@ feedbackRouter.post(
       }
 
       await prisma.feedback.create({
-        data: req.body,
+        data: {
+          user_id: req.user.id,
+          score: req.body.score,
+          message: req.body.message,
+          contact: req.body.contact,
+        },
       });
       res.status(200).send({ ok: true });
     },
   ),
 );
+
+export default feedbackRouter;

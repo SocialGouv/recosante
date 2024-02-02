@@ -9,7 +9,7 @@ import { capture } from '~/third-parties/sentry';
 import { type RequestWithUser } from '~/types/request';
 import express from 'express';
 
-export const mailRouter = express.Router();
+const mailRouter = express.Router();
 
 mailRouter.post(
   '/',
@@ -72,3 +72,5 @@ mailRouter.post(
     }
   }),
 );
+
+export default mailRouter;
