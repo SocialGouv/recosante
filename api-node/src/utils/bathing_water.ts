@@ -1,4 +1,10 @@
-import { BathgWaterIdCarteEnum, type Municipality } from '@prisma/client';
+import {
+  BathgWaterIdCarteEnum,
+  BathingWaterCurrentYearGradingEnum,
+  BathingWaterResultEnum,
+  type Municipality,
+} from '@prisma/client';
+import type { ScrapingResult } from '~/types/api/bathing_water';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 
@@ -101,4 +107,29 @@ async function updateMunicipalitiesWithBathingWaterSites() {
   }
 }
 
-export { getIdCarteForDepartment, updateMunicipalitiesWithBathingWaterSites };
+async function scrapeHtmlBaignadesSitePage(
+  consultSiteUrl: string,
+): Promise<ScrapingResult | null> {
+  console.log({ consultSiteUrl });
+  // const htmlSitePage = await fetch(consultSiteUrl.toString()).then(
+  //   (res) => res.text(),
+  // );
+  // TODO: Charles, tu peux faire le parsing ici ?
+  // example 2024: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2024
+  // example 2023: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all
+  // const dom = HTMLParser.parse(htmlSitePage);
+  // console.log(dom);
+  return {
+    result_date: '2023-08-23',
+    result_value: BathingWaterResultEnum.GOOD,
+    swimming_season_start: '2023-06-01',
+    swimming_season_end: '2023-10-01',
+    current_year_grading: BathingWaterCurrentYearGradingEnum.EXCELLENT,
+  };
+}
+
+export {
+  getIdCarteForDepartment,
+  updateMunicipalitiesWithBathingWaterSites,
+  scrapeHtmlBaignadesSitePage,
+};
