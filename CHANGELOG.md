@@ -1,3 +1,20 @@
+# [1.24.0](https://github.com/SocialGouv/recosante/compare/v1.23.1...v1.24.0) (2024-02-02)
+
+
+### Bug Fixes
+
+* capture tipimail errors ([bbb9c77](https://github.com/SocialGouv/recosante/commit/bbb9c7723af3bde9d106473ad4a993c6b7d8030d))
+* feedback ([f7a747f](https://github.com/SocialGouv/recosante/commit/f7a747f30e025b84cfba12888f507d7df776c089))
+* matomoid backend ([abe1473](https://github.com/SocialGouv/recosante/commit/abe1473a0707fb3301067574809f5fb1450552a5))
+* tipimail from to ([14c01b5](https://github.com/SocialGouv/recosante/commit/14c01b5dfb0d5dc9fdd3c3ff088406eb9d52bfa3))
+* Update indice_uv.md ([#389](https://github.com/SocialGouv/recosante/issues/389)) ([7bd83a9](https://github.com/SocialGouv/recosante/commit/7bd83a9c33a60abf88158afd4650775c1f2fd414))
+
+
+### Features
+
+* bathing water still ongiong ([#387](https://github.com/SocialGouv/recosante/issues/387)) ([e554403](https://github.com/SocialGouv/recosante/commit/e5544034a063bd3395799654473b6c555a27ecdb))
+* **feedback:** Save feedback in Db + sendMail when receive new one ([#392](https://github.com/SocialGouv/recosante/issues/392)) ([fb9e90f](https://github.com/SocialGouv/recosante/commit/fb9e90fc21386ca94e9be9d0c1b0c5738ffeab41))
+
 ## [1.23.1](https://github.com/SocialGouv/recosante/compare/v1.23.0...v1.23.1) (2024-02-01)
 
 
