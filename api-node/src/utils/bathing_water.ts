@@ -135,17 +135,24 @@ async function scrapeHtmlBaignadesSitePage(
 }
 
 function getBathingWaterValueFromTestResult(
-  testResult: BathingWaterResultEnum,
   grading: BathingWaterCurrentYearGradingEnum,
 ): BathingWaterNumberValueEnum {
-  if (grading === BathingWaterCurrentYearGradingValueEnum)
-  switch (testResult) {
-    case BathingWaterResultEnum.GOOD:
+  // TODO: Charles, tu peux faire le mapping ici ?
+  switch (grading) {
+    case BathingWaterCurrentYearGradingEnum.EXCELLENT:
+      return BathingWaterNumberValueEnum.EXCELLENT;
+    case BathingWaterCurrentYearGradingEnum.GOOD:
       return BathingWaterNumberValueEnum.GOOD;
-    case BathingWaterResultEnum.AVERAGE:
-      return BathingWaterNumber\ValueEnum.AVERAGE;
-    case BathingWaterResultEnum.POOR:
+    case BathingWaterCurrentYearGradingEnum.SUFFICIENT:
+      return BathingWaterNumberValueEnum.SUFFICIENT;
+    case BathingWaterCurrentYearGradingEnum.POOR:
       return BathingWaterNumberValueEnum.POOR;
+    case BathingWaterCurrentYearGradingEnum.INSUFFICIENTLY_SAMPLED:
+      return BathingWaterNumberValueEnum.UNRANKED_SITE;
+    case BathingWaterCurrentYearGradingEnum.UNRANKED_SITE:
+      return BathingWaterNumberValueEnum.UNRANKED_SITE;
+    case BathingWaterCurrentYearGradingEnum.PROHIBITION:
+      return BathingWaterNumberValueEnum.PROHIBITION;
   }
 }
 

@@ -142,7 +142,7 @@ async function getBathingWaters({
         *,
         ROW_NUMBER() OVER(PARTITION BY id_site ORDER BY diffusion_date DESC) as row_number
     FROM
-        BathingWater
+        "BathingWater"
     WHERE
         municipality_insee_code = ${municipality_insee_code}
   ) bw
