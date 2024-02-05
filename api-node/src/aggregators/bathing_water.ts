@@ -3,14 +3,12 @@ import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
-import {
-  getIdCarteForDepartment,
-  scrapeHtmlBaignadesSitePage,
-} from '~/utils/bathing_water';
+import { getIdCarteForDepartment } from '~/utils/bathing_water/bathing_water';
 import {
   BathingWaterCurrentYearGradingEnum,
   DataAvailabilityEnum,
 } from '@prisma/client';
+import { scrapeHtmlBaignadesSitePage } from '~/utils/bathing_water/scrapping';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -38,11 +36,10 @@ const consultSiteUrl = new URL(
 
 export async function getBathingWaterIndicator() {
   try {
-    // Step 1: Fetch data
     now = Date.now();
     logStep('Getting Bathing Waters');
 
-    // Step 5: grab the municipalities list
+    // Step 1: grab the municipalities list with bathing water sites
     const municipalities = await prisma.municipality.findMany({
       where: {
         has_bathing_water_sites: true,
@@ -51,44 +48,45 @@ export async function getBathingWaterIndicator() {
 
     let insertedNewRows = 0;
     let missingData = 0;
-
-    for await (const [index, municipality] of Object.entries(municipalities)) {
-      console.log(index, municipality.COM, municipality.DEP);
+    for await (const [, municipality] of Object.entries(municipalities)) {
       const dptddass = municipality.DEP.padStart(3, '0');
       const idCarte = getIdCarteForDepartment(municipality.DEP);
 
-      const sitesListQuery: any = {
+      const sitesListQuery = {
+        // TODO: Check si c'est le bon type, est on sûr que idCarte peut être null ?
         idCarte,
         insee_com: municipality.COM,
         code_dept: municipality.DEP,
         f: 'json',
-      };
+      } as any;
+
+      // Pour chaque municipalité, on récupère la liste des sites de baignade
       Object.keys(sitesListQuery).forEach((key) => {
         sitesListUrl.searchParams.append(key, sitesListQuery[key]);
       });
-      // eslint-disable-next-line @typescript-eslint/promise-function-async
+
       const sites: Array<Site> = await fetch(sitesListUrl.toString())
-        // eslint-disable-next-line @typescript-eslint/promise-function-async
-        .then((res) => res.json())
-        // eslint-disable-next-line @typescript-eslint/promise-function-async
+        .then(async (res) => await res.json())
         .then((res) => res.sites);
-      console.log(JSON.stringify(sites, null, 2));
+
       for (const site of sites) {
         const idSite = `${dptddass}${site.isite}`;
-        const year = dayjs().year();
+        const currentYear = dayjs().year();
         const consultSiteQuery: any = {
           dptddass,
           site: idSite,
-          annee: year,
-          plv: 'all', // CAREFUL: for 2023 it works, but for 2024 it doesn't
+          annee: currentYear,
+          // TODO: Que fait on avec plv ?
+          // plv: 'all', // CAREFUL: for 2023 it works, but for 2024 it doesn't
         };
         Object.keys(consultSiteQuery).forEach((key) => {
           consultSiteUrl.searchParams.append(key, consultSiteQuery[key]);
         });
         // example of consultSiteUrl: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all
         const scrapingResult = await scrapeHtmlBaignadesSitePage(
-          consultSiteUrl.toString(),
+          consultSiteUrl,
         );
+        console.log('scrapingResult', scrapingResult);
         if (!scrapingResult) {
           missingData++;
           const existingResult = await prisma.bathingWater.findFirst({

@@ -4,11 +4,12 @@ import {
 } from '@prisma/client';
 
 export type ScrapingResult = {
-  result_date: string; // YYYY-MM-DD
+  result_date?: string; // YYYY-MM-DD
   result_value: BathingWaterResultEnum;
-  swimming_season_start: string; // YYYY-MM-DD
-  swimming_season_end: string; // YYYY-MM-DD
-  current_year_grading: BathingWaterCurrentYearGradingEnum;
+  swimming_season_start?: string; // YYYY-MM-DD
+  swimming_season_end?: string; // YYYY-MM-DD
+  current_year_grading?: BathingWaterCurrentYearGradingEnum;
+
 };
 
 export enum BathingWaterCurrentYearGradingValueEnum {
@@ -25,6 +26,7 @@ export enum BathingWaterResultValueEnum {
   GOOD = 'Bon résultat',
   AVERAGE = 'Résultat moyen',
   POOR = 'Mauvais résultat',
+  UNRANKED_SITE = 'Site non classé',
 }
 
 export enum BathingWaterNumberValueEnum {

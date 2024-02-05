@@ -1,7 +1,7 @@
 import { fillOrUpdateMunicipalitiesInDB } from '~/utils/municipalities';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water';
+import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water/bathing_water';
 
 /*
 *

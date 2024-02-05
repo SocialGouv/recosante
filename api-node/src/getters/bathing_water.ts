@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import type { Indicator, IndicatorByPeriod } from '~/types/api/indicator';
 import {
   IndicatorsSlugEnum,
-  BathingWater,
+  type BathingWater,
   type Municipality,
   BathingWaterCurrentYearGradingEnum,
 } from '@prisma/client';
@@ -19,7 +19,7 @@ import {
   getBathingWaterStatusFromBathingWaterValue,
   getBathingWaterValueFromTestResult,
   getBathingWaterWorstValue,
-} from '~/utils/bathing_water';
+} from '~/utils/bathing_water/bathing_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
 
@@ -54,8 +54,6 @@ async function getBathingWaterFromMunicipalityAndDate({
     date_UTC_ISO,
   });
 
-  console.log({ bathingWaters });
-
   if (!bathingWaters.length) {
     return null;
   }
@@ -66,7 +64,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     .findMany({
       where: {
         indicator: IndicatorsSlugEnum.bathing_water,
-        indicator_value: indicator_value,
+        indicator_value,
       },
       select: {
         recommandation_content: true,
@@ -92,8 +90,8 @@ async function getBathingWaterFromMunicipalityAndDate({
       recommendations: recommandations,
     },
     values: bathingWaters.map((bathingWater) => ({
-      slug: bathingWater.id_site as string, // TODO
-      name: bathingWater.name as string, // TODO
+      slug: bathingWater.id_site ?? '',
+      name: bathingWater.name ?? '',
       value: getBathingWaterValueFromTestResult(
         bathingWater.current_year_grading ??
           BathingWaterCurrentYearGradingEnum.UNRANKED_SITE,
@@ -112,14 +110,13 @@ async function getBathingWaterFromMunicipalityAndDate({
     name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
     short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
     long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
-    municipality_insee_code: municipality_insee_code,
+    municipality_insee_code,
     about_title: "à propos de l'indice UV",
     about_description,
     j0: bathingWaterIndicatorJ0AndJ1,
     j1: bathingWaterIndicatorJ0AndJ1,
   };
 
-  console.log({ bathingWaterIndicator });
   return bathingWaterIndicator;
 }
 
@@ -128,15 +125,10 @@ async function getBathingWaters({
   date_UTC_ISO,
 }: {
   municipality_insee_code: Municipality['COM'];
-  date_UTC_ISO: string | undefined;
+  date_UTC_ISO: string;
 }): Promise<Array<BathingWater>> {
-  console.log({
-    municipality_insee_code,
-    date_UTC_ISO,
-  });
-  const result = (await prisma.$queryRaw`
-  SELECT
-    bw.*
+  const result = await prisma.$queryRaw`
+  SELECT bw.*
   FROM (
     SELECT
         *,
@@ -147,9 +139,8 @@ async function getBathingWaters({
         municipality_insee_code = ${municipality_insee_code}
   ) bw
   WHERE
-    bw.row_number = 1`) as Array<BathingWater>;
-
-  return result;
+    bw.row_number = 1`;
+  return result as Array<BathingWater>;
 }
 
 export { getBathingWaterFromMunicipalityAndDate, getBathingWaters };
