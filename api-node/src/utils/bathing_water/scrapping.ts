@@ -25,6 +25,11 @@ export async function scrapeHtmlBaignadesSitePage(
     withStartIndices: true,
   });
 
+  const swimmingIsProhibided = $('td:contains("Interdiction de baignade du")')
+    .last()
+    .text();
+
+  // Get the swimming season start and end dates
   const swimmingSeasonStartValue = $('td:contains("Début de la saison")')
     .last()
     .text();
@@ -46,23 +51,31 @@ export async function scrapeHtmlBaignadesSitePage(
     .last()
     .parent()
     .parent();
-  const result = parentOfLastImg.text().trim();
-  if (!result) {
+  const lastTest = parentOfLastImg.text().trim();
+
+  if (swimmingIsProhibided) {
     return {
-      result_value: 'UNRANKED_SITE',
+      result_value: BathingWaterResultEnum.PROHIBITION,
+      swimming_season_start: swimmingSeasonStartDate,
+      swimming_season_end: swimmingSeasonEndDate,
+    };
+  }
+  if (!lastTest) {
+    return {
+      result_value: BathingWaterResultEnum.UNRANKED_SITE,
       swimming_season_start: swimmingSeasonStartDate,
       swimming_season_end: swimmingSeasonEndDate,
     };
   }
 
-  // Regular expression to match the last word in the string
-  const lastWordRegex = /(\S+)\s*$/;
+  // Regular expression to match the last word (label) in the string
+  const labelRegex = /(\S+)\s*$/;
   // Extracting the date
-  const dateMatch = result.match(dateRegex);
+  const dateMatch = lastTest.match(dateRegex);
   const date = dateMatch ? dateMatch[1] : 'No date found';
 
   // Extracting the result_value
-  const labelMatch = result.match(lastWordRegex);
+  const labelMatch = lastTest.match(labelRegex);
   const label = labelMatch ? labelMatch[1] : 'No last word found';
 
   function transformLabelToEnum(value: string): BathingWaterResultEnum {

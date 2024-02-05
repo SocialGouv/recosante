@@ -86,7 +86,8 @@ export async function getBathingWaterIndicator() {
         const scrapingResult = await scrapeHtmlBaignadesSitePage(
           consultSiteUrl,
         );
-        console.log('scrapingResult', scrapingResult);
+        console.log(scrapingResult);
+
         if (!scrapingResult) {
           missingData++;
           const existingResult = await prisma.bathingWater.findFirst({

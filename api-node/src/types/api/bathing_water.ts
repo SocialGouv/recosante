@@ -9,7 +9,6 @@ export type ScrapingResult = {
   swimming_season_start?: string; // YYYY-MM-DD
   swimming_season_end?: string; // YYYY-MM-DD
   current_year_grading?: BathingWaterCurrentYearGradingEnum;
-
 };
 
 export enum BathingWaterCurrentYearGradingValueEnum {
