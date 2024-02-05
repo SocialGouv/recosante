@@ -228,14 +228,14 @@ model BathingWater {
 
   // common fields for all indicators
   municipality_insee_code String
-  municipality            Municipality           @relation(fields: [municipality_insee_code], references: [COM])
+  municipality            Municipality            @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  data_availability       DataAvailabilityEnum   @default(AVAILABLE)
-  alert_status            AlertStatusEnum        @default(NOT_ALERT_THRESHOLD)
-  created_at              DateTime               @default(now())
-  updated_at              DateTime               @default(now()) @updatedAt
+  data_availability       DataAvailabilityEnum    @default(AVAILABLE)
+  alert_status            AlertStatusEnum         @default(NOT_ALERT_THRESHOLD)
+  created_at              DateTime                @default(now())
+  updated_at              DateTime                @default(now()) @updatedAt
   // specific fields for this indicator
   id_carte                BathgWaterIdCarteEnum?
   name                    String? // example: "PLAN D'EAU D'ANGLEFORT"
@@ -243,7 +243,7 @@ model BathingWater {
   dptddass                String? // example: "001" - DEP code padStarted with 0
   id_site                 String? // composition of dptddass + isite
   result_date             DateTime? // example: "2021-06-30T00:00:00.000Z"
-  result_value            String? // example: "GOOD"
+  result_value            BathingWaterResultEnum? // example: "GOOD"
 
   result_value_enum     BathingWaterResultEnum? // example: "GOOD"
   current_year_grading  BathingWaterCurrentYearGradingEnum? // example: "GOOD"
