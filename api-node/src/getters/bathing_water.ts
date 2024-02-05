@@ -8,7 +8,6 @@ import {
   IndicatorsSlugEnum,
   type BathingWater,
   type Municipality,
-  BathingWaterCurrentYearGradingEnum,
 } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
@@ -16,9 +15,8 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import {
   buildBathingWaterUrl,
   getBathingWaterLatestResultDate,
-  getBathingWaterStatusFromBathingWaterValue,
-  getBathingWaterValueFromTestResult,
-  getBathingWaterWorstValue,
+  getBathingWaterSiteValueDerivedFromBathingWaterRow,
+  getBathingWaterSummaryValue,
 } from '~/utils/bathing_water/bathing_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
@@ -58,13 +56,13 @@ async function getBathingWaterFromMunicipalityAndDate({
     return null;
   }
 
-  const indicator_value = getBathingWaterWorstValue(bathingWaters);
+  const { value, status } = getBathingWaterSummaryValue(bathingWaters);
 
   const recommandations = await prisma.recommandation
     .findMany({
       where: {
         indicator: IndicatorsSlugEnum.bathing_water,
-        indicator_value,
+        indicator_value: value,
       },
       select: {
         recommandation_content: true,
@@ -85,17 +83,14 @@ async function getBathingWaterFromMunicipalityAndDate({
   const bathingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: 'no id',
     summary: {
-      value: indicator_value,
-      status: getBathingWaterStatusFromBathingWaterValue(indicator_value),
+      value,
+      status,
       recommendations: recommandations,
     },
     values: bathingWaters.map((bathingWater) => ({
       slug: bathingWater.id_site ?? '',
       name: bathingWater.name ?? '',
-      value: getBathingWaterValueFromTestResult(
-        bathingWater.current_year_grading ??
-          BathingWaterCurrentYearGradingEnum.UNRANKED_SITE,
-      ),
+      value: getBathingWaterSiteValueDerivedFromBathingWaterRow(bathingWater),
       link: buildBathingWaterUrl(bathingWater),
     })),
     diffusion_date: getBathingWaterLatestResultDate(bathingWaters),

@@ -10,7 +10,7 @@ function capture(
     [key: string]: unknown;
   },
 ) {
-  // console.log('capture', error, JSON.stringify(context, null, 2));
+  console.log('capture', error, JSON.stringify(context, null, 2));
   if (!sentryEnabled) {
     return;
   }

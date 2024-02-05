@@ -4,11 +4,11 @@ import {
 } from '@prisma/client';
 
 export type ScrapingResult = {
-  result_date?: string; // YYYY-MM-DD
+  result_date: string | null; // YYYY-MM-DD
   result_value: BathingWaterResultEnum;
-  swimming_season_start?: string; // YYYY-MM-DD
-  swimming_season_end?: string; // YYYY-MM-DD
-  current_year_grading?: BathingWaterCurrentYearGradingEnum;
+  swimming_season_start: string | null; // YYYY-MM-DD
+  swimming_season_end: string | null; // YYYY-MM-DD
+  current_year_grading: BathingWaterCurrentYearGradingEnum;
 };
 
 export enum BathingWaterCurrentYearGradingValueEnum {
@@ -19,29 +19,37 @@ export enum BathingWaterCurrentYearGradingValueEnum {
   INSUFFICIENTLY_SAMPLED = 'Insuffisamment de prélèvements', // Site n'ayant pas suffisamment de prélèvements cette saison pour être classé
   UNRANKED_SITE = 'Site non classé', // Site non classé
   PROHIBITION = 'Interdiction', // interdiction
+  OFF_SEASON = 'Hors saison', // Site hors saison de baignade
 }
 
 export enum BathingWaterResultValueEnum {
   GOOD = 'Bon résultat',
   AVERAGE = 'Résultat moyen',
   POOR = 'Mauvais résultat',
-  UNRANKED_SITE = 'Site non classé',
+  NO_RESULT_FOUND = 'Pas de résultat trouvé',
+}
+
+export enum BathingWaterResultValueNumberEnum {
+  NO_RESULT_FOUND = 0,
+  GOOD = 1,
+  AVERAGE = 2,
+  POOR = 3,
 }
 
 export enum BathingWaterNumberValueEnum {
+  OFF_SEASON = 0, // Site hors saison de baignade
   UNRANKED_SITE = 0, // Site non classé - Site n'ayant pas suffisamment de prélèvements cette saison pour être classé
-  EXCELLENT = 1, // excellente qualité
-  GOOD = 2, // bonne qualité
-  SUFFICIENT = 3, // qualité suffisante
-  POOR = 4, // qualité insuffisante
-  PROHIBITION = 5, // interdiction
+  GOOD = 1, // bonne qualité
+  AVERAGE = 2, // qualité suffisante
+  POOR = 3, // mauvaise qualité
+  PROHIBITION = 4, // interdiction
 }
 
 export enum BathingWaterStatusEnum {
+  OFF_SEASON = 'Hors saison',
   UNRANKED_SITE = 'Site non classé',
-  EXCELLENT = 'Excellent',
   GOOD = 'Bon',
-  SUFFICIENT = 'Suffisant',
-  POOR = 'Insuffisant',
+  AVERAGE = 'Moyen',
+  POOR = 'Mauvais',
   PROHIBITION = 'Interdiction',
 }

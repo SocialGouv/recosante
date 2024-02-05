@@ -1,8 +1,9 @@
 import {
   BathgWaterIdCarteEnum,
-  BathingWaterCurrentYearGradingEnum,
   type Municipality,
   type BathingWater,
+  BathingWaterResultEnum,
+  BathingWaterCurrentYearGradingEnum,
 } from '@prisma/client';
 import {
   BathingWaterNumberValueEnum,
@@ -56,7 +57,7 @@ async function updateMunicipalitiesWithBathingWaterSites() {
 
     const prevMunicipalities = await prisma.municipality.findMany({
       where: {
-        has_bathing_water_sites: true,
+        bathing_water_sites: { gt: 0 },
       },
     });
     // Step 5: grab the municipalities list
@@ -90,7 +91,7 @@ async function updateMunicipalitiesWithBathingWaterSites() {
             COM: municipality.COM,
           },
           data: {
-            has_bathing_water_sites: sites.length > 0,
+            bathing_water_sites: sites.length,
           },
         });
       }
@@ -98,7 +99,7 @@ async function updateMunicipalitiesWithBathingWaterSites() {
 
     const nextMunicipalities = await prisma.municipality.findMany({
       where: {
-        has_bathing_water_sites: true,
+        bathing_water_sites: { gt: 0 },
       },
     });
 
@@ -112,60 +113,120 @@ async function updateMunicipalitiesWithBathingWaterSites() {
   }
 }
 
-function getBathingWaterValueFromTestResult(
-  grading: BathingWaterCurrentYearGradingEnum,
+function getBathingWaterSiteValueDerivedFromTestResult(
+  result_value: BathingWaterResultEnum | null,
 ): BathingWaterNumberValueEnum {
-  // TODO: Charles, tu peux faire le mapping ici ?
-  switch (grading) {
-    case BathingWaterCurrentYearGradingEnum.EXCELLENT:
-      return BathingWaterNumberValueEnum.EXCELLENT;
-    case BathingWaterCurrentYearGradingEnum.GOOD:
+  switch (result_value) {
+    case BathingWaterResultEnum.GOOD:
       return BathingWaterNumberValueEnum.GOOD;
-    case BathingWaterCurrentYearGradingEnum.SUFFICIENT:
-      return BathingWaterNumberValueEnum.SUFFICIENT;
-    case BathingWaterCurrentYearGradingEnum.POOR:
+    case BathingWaterResultEnum.AVERAGE:
+      return BathingWaterNumberValueEnum.AVERAGE;
+    case BathingWaterResultEnum.POOR:
       return BathingWaterNumberValueEnum.POOR;
-    case BathingWaterCurrentYearGradingEnum.INSUFFICIENTLY_SAMPLED:
+    case BathingWaterResultEnum.NO_RESULT_FOUND:
+    default:
       return BathingWaterNumberValueEnum.UNRANKED_SITE;
-    case BathingWaterCurrentYearGradingEnum.UNRANKED_SITE:
-      return BathingWaterNumberValueEnum.UNRANKED_SITE;
-    case BathingWaterCurrentYearGradingEnum.PROHIBITION:
-      return BathingWaterNumberValueEnum.PROHIBITION;
   }
 }
 
-function getBathingWaterStatusFromBathingWaterValue(
+function getBathingWaterSiteValueDerivedFromBathingWaterRow(
+  bathingWater: BathingWater,
+): BathingWaterNumberValueEnum {
+  if (
+    bathingWater.current_year_grading ===
+    BathingWaterCurrentYearGradingEnum.PROHIBITION
+  ) {
+    return BathingWaterNumberValueEnum.PROHIBITION;
+  }
+
+  switch (bathingWater.result_value) {
+    case BathingWaterResultEnum.GOOD:
+      return BathingWaterNumberValueEnum.GOOD;
+    case BathingWaterResultEnum.AVERAGE:
+      return BathingWaterNumberValueEnum.AVERAGE;
+    case BathingWaterResultEnum.POOR:
+      return BathingWaterNumberValueEnum.POOR;
+    case BathingWaterResultEnum.NO_RESULT_FOUND:
+    default:
+      return BathingWaterNumberValueEnum.UNRANKED_SITE;
+  }
+}
+
+function getBathingWaterStatus(
   value: BathingWaterNumberValueEnum,
 ): BathingWaterStatusEnum {
   switch (value) {
-    case BathingWaterNumberValueEnum.EXCELLENT:
-      return BathingWaterStatusEnum.EXCELLENT;
-    case BathingWaterNumberValueEnum.GOOD:
-      return BathingWaterStatusEnum.GOOD;
-    case BathingWaterNumberValueEnum.SUFFICIENT:
-      return BathingWaterStatusEnum.SUFFICIENT;
-    case BathingWaterNumberValueEnum.POOR:
-      return BathingWaterStatusEnum.POOR;
+    case BathingWaterNumberValueEnum.OFF_SEASON:
+      return BathingWaterStatusEnum.OFF_SEASON;
     case BathingWaterNumberValueEnum.UNRANKED_SITE:
       return BathingWaterStatusEnum.UNRANKED_SITE;
+    case BathingWaterNumberValueEnum.GOOD:
+      return BathingWaterStatusEnum.GOOD;
+    case BathingWaterNumberValueEnum.AVERAGE:
+      return BathingWaterStatusEnum.AVERAGE;
+    case BathingWaterNumberValueEnum.POOR:
+      return BathingWaterStatusEnum.POOR;
     case BathingWaterNumberValueEnum.PROHIBITION:
       return BathingWaterStatusEnum.PROHIBITION;
   }
 }
 
-function getBathingWaterWorstValue(
-  bathingWaterSites: Array<BathingWater>,
-): BathingWaterNumberValueEnum {
-  let worstGrading = BathingWaterNumberValueEnum.UNRANKED_SITE;
+function isBathingWaterSiteOnSeason(bathingWater: BathingWater): boolean {
+  const today = dayjs().format('YYYY-MM-DD');
+  switch (bathingWater.id_carte) {
+    case BathgWaterIdCarteEnum.gua:
+    case BathgWaterIdCarteEnum.mar:
+    case BathgWaterIdCarteEnum.guy:
+    case BathgWaterIdCarteEnum.reu:
+    case BathgWaterIdCarteEnum.may:
+      return true;
+  }
+
+  if (!bathingWater.swimming_season_end) return false;
+  if (!bathingWater.swimming_season_start) return false;
+  return (
+    bathingWater.swimming_season_end >= today &&
+    today >= bathingWater.swimming_season_start
+  );
+}
+
+function getBathingWaterSummaryValue(bathingWaterSites: Array<BathingWater>): {
+  value: BathingWaterNumberValueEnum;
+  status: BathingWaterStatusEnum;
+} {
+  let worstSiteGrading = BathingWaterNumberValueEnum.UNRANKED_SITE;
+  let isOffSeason = true;
   for (const site of bathingWaterSites) {
-    const currentYearGrading = site.current_year_grading;
-    if (!currentYearGrading) continue;
-    const value = getBathingWaterValueFromTestResult(currentYearGrading);
-    if (value > worstGrading) {
-      worstGrading = value;
+    if (
+      site.current_year_grading ===
+      BathingWaterCurrentYearGradingEnum.PROHIBITION
+    ) {
+      return {
+        value: BathingWaterNumberValueEnum.PROHIBITION,
+        status: BathingWaterStatusEnum.PROHIBITION,
+      };
+    }
+    const isOnSeason = isBathingWaterSiteOnSeason(site);
+    if (isOnSeason) {
+      isOffSeason = false;
+      const siteResult = getBathingWaterSiteValueDerivedFromTestResult(
+        site.result_value,
+      );
+      if (siteResult > worstSiteGrading) {
+        worstSiteGrading = siteResult;
+      }
     }
   }
-  return worstGrading;
+  if (isOffSeason) {
+    return {
+      value: BathingWaterNumberValueEnum.OFF_SEASON,
+      status: BathingWaterStatusEnum.OFF_SEASON,
+    };
+  }
+  return {
+    value: worstSiteGrading,
+    status: getBathingWaterStatus(worstSiteGrading),
+  };
 }
 
 function getBathingWaterLatestResultDate(
@@ -202,9 +263,8 @@ function buildBathingWaterUrl(bathingWater: BathingWater): string {
 export {
   getIdCarteForDepartment,
   updateMunicipalitiesWithBathingWaterSites,
-  getBathingWaterValueFromTestResult,
-  getBathingWaterStatusFromBathingWaterValue,
-  getBathingWaterWorstValue,
+  getBathingWaterSummaryValue,
+  getBathingWaterSiteValueDerivedFromBathingWaterRow,
   getBathingWaterLatestResultDate,
   buildBathingWaterUrl,
 };

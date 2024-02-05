@@ -209,8 +209,7 @@ enum BathingWaterResultEnum {
   GOOD // Bon résultat
   AVERAGE // Résultat moyen
   POOR // Mauvais résultat
-  UNRANKED_SITE // Site non classé
-  PROHIBITION // Site interdit à la baignade
+  NO_RESULT_FOUND // Pas de prélèvement
 }
 
 enum BathingWaterCurrentYearGradingEnum {
@@ -221,6 +220,7 @@ enum BathingWaterCurrentYearGradingEnum {
   INSUFFICIENTLY_SAMPLED // Site dont l'eau est insuffisamment échantillonnée
   UNRANKED_SITE // Site non classé
   PROHIBITION // Site interdit à la baignade
+  OFF_SEASON // Site en dehors de la saison de baignade
 }
 
 model BathingWater {
@@ -228,14 +228,14 @@ model BathingWater {
 
   // common fields for all indicators
   municipality_insee_code String
-  municipality            Municipality            @relation(fields: [municipality_insee_code], references: [COM])
+  municipality            Municipality                        @relation(fields: [municipality_insee_code], references: [COM])
   validity_start          DateTime // the date is the first date of the validity period, included
   validity_end            DateTime // the date is the last date of the validity period, included
   diffusion_date          DateTime
-  data_availability       DataAvailabilityEnum    @default(AVAILABLE)
-  alert_status            AlertStatusEnum         @default(NOT_ALERT_THRESHOLD)
-  created_at              DateTime                @default(now())
-  updated_at              DateTime                @default(now()) @updatedAt
+  data_availability       DataAvailabilityEnum                @default(AVAILABLE)
+  alert_status            AlertStatusEnum                     @default(NOT_ALERT_THRESHOLD)
+  created_at              DateTime                            @default(now())
+  updated_at              DateTime                            @default(now()) @updatedAt
   // specific fields for this indicator
   id_carte                BathgWaterIdCarteEnum?
   name                    String? // example: "PLAN D'EAU D'ANGLEFORT"
@@ -244,11 +244,10 @@ model BathingWater {
   id_site                 String? // composition of dptddass + isite
   result_date             DateTime? // example: "2021-06-30T00:00:00.000Z"
   result_value            BathingWaterResultEnum? // example: "GOOD"
-
-  result_value_enum     BathingWaterResultEnum? // example: "GOOD"
-  current_year_grading  BathingWaterCurrentYearGradingEnum? // example: "GOOD"
-  swimming_season_start DateTime? // example: "2021-06-01T00:00:00.000Z"
-  swimming_season_end   DateTime? // example: "2021-09-30T00:00:00.000Z"
+  current_year_grading    BathingWaterCurrentYearGradingEnum? // example: "GOOD"
+  swimming_season_start   String? // example: "2021-06-01"
+  swimming_season_end     String? // example: "2021-09-30"
+  consult_site_url        String? // example: "https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all"
 
   @@index([municipality_insee_code, id_site, diffusion_date], name: "bathing_water_insee_code_id_site_diffusion_date")
 }
@@ -314,7 +313,7 @@ model Municipality {
   NCCENR                    String? // Nom en clair (typographie riche)
   LIBELLE                   String? // Nom en clair (typographie riche) avec article
   COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
-  has_bathing_water_sites   Boolean                     @default(false)
+  bathing_water_sites       Int                         @default(0)
   created_at                DateTime                    @default(now())
   updated_at                DateTime                    @default(now()) @updatedAt
   IndiceUv                  IndiceUv[]

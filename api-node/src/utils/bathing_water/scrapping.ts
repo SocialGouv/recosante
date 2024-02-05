@@ -35,16 +35,19 @@ export async function scrapeHtmlBaignadesSitePage(
     .text();
   const swimmingSeasonStartDateMatch =
     swimmingSeasonStartValue.match(dateRegex);
-  const swimmingSeasonStartDate = swimmingSeasonStartDateMatch
-    ? swimmingSeasonStartDateMatch[1]
-    : 'No date found';
+  const swimmingSeasonStartDate = swimmingSeasonStartDateMatch?.[1]
+    ? dayjs(swimmingSeasonStartDateMatch?.[1], 'DD/MM/YYYY').format(
+        'YYYY-MM-DD',
+      )
+    : null;
+
   const swimmingSeasonEndValue = $('td:contains("Fin de la saison")')
     .last()
     .text();
   const swimmingSeasonEndDateMatch = swimmingSeasonEndValue.match(dateRegex);
-  const swimmingSeasonEndDate = swimmingSeasonEndDateMatch
-    ? swimmingSeasonEndDateMatch[1]
-    : 'No date found';
+  const swimmingSeasonEndDate = swimmingSeasonEndDateMatch?.[1]
+    ? dayjs(swimmingSeasonEndDateMatch?.[1], 'DD/MM/YYYY').format('YYYY-MM-DD')
+    : null;
 
   //   Get the last row of the table with the test
   const parentOfLastImg = $('img[src="images/fr/boutons/fleche_ronde.gif"]')
@@ -55,16 +58,34 @@ export async function scrapeHtmlBaignadesSitePage(
 
   if (swimmingIsProhibided) {
     return {
-      result_value: BathingWaterResultEnum.PROHIBITION,
+      result_date: null,
+      result_value: BathingWaterResultEnum.NO_RESULT_FOUND,
       swimming_season_start: swimmingSeasonStartDate,
       swimming_season_end: swimmingSeasonEndDate,
+      current_year_grading: BathingWaterCurrentYearGradingEnum.PROHIBITION,
     };
   }
   if (!lastTest) {
+    if (swimmingSeasonStartDate && swimmingSeasonEndDate) {
+      if (
+        dayjs().isBefore(swimmingSeasonStartDate) ||
+        dayjs().isAfter(swimmingSeasonEndDate)
+      ) {
+        return {
+          result_date: null,
+          result_value: BathingWaterResultEnum.NO_RESULT_FOUND,
+          swimming_season_start: swimmingSeasonStartDate,
+          swimming_season_end: swimmingSeasonEndDate,
+          current_year_grading: BathingWaterCurrentYearGradingEnum.OFF_SEASON,
+        };
+      }
+    }
     return {
-      result_value: BathingWaterResultEnum.UNRANKED_SITE,
+      result_date: null,
+      result_value: BathingWaterResultEnum.NO_RESULT_FOUND,
       swimming_season_start: swimmingSeasonStartDate,
       swimming_season_end: swimmingSeasonEndDate,
+      current_year_grading: BathingWaterCurrentYearGradingEnum.UNRANKED_SITE,
     };
   }
 
@@ -92,7 +113,7 @@ export async function scrapeHtmlBaignadesSitePage(
     }
   }
   return {
-    result_date: dayjs(date, 'DD/MM/YYYY').toISOString(),
+    result_date: dayjs(date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
     result_value: transformLabelToEnum(label),
     swimming_season_start: swimmingSeasonStartDate,
     swimming_season_end: swimmingSeasonEndDate,
