@@ -1,3 +1,10 @@
+## [1.25.1](https://github.com/SocialGouv/recosante/compare/v1.25.0...v1.25.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* start cronjob ([0651a3b](https://github.com/SocialGouv/recosante/commit/0651a3becb316a760004884dbb5cc0039a649890))
+
 # [1.25.0](https://github.com/SocialGouv/recosante/compare/v1.24.1...v1.25.0) (2024-02-05)
 
 
