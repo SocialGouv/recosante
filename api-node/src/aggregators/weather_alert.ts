@@ -108,15 +108,14 @@ export async function getWeatherAlert() {
                         phenomenon_max_color_id: z.nativeEnum(
                           WeatherAlertColorIdEnum,
                         ),
-                        timelaps_items: z
-                          .array(
-                            z.object({
-                              begin_time: z.string().datetime(),
-                              end_time: z.string().datetime(),
-                              color_id: z.nativeEnum(WeatherAlertColorIdEnum),
-                            }),
-                          )
-                          .max(1),
+                        timelaps_items: z.array(
+                          z.object({
+                            begin_time: z.string().datetime(),
+                            end_time: z.string().datetime(),
+                            color_id: z.nativeEnum(WeatherAlertColorIdEnum),
+                          }),
+                        ),
+                        // .max(1),
                       }),
                     ),
                   }),
@@ -135,6 +134,32 @@ export async function getWeatherAlert() {
       capture(error, {
         extra: {
           functionCall: 'getWeatherAlertIndicators',
+          dataSample: data,
+        },
+      });
+      return;
+    }
+
+    try {
+      for (const period of data.product.periods) {
+        for (const domain of period.timelaps.domain_ids) {
+          for (const phenomenon_items of domain.phenomenon_items) {
+            if (phenomenon_items.timelaps_items.length > 1) {
+              capture('getWeatherAlert: timelaps_items length > 1', {
+                extra: {
+                  functionCall: 'getWeatherAlert',
+                  dataSample: domain,
+                },
+              });
+            }
+          }
+        }
+      }
+    } catch (error: any) {
+      capture(error, {
+        extra: {
+          functionCall:
+            'getWeatherAlertIndicators check timelaps_items length > 1',
           dataSample: data,
         },
       });
