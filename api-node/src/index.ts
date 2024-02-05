@@ -20,8 +20,7 @@ import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 
 import packageJson from '../package.json';
-// import { getBathingWaterIndicator } from './aggregators/bathing_water.ts';
-// getBathingWaterIndicator();
+
 // Put together a schema
 const app = express();
 

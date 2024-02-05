@@ -209,6 +209,7 @@ enum BathingWaterResultEnum {
   GOOD // Bon résultat
   AVERAGE // Résultat moyen
   POOR // Mauvais résultat
+  NO_RESULT_FOUND // Pas de prélèvement
 }
 
 enum BathingWaterCurrentYearGradingEnum {
@@ -219,6 +220,7 @@ enum BathingWaterCurrentYearGradingEnum {
   INSUFFICIENTLY_SAMPLED // Site dont l'eau est insuffisamment échantillonnée
   UNRANKED_SITE // Site non classé
   PROHIBITION // Site interdit à la baignade
+  OFF_SEASON // Site en dehors de la saison de baignade
 }
 
 model BathingWater {
@@ -243,8 +245,9 @@ model BathingWater {
   result_date             DateTime? // example: "2021-06-30T00:00:00.000Z"
   result_value            BathingWaterResultEnum? // example: "GOOD"
   current_year_grading    BathingWaterCurrentYearGradingEnum? // example: "GOOD"
-  swimming_season_start   DateTime? // example: "2021-06-01T00:00:00.000Z"
-  swimming_season_end     DateTime? // example: "2021-09-30T00:00:00.000Z"
+  swimming_season_start   String? // example: "2021-06-01"
+  swimming_season_end     String? // example: "2021-09-30"
+  consult_site_url        String? // example: "https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all"
 
   @@index([municipality_insee_code, id_site, diffusion_date], name: "bathing_water_insee_code_id_site_diffusion_date")
 }
@@ -310,7 +313,7 @@ model Municipality {
   NCCENR                    String? // Nom en clair (typographie riche)
   LIBELLE                   String? // Nom en clair (typographie riche) avec article
   COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
-  has_bathing_water_sites   Boolean                     @default(false)
+  bathing_water_sites       Int                         @default(0)
   created_at                DateTime                    @default(now())
   updated_at                DateTime                    @default(now()) @updatedAt
   IndiceUv                  IndiceUv[]

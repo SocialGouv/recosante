@@ -1,7 +1,7 @@
 import { fillOrUpdateMunicipalitiesInDB } from '~/utils/municipalities';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water';
+import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water/bathing_water';
 
 /*
 *
@@ -33,7 +33,7 @@ export async function initMunicipalities() {
     .then(
       async () =>
         await setupCronJob({
-          name: "Update has_bathing_water_sites Municipality's column",
+          name: "Update bathing_water_sites Municipality's column",
           cronTime: '40 3 15 6,12 *', // At 03:40 on day-of-month 15 in January, June and October.
           job: updateMunicipalitiesWithBathingWaterSites,
           runOnInit: false,

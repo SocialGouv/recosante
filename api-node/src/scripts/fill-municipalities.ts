@@ -1,4 +1,4 @@
-import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water';
+import { updateMunicipalitiesWithBathingWaterSites } from '~/utils/bathing_water/bathing_water';
 import { fillOrUpdateMunicipalitiesInDB } from '~/utils/municipalities';
 
 // this file is to execut the functions manually

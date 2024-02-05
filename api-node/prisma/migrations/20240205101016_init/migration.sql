@@ -8,10 +8,16 @@ CREATE TYPE "IndicatorsSlugEnum" AS ENUM ('indice_atmospheric', 'indice_uv', 'po
 CREATE TYPE "DataAvailabilityEnum" AS ENUM ('AVAILABLE', 'NOT_AVAILABLE');
 
 -- CreateEnum
-CREATE TYPE "CodeAlertEnums" AS ENUM ('GREEN', 'YELLOW', 'ORANGE', 'RED');
+CREATE TYPE "AlertStatusEnum" AS ENUM ('NOT_ALERT_THRESHOLD', 'ALERT_NOTIFICATION_NOT_SENT_YET', 'ALERT_NOTIFICATION_SENT', 'ALERT_NOTIFICATION_ERROR');
 
 -- CreateEnum
-CREATE TYPE "PhenomenonsEnum" AS ENUM ('VIOLENT_WIND', 'RAIN_FLOOD', 'STORM', 'FLOOD', 'SNOW_ICE', 'HEAT_WAVE', 'COLD_WAVE', 'AVALANCHE', 'WAVES_SUBMERSION');
+CREATE TYPE "BathgWaterIdCarteEnum" AS ENUM ('gua', 'mar', 'guy', 'reu', 'may', 'fra');
+
+-- CreateEnum
+CREATE TYPE "BathingWaterResultEnum" AS ENUM ('GOOD', 'AVERAGE', 'POOR', 'NO_RESULT_FOUND');
+
+-- CreateEnum
+CREATE TYPE "BathingWaterCurrentYearGradingEnum" AS ENUM ('EXCELLENT', 'GOOD', 'SUFFICIENT', 'POOR', 'INSUFFICIENTLY_SAMPLED', 'UNRANKED_SITE', 'PROHIBITION', 'OFF_SEASON');
 
 -- CreateEnum
 CREATE TYPE "PollutionStateEnum" AS ENUM ('ALERT', 'INFORMATION_AND_RECOMMANDATION', 'NO_ALERT', 'ALERT_PERSISTANCE');
@@ -19,18 +25,26 @@ CREATE TYPE "PollutionStateEnum" AS ENUM ('ALERT', 'INFORMATION_AND_RECOMMANDATI
 -- CreateEnum
 CREATE TYPE "PollutionCodeEnum" AS ENUM ('SULFUR_DIOXIDE', 'NITROGEN_DIOXIDE', 'FINES_PARTICLES', 'OZONE', 'PM10', 'PM25', 'BENZENE');
 
+-- CreateEnum
+CREATE TYPE "SeasonEnum" AS ENUM ('Printemps', 'Ete', 'Automne', 'Hiver', 'Toute');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "matomo_id" TEXT NOT NULL,
+    "appversion" TEXT,
+    "appbuild" TEXT,
+    "appdevice" TEXT,
     "municipality_insee_code" TEXT,
     "municipality_name" TEXT,
     "municipality_zip_code" TEXT,
     "push_notif_token" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deleted_at" TIMESTAMP(3),
+    "deleted_because" TEXT,
     "favorite_indicator" "IndicatorsSlugEnum",
-    "notifications_preference" "NotifationEnum"[],
+    "notifications_preference" "NotifationEnum"[] DEFAULT ARRAY['evening', 'alert']::"NotifationEnum"[],
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -43,6 +57,7 @@ CREATE TABLE "IndiceUv" (
     "validity_end" TIMESTAMP(3) NOT NULL,
     "diffusion_date" TIMESTAMP(3) NOT NULL,
     "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "uv_j0" INTEGER,
@@ -56,13 +71,14 @@ CREATE TABLE "IndiceUv" (
 -- CreateTable
 CREATE TABLE "PollenAllergyRisk" (
     "id" TEXT NOT NULL,
+    "municipality_insee_code" TEXT NOT NULL,
     "validity_start" TIMESTAMP(3) NOT NULL,
     "validity_end" TIMESTAMP(3) NOT NULL,
     "diffusion_date" TIMESTAMP(3) NOT NULL,
+    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "municipality_insee_code" TEXT NOT NULL,
-    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
     "cypres" INTEGER,
     "noisetier" INTEGER,
     "aulne" INTEGER,
@@ -90,15 +106,23 @@ CREATE TABLE "PollenAllergyRisk" (
 -- CreateTable
 CREATE TABLE "WeatherAlert" (
     "id" TEXT NOT NULL,
+    "municipality_insee_code" TEXT NOT NULL,
     "validity_start" TIMESTAMP(3) NOT NULL,
     "validity_end" TIMESTAMP(3) NOT NULL,
     "diffusion_date" TIMESTAMP(3) NOT NULL,
+    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "municipality_insee_code" TEXT NOT NULL,
-    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
-    "code_alert" "CodeAlertEnums",
-    "phenomenon" "PhenomenonsEnum",
+    "violent_wind" INTEGER,
+    "rain_flood" INTEGER,
+    "storm" INTEGER,
+    "flood" INTEGER,
+    "snow_ice" INTEGER,
+    "heat_wave" INTEGER,
+    "cold_wave" INTEGER,
+    "avalanche" INTEGER,
+    "waves_submersion" INTEGER,
 
     CONSTRAINT "WeatherAlert_pkey" PRIMARY KEY ("id")
 );
@@ -107,13 +131,14 @@ CREATE TABLE "WeatherAlert" (
 CREATE TABLE "IndiceAtmospheric" (
     "id" TEXT NOT NULL,
     "unique_composed_key" TEXT NOT NULL,
+    "municipality_insee_code" TEXT NOT NULL,
     "validity_start" TIMESTAMP(3) NOT NULL,
     "validity_end" TIMESTAMP(3) NOT NULL,
     "diffusion_date" TIMESTAMP(3) NOT NULL,
+    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "municipality_insee_code" TEXT NOT NULL,
-    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
     "code_no2" INTEGER,
     "code_o3" INTEGER,
     "code_pm10" INTEGER,
@@ -142,15 +167,42 @@ CREATE TABLE "IndiceAtmospheric" (
 );
 
 -- CreateTable
-CREATE TABLE "AlertPollutionAtmospheric" (
+CREATE TABLE "BathingWater" (
     "id" TEXT NOT NULL,
+    "municipality_insee_code" TEXT NOT NULL,
     "validity_start" TIMESTAMP(3) NOT NULL,
     "validity_end" TIMESTAMP(3) NOT NULL,
     "diffusion_date" TIMESTAMP(3) NOT NULL,
+    "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "id_carte" "BathgWaterIdCarteEnum",
+    "name" TEXT,
+    "isite" TEXT,
+    "dptddass" TEXT,
+    "id_site" TEXT,
+    "result_date" TIMESTAMP(3),
+    "result_value" "BathingWaterResultEnum",
+    "current_year_grading" "BathingWaterCurrentYearGradingEnum",
+    "swimming_season_start" TEXT,
+    "swimming_season_end" TEXT,
+    "consult_site_url" TEXT,
+
+    CONSTRAINT "BathingWater_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "AlertPollutionAtmospheric" (
+    "id" TEXT NOT NULL,
     "municipality_insee_code" TEXT NOT NULL,
+    "validity_start" TIMESTAMP(3) NOT NULL,
+    "validity_end" TIMESTAMP(3) NOT NULL,
+    "diffusion_date" TIMESTAMP(3) NOT NULL,
     "data_availability" "DataAvailabilityEnum" NOT NULL DEFAULT 'AVAILABLE',
+    "alert_status" "AlertStatusEnum" NOT NULL DEFAULT 'NOT_ALERT_THRESHOLD',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "state" "PollutionStateEnum" NOT NULL,
     "code" "PollutionCodeEnum" NOT NULL,
     "comment_short" TEXT NOT NULL,
@@ -187,6 +239,9 @@ CREATE TABLE "Municipality" (
     "NCCENR" TEXT,
     "LIBELLE" TEXT,
     "COMPARENT" TEXT,
+    "bathing_water_sites" INTEGER NOT NULL DEFAULT 0,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Municipality_pkey" PRIMARY KEY ("COM")
 );
@@ -201,8 +256,45 @@ CREATE TABLE "Recommandation" (
     "type_weather_alert" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "seasons" "SeasonEnum"[],
 
     CONSTRAINT "Recommandation_pkey" PRIMARY KEY ("unique_key")
+);
+
+-- CreateTable
+CREATE TABLE "Notification" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "body" TEXT NOT NULL,
+    "data" TEXT NOT NULL,
+    "ticket" TEXT,
+    "error" TEXT,
+    "push_notif_token" TEXT NOT NULL,
+    "appversion" TEXT,
+    "appbuild" TEXT,
+    "appdevice" TEXT,
+    "indicatorSlug" "IndicatorsSlugEnum" NOT NULL,
+    "indicatorId" TEXT NOT NULL,
+    "indicatorValue" INTEGER NOT NULL,
+    "recommandationId" TEXT,
+    "typeWeatherAlert" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Notification_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Feedback" (
+    "id" TEXT NOT NULL,
+    "score" INTEGER NOT NULL,
+    "message" TEXT,
+    "contact" TEXT,
+    "user_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Feedback_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -218,13 +310,19 @@ CREATE INDEX "indice_uv_municipality_insee_code_diffusion_date_validity_start" O
 CREATE INDEX "pollen_municipality_insee_code_diffusion_date_validity_start" ON "PollenAllergyRisk"("municipality_insee_code", "diffusion_date", "validity_start");
 
 -- CreateIndex
-CREATE INDEX "weather_municipality_insee_code_diffusion_date_validity_start" ON "WeatherAlert"("municipality_insee_code", "diffusion_date", "validity_start");
+CREATE INDEX "weather_alert_insee_code_diffusion_date_validity_start" ON "WeatherAlert"("municipality_insee_code", "diffusion_date", "validity_start");
+
+-- CreateIndex
+CREATE INDEX "WeatherAlert_violent_wind_rain_flood_storm_flood_snow_ice_h_idx" ON "WeatherAlert"("violent_wind", "rain_flood", "storm", "flood", "snow_ice", "heat_wave", "cold_wave", "avalanche", "waves_submersion");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "municipality_insee_code+date_maj+date_ech" ON "IndiceAtmospheric"("unique_composed_key");
 
 -- CreateIndex
 CREATE INDEX "indice_atmo_insee_code_diffusion_date_validity_start" ON "IndiceAtmospheric"("municipality_insee_code", "diffusion_date", "validity_start");
+
+-- CreateIndex
+CREATE INDEX "bathing_water_insee_code_id_site_diffusion_date" ON "BathingWater"("municipality_insee_code", "id_site", "diffusion_date");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CronJob_unique_key_key" ON "CronJob"("unique_key");
@@ -248,4 +346,13 @@ ALTER TABLE "WeatherAlert" ADD CONSTRAINT "WeatherAlert_municipality_insee_code_
 ALTER TABLE "IndiceAtmospheric" ADD CONSTRAINT "IndiceAtmospheric_municipality_insee_code_fkey" FOREIGN KEY ("municipality_insee_code") REFERENCES "Municipality"("COM") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "BathingWater" ADD CONSTRAINT "BathingWater_municipality_insee_code_fkey" FOREIGN KEY ("municipality_insee_code") REFERENCES "Municipality"("COM") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "AlertPollutionAtmospheric" ADD CONSTRAINT "AlertPollutionAtmospheric_municipality_insee_code_fkey" FOREIGN KEY ("municipality_insee_code") REFERENCES "Municipality"("COM") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Notification" ADD CONSTRAINT "Notification_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Feedback" ADD CONSTRAINT "Feedback_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
