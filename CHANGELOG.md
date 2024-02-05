@@ -1,3 +1,16 @@
+# [1.25.0](https://github.com/SocialGouv/recosante/compare/v1.24.1...v1.25.0) (2024-02-05)
+
+
+### Bug Fixes
+
+* bathing water ongoing ([#394](https://github.com/SocialGouv/recosante/issues/394)) ([34bf073](https://github.com/SocialGouv/recosante/commit/34bf073d2f05ad02adf8090f138d50383388af22))
+* capture timelaps lenght > 1 ([da6ea7c](https://github.com/SocialGouv/recosante/commit/da6ea7c8db85db37bb8b4599bb98c2871e8ef3f7))
+
+
+### Features
+
+* start municipality cronjob ([3b283cb](https://github.com/SocialGouv/recosante/commit/3b283cb92d5a7bdfc90bf1c7f40014071930774b))
+
 ## [1.24.1](https://github.com/SocialGouv/recosante/compare/v1.24.0...v1.24.1) (2024-02-02)
 
 
