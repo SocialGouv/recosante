@@ -27,7 +27,7 @@ export async function initMunicipalities() {
           name: 'Update Municipalities',
           cronTime: '15 3 15 1,6,10 *', // At 03:15 on day-of-month 15 in January, June and October.
           job: fillOrUpdateMunicipalitiesInDB,
-          runOnInit: false,
+          runOnInit: true,
         }),
     )
     .then(
@@ -36,7 +36,7 @@ export async function initMunicipalities() {
           name: "Update bathing_water_sites Municipality's column",
           cronTime: '40 3 15 6,12 *', // At 03:40 on day-of-month 15 in January, June and October.
           job: updateMunicipalitiesWithBathingWaterSites,
-          runOnInit: false,
+          runOnInit: true,
         }),
     )
     .then(() => {
