@@ -1,3 +1,10 @@
+## [1.25.3](https://github.com/SocialGouv/recosante/compare/v1.25.2...v1.25.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* meta title ([e3a20bd](https://github.com/SocialGouv/recosante/commit/e3a20bde07ab2cf2610f50f6c5ef5ff065fb594f))
+
 ## [1.25.2](https://github.com/SocialGouv/recosante/compare/v1.25.1...v1.25.2) (2024-02-06)
 
 
