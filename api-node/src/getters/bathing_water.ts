@@ -122,7 +122,7 @@ async function getBathingWaters({
   municipality_insee_code: Municipality['COM'];
   date_UTC_ISO: string;
 }): Promise<Array<BathingWater>> {
-  const result = await prisma.$queryRaw`
+  const result: Array<BathingWater> = await prisma.$queryRaw`
   SELECT bw.*
   FROM (
     SELECT
@@ -135,7 +135,17 @@ async function getBathingWaters({
   ) bw
   WHERE
     bw.row_number = 1`;
-  return result as Array<BathingWater>;
+  if (result?.length) return result;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getBathingWaters({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return [];
 }
 
 export { getBathingWaterFromMunicipalityAndDate, getBathingWaters };
