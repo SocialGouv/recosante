@@ -11,26 +11,28 @@ const IOS_URL = `https://apps.apple.com/fr/app/id${IOS_APP_ID}`;
 
 export default function Download() {
   return (
-    <Web title="Télécharger Recosanté">
-      <Helmet title="Télécharger Recosanté">
+    <Web title="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.">
+      <Helmet title="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.">
         <meta charset="UTF-8" />
-        <title>Télécharger Recosanté</title>
+        <title>
+          Recosanté - Informez-vous sur comment l'impact de l'environnement sur
+          votre santé, et agissez.
+        </title>
         <meta
           property="og:title"
-          content="Télécharger Recosanté"
+          content="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez."
           key="Download"
         />
         <meta
           name="description"
-          content="Télécharger Recosanté - Agir pour protéger votre santé"
+          content="Télécharger l’application Recosanté."
           key="Download"
         />
         <meta
           property="og:description"
-          content="Télécharger Recosanté - Agir pour protéger votre santé"
+          content="Télécharger l’application Recosanté."
           key="Download"
         />
-        {/* <meta property="og:image" content="/images/logo_oz.png" /> handled by gatsby */}
         <meta property="og:type" content="article" />
         {/* <meta property="fb:app_id" content="TODO" /> */}
         {/* <meta property="al:ios:url" content="recosante://welcome /> */}

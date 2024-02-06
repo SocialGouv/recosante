@@ -4,11 +4,11 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Recosanté - Connaître son environnement. Agir pour sa santé`,
+    title: `Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.`,
     author: `Recosante`,
-    description: `Pollution de l’air, risque d’allergie aux pollens, vigilance météo, rayonnement UV, qualité des eaux de baignade, niveau de risque radon… Découvrez les indicateurs environnementaux liés à votre localisation et des recommandations pratiques à mettre en oeuvre pour mieux vous protéger.`,
+    description: `Télécharger l’application Recosanté.`,
     siteUrl: `https://recosante.beta.gouv.fr`,
-    image: "metaimage.jpg",
+    image: "app-og-image.png",
     twitterUsername: "recosante",
   },
   plugins: [
