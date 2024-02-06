@@ -4,7 +4,7 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.`,
+    title: `Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.`,
     author: `Recosante`,
     description: `Télécharger l’application Recosanté.`,
     siteUrl: `https://recosante.beta.gouv.fr`,

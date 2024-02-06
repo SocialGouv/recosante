@@ -11,16 +11,16 @@ const IOS_URL = `https://apps.apple.com/fr/app/id${IOS_APP_ID}`;
 
 export default function Download() {
   return (
-    <Web title="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.">
-      <Helmet title="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez.">
+    <Web title="Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.">
+      <Helmet title="Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.">
         <meta charset="UTF-8" />
         <title>
-          Recosanté - Informez-vous sur comment l'impact de l'environnement sur
-          votre santé, et agissez.
+          Recosanté - Voyez l'impact de l'environnement sur votre santé, et
+          agissez.
         </title>
         <meta
           property="og:title"
-          content="Recosanté - Informez-vous sur comment l'impact de l'environnement sur votre santé, et agissez."
+          content="Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez."
           key="Download"
         />
         <meta
