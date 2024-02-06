@@ -1,3 +1,12 @@
+## [1.25.2](https://github.com/SocialGouv/recosante/compare/v1.25.1...v1.25.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* bathing water for parent municipality ([c411379](https://github.com/SocialGouv/recosante/commit/c411379f77f3577debc528635f479b325197ac03))
+* latest versions of prisma ([79b44a6](https://github.com/SocialGouv/recosante/commit/79b44a62fee9684f76c3c6c9890ef0f746369b94))
+* meta data download ([6db32e0](https://github.com/SocialGouv/recosante/commit/6db32e04fb0aff9ff26ca689b04571e49b6744da))
+
 ## [1.25.1](https://github.com/SocialGouv/recosante/compare/v1.25.0...v1.25.1) (2024-02-05)
 
 
