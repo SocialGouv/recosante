@@ -1,3 +1,12 @@
+## [1.25.4](https://github.com/SocialGouv/recosante/compare/v1.25.3...v1.25.4) (2024-02-07)
+
+
+### Bug Fixes
+
+* aucun risque ([1018b5e](https://github.com/SocialGouv/recosante/commit/1018b5ec856f8cec3db5654223f2f56d93eb98dc))
+* each indicator for parent municipality ([7d0725e](https://github.com/SocialGouv/recosante/commit/7d0725ee5f4051a2a2697bb55db5be51b6f487cb))
+* no data but should have data ([317cd96](https://github.com/SocialGouv/recosante/commit/317cd96d97a737666e4046a2be89ad9feae97ec1))
+
 ## [1.25.3](https://github.com/SocialGouv/recosante/compare/v1.25.2...v1.25.3) (2024-02-06)
 
 
