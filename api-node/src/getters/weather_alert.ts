@@ -193,8 +193,17 @@ async function getWeatherAlertForJ0({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return weatherAlertJ0;
+  if (weatherAlertJ0) return weatherAlertJ0;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getWeatherAlertForJ0({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 async function getWeatherAlertForJ1({
@@ -214,8 +223,17 @@ async function getWeatherAlertForJ1({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return weatherAlertJ1;
+  if (weatherAlertJ1) return weatherAlertJ1;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getWeatherAlertForJ1({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 export {

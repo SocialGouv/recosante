@@ -177,8 +177,17 @@ async function getIndiceUVForJ({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return indice_uv;
+  if (indice_uv) return indice_uv;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getIndiceUVForJ({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 export { getIndiceUvFromMunicipalityAndDate, getIndiceUVForJ };

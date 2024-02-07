@@ -214,7 +214,17 @@ async function getIndiceAtmoForJ0({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-  return indice_atmo_j0;
+  if (indice_atmo_j0) return indice_atmo_j0;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getIndiceAtmoForJ0({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 async function getIndiceAtmoForJ1({
@@ -234,8 +244,17 @@ async function getIndiceAtmoForJ1({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return indice_atmo_j1;
+  if (indice_atmo_j1) return indice_atmo_j1;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getIndiceAtmoForJ1({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 export {

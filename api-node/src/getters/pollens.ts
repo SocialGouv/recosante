@@ -170,8 +170,17 @@ async function getPollensForJ0({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return pollensJ0;
+  if (pollensJ0) return pollensJ0;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getPollensForJ0({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 async function getPollensForJ1({
@@ -191,8 +200,17 @@ async function getPollensForJ1({
     },
     orderBy: [{ diffusion_date: 'desc' }, { validity_start: 'desc' }],
   });
-
-  return pollensJ1;
+  if (pollensJ1) return pollensJ1;
+  const municipality = await prisma.municipality.findUnique({
+    where: { COM: municipality_insee_code },
+  });
+  if (municipality?.COMPARENT) {
+    return await getPollensForJ1({
+      municipality_insee_code: municipality.COMPARENT,
+      date_UTC_ISO,
+    });
+  }
+  return null;
 }
 
 export { getPollensFromMunicipalityAndDate, getPollensForJ0, getPollensForJ1 };
