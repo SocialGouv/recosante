@@ -15,6 +15,11 @@ import utc from 'dayjs/plugin/utc';
 import { capture } from '~/third-parties/sentry';
 dayjs.extend(utc);
 
+const about_description = fs.readFileSync(
+  './data/about/indice_atmo.md',
+  'utf8',
+);
+
 async function getIndiceAtmoFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
@@ -53,7 +58,48 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         date_UTC_ISO,
       },
     });
-    return null;
+    const indiceAtmoEmpty: Indicator = {
+      slug: IndicatorsSlugEnum.indice_atmospheric,
+      name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
+      long_name:
+        indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].long_name,
+      short_name:
+        indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].short_name,
+      municipality_insee_code,
+      about_title: 'à propos de la qualité de l’air et l’indice ATMO',
+      about_description,
+      j0: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getIndiceAtmoStatus(null),
+          recommendations: [
+            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+      j1: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getIndiceAtmoStatus(null),
+          recommendations: [
+            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+    };
+    return indiceAtmoEmpty;
   }
 
   const indice_atmo_j1 = await getIndiceAtmoForJ1({
@@ -77,11 +123,6 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         (recommandation) => recommandation.recommandation_content,
       ),
     );
-
-  const about_description = fs.readFileSync(
-    './data/about/indice_atmo.md',
-    'utf8',
-  );
 
   const indiceAtmoIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_atmospheric,

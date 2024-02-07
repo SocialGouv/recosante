@@ -4,7 +4,10 @@ import {
   type IndiceUVNumber,
 } from '~/types/api/indice_uv';
 
-function getIndiceUVStatus(indice_uv: IndiceUVNumber): IndiceUVLabel {
+function getIndiceUVStatus(indice_uv: IndiceUVNumber | null): IndiceUVLabel {
+  if (indice_uv === null) {
+    return IndiceUVLabel.NO_DATA;
+  }
   if (indice_uv >= 11) {
     return IndiceUVLabel.EXTREME;
   } else if (indice_uv >= 8) {
@@ -15,8 +18,10 @@ function getIndiceUVStatus(indice_uv: IndiceUVNumber): IndiceUVLabel {
     return IndiceUVLabel.MODERE;
   } else if (indice_uv >= 1) {
     return IndiceUVLabel.FAIBLE;
-  } else {
+  } else if (indice_uv === 0) {
     return IndiceUVLabel.NUL;
+  } else {
+    return IndiceUVLabel.NO_DATA;
   }
 }
 
@@ -31,8 +36,10 @@ function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
     return IndiceUVColor.MODERE;
   } else if (indice_uv >= 1) {
     return IndiceUVColor.FAIBLE;
-  } else {
+  } else if (indice_uv === 0) {
     return IndiceUVColor.NUL;
+  } else {
+    return IndiceUVColor.NO_DATA;
   }
 }
 

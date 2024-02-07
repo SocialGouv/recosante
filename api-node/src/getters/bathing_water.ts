@@ -18,8 +18,11 @@ import {
   getBathingWaterSiteValueDerivedFromBathingWaterRow,
   getBathingWaterSummaryValue,
 } from '~/utils/bathing_water/bathing_water';
+import { BathingWaterStatusEnum } from '~/types/api/bathing_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
+
+const about_description = fs.readFileSync('./data/about/baignades.md', 'utf8');
 
 async function getBathingWaterFromMunicipalityAndDate({
   municipality_insee_code,
@@ -53,7 +56,52 @@ async function getBathingWaterFromMunicipalityAndDate({
   });
 
   if (!bathingWaters.length) {
-    return null;
+    const municipality = await prisma.municipality.findUnique({
+      where: { COM: municipality_insee_code },
+    });
+    if (!municipality?.bathing_water_sites) {
+      return null;
+    }
+    const indiceAtmoEmpty: Indicator = {
+      slug: IndicatorsSlugEnum.bathing_water,
+      name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
+      short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
+      long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
+      municipality_insee_code,
+      about_title: "à propos de l'indice UV",
+      about_description,
+      j0: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: BathingWaterStatusEnum.NO_DATA,
+          recommendations: [
+            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+      j1: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: BathingWaterStatusEnum.NO_DATA,
+          recommendations: [
+            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+    };
+    return indiceAtmoEmpty;
   }
 
   const { value, status } = getBathingWaterSummaryValue(bathingWaters);
@@ -74,11 +122,6 @@ async function getBathingWaterFromMunicipalityAndDate({
         (recommandation) => recommandation.recommandation_content,
       ),
     );
-
-  const about_description = fs.readFileSync(
-    './data/about/baignades.md',
-    'utf8',
-  );
 
   const bathingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: 'no id',

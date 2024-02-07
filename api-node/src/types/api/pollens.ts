@@ -8,6 +8,7 @@ export enum PollensRiskNumberEnum {
 }
 
 export enum PollensRiskStatusEnum {
+  NO_DATA = 'Aucune donnée',
   NO_RISK = 'Risque nul',
   VERY_LOW = 'Très faible',
   LOW = 'Faible',

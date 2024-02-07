@@ -15,6 +15,8 @@ import { capture } from '~/third-parties/sentry';
 import { formatPollensAPIValues, getPollensStatus } from '~/utils/pollens';
 dayjs.extend(utc);
 
+const about_description = fs.readFileSync('./data/about/pollens.md', 'utf8');
+
 async function getPollensFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
@@ -53,7 +55,47 @@ async function getPollensFromMunicipalityAndDate({
         date_UTC_ISO,
       },
     });
-    return null;
+    const pollensEmpty: Indicator = {
+      slug: IndicatorsSlugEnum.pollen_allergy,
+      name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].name,
+      long_name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].long_name,
+      short_name:
+        indicatorsObject[IndicatorsSlugEnum.pollen_allergy].short_name,
+      municipality_insee_code,
+      about_title: "à propos du risque d'allergie au pollen",
+      about_description,
+      j0: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getPollensStatus(null),
+          recommendations: [
+            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+      j1: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getPollensStatus(null),
+          recommendations: [
+            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+    };
+    return pollensEmpty;
   }
 
   const recommandationsJ0 = await prisma.recommandation
@@ -76,8 +118,8 @@ async function getPollensFromMunicipalityAndDate({
   const formattedPollensJ0 = {
     id: pollensJ0.id,
     summary: {
-      value: pollensJ0.total ?? 0,
-      status: getPollensStatus(pollensJ0.total ?? 0),
+      value: pollensJ0.total,
+      status: getPollensStatus(pollensJ0.total),
       recommendations: recommandationsJ0,
     },
     validity_start: pollensJ0.validity_start.toISOString(),
@@ -87,8 +129,6 @@ async function getPollensFromMunicipalityAndDate({
     updated_at: pollensJ0.updated_at.toISOString(),
     values: formatPollensAPIValues(pollensJ0),
   };
-
-  const about_description = fs.readFileSync('./data/about/pollens.md', 'utf8');
 
   const pollensIndicator: Indicator = {
     slug: IndicatorsSlugEnum.pollen_allergy,

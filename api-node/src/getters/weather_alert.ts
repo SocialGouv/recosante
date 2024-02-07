@@ -18,6 +18,11 @@ import {
 } from '~/utils/weather_alert';
 dayjs.extend(utc);
 
+const about_description = fs.readFileSync(
+  './data/about/vigilance_meteo.md',
+  'utf8',
+);
+
 async function getWeatherAlertFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
@@ -56,13 +61,48 @@ async function getWeatherAlertFromMunicipalityAndDate({
         date_UTC_ISO,
       },
     });
-    return null;
-  }
+    const weatherAlertEmpty: Indicator = {
+      slug: IndicatorsSlugEnum.weather_alert,
+      name: indicatorsObject[IndicatorsSlugEnum.weather_alert].name,
+      short_name: indicatorsObject[IndicatorsSlugEnum.weather_alert].short_name,
+      long_name: indicatorsObject[IndicatorsSlugEnum.weather_alert].long_name,
+      municipality_insee_code,
+      about_title: 'à propos de la vigilance météo',
+      about_description,
 
-  const about_description = fs.readFileSync(
-    './data/about/vigilance_meteo.md',
-    'utf8',
-  );
+      j0: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getAlertValueByColorId(null),
+          recommendations: [
+            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+      j1: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getAlertValueByColorId(null),
+          recommendations: [
+            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+    };
+    return weatherAlertEmpty;
+  }
 
   const phenomenonsJ0 = getSortedPhenomenonsByValue(weatherAlertJ0);
   const maxColorCodeIdJ0 = phenomenonsJ0[0].value;

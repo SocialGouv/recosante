@@ -19,6 +19,8 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
 
+const about_description = fs.readFileSync('./data/about/indice_uv.md', 'utf8');
+
 async function getIndiceUvFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
@@ -57,7 +59,46 @@ async function getIndiceUvFromMunicipalityAndDate({
         date_UTC_ISO,
       },
     });
-    return null;
+    const indiceUvEmpty: Indicator = {
+      slug: IndicatorsSlugEnum.indice_uv,
+      name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
+      short_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].short_name,
+      long_name: indicatorsObject[IndicatorsSlugEnum.indice_uv].long_name,
+      municipality_insee_code,
+      about_title: "à propos de l'indice UV",
+      about_description,
+      j0: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getIndiceUVStatus(null),
+          recommendations: [
+            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+      j1: {
+        id: 'empty',
+        summary: {
+          value: null,
+          status: getIndiceUVStatus(null),
+          recommendations: [
+            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
+          ],
+        },
+        validity_start: 'NA',
+        validity_end: 'NA',
+        diffusion_date: dayjs().toISOString(),
+        created_at: 'NA',
+        updated_at: 'NA',
+      },
+    };
+    return indiceUvEmpty;
   }
 
   const isWinter = dayjs(indice_uv.validity_start).quarter() === 1;
@@ -88,11 +129,6 @@ async function getIndiceUvFromMunicipalityAndDate({
         (recommandation) => recommandation.recommandation_content,
       ),
     );
-
-  const about_description = fs.readFileSync(
-    './data/about/indice_uv.md',
-    'utf8',
-  );
 
   const indiceUvIndicator: Indicator = {
     slug: IndicatorsSlugEnum.indice_uv,

@@ -39,6 +39,7 @@ export enum PolluantQualificatifsLabelEnum {
   VERY_POOR = 'Très Mauvais',
   EXTREMELY_POOR = 'Extrêmement Mauvais',
   NOT_AVAILABLE = 'Non disponible',
+  NO_DATA = 'Aucune donnée',
   SPECIAL_EVENT = 'Événement spécial',
 }
 
@@ -51,6 +52,7 @@ export enum PolluantQualificatifsColorEnum {
   VERY_POOR = '#a7546d',
   EXTREMELY_POOR = '#965f9b',
   NOT_AVAILABLE = '#D9D9EF',
+  NO_DATA = '#D9D9EF',
   SPECIAL_EVENT = '#D9D9EF',
 }
 

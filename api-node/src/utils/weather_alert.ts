@@ -36,8 +36,11 @@ export function getPhenomenonDBKeyById(
 }
 
 export function getAlertValueByColorId(
-  id: WeatherAlertColorIdEnum,
+  id: WeatherAlertColorIdEnum | null,
 ): WeatherAlertValuesEnum {
+  if (id === null) {
+    return WeatherAlertValuesEnum.NO_DATA;
+  }
   switch (id) {
     case WeatherAlertColorIdEnum.GREEN:
       return WeatherAlertValuesEnum.GREEN;

@@ -19,6 +19,7 @@ export type IndiceUVNumber =
   | 16; // 'Extrême'
 
 export enum IndiceUVColor {
+  NO_DATA = '#D9D9EF', // 'Nul'
   NUL = '#D9D9EF', // 'Nul'
   FAIBLE = '#b1f3ef', // 'Faible'
   MODERE = '#73c8ae', // 'Modéré'
@@ -28,6 +29,7 @@ export enum IndiceUVColor {
 }
 
 export enum IndiceUVLabel {
+  NO_DATA = 'Aucune donnée',
   NUL = 'Risque nul',
   FAIBLE = 'Faible',
   MODERE = 'Modéré',

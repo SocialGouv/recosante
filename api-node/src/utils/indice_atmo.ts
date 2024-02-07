@@ -5,8 +5,11 @@ import {
 } from '~/types/api/indice_atmo';
 
 function getIndiceAtmoStatus(
-  code_indice_atmo: PolluantQualificatifsNumberEnum,
+  code_indice_atmo: PolluantQualificatifsNumberEnum | null,
 ): PolluantQualificatifsLabelEnum {
+  if (code_indice_atmo === null) {
+    return PolluantQualificatifsLabelEnum.NO_DATA;
+  }
   switch (code_indice_atmo) {
     case PolluantQualificatifsNumberEnum.SPECIAL_EVENT:
       return PolluantQualificatifsLabelEnum.SPECIAL_EVENT;

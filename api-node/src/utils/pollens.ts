@@ -6,8 +6,11 @@ import type { PollenAllergyRisk } from '@prisma/client';
 import type { IndicatorByPeriodValues } from '~/types/api/indicator';
 
 export function getPollensStatus(
-  pollensRiskNumber: PollensRiskNumberEnum,
+  pollensRiskNumber: PollensRiskNumberEnum | null,
 ): PollensRiskStatusEnum {
+  if (pollensRiskNumber === null) {
+    return PollensRiskStatusEnum.NO_DATA;
+  }
   switch (pollensRiskNumber) {
     case PollensRiskNumberEnum.VERY_LOW:
       return PollensRiskStatusEnum.VERY_LOW;
