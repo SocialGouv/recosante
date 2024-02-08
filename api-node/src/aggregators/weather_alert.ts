@@ -145,12 +145,12 @@ export async function getWeatherAlert() {
         for (const domain of period.timelaps.domain_ids) {
           for (const phenomenon_items of domain.phenomenon_items) {
             if (phenomenon_items.timelaps_items.length > 1) {
-              capture('getWeatherAlert: timelaps_items length > 1', {
-                extra: {
-                  functionCall: 'getWeatherAlert',
-                  dataSample: domain,
-                },
-              });
+              // capture('getWeatherAlert: timelaps_items length > 1', {
+              //   extra: {
+              //     functionCall: 'getWeatherAlert',
+              //     dataSample: domain,
+              //   },
+              // });
             }
           }
         }
