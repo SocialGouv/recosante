@@ -85,7 +85,7 @@ export async function getBathingWaterIndicator() {
           consultSiteUrl.searchParams.append(key, consultSiteQuery[key]);
         });
         // example of consultSiteUrl: https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass=013&site=013000808&annee=2023&plv=all
-        console.log(consultSiteUrl.href);
+        // console.log(consultSiteUrl.href);
         const scrapingResult = await scrapeHtmlBaignadesSitePage(
           consultSiteUrl,
         );
