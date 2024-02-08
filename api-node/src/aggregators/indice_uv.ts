@@ -183,7 +183,6 @@ export async function getIndiceUVIndicator() {
 
     const result = await prisma.indiceUv.createMany({
       data: indiceUVByMunicipalityRows,
-      skipDuplicates: true,
     });
     logStep(
       `DONE INSERTING INDICE UV : ${result.count} rows inserted upon ${municipalities.length} municipalities`,

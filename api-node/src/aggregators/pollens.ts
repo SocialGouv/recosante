@@ -182,7 +182,6 @@ export async function getPollensIndicator() {
     // Step 7: insert data
     const result = await prisma.pollenAllergyRisk.createMany({
       data: pollensRows,
-      skipDuplicates: true,
     });
 
     logStep(

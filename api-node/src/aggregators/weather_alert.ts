@@ -287,7 +287,6 @@ export async function getWeatherAlert() {
       // Step 7: insert data
       const result = await prisma.weatherAlert.createMany({
         data: weatherAlertRows,
-        skipDuplicates: true,
       });
 
       logStep(
