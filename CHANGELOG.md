@@ -1,3 +1,10 @@
+## [1.25.5](https://github.com/SocialGouv/recosante/compare/v1.25.4...v1.25.5) (2024-02-08)
+
+
+### Bug Fixes
+
+* sentry in cronjob ([32e3d28](https://github.com/SocialGouv/recosante/commit/32e3d289925e962ec1c7b50752778a92d21a8c80))
+
 ## [1.25.4](https://github.com/SocialGouv/recosante/compare/v1.25.3...v1.25.4) (2024-02-07)
 
 
