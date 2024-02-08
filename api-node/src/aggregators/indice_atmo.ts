@@ -404,6 +404,7 @@ export async function getAtmoIndicatorForDate(
 
     const result = await prisma.indiceAtmospheric.createMany({
       data: indiceAtmoByMunicipalityRows,
+      skipDuplicates: true,
     });
     logStep(
       `DONE INSERTING INDICE ATMO: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
