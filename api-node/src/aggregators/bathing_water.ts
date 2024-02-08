@@ -164,9 +164,9 @@ export async function getBathingWaterIndicator() {
             },
           })
           .then((res) => {
-            console.log(
-              `Inserted ${res.id_site} for ${res.municipality_insee_code} with ${res.result_value}`,
-            );
+            // console.log(
+            //   `Inserted ${res.id_site} for ${res.municipality_insee_code} with ${res.result_value}`,
+            // );
           })
           .catch((err) => {
             console.log(err);
