@@ -1,3 +1,11 @@
+## [1.25.6](https://github.com/SocialGouv/recosante/compare/v1.25.5...v1.25.6) (2024-02-08)
+
+
+### Bug Fixes
+
+* date of agreggation for pollens ([2e603a2](https://github.com/SocialGouv/recosante/commit/2e603a267bfd50c94ae73154a57fbe365e47b4da))
+* remove skipDuplicates ([4de4ef0](https://github.com/SocialGouv/recosante/commit/4de4ef0ed6a5ba79414ba88b21db9193dc82fd93))
+
 ## [1.25.5](https://github.com/SocialGouv/recosante/compare/v1.25.4...v1.25.5) (2024-02-08)
 
 
