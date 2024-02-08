@@ -3,10 +3,6 @@ ciNamespace: ci-recosante
 
 dependencies:
   fabrique:
-    extends:
-      - name: ovh
-        ifEnv: [dev]
-      - name: buildkit-service
     dependencies:
       contrib:
         preDeploy:
