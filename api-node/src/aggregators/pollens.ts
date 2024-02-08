@@ -84,12 +84,13 @@ export async function getPollensIndicator() {
 
     // Step 3: check if data already exists
     const diffusionDate = dayjs(date, 'DD/MM/YYYY')
+      .set('hour', 12) // because from Paris, UTC would bring the date to D-1
       .utc()
       .startOf('day')
       .toDate();
     const validityEnd = dayjs(diffusionDate)
-      .utc()
       .add(7, 'days')
+      .utc()
       .endOf('day')
       .toDate();
 
