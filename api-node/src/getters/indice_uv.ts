@@ -58,6 +58,9 @@ async function getIndiceUvFromMunicipalityAndDate({
         municipality_insee_code,
         date_UTC_ISO,
       },
+      tags: {
+        municipality_insee_code,
+      },
     });
     const indiceUvEmpty: Indicator = {
       slug: IndicatorsSlugEnum.indice_uv,

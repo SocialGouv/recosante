@@ -60,6 +60,9 @@ async function getWeatherAlertFromMunicipalityAndDate({
         municipality_insee_code,
         date_UTC_ISO,
       },
+      tags: {
+        municipality_insee_code,
+      },
     });
     const weatherAlertEmpty: Indicator = {
       slug: IndicatorsSlugEnum.weather_alert,

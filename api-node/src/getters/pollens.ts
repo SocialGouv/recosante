@@ -54,6 +54,9 @@ async function getPollensFromMunicipalityAndDate({
         municipality_insee_code,
         date_UTC_ISO,
       },
+      tags: {
+        municipality_insee_code,
+      },
     });
     const pollensEmpty: Indicator = {
       slug: IndicatorsSlugEnum.pollen_allergy,

@@ -57,6 +57,9 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         municipality_insee_code,
         date_UTC_ISO,
       },
+      tags: {
+        municipality_insee_code,
+      },
     });
     const indiceAtmoEmpty: Indicator = {
       slug: IndicatorsSlugEnum.indice_atmospheric,
