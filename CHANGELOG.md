@@ -1,3 +1,10 @@
+## [1.25.8](https://github.com/SocialGouv/recosante/compare/v1.25.7...v1.25.8) (2024-02-09)
+
+
+### Bug Fixes
+
+* stop redirect to the app ([da1e256](https://github.com/SocialGouv/recosante/commit/da1e2561312a18d1d0b324190defdca939c60413))
+
 ## [1.25.7](https://github.com/SocialGouv/recosante/compare/v1.25.6...v1.25.7) (2024-02-09)
 
 
