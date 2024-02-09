@@ -1,3 +1,17 @@
+## [1.25.7](https://github.com/SocialGouv/recosante/compare/v1.25.6...v1.25.7) (2024-02-09)
+
+
+### Bug Fixes
+
+* emoji wind ([0757d52](https://github.com/SocialGouv/recosante/commit/0757d520251cb05c3004a66eeef66e4b53791c3b))
+* prisma 5.6.0 ([dec1f51](https://github.com/SocialGouv/recosante/commit/dec1f51513debec302fa4b93dda9c586628c1942))
+* recos cron ([54fcaa3](https://github.com/SocialGouv/recosante/commit/54fcaa3147cf34f8358a59c0f52da2596b0e7d50))
+* replace createmany by create one by one ([afdf8c8](https://github.com/SocialGouv/recosante/commit/afdf8c87f1227de6d88b8c3d2559c63c342f5ed6))
+* rollback prisma ([#397](https://github.com/SocialGouv/recosante/issues/397)) ([4dfc596](https://github.com/SocialGouv/recosante/commit/4dfc596c94e8f1be467d4a5bb4fe7767cc0f6c89))
+* rollback rollback prisma ([3783f5c](https://github.com/SocialGouv/recosante/commit/3783f5c16f864ac930e6a8a4f0c001e0884f81e0))
+* skipDuplicates: true for indiceatmo ([4062a06](https://github.com/SocialGouv/recosante/commit/4062a065ec307c8f937ade689fe8e4d9365fc9ef))
+* tags ([28b960e](https://github.com/SocialGouv/recosante/commit/28b960e3fb3e4826d29b8dc70a33efccf1646944))
+
 ## [1.25.6](https://github.com/SocialGouv/recosante/compare/v1.25.5...v1.25.6) (2024-02-08)
 
 
