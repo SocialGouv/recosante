@@ -74,7 +74,7 @@ export default function Download() {
           </div>
         </div>
       </section>
-      <Script id="redirect-to-stores">
+      {/* <Script id="redirect-to-stores">
         {`
 var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 var ios = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
@@ -93,7 +93,7 @@ if (ios) {
   }
 }
 `}
-      </Script>
+      </Script> */}
     </Web>
   );
 }
