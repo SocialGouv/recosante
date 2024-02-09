@@ -1,3 +1,10 @@
+## [1.25.9](https://github.com/SocialGouv/recosante/compare/v1.25.8...v1.25.9) (2024-02-09)
+
+
+### Bug Fixes
+
+* remove script redirect ([ca01b32](https://github.com/SocialGouv/recosante/commit/ca01b32d818dd94203678cf7b902d7335e96da90))
+
 ## [1.25.8](https://github.com/SocialGouv/recosante/compare/v1.25.7...v1.25.8) (2024-02-09)
 
 
