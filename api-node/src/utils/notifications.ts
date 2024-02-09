@@ -647,7 +647,7 @@ function getNotificationTitle(
       if (indicatorValue <= 2) return '☔ Vigilance Météo';
       switch (typeWeatherAlert) {
         case WeatherAlertPhenomenonEnum.VIOLENT_WIND:
-          return '🌬️ Alerte Vent violent';
+          return '🌪️ Alerte Vent violent';
         case WeatherAlertPhenomenonEnum.RAIN_FLOOD:
           return '🌧️ Alerte Pluie-Inondation';
         case WeatherAlertPhenomenonEnum.STORM:
