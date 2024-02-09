@@ -79,14 +79,14 @@ export default function Download() {
 var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 var ios = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
 if (ios) {
-  window.location = 'recosante://welcome';
+  // window.location = 'recosante://welcome';
   window.setTimeout(() => {
     window.location.replace('${IOS_URL}');
   }, 25);
 } else {
   var android = /android/i.test(userAgent);
   if (android) {
-    window.location = 'recosante://welcome';
+    // window.location = 'recosante://welcome';
     window.setTimeout(() => {
       window.location.replace('${ANDROID_URL}');
     }, 25);
