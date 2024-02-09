@@ -24,7 +24,7 @@ export async function initRecommandations() {
       async () =>
         await setupCronJob({
           name: 'Recommandations from Google Sheet',
-          cronTime: '0/5 * * * *', // every 5 minutes TODO: remove this when recos are more stable
+          cronTime: '35 10,13,15,18 * * *', // Every day at 10:35, 13:35, 15:35, 18:35
           job: getRecommandationsFromGoogleSheet,
           runOnInit: true,
         }),
