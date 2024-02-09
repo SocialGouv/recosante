@@ -402,12 +402,32 @@ export async function getAtmoIndicatorForDate(
     *
     */
 
-    const result = await prisma.indiceAtmospheric.createMany({
-      data: indiceAtmoByMunicipalityRows,
-      skipDuplicates: true,
-    });
+    // const result = await prisma.indiceAtmospheric.createMany({
+    //   data: indiceAtmoByMunicipalityRows,
+    //   skipDuplicates: true,
+    // });
+
+    let results = 0;
+    for (const indiceAtmoByMunicipalityRow of indiceAtmoByMunicipalityRows) {
+      await prisma.indiceAtmospheric
+        .upsert({
+          where: {
+            unique_composed_key:
+              indiceAtmoByMunicipalityRow.unique_composed_key,
+          },
+          create: indiceAtmoByMunicipalityRow,
+          update: indiceAtmoByMunicipalityRow,
+        })
+        .then(() => {
+          results++;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     logStep(
-      `DONE INSERTING INDICE ATMO: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+      `DONE INSERTING INDICE ATMO: ${results} rows inserted upon ${municipalities.length} municipalities`,
     );
     /*
     *

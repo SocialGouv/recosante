@@ -180,12 +180,25 @@ export async function getPollensIndicator() {
     }
 
     // Step 7: insert data
-    const result = await prisma.pollenAllergyRisk.createMany({
-      data: pollensRows,
-    });
+    // const result = await prisma.pollenAllergyRisk.createMany({
+    //   data: pollensRows,
+    // });
+    let results = 0;
+    for (const pollensRow of pollensRows) {
+      await prisma.pollenAllergyRisk
+        .create({
+          data: pollensRow,
+        })
+        .then(() => {
+          results++;
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
 
     logStep(
-      `DONE INSERTING POLLENS: ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+      `DONE INSERTING POLLENS: ${results} rows inserted upon ${municipalities.length} municipalities`,
     );
     logStep(
       `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
