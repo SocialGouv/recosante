@@ -1,3 +1,11 @@
+## [1.25.13](https://github.com/SocialGouv/recosante/compare/v1.25.12...v1.25.13) (2024-02-12)
+
+
+### Bug Fixes
+
+* back to 250ms ([d7e2e1d](https://github.com/SocialGouv/recosante/commit/d7e2e1d5f139d8cc52fda750c445fbf008bb61ae))
+* back to 25ms ([28e6287](https://github.com/SocialGouv/recosante/commit/28e62871e15f353a54d5c54463d3d63d4c827731))
+
 ## [1.25.12](https://github.com/SocialGouv/recosante/compare/v1.25.11...v1.25.12) (2024-02-12)
 
 
