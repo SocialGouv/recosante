@@ -1,3 +1,10 @@
+## [1.25.12](https://github.com/SocialGouv/recosante/compare/v1.25.11...v1.25.12) (2024-02-12)
+
+
+### Bug Fixes
+
+* make store redirection works ([c2445b0](https://github.com/SocialGouv/recosante/commit/c2445b0608754a000e647d75dc64d71454d9e143))
+
 ## [1.25.11](https://github.com/SocialGouv/recosante/compare/v1.25.10...v1.25.11) (2024-02-12)
 
 
