@@ -83,18 +83,14 @@ if (!window.sessionStorage.getItem("redirection-tried")) {
   if (ios) {
     window.location = "recosante://welcome";
     window.setTimeout(() => {
-      if (document.hasFocus()) {
-        window.location.replace("${IOS_URL}");
-      }
+      window.location.replace("${IOS_URL}");
     }, 250);
   } else {
     var android = /android/i.test(userAgent);
     if (android) {
       window.location = "recosante://welcome";
       window.setTimeout(() => {
-        if (document.hasFocus()) {
-          window.location.replace("${ANDROID_URL}");
-        }
+        window.location.replace("${ANDROID_URL}");
       }, 250);
     }
   }
