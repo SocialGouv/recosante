@@ -74,26 +74,32 @@ export default function Download() {
           </div>
         </div>
       </section>
-      {/* <Script id="redirect-to-stores">
+      <Script id="redirect-to-stores">
         {`
 var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 var ios = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+if (!!window.sessionStorage.getItem("redirection-tried")) return;
+window.sessionStorage.setItem("redirection-tried", "true");
 if (ios) {
-  // window.location = 'recosante://welcome';
+  window.location = "recosante://welcome";
   window.setTimeout(() => {
-    window.location.replace('${IOS_URL}');
-  }, 25);
+    if (document.hasFocus()) {
+      window.location.replace("${IOS_URL}");
+    }
+  }, 250);
 } else {
   var android = /android/i.test(userAgent);
   if (android) {
-    // window.location = 'recosante://welcome';
+    window.location = "recosante://welcome";
     window.setTimeout(() => {
-      window.location.replace('${ANDROID_URL}');
-    }, 25);
+      if (document.hasFocus()) {
+        window.location.replace("${ANDROID_URL}");
+      }
+    }, 250);
   }
 }
 `}
-      </Script> */}
+      </Script>
     </Web>
   );
 }
