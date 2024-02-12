@@ -1,3 +1,10 @@
+## [1.25.11](https://github.com/SocialGouv/recosante/compare/v1.25.10...v1.25.11) (2024-02-12)
+
+
+### Bug Fixes
+
+* return in function ([974dad5](https://github.com/SocialGouv/recosante/commit/974dad5c188d18c6b239d071145b92bda94ff63b))
+
 ## [1.25.10](https://github.com/SocialGouv/recosante/compare/v1.25.9...v1.25.10) (2024-02-12)
 
 
