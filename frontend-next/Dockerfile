@@ -23,7 +23,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 ARG NEXT_PUBLIC_HASURA_URL
 ENV NEXT_PUBLIC_HASURA_URL $NEXT_PUBLIC_HASURA_URL
 
-# RUN yarn install --frozen-lockfile
+# RUN yarn install
 RUN yarn workspace frontend-next build
 
 # Production image, copy all the files and run next

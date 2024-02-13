@@ -15,11 +15,6 @@ WORKDIR /code
 COPY libs libs/
 ADD api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
 ADD package.json yarn.lock ./
-# Keep yarn install cache when bumping version and dependencies still the sames
-RUN node -e " \
-    const package = JSON.parse(fs.readFileSync('/code/package.json')); \
-    const packageZero = { ...package, version: '0.0.0' };  \
-    fs.writeFileSync('/code/package.json', JSON.stringify(packageZero));"
 
 ########
 # Need this hack to not install dependencies when api changes
@@ -29,7 +24,7 @@ COPY api api/
 ########
 # Install dependencies only when needeed
 FROM base AS installer
-RUN yarn install --frozen-lockfile
+RUN yarn --immutable
 WORKDIR /code/api
 RUN poetry install --without dev
 
