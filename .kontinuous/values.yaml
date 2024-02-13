@@ -84,6 +84,12 @@ frontend:
     - name: GATSBY_REPOSITORY_URL
       value: https://github.com/socialgouv/recosante
 
+frontend-next:
+  ~chart: app
+  ~needs: [build-frontend-next]
+  probesPath: /healthz
+  imagePackage: frontend-next
+
 indice:
   ~chart: app
   ~needs: [build-indice, redis]
@@ -204,3 +210,10 @@ jobs:
           GATSBY_API_NODE_BASE_URL: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
           GATSBY_URL: "https://{{ .Values.global.host }}"
           GATSBY_REPOSITORY_URL: https://github.com/socialgouv/recosante
+    build-frontend-next:
+      use: build
+      memoryLimit: 8Gi
+      with:
+        imagePackage: frontend-next
+        dockerfile: frontend-next/Dockerfile
+        context: "."
