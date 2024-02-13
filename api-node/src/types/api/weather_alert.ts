@@ -65,13 +65,6 @@ export enum WeatherAlertPhenomenonDBKeyEnum {
   WAVES_SUBMERSION = 'waves_submersion',
 }
 
-export enum WeatherAlertDotColor {
-  GREEN = '🟢', // 'Aucun risque'
-  YELLOW = '🟡', // 'Attentif'
-  ORANGE = '🟠', // 'Très vigilant'
-  RED = '🔴', // 'Vigilance absolue'
-}
-
 export interface WeatherAlertResponse {
   product: {
     warning_type: string;

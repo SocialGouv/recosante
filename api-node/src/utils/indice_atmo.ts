@@ -2,8 +2,8 @@ import {
   PolluantQualificatifsNumberEnum,
   PolluantQualificatifsLabelEnum,
   PolluantQualificatifsColorEnum,
-  IndiceAtmoDotColor,
 } from '~/types/api/indice_atmo';
+import { NotificationDotColor } from '~/types/notifications';
 
 function getIndiceAtmoStatus(
   code_indice_atmo: PolluantQualificatifsNumberEnum | null,
@@ -58,22 +58,22 @@ function getIndiceAtmoColor(
 
 function getIndiceAtmoDotColor(
   code_indice_atmo: PolluantQualificatifsNumberEnum,
-): IndiceAtmoDotColor | null {
+): NotificationDotColor | null {
   switch (code_indice_atmo) {
     case PolluantQualificatifsNumberEnum.SPECIAL_EVENT:
-      return IndiceAtmoDotColor.SPECIAL_EVENT;
+      return NotificationDotColor.EXTREMELY_POOR;
     case PolluantQualificatifsNumberEnum.GOOD:
-      return IndiceAtmoDotColor.GOOD;
+      return NotificationDotColor.GOOD;
     case PolluantQualificatifsNumberEnum.FAIR:
-      return IndiceAtmoDotColor.FAIR;
+      return NotificationDotColor.POOR; // to be consistent with "Moyen" in "getPollensDotColor" in "pollens.ts"
     case PolluantQualificatifsNumberEnum.MODERATE:
-      return IndiceAtmoDotColor.MODERATE;
+      return NotificationDotColor.POOR;
     case PolluantQualificatifsNumberEnum.POOR:
-      return IndiceAtmoDotColor.POOR;
+      return NotificationDotColor.POOR;
     case PolluantQualificatifsNumberEnum.VERY_POOR:
-      return IndiceAtmoDotColor.VERY_POOR;
+      return NotificationDotColor.VERY_POOR;
     case PolluantQualificatifsNumberEnum.EXTREMELY_POOR:
-      return IndiceAtmoDotColor.EXTREMELY_POOR;
+      return NotificationDotColor.EXTREMELY_POOR;
     case PolluantQualificatifsNumberEnum.NOT_AVAILABLE:
     default:
       return null;

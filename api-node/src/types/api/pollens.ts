@@ -17,15 +17,6 @@ export enum PollensRiskStatusEnum {
   VERY_HIGH = 'Très élevé',
 }
 
-export enum PollensDotColor {
-  NO_RISK = '🟢', // 'Risque nul'
-  VERY_LOW = '🟡', // 'Très faible'
-  LOW = '🟡', // 'Faible'
-  MODERATE = '🟠', // 'Moyen'
-  HIGH = '🔴', // 'Élevé'
-  VERY_HIGH = '🟣', // 'Très élevé'
-}
-
 export interface PollensAPIData {
   cypres: PollensRiskNumberEnum;
   noisetier: PollensRiskNumberEnum;

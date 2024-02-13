@@ -28,15 +28,6 @@ export enum IndiceUVColor {
   EXTREME = '#965f9b', // 'Extrême'
 }
 
-export enum IndiceUVDotColor {
-  NUL = '🟢', // 'Faible'
-  FAIBLE = '🟡', // 'Faible'
-  MODERE = '🟡', // 'Modéré'
-  FORT = '🟠', // 'Fort'
-  TRES_FORT = '🔴', // 'Très fort'
-  EXTREME = '🟣', // 'Extrême'
-}
-
 export enum IndiceUVLabel {
   NO_DATA = 'Aucune donnée',
   NUL = 'Risque nul',
