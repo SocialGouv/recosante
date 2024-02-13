@@ -16,7 +16,7 @@ config.json
 dist
 ecosante.egg-info
 node_modules
-public
+/public
 celerybeat-schedule.db
 .pnp.*
 .yarn/*

@@ -6,6 +6,7 @@
 **/Dockerfile
 **/node_modules
 **/public
+!frontend-next/public
 **/README.md
 .dockerignore
 .github

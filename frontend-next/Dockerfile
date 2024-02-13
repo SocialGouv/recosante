@@ -11,7 +11,7 @@ COPY .yarn ./.yarn
 RUN yarn fetch workspaces focus frontend-next
 
 # build
-COPY ./frontend-next/ ./
+COPY ./frontend-next/ ./frontend-next/
 
 ENV NEXTAUTH_URL http://localhost:3000
 
@@ -37,12 +37,12 @@ RUN addgroup --system --gid 1001 nodejs && \
   adduser --system --uid 1001 nextjs
 
 # You only need to copy next.config.js if you are NOT using the default configuration
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/frontend-next/next.config.js ./
+COPY --from=builder /app/frontend-next/public ./public
 
 # Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/static ./.next/static
 
 USER 1001
 EXPOSE 3000
