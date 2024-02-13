@@ -15810,6 +15810,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"frontend-next@workspace:frontend-next":
+  version: 0.0.0-use.local
+  resolution: "frontend-next@workspace:frontend-next"
+  dependencies:
+    "@headlessui/react": "npm:^1.7.15"
+    "@headlessui/tailwindcss": "npm:^0.2.0"
+    "@heroicons/react": "npm:^2.1.1"
+    "@tailwindcss/aspect-ratio": "npm:^0.4.2"
+    "@tailwindcss/forms": "npm:^0.5.3"
+    "@types/node": "npm:^20.10.8"
+    "@types/react": "npm:^18.2.47"
+    "@types/react-dom": "npm:^18.2.18"
+    "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
+    "@typescript-eslint/parser": "npm:^6.21.0"
+    autoprefixer: "npm:^10.4.12"
+    clsx: "npm:^2.1.0"
+    embla-carousel-autoplay: "npm:^8.0.0-rc22"
+    embla-carousel-react: "npm:^8.0.0-rc22"
+    eslint: "npm:^8.56.0"
+    eslint-config-next: "npm:^14.0.4"
+    framer-motion: "npm:^10.18.0"
+    husky: "npm:^9.0.10"
+    next: "npm:^14.0.4"
+    next-themes: "npm:^0.2.1"
+    prettier: "npm:^3.1.1"
+    prettier-plugin-tailwindcss: "npm:^0.5.11"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-intersection-observer: "npm:^9.7.0"
+    sharp: "npm:0.33.1"
+    sonner: "npm:^1.4.0"
+    tailwind-merge: "npm:^2.2.1"
+    tailwindcss: "npm:^3.4.1"
+    typescript: "npm:^5.3.3"
+    use-debounce: "npm:^10.0.0"
+  languageName: unknown
+  linkType: soft
+
 "fs-constants@npm:^1.0.0":
   version: 1.0.0
   resolution: "fs-constants@npm:1.0.0"
@@ -31250,44 +31288,6 @@ __metadata:
   checksum: 10c0/eec3d758f1cd4f51ab3b4c201927c3ecd18e55f8ac94256af60276aaf8d1df78f9dddb5e9fb1e057dfa7cea3c1356add4994cc3d42da9739df874e67047e656f
   languageName: node
   linkType: hard
-
-"tailwindui-pocket@workspace:frontend-next":
-  version: 0.0.0-use.local
-  resolution: "tailwindui-pocket@workspace:frontend-next"
-  dependencies:
-    "@headlessui/react": "npm:^1.7.15"
-    "@headlessui/tailwindcss": "npm:^0.2.0"
-    "@heroicons/react": "npm:^2.1.1"
-    "@tailwindcss/aspect-ratio": "npm:^0.4.2"
-    "@tailwindcss/forms": "npm:^0.5.3"
-    "@types/node": "npm:^20.10.8"
-    "@types/react": "npm:^18.2.47"
-    "@types/react-dom": "npm:^18.2.18"
-    "@typescript-eslint/eslint-plugin": "npm:^6.21.0"
-    "@typescript-eslint/parser": "npm:^6.21.0"
-    autoprefixer: "npm:^10.4.12"
-    clsx: "npm:^2.1.0"
-    embla-carousel-autoplay: "npm:^8.0.0-rc22"
-    embla-carousel-react: "npm:^8.0.0-rc22"
-    eslint: "npm:^8.56.0"
-    eslint-config-next: "npm:^14.0.4"
-    framer-motion: "npm:^10.18.0"
-    husky: "npm:^9.0.10"
-    next: "npm:^14.0.4"
-    next-themes: "npm:^0.2.1"
-    prettier: "npm:^3.1.1"
-    prettier-plugin-tailwindcss: "npm:^0.5.11"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-intersection-observer: "npm:^9.7.0"
-    sharp: "npm:0.33.1"
-    sonner: "npm:^1.4.0"
-    tailwind-merge: "npm:^2.2.1"
-    tailwindcss: "npm:^3.4.1"
-    typescript: "npm:^5.3.3"
-    use-debounce: "npm:^10.0.0"
-  languageName: unknown
-  linkType: soft
 
 "tapable@npm:^1.0.0":
   version: 1.1.3
