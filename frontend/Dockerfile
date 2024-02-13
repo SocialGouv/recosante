@@ -51,7 +51,7 @@ FROM base AS runner
 # RUN addgroup --system --gid 1001 nodejs && \
 #     adduser --system --uid 1001 frontend
 # COPY --from=builder --chown=nodejs:frontend /app ./
-COPY --from=builder /app ./
+COPY --from=builder --chown=user:group /app ./
 ARG GITHUB_SHA
 ENV GITHUB_SHA $GITHUB_SHA
 ARG PRODUCTION
