@@ -5,6 +5,7 @@ import {
 import { type ScrapingResult } from '~/types/api/bathing_water';
 import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
+import { capture } from '~/third-parties/sentry';
 
 // Regular expression to match the date in dd/mm/yyyy format
 const dateRegex = /(\d{2}\/\d{2}\/\d{4})/;
@@ -108,7 +109,15 @@ export async function scrapeHtmlBaignadesSitePage(
       case 'Bon':
         return BathingWaterResultEnum.GOOD;
       default:
-        console.error('Unknown value:', value);
+        capture('Unknown bathing water label', {
+          extra: {
+            value,
+            consultSiteUrl,
+          },
+          tags: {
+            consultSiteUrl,
+          },
+        });
         return BathingWaterResultEnum.GOOD;
     }
   }
