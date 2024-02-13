@@ -73,7 +73,6 @@ export async function sendPushNotification({
       console.log('TICKET', ticket);
       return await prisma.notification
         .create({
-          // @ts-expect-error TODO: check Arnaud : )
           data: {
             title,
             body,
