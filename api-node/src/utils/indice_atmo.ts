@@ -3,6 +3,7 @@ import {
   PolluantQualificatifsLabelEnum,
   PolluantQualificatifsColorEnum,
 } from '~/types/api/indice_atmo';
+import { NotificationDotColor } from '~/types/notifications';
 
 function getIndiceAtmoStatus(
   code_indice_atmo: PolluantQualificatifsNumberEnum | null,
@@ -55,4 +56,28 @@ function getIndiceAtmoColor(
   }
 }
 
-export { getIndiceAtmoStatus, getIndiceAtmoColor };
+function getIndiceAtmoDotColor(
+  code_indice_atmo: PolluantQualificatifsNumberEnum,
+): NotificationDotColor | null {
+  switch (code_indice_atmo) {
+    case PolluantQualificatifsNumberEnum.SPECIAL_EVENT:
+      return NotificationDotColor.EXTREMELY_POOR;
+    case PolluantQualificatifsNumberEnum.GOOD:
+      return NotificationDotColor.GOOD;
+    case PolluantQualificatifsNumberEnum.FAIR:
+      return NotificationDotColor.POOR; // to be consistent with "Moyen" in "getPollensDotColor" in "pollens.ts"
+    case PolluantQualificatifsNumberEnum.MODERATE:
+      return NotificationDotColor.POOR;
+    case PolluantQualificatifsNumberEnum.POOR:
+      return NotificationDotColor.POOR;
+    case PolluantQualificatifsNumberEnum.VERY_POOR:
+      return NotificationDotColor.VERY_POOR;
+    case PolluantQualificatifsNumberEnum.EXTREMELY_POOR:
+      return NotificationDotColor.EXTREMELY_POOR;
+    case PolluantQualificatifsNumberEnum.NOT_AVAILABLE:
+    default:
+      return null;
+  }
+}
+
+export { getIndiceAtmoStatus, getIndiceAtmoColor, getIndiceAtmoDotColor };

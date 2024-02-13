@@ -7,6 +7,7 @@ import {
   WeatherAlertColorIdEnum,
   type Phenomenon,
 } from '~/types/api/weather_alert';
+import { NotificationDotColor } from '~/types/notifications';
 
 export function getPhenomenonDBKeyById(
   id: WeatherAlertPhenomenonIdEnum,
@@ -50,6 +51,24 @@ export function getAlertValueByColorId(
       return WeatherAlertValuesEnum.ORANGE;
     case WeatherAlertColorIdEnum.RED:
       return WeatherAlertValuesEnum.RED;
+    default:
+      throw new Error(`Color id ${id as string} not found`);
+  }
+}
+
+export function getWeatherAlertDotColor(
+  id: WeatherAlertColorIdEnum | null,
+): NotificationDotColor | null {
+  if (id === null) return null;
+  switch (id) {
+    case WeatherAlertColorIdEnum.GREEN:
+      return NotificationDotColor.GOOD;
+    case WeatherAlertColorIdEnum.YELLOW:
+      return NotificationDotColor.FAIR;
+    case WeatherAlertColorIdEnum.ORANGE:
+      return NotificationDotColor.POOR;
+    case WeatherAlertColorIdEnum.RED:
+      return NotificationDotColor.VERY_POOR;
     default:
       throw new Error(`Color id ${id as string} not found`);
   }

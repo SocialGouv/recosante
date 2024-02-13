@@ -274,6 +274,9 @@ export async function getAtmoIndicatorForDate(
               municipalityInseeCodes,
               data: row.properties,
             },
+            tags: {
+              epciCode,
+            },
           });
           continue;
         }

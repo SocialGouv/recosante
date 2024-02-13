@@ -1,9 +1,7 @@
+import { sendMorningNotification } from '~/utils/notifications/morning';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import {
-  sendEveningNotification,
-  sendMorningNotification,
-} from '~/utils/notifications';
+import { sendEveningNotification } from '~/utils/notifications/evening';
 
 /*
 *

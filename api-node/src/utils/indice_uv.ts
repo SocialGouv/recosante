@@ -3,6 +3,7 @@ import {
   IndiceUVLabel,
   type IndiceUVNumber,
 } from '~/types/api/indice_uv';
+import { NotificationDotColor } from '~/types/notifications';
 
 function getIndiceUVStatus(indice_uv: IndiceUVNumber | null): IndiceUVLabel {
   if (indice_uv === null) {
@@ -43,4 +44,24 @@ function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
   }
 }
 
-export { getIndiceUVStatus, getIndiceUVColor };
+function getIndiceUVDotColor(
+  indice_uv: IndiceUVNumber,
+): NotificationDotColor | null {
+  if (indice_uv >= 11) {
+    return NotificationDotColor.EXTREMELY_POOR;
+  } else if (indice_uv >= 8) {
+    return NotificationDotColor.VERY_POOR;
+  } else if (indice_uv >= 6) {
+    return NotificationDotColor.POOR;
+  } else if (indice_uv >= 3) {
+    return NotificationDotColor.FAIR;
+  } else if (indice_uv >= 1) {
+    return NotificationDotColor.FAIR;
+  } else if (indice_uv === 0) {
+    return NotificationDotColor.GOOD;
+  } else {
+    return null;
+  }
+}
+
+export { getIndiceUVStatus, getIndiceUVColor, getIndiceUVDotColor };
