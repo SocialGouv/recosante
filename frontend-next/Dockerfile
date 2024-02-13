@@ -37,15 +37,18 @@ RUN addgroup --system --gid 1001 nodejs && \
   adduser --system --uid 1001 nextjs
 
 # You only need to copy next.config.js if you are NOT using the default configuration
-COPY --from=builder /app/frontend-next/next.config.js ./
-COPY --from=builder /app/frontend-next/public ./public
+COPY --from=builder /app/frontend-next/next.config.js /app/
+COPY --from=builder /app/frontend-next/public /app/public
 
 # Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/standalone /app/
+COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/static /app/.next/static
+# COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/server.js ./
 
 USER 1001
 EXPOSE 3000
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+# RUN ls -lah && exit 1
+
+CMD ["node", "frontend-next/server.js"]
