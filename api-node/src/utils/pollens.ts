@@ -1,6 +1,7 @@
 import {
   PollensRiskNumberEnum,
   PollensRiskStatusEnum,
+  PollensDotColor,
 } from '~/types/api/pollens';
 import type { PollenAllergyRisk } from '@prisma/client';
 import type { IndicatorByPeriodValues } from '~/types/api/indicator';
@@ -25,6 +26,28 @@ export function getPollensStatus(
     case PollensRiskNumberEnum.NO_RISK:
     default:
       return PollensRiskStatusEnum.NO_RISK;
+  }
+}
+
+export function getPollensDotColor(
+  pollensRiskNumber: PollensRiskNumberEnum | null,
+): PollensDotColor | null {
+  if (pollensRiskNumber === null) return null;
+  switch (pollensRiskNumber) {
+    case PollensRiskNumberEnum.VERY_LOW:
+      return PollensDotColor.VERY_LOW;
+    case PollensRiskNumberEnum.LOW:
+      return PollensDotColor.LOW;
+    case PollensRiskNumberEnum.MODERATE:
+      return PollensDotColor.MODERATE;
+    case PollensRiskNumberEnum.HIGH:
+      return PollensDotColor.HIGH;
+    case PollensRiskNumberEnum.VERY_HIGH:
+      return PollensDotColor.VERY_HIGH;
+    case PollensRiskNumberEnum.NO_RISK:
+      return PollensDotColor.NO_RISK;
+    default:
+      return null;
   }
 }
 

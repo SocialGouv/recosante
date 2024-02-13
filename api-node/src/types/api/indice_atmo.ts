@@ -56,6 +56,16 @@ export enum PolluantQualificatifsColorEnum {
   SPECIAL_EVENT = '#D9D9EF',
 }
 
+export enum IndiceAtmoDotColor {
+  GOOD = '🟢', // 'Bon'
+  FAIR = '🟡', // 'Moyen'
+  MODERATE = '🟠', // 'Dégradé'
+  POOR = '🟠', // 'Mauvais'
+  VERY_POOR = '🔴', // 'Très Mauvais'
+  EXTREMELY_POOR = '🟣', // 'Extrêmement Mauvais'
+  SPECIAL_EVENT = '🟣', // 'Événement spécial'
+}
+
 export enum SourcesEnum {
   QUALITAIR_CORSE = 'Qualitair Corse',
   ATMO_SUD = 'AtmoSud',

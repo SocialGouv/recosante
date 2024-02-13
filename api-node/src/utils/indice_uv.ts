@@ -1,5 +1,6 @@
 import {
   IndiceUVColor,
+  IndiceUVDotColor,
   IndiceUVLabel,
   type IndiceUVNumber,
 } from '~/types/api/indice_uv';
@@ -43,4 +44,24 @@ function getIndiceUVColor(indice_uv: IndiceUVNumber): IndiceUVColor {
   }
 }
 
-export { getIndiceUVStatus, getIndiceUVColor };
+function getIndiceUVDotColor(
+  indice_uv: IndiceUVNumber,
+): IndiceUVDotColor | null {
+  if (indice_uv >= 11) {
+    return IndiceUVDotColor.EXTREME;
+  } else if (indice_uv >= 8) {
+    return IndiceUVDotColor.TRES_FORT;
+  } else if (indice_uv >= 6) {
+    return IndiceUVDotColor.FORT;
+  } else if (indice_uv >= 3) {
+    return IndiceUVDotColor.MODERE;
+  } else if (indice_uv >= 1) {
+    return IndiceUVDotColor.FAIBLE;
+  } else if (indice_uv === 0) {
+    return IndiceUVDotColor.NUL;
+  } else {
+    return null;
+  }
+}
+
+export { getIndiceUVStatus, getIndiceUVColor, getIndiceUVDotColor };

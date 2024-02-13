@@ -12,13 +12,7 @@ type SendPushNotificationParams = {
   user: User;
   title: string;
   body: string;
-  data: {
-    indicatorSlug: IndicatorsSlugEnum;
-    indicatorId: string;
-    indicatorValue: number;
-    recommandationId: string | null;
-    typeWeatherAlert: string | null;
-  };
+  data: Record<IndicatorsSlugEnum, { id: string; text?: string } | undefined>;
 };
 
 type SendPushNotificationResult = {
@@ -89,11 +83,6 @@ export async function sendPushNotification({
             appdevice: user.appdevice,
             user: { connect: { id: user.id } },
             ticket: JSON.stringify(ticket),
-            indicatorSlug: data.indicatorSlug,
-            indicatorId: data.indicatorId,
-            indicatorValue: data.indicatorValue,
-            recommandationId: data.recommandationId,
-            typeWeatherAlert: data.typeWeatherAlert,
           },
         })
         .then((notification) => {
@@ -123,11 +112,6 @@ export async function sendPushNotification({
             appdevice: user.appdevice,
             user: { connect: { id: user.id } },
             error: JSON.stringify(error),
-            indicatorSlug: data.indicatorSlug,
-            indicatorId: data.indicatorId,
-            indicatorValue: data.indicatorValue,
-            recommandationId: data.recommandationId,
-            typeWeatherAlert: data.typeWeatherAlert,
           },
         })
         .then((notification) => {
