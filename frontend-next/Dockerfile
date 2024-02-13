@@ -42,13 +42,10 @@ COPY --from=builder /app/frontend-next/public /app/public
 
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/standalone /app/
-COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/static /app/.next/static
-# COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/server.js ./
+COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/static /app/frontend-next/.next/static
 
 USER 1001
 EXPOSE 3000
 ENV PORT 3000
-
-# RUN ls -lah && exit 1
 
 CMD ["node", "frontend-next/server.js"]
