@@ -7,7 +7,7 @@ frontend
 libs
 mail
 node_modules
-frontend-next
+
 
 api-node/data/municipalities.json
 api-node/data/municipalities-consolidated.json
@@ -20,4 +20,3 @@ api-node/.yarn
 api-node/.yarnrc.yml
 *.md
 
-frontend-next
