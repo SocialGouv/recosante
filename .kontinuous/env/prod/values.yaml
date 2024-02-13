@@ -67,7 +67,7 @@ redis:
 api:
   replicas: 1
 
-frontend:
+frontend-next:
   certSecretName: frontend-beta
 
 indice:
