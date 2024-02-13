@@ -14,6 +14,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && apt-get install
 WORKDIR /code
 COPY libs libs/
 ADD api/pyproject.toml api/poetry.toml api/poetry.lock api/package.json ./api/
+COPY .yarn .yarn
+COPY .yarnrc.yml ./
 ADD package.json yarn.lock ./
 
 ########
@@ -24,7 +26,8 @@ COPY api api/
 ########
 # Install dependencies only when needeed
 FROM base AS installer
-RUN yarn --immutable
+RUN yarn workspaces focus recosante-api
+RUN mkdir -p api/node_modules
 WORKDIR /code/api
 RUN poetry install --without dev
 
@@ -38,7 +41,7 @@ COPY --from=tmp-api --chown=pn:pn /api ./api
 COPY --from=installer --chown=pn:pn /code/node_modules ./node_modules
 COPY --from=installer --chown=pn:pn /code/api/node_modules ./api/node_modules
 COPY --from=installer --chown=pn:pn /code/api/.venv ./api/.venv
-RUN yarn install --production && yarn cache clean
+RUN yarn workspaces focus recosante-api --production && yarn cache clean
 
 USER 1000
 
