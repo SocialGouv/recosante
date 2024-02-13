@@ -13,15 +13,7 @@ RUN yarn fetch workspaces focus frontend-next
 # build
 COPY ./frontend-next/ ./frontend-next/
 
-ENV NEXTAUTH_URL http://localhost:3000
-
-ARG NEXT_PUBLIC_MATOMO_URL
-ENV NEXT_PUBLIC_MATOMO_URL $NEXT_PUBLIC_MATOMO_URL
-ARG NEXT_PUBLIC_MATOMO_SITE_ID
-ENV NEXT_PUBLIC_MATOMO_SITE_ID $NEXT_PUBLIC_MATOMO_SITE_ID
 ENV NEXT_TELEMETRY_DISABLED 1
-ARG NEXT_PUBLIC_HASURA_URL
-ENV NEXT_PUBLIC_HASURA_URL $NEXT_PUBLIC_HASURA_URL
 
 # RUN yarn install
 RUN yarn workspace frontend-next build
@@ -38,7 +30,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/frontend-next/next.config.js /app/
-COPY --from=builder /app/frontend-next/public /app/public
+COPY --from=builder /app/frontend-next/public /app/frontend-next/public
 
 # Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/frontend-next/.next/standalone /app/
