@@ -64,7 +64,6 @@ frontend:
   ~chart: app
   ~needs: [build-frontend]
   imagePackage: frontend
-  host: "{{ .Values.global.host }}"
   containerPort: 8080
   probesPath: /healthz/
   resources:
@@ -89,6 +88,7 @@ frontend-next:
   ~needs: [build-frontend-next]
   probesPath: /healthz
   imagePackage: frontend-next
+  host: "{{ .Values.global.host }}"
 
 indice:
   ~chart: app

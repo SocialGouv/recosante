@@ -25,5 +25,6 @@ celerybeat-schedule.db
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-/.next/
-frontend/public
+**/.next/
+**/next-env.d.ts
+
