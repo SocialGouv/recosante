@@ -8,7 +8,7 @@ FROM base AS builder
 # install deps
 COPY yarn.lock .yarnrc.yml ./
 COPY .yarn ./.yarn
-RUN yarn fetch worksapces focus frontend-next
+RUN yarn fetch workspaces focus frontend-next
 
 # build
 COPY ./frontend-next/ ./
@@ -24,7 +24,7 @@ ARG NEXT_PUBLIC_HASURA_URL
 ENV NEXT_PUBLIC_HASURA_URL $NEXT_PUBLIC_HASURA_URL
 
 # RUN yarn install --frozen-lockfile
-RUN yarn worskpace frontend-next build
+RUN yarn workspace frontend-next build
 
 # Production image, copy all the files and run next
 FROM base AS runner
