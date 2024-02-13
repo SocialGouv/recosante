@@ -17,7 +17,7 @@
     "down": "docker-compose down",
     "start": "docker-compose up -d --remove-orphans",
     "stop": "docker-compose stop",
-    "test": "yarn workspaces run test",
+    "test": "yarn workspaces foreach -A run test",
     "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis",
     "prepare": "husky install",
     "lint": "eslint  --fix \"./api-node/src/**/*.ts*\" ",

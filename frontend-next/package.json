@@ -8,6 +8,7 @@
     "start": "next start",
     "prepare": "husky",
     "lint": "eslint  --fix ",
+    "test": "exit 0",
     "lint-check": "eslint --no-fix --max-warnings 0 --no-fix --max-warnings 0",
     "format": "prettier --write . --ignore-unknown",
     "format-check": "prettier src/**/*.ts* --check ."
