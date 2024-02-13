@@ -89,10 +89,6 @@ frontend-next:
   ~needs: [build-frontend-next]
   probesPath: /healthz
   imagePackage: frontend-next
-  securityContext:
-    fsGroup: 1000
-    runAsUser: 1000
-    runAsGroup: 1000
 
 indice:
   ~chart: app
@@ -219,3 +215,5 @@ jobs:
       memoryLimit: 8Gi
       with:
         imagePackage: frontend-next
+        dockerfile: frontend-next/Dockerfile
+        context: "."

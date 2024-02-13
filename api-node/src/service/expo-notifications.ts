@@ -77,7 +77,7 @@ export async function sendPushNotification({
     .sendPushNotificationsAsync([message])
     .then(async (ticket) => {
       console.log('TICKET', ticket);
-      return await prisma.notification
+      return prisma.notification
         .create({
           data: {
             title,
@@ -111,7 +111,7 @@ export async function sendPushNotification({
     })
     .catch(async (error: any) => {
       console.log('ERROR', error);
-      return await prisma.notification
+      return prisma.notification
         .create({
           data: {
             title,

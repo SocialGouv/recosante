@@ -9,6 +9,7 @@
     "api-node",
     "api",
     "frontend",
+    "frontend-next",
     "libs/*",
     "mail"
   ],
@@ -42,5 +43,6 @@
   },
   "engines": {
     "npm": "please-use-yarn"
-  }
+  },
+  "packageManager": "yarn@4.1.0"
 }
