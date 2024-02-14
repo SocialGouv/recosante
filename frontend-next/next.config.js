@@ -67,7 +67,7 @@ const nextConfig = {
           }
         ],
         destination:
-          '/download?iframe=true',
+          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr',
         permanent: true,
       },
     ];
