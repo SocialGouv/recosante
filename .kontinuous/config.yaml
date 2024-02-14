@@ -1,13 +1,6 @@
 projectName: recosante
-ciNamespace: ci-recosante
 
 dependencies:
   fabrique:
-    dependencies:
-      contrib:
-        preDeploy:
-          importSecrets:
-            options:
-              secrets:
-                recosante-dev-backups-access-key:
-                recosante-prod-backups-access-key:
+    extends:
+      - name: ovh
