@@ -1,3 +1,35 @@
+# [1.26.0](https://github.com/SocialGouv/recosante/compare/v1.25.13...v1.26.0) (2024-02-14)
+
+
+### Bug Fixes
+
+* add feedbacks ([f4d5484](https://github.com/SocialGouv/recosante/commit/f4d548486bf769b3336665d6726dcf59d3413c08))
+* **deps:** update dependency cryptography to v42 [security] ([#396](https://github.com/SocialGouv/recosante/issues/396)) ([4880f21](https://github.com/SocialGouv/recosante/commit/4880f2198489354f0f2ed99e4ce89ea0e4d670b9))
+* download page ([766386d](https://github.com/SocialGouv/recosante/commit/766386d5610d52ac9102c29ac7e0d575044aebc1))
+* **frontend:** slow docker build ([#405](https://github.com/SocialGouv/recosante/issues/405)) ([8bc69cb](https://github.com/SocialGouv/recosante/commit/8bc69cb5bd9855fea72dfd569226806d39779403))
+* improve apple logo ([#406](https://github.com/SocialGouv/recosante/issues/406)) ([2492e99](https://github.com/SocialGouv/recosante/commit/2492e99b10a2bad806d9922dc1ee0b87329ef525))
+* Improve screenshot images size ([e9e74b2](https://github.com/SocialGouv/recosante/commit/e9e74b2d02608a9848de0633ef9ff8fc80c81211))
+* new notifications ([#400](https://github.com/SocialGouv/recosante/issues/400)) ([0192ec1](https://github.com/SocialGouv/recosante/commit/0192ec1b535ea70e8901e7c35adfaa04dc8e9e24))
+* redirect widget ([6716176](https://github.com/SocialGouv/recosante/commit/671617669b4caf38c00a1e83d0cb77a95aad194b))
+* Refactor NavLinks component to handle empty label ([c929743](https://github.com/SocialGouv/recosante/commit/c9297432cfe4f819839b17d1ed3f077ee33e62ad))
+* release workflow ([#404](https://github.com/SocialGouv/recosante/issues/404)) ([1e2f42f](https://github.com/SocialGouv/recosante/commit/1e2f42f9928cc89aa4d804d6b051c0863aba215b))
+* Remove unused imports and update styles in hero-banner.tsx ([24c2fa4](https://github.com/SocialGouv/recosante/commit/24c2fa4498225c9794c353023e4b33ba7ab9360f))
+* switch frontend urls ([#402](https://github.com/SocialGouv/recosante/issues/402)) ([cb62523](https://github.com/SocialGouv/recosante/commit/cb625232855b7007382f5fc6f78bcd4f7bf58d4d))
+* Update accessibility URLs ([aa12961](https://github.com/SocialGouv/recosante/commit/aa12961c8267f91f2b1904d8e785d6305c39f537))
+* Update contact link in NavLinks component ([24da17a](https://github.com/SocialGouv/recosante/commit/24da17ae0d2c9420af6a8ac4479eb0fdb418ddc5))
+* Update link in hero banner component ([193ff97](https://github.com/SocialGouv/recosante/commit/193ff97946bd6e38e967f5ce1b1d69dc68e603dd))
+* Update logos in Footer and Header components ([6a80a43](https://github.com/SocialGouv/recosante/commit/6a80a431be0bd61e0b9a604a445613731bf8c834))
+* update yarn lock ([7aabb3c](https://github.com/SocialGouv/recosante/commit/7aabb3c88c55e6ae354411e9b48fe1c0e05248d3))
+
+
+### Features
+
+* add nextjs frontend ([#398](https://github.com/SocialGouv/recosante/issues/398)) ([b7b5a5b](https://github.com/SocialGouv/recosante/commit/b7b5a5b5a492bfd24313db32b9a291367c2ddd8f))
+* **cta:** improve cta ([1aaf83f](https://github.com/SocialGouv/recosante/commit/1aaf83f7605913a5ce1c61651162ae1911b5ee90))
+* **download:** Add download page ([#403](https://github.com/SocialGouv/recosante/issues/403)) ([605661a](https://github.com/SocialGouv/recosante/commit/605661aef9f5cd70e0e7ca7bf87837375414ba6a))
+* **landing:** improve landing ([#407](https://github.com/SocialGouv/recosante/issues/407)) ([3563807](https://github.com/SocialGouv/recosante/commit/35638074a662d9c7b6aafd5856af15cb71b97105))
+* move to ovh ([#408](https://github.com/SocialGouv/recosante/issues/408)) ([3b9851a](https://github.com/SocialGouv/recosante/commit/3b9851a5acbaf933344e75cd1bd86ca10aabd5fe))
+
 ## [1.25.13](https://github.com/SocialGouv/recosante/compare/v1.25.12...v1.25.13) (2024-02-12)
 
 
