@@ -9,7 +9,7 @@ export function NavLinks() {
   let timeoutRef = useRef<number | null>(null);
 
   return [
-    ['Accessibilité : partiellement conforme', '/accessibilité'],
+    ['Accessibilité : partiellement conforme', '/accessibilite'],
     ['Mentions légales', '/mentions-legales/'],
     ['Données personnelles', '/donnees-personnelles/'],
     ['Partenaires', '/partenaires/'],

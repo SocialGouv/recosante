@@ -4,9 +4,9 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
-        source: '/accessibilité',
+        source: '/accessibilite',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/articles',
+          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/accessibilite/',
         permanent: true,
       },
       {
