@@ -3,8 +3,6 @@ global:
   apiHost: "api.recosante.beta.gouv.fr"
   apiNodeHost: "recosante-api-node.fabrique.social.gouv.fr"
   pgSecretName: pg-app
-  namespaceLabels:
-    kubed-matomo-secret: sync
 
 pg:
   ~chart: pg
@@ -35,42 +33,6 @@ pg:
         memory: 3Gi
       limits:
         memory: 3Gi
-
-pg-metabase:
-  ~chart: pg
-
-pg-matomo:
-  ~chart: pg
-
-matomo-sync:
-  enabled: true
-  matomoId: 100
-
-metabase:
-  enabled: true
-  ingress:
-    enabled: false
-  env:
-    - name: MB_DB_CONNECTION_URI
-      value: "postgres://$(PGHOST):5432/$(PGDATABASE)?user=$(PGUSER)&password=$(PGPASSWORD)&ssl=false&sslfactory=org.postgresql.ssl.NonValidatingFactory"
-  envFrom:
-    - configMapRef:
-        name: metabase-configmap
-    - secretRef:
-        name: pg-metabase-app
-
-oauth2-proxy:
-  host: "metabase-recosante.fabrique.social.gouv.fr"
-  enabled: true
-  upstream: http://metabase
-  envFrom:
-    - configMapRef:
-        name: oauth2-proxy-configmap
-    - secretRef:
-        name: oauth2-proxy-sealed-secret
-  additionalArgs:
-    - --skip-auth-route
-    - ^/public/.*,^/app/dist/.*,^/api/public/.*,^/api/session/.*,^/app/assets/.*
 
 flower:
   replicas: 1
