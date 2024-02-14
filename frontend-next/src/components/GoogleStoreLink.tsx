@@ -3,9 +3,10 @@ import clsx from 'clsx';
 
 export function GoogleStoreLink() {
   return (
-    <div className='bg-gray-800 text-white hover:bg-gray-900 w-fit rounded-md px-4'>
+    <div className='bg-gray-800 text-white hover:bg-gray-900 w-fit rounded-md '>
       <Link
-        href='#'
+        href='https://play.google.com/store/apps/details?id=com.recosante.recosante'
+        target='_blank'
         aria-label='Download on the Google Play'
         className={clsx('rounded-lg transition-colors')}
       >
