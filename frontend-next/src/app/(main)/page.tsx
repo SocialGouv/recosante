@@ -4,7 +4,7 @@ import { PrimaryFeatures } from '@/components/primary-features';
 // import { Reviews } from '@/components/Reviews';
 import { Notification } from '@/components/notifications';
 import { Incentive } from '@/components/incentive';
-import { Carousel } from '@/components/carousel';
+// import { Carousel } from '@/components/carousel';
 import { Meta } from '@/components/head';
 import BlogPreview from '@/components/blog-preview';
 
@@ -19,7 +19,7 @@ export default function Home() {
       <PrimaryFeatures />
       <Notification />
       <CallToAction />
-      <Carousel />
+      {/* <Carousel /> */}
       <Incentive />
       <BlogPreview />
       {/* <Reviews /> */}

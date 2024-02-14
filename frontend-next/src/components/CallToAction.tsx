@@ -21,8 +21,8 @@ export function CallToAction() {
             Reprenez le contrôle de votre santé et accompagnez vos proches dans
             leur vie de tous les jours.
           </p>
-          <div className='mt-8 flex justify-center'>
-            <div className='md:mt-4 mt-8 flex mx-auto justify-center  lg:justify-start space-x-4  '>
+          <div className=' text-center sm:text-left'>
+            <div className='md:mt-4 mt-8 flex mx-auto items-center space-y-2 md:space-y-0 justify-center lg:justify-start md:space-x-4 md:flex-row flex-col '>
               <AppStoreLink />
               <GoogleStoreLink />
             </div>

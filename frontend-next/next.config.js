@@ -51,6 +51,25 @@ const nextConfig = {
           'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/stats/',
         permanent: true,
       },
+      {
+        source: '/stats',
+        destination:
+          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/stats/',
+        permanent: true,
+      },
+      {
+        source: '/',
+        has: [
+          {
+            "type": "query",
+            "key": "iframe",
+            "value": "1"
+          }
+        ],
+        destination:
+          '/download?iframe=true',
+        permanent: true,
+      },
     ];
   },
 };

@@ -92,7 +92,7 @@ export function Hero() {
               santé et celle de votre famille.
             </p>
             <div className=' text-center sm:text-left'>
-              <div className='md:mt-4 mt-8 flex mx-auto justify-center  lg:justify-start space-x-4  '>
+              <div className='md:mt-4 mt-8 flex mx-auto items-center space-y-2 md:space-y-0 justify-center lg:justify-start md:space-x-4 md:flex-row flex-col '>
                 <AppStoreLink />
                 <GoogleStoreLink />
               </div>
@@ -109,7 +109,7 @@ export function Hero() {
           <div className='relative lg:col-span-7 lg:mt-0 xl:col-span-6'>
             <ul
               role='list'
-              className='mx-auto mt-8 grid grid-cols-4 items-center grayscale max-w-xl flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start'
+              className=' mx-auto   mt-8 grid md:grid-cols-4 grid-cols-2 items-center grayscale flex-wrap justify-center gap-x-10 gap-y-8 lg:mx-0 lg:justify-start'
             >
               {[
                 ['meteoLogo', meteoLogo],
@@ -117,24 +117,24 @@ export function Hero() {
                 ['rnsaLogo', rnsaLogo],
                 ['irsnLogo', irsnLogo],
               ].map(([name, logo]) => (
-                <li key={name as string}>
+                <li key={name as string} className=' flex justify-center'>
                   <Image
                     src={logo}
                     alt={name as string}
                     unoptimized
-                    className='max-w-[80px]'
+                    className='md:max-w-[80px] max-w-[60px]'
                   />
                 </li>
               ))}
             </ul>
-            <p className='text-center text-sm mt-4 text-gray-500 lg:text-left'>
+            <p className='text-left md:text-center text-sm mt-4 mb-4 md:mb-0 text-gray-500 lg:text-left'>
               Les recommandations sont issues de sources fiables et validés par
               le Haut conseil de santé publique et Santé publique France.
             </p>
             <a
               href='https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr'
               target='_blank'
-              className='border-b text-center text-sm  text-gray-500 lg:text-left'
+              className='border-b text-center text-sm  text-gray-500 lg:text-left '
             >
               Accéder à la version web
             </a>

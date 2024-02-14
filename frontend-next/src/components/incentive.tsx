@@ -32,8 +32,7 @@ export function Incentive() {
           <div className='grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-2'>
             <div>
               <h2 className='text-4xl font-bold tracking-tight text-gray-900'>
-                Une application facile,
-                <br /> gratuite, <br /> et sans collecte de données.
+                Une application facile, gratuite, et sans collecte de données.
               </h2>
               <p className='mt-4 text-gray-500'>
                 Pas de publicité, pas de collecte de données, pas de frais, pas

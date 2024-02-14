@@ -16,14 +16,13 @@ export function NavLinks() {
     ['Articles', '/articles/'],
     ['Gestion des cookies', '/cookies/'],
     ['Statistiques', '/stats/'],
-    ['Recommandations', '/recommandations/'],
     ['Contactez-nous', 'mailto:contact@recosante.beta.gouv.fr'],
   ].map(([label, href], index) => (
     <Link
       key={label}
       href={href}
       target='_blank'
-      className='relative -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-gray-700 transition-colors delay-150 hover:text-gray-900 hover:delay-0'
+      className='relative text-nowrap -mx-3 -my-2 rounded-lg px-3 py-2 text-sm text-gray-700 transition-colors delay-150 hover:text-gray-900 hover:delay-0'
       onMouseEnter={() => {
         if (timeoutRef.current) {
           window.clearTimeout(timeoutRef.current);
