@@ -85,16 +85,16 @@ export function Hero() {
   return (
     <div className='overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36 '>
       <Container>
-        <div className='grid lg:grid-cols-12 lg:gap-x-8 grid-cols-2 lg:gap-y-12'>
+        <div className='md:grid lg:grid-cols-12 lg:gap-x-8 grid-cols-2 lg:gap-y-12'>
           <div className='relative z-10 mx-auto  lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
             <h1 className='lg:text-5xl text-3xl  font-bold  tracking-tight text-app-primary  font-app uppercase'>
               Votre nouvelle application de santé au quotidien.
             </h1>
-            <p className='mt-6 text-lg text-gray-600'>
+            <p className='mt-6 text-lg text-gray-600 '>
               Une application gratuite et personnalisable pour protéger votre
               santé et celle de votre famille.
             </p>
-            <div className='mt-12 flex justify-start lg:space-x-4 flex-col lg:flex-row space-y-2 lg:space-y-0'>
+            <div className='mt-12 flex md:justify-start space-x-2 justify-center '>
               <AppStoreLink />
               <GoogleStoreLink />
             </div>
@@ -108,7 +108,7 @@ export function Hero() {
               <Logo className='h-20 w-auto' />
             </div>
           </div>
-          <div className='relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6'>
+          <div className='relative hidden md:block  mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6'>
             <BackgroundIllustration className='absolute left-1/2 top-4 h-[1026px] w-[1026px] -translate-x-1/3 stroke-gray-300/70 [mask-image:linear-gradient(to_bottom,white_20%,transparent_75%)] sm:top-16 sm:-translate-x-1/2 lg:-top-16 lg:ml-12 xl:-top-14 xl:ml-0' />
             <div className='-mx-4  px-9 [mask-image:linear-gradient(to_bottom,white_20%,transparent)] sm:mx-0  lg:-inset-x-10 lg:-bottom-20 lg:-top-4 lg:h-auto lg:px-0 lg:pt-10 xl:-bottom-32'>
               <PhoneFrame className='mx-auto max-w-[466px]' priority>
