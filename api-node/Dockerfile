@@ -6,7 +6,7 @@ RUN mkdir /app-node && chown 1000:1000 /app-node \
 WORKDIR /app-node
 USER 1000
 
-COPY ./yarn.lock ./.yarnrc.yml ./
+COPY --chown=1000:1000 ./yarn.lock ./.yarnrc.yml ./
 COPY --chown=1000:1000 ./.yarn .yarn
 RUN yarn fetch
 
