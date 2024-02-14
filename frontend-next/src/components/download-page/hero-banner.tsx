@@ -1,13 +1,7 @@
 import { useId } from 'react';
-import Image from 'next/image';
 import { LandingMobileScreen } from '@/components/app-demo';
-import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
 import { PhoneFrame } from '@/components/PhoneFrame';
-import atmoLogo from '@/images/logos/atmo.png';
-import meteoLogo from '@/images/logos/meteo.png';
-import rnsaLogo from '@/images/logos/rnsa.png';
-import irsnLogo from '@/images/logos/irsn.png';
 import { GouvLogo } from '@/images/logos/gouv';
 import { Logo } from '../Logo';
 import { AppStoreLink } from '../AppStoreLink';
@@ -83,11 +77,11 @@ function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
 
 export function Hero() {
   return (
-    <div className='overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36 '>
+    <div className='overflow-hidden py-8 sm:py-8 lg:pb-32 xl:pb-36 '>
       <Container>
         <div className='md:grid lg:grid-cols-12 lg:gap-x-8 grid-cols-2 lg:gap-y-12'>
           <div className='relative z-10 mx-auto  lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
-            <h1 className='lg:text-5xl text-3xl  font-bold  tracking-tight text-app-primary  font-app uppercase'>
+            <h1 className='lg:text-5xl text-4xl  font-bold  tracking-tight text-app-primary  font-app uppercase'>
               Votre nouvelle application de santé au quotidien.
             </h1>
             <p className='mt-6 text-lg text-gray-600 '>
