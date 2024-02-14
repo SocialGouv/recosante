@@ -260,7 +260,7 @@ export async function sendEveningNotification() {
       const { notificationSent, notificationInDb } = await sendPushNotification(
         {
           user,
-          title: 'Vos nouvelles matinales',
+          title: 'Vos prévisions pour demain',
           body: body.filter(Boolean).join('\n'),
           data,
         },
