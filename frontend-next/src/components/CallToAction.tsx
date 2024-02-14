@@ -1,7 +1,7 @@
 import { AppStoreLink } from '@/components/AppStoreLink';
 import { CircleBackground } from '@/components/CircleBackground';
 import { Container } from '@/components/Container';
-import { Button } from './Button';
+import { GoogleStoreLink } from './GoogleStoreLink';
 
 export function CallToAction() {
   return (
@@ -22,13 +22,10 @@ export function CallToAction() {
             leur vie de tous les jours.
           </p>
           <div className='mt-8 flex justify-center'>
-            <Button
-              href='https://recosante.beta.gouv.fr/download/'
-              target='_blank'
-              className='hidden lg:block bg-app-black'
-            >
-              Télécharger l'application
-            </Button>
+            <div className='md:mt-4 mt-8 flex mx-auto justify-center  lg:justify-start space-x-4  '>
+              <AppStoreLink />
+              <GoogleStoreLink />
+            </div>
           </div>
         </div>
       </Container>

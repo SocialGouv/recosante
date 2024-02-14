@@ -1,33 +1,33 @@
 import mockup from '@/images/mockup.jpg';
 import Image from 'next/image';
 
-const incentives = [
-  {
-    name: 'Simple et gratuit',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce/icons/icon-shipping-simple.svg',
-    description:
-      "Disponible sur l'App Store et le Play Store. Sans création de compte et personnalisable.",
-  },
-  {
-    name: 'Sans collecte de données',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce/icons/icon-warranty-simple.svg',
-    description: 'Sans publicité, pas de collecte de données',
-  },
-  {
-    name: 'Personnalisable',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce/icons/icon-exchange-simple.svg',
-    description:
-      'Choisissez les indicateurs qui vous intéressent et recevez des alertes en fonction de votre localisation.',
-  },
-];
+// const incentives = [
+//   {
+//     name: 'Simple et gratuit',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce/icons/icon-shipping-simple.svg',
+//     description:
+//       "Disponible sur l'App Store et le Play Store. Sans création de compte et personnalisable.",
+//   },
+//   {
+//     name: 'Sans collecte de données',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce/icons/icon-warranty-simple.svg',
+//     description: 'Sans publicité, pas de collecte de données',
+//   },
+//   {
+//     name: 'Personnalisable',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce/icons/icon-exchange-simple.svg',
+//     description:
+//       'Choisissez les indicateurs qui vous intéressent et recevez des alertes en fonction de votre localisation.',
+//   },
+// ];
 
 export function Incentive() {
   return (
     <div className='bg-gray-50'>
-      <div className='mx-auto max-w-7xl py-24 sm:px-2 sm:py-32 lg:px-4'>
+      <div className='mx-auto max-w-7xl py-24 sm:px-2  lg:px-4'>
         <div className='mx-auto max-w-2xl px-4 lg:max-w-none'>
           <div className='grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-2'>
             <div>
@@ -50,7 +50,7 @@ export function Incentive() {
               />
             </div>
           </div>
-          <div className='mt-16 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3'>
+          {/* <div className='mt-16 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-3'>
             {incentives.map((incentive) => (
               <div key={incentive.name} className='sm:flex lg:block'>
                 <div className='sm:flex-shrink-0'>
@@ -66,7 +66,7 @@ export function Incentive() {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
