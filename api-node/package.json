@@ -66,5 +66,9 @@
   },
   "engines": {
     "npm": "please-use-yarn"
-  }
+  },
+  "pre-commit": [
+    "format",
+    "ts:check"
+  ]
 }
