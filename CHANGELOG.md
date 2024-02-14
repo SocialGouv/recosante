@@ -12,6 +12,22 @@
 ### Features
 
 * move to ovh ([#408](https://github.com/SocialGouv/recosante/issues/408)) ([e81de96](https://github.com/SocialGouv/recosante/commit/e81de96d05a993bc632adec76851267cbfe2f124))
+* wip ([4c92450](https://github.com/SocialGouv/recosante/commit/4c92450307c2b32d2df557e6acd237401ae0443d))
+
+# [1.26.0-beta.1](https://github.com/SocialGouv/recosante/compare/v1.25.13...v1.26.0-beta.1) (2024-02-14)
+
+
+### Bug Fixes
+
+* prod ([d40ba70](https://github.com/SocialGouv/recosante/commit/d40ba702d4a7dbafba87d25919113bda805b6c4c))
+* releaserc beta ([a9dd308](https://github.com/SocialGouv/recosante/commit/a9dd308c43c008bfa969a402f7072c3a11e9ef85))
+* releaserc beta ([1a7cef1](https://github.com/SocialGouv/recosante/commit/1a7cef1feac2dae3c0de80de5609bca508386156))
+* update prod config ([b93bdb8](https://github.com/SocialGouv/recosante/commit/b93bdb8f99d9c8241bd9fd5077aa88a0c51a2a69))
+
+
+### Features
+
+* move to ovh ([#408](https://github.com/SocialGouv/recosante/issues/408)) ([e81de96](https://github.com/SocialGouv/recosante/commit/e81de96d05a993bc632adec76851267cbfe2f124))
 
 # [1.26.0-beta.1](https://github.com/SocialGouv/recosante/compare/v1.25.13...v1.26.0-beta.1) (2024-02-14)
 
