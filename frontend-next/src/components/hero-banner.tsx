@@ -132,7 +132,7 @@ export function Hero() {
               le Haut conseil de santé publique et Santé publique France.
             </p>
             <a
-              href='https://recosante.beta.gouv.fr/'
+              href='https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr'
               target='_blank'
               className='border-b text-center text-sm  text-gray-500 lg:text-left'
             >
