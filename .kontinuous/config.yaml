@@ -4,4 +4,3 @@ dependencies:
   fabrique:
     extends:
       - name: ovh
-        ifEnv: [dev, preprod]
