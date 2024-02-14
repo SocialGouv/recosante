@@ -1,13 +1,14 @@
 import { useId } from 'react';
 import Image from 'next/image';
 import { LandingMobileScreen } from '@/components/app-demo';
-import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import atmoLogo from '@/images/logos/atmo.png';
 import meteoLogo from '@/images/logos/meteo.png';
 import rnsaLogo from '@/images/logos/rnsa.png';
 import irsnLogo from '@/images/logos/irsn.png';
+import { AppStoreLink } from './AppStoreLink';
+import { GoogleStoreLink } from './GoogleStoreLink';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -79,7 +80,7 @@ function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
 
 export function Hero() {
   return (
-    <div className='overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36 '>
+    <div className='overflow-hidden py-4 sm:py-2 lg:pb-32 xl:pb-36 '>
       <Container>
         <div className='lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12'>
           <div className='relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
@@ -90,15 +91,11 @@ export function Hero() {
               Une application gratuite et personnalisable pour protéger votre
               santé et celle de votre famille.
             </p>
-            <div className='mt-8 text-center sm:text-left'>
-              <Button
-                href='https://recosante.beta.gouv.fr/download/'
-                target='_blank'
-                variant='solid'
-                color='primary'
-              >
-                Télécharger l'application
-              </Button>
+            <div className=' text-center sm:text-left'>
+              <div className='md:mt-4 mt-8 flex mx-auto justify-center  lg:justify-start space-x-4  '>
+                <AppStoreLink />
+                <GoogleStoreLink />
+              </div>
             </div>
           </div>
           <div className='relative mt-10 sm:mt-20 lg:col-span-5 lg:row-span-2 lg:mt-0 xl:col-span-6'>

@@ -8,12 +8,13 @@ export function AppStoreLink({
 }) {
   return (
     <Link
-      href='#'
+      href='https://apps.apple.com/fr/app/recosant%C3%A9/id6476136888'
+      target='_blank'
       aria-label='Download on the App Store'
       className={clsx(
         'rounded-lg transition-colors',
         color === 'black'
-          ? 'bg-gray-800 text-white hover:bg-gray-900'
+          ? 'bg-gray-800 text-white hover:bg-gray-900 w-fit'
           : 'bg-white text-gray-900 hover:bg-gray-50',
       )}
     >

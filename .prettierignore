@@ -8,7 +8,7 @@ libs
 mail
 node_modules
 
-
+frontend-next/.next/
 api-node/data/municipalities.json
 api-node/data/municipalities-consolidated.json
 api-node/data/epci.json

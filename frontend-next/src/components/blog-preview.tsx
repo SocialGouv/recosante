@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const posts = [
   {
     id: 1,
@@ -84,13 +86,13 @@ export default function BlogPreview() {
         </div>
 
         <div className='text-center mt-12'>
-          <a
-            href='https://recosante.beta.gouv.fr/articles/'
+          <Link
+            href='/articles'
             target='_blank'
             className=' text-center border-b border-black border-spacing-2 mx-auto  text-black font-semibold'
           >
             Voir tous les articles
-          </a>
+          </Link>
         </div>
       </div>
     </div>

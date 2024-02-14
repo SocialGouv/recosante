@@ -85,16 +85,16 @@ export function Hero() {
   return (
     <div className='overflow-hidden py-20 sm:py-32 lg:pb-32 xl:pb-36 '>
       <Container>
-        <div className='lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12'>
-          <div className='relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
-            <h1 className='text-5xl  font-bold  tracking-tight text-app-primary  font-app uppercase'>
+        <div className='grid lg:grid-cols-12 lg:gap-x-8 grid-cols-2 lg:gap-y-12'>
+          <div className='relative z-10 mx-auto  lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
+            <h1 className='lg:text-5xl text-3xl  font-bold  tracking-tight text-app-primary  font-app uppercase'>
               Votre nouvelle application de santé au quotidien.
             </h1>
             <p className='mt-6 text-lg text-gray-600'>
               Une application gratuite et personnalisable pour protéger votre
               santé et celle de votre famille.
             </p>
-            <div className='mt-12 flex justify-start space-x-4'>
+            <div className='mt-12 flex justify-start lg:space-x-4 flex-col lg:flex-row space-y-2 lg:space-y-0'>
               <AppStoreLink />
               <GoogleStoreLink />
             </div>

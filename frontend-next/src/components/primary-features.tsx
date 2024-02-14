@@ -136,7 +136,7 @@ function PollensScreen(props: ScreenProps) {
         {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}
       >
         <div className='rounded-lg overflow-hidden'>
-          <Image src={PollenScreenshot} alt='App demo' />
+          <Image src={PollenScreenshot} alt='App demo' priority />
         </div>
       </MotionAppScreenBody>
     </AppScreen>
@@ -150,7 +150,7 @@ function AirScreen(props: ScreenProps) {
         {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}
       >
         <div className='rounded-lg overflow-hidden'>
-          <Image src={AirScreenshot} alt='App demo' />
+          <Image src={AirScreenshot} alt='App demo' priority />
         </div>
       </MotionAppScreenBody>
     </AppScreen>
@@ -164,7 +164,7 @@ function UvScreen(props: ScreenProps) {
         {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}
       >
         <div className='rounded-lg overflow-hidden'>
-          <Image src={UvScreenshot} alt='App demo' />
+          <Image src={UvScreenshot} alt='App demo' priority />
         </div>
       </MotionAppScreenBody>
     </AppScreen>
@@ -177,7 +177,7 @@ function WeatherScreen(props: ScreenProps) {
         {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}
       >
         <div className='rounded-lg overflow-hidden'>
-          <Image src={WeatherScreenshot} alt='App demo' />
+          <Image src={WeatherScreenshot} alt='App demo' priority />
         </div>
       </MotionAppScreenBody>
     </AppScreen>
@@ -191,7 +191,7 @@ function WaterScreen(props: ScreenProps) {
         {...(props.animated ? { ...bodyAnimation, custom: props.custom } : {})}
       >
         <div className='rounded-lg overflow-hidden'>
-          <Image src={WaterScreenshot} alt='App demo' />
+          <Image src={WaterScreenshot} alt='App demo' priority />
         </div>
       </MotionAppScreenBody>
     </AppScreen>

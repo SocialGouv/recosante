@@ -1,7 +1,6 @@
 import { Hero } from '@/components/download-page/hero-banner';
 import { Meta } from '@/components/head';
 
-
 export default function Download() {
   return (
     <>
