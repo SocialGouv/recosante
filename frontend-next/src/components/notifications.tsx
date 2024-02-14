@@ -10,20 +10,20 @@ import { useInView } from 'react-intersection-observer';
 // import { useEffect } from 'react';
 const cards = [
   {
-    name: 'Les nouvelles matinales',
-    description: 'Notification pour bien commencer la journée à 7h. ',
+    name: 'Notifié le matin pour la journée',
+    description: 'Recevez des informations sur vos indicateurs le matin à 7h.',
     icon: '☕️',
   },
   {
-    name: 'Les nouvelles de soirée',
+    name: 'Notifié le soir pour le lendemain',
     description:
-      'Terminez votre journée en beauté ! Recevez une notification à 19h',
+      'Recevez des informations sur vos indicateurs le soir à 19h.',
     icon: '🌇',
   },
   {
-    name: "Les alertes d'urgence",
+    name: "Notifié en cas de vigilance",
     description:
-      'Soyez informé immédiatement en cas de seuil critique atteint.',
+      'Recevez une notification dès qu’un indicateur dépasse un seuil d’alerte',
     icon: '⚠️',
   },
 ];
