@@ -3,6 +3,8 @@ global:
 
 pg:
   ~chart: pg
+  backup:
+    name: ovh # backup on a new folder
 
 api:
   ~needs: [build-api, seed-db]
