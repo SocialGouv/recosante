@@ -1,3 +1,12 @@
+## [1.26.1](https://github.com/SocialGouv/recosante/compare/v1.26.0...v1.26.1) (2024-02-14)
+
+
+### Bug Fixes
+
+* update prod config ([4e1fcd6](https://github.com/SocialGouv/recosante/commit/4e1fcd6e8d775048a3e245ad59b1c9bde7594d5a))
+* Vos prévisions pour demain ([ff5ddc4](https://github.com/SocialGouv/recosante/commit/ff5ddc4d58cfc47e81a1df9539065c334f49d2eb))
+* Vos prévisions pour demain ([4832043](https://github.com/SocialGouv/recosante/commit/4832043693b17a2a2af9411299adf0fff77cb5f6))
+
 # [1.26.0](https://github.com/SocialGouv/recosante/compare/v1.25.13...v1.26.0) (2024-02-14)
 
 
