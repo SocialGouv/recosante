@@ -17,8 +17,8 @@ export function Header() {
               aria-label='Home'
               className='flex items-center  w-full  justify-between'
             >
-              <GouvLogo className='h-32 w-auto -ml-4' />
               <Logo className='h-20 w-auto' />
+              <GouvLogo className='h-32 w-auto ' />
             </Link>
           </div>
         </Container>
