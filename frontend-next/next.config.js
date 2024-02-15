@@ -1,61 +1,65 @@
 /** @type {import('next').NextConfig} */
+
+const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+
+
 const nextConfig = {
   output: 'standalone',
-  redirects: async () => {
+  rewrites: async () => {
     return [
       {
         source: '/accessibilite',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/accessibilite/',
-        permanent: true,
+          `${PATH}/accessibilite/`,
+        
       },
       {
         source: '/articles',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/articles',
-        permanent: true,
+          `${PATH}/articles`,
+        
       },
       {
         source: '/mentions-legales',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/mentions-legales/',
-        permanent: true,
+          `${PATH}/mentions-legales/`,
+        
       },
       {
         source: '/donnees-personnelles',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/donnees-personnelles/',
-        permanent: true,
+          `${PATH}/donnees-personnelles/`,
+        
       },
       {
         source: '/cookies',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/cookies/',
-        permanent: true,
+          `${PATH}/cookies/`,
+        
       },
       {
         source: '/partenaires',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/partenaires/',
-        permanent: true,
+          `${PATH}/partenaires/`,
+        
       },
       {
         source: '/recommandations',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/recommandations/',
-        permanent: true,
+          `${PATH}/recommandations/`,
+        
       },
       {
         source: '/stats',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/stats/',
-        permanent: true,
+          `${PATH}/stats/`,
+        
       },
       {
         source: '/stats',
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr/stats/',
-        permanent: true,
+          `${PATH}/stats/`,
+        
       },
       {
         source: '/',
@@ -67,8 +71,8 @@ const nextConfig = {
           }
         ],
         destination:
-          'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr',
-        permanent: true,
+          `${PATH}/`,
+        
       },
     ];
   },
