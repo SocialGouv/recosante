@@ -1,3 +1,21 @@
+# [1.27.0](https://github.com/SocialGouv/recosante/compare/v1.26.1...v1.27.0) (2024-02-15)
+
+
+### Bug Fixes
+
+* Delete login and register pages, update metadata in layout ([e226152](https://github.com/SocialGouv/recosante/commit/e226152e632f0e31be61cda4bf1bdd9c2beec163))
+* slow dockerfile ([#410](https://github.com/SocialGouv/recosante/issues/410)) ([344dc80](https://github.com/SocialGouv/recosante/commit/344dc80b99455a6bcdf0e1e2d9398a41767f5e90))
+* Update import paths for Meta component ([b335938](https://github.com/SocialGouv/recosante/commit/b3359387ebba3142dd9817923bd59b84b8613d09))
+* Update Matomo tracking and add .env files to .gitignore ([27895f1](https://github.com/SocialGouv/recosante/commit/27895f1a67d80f969b242bb4e291ec5c9b060cce))
+* Update og:image URLs in Meta component ([bf64269](https://github.com/SocialGouv/recosante/commit/bf642694e12cedca4eaf52e63933f6de24094ff7))
+
+
+### Features
+
+* **blog:** change articles ([67705e3](https://github.com/SocialGouv/recosante/commit/67705e35642f03efd9fde149f4fc2c64aad2164b))
+* **matomo:** add matomo ([5f80a1e](https://github.com/SocialGouv/recosante/commit/5f80a1e571f94fd312d64381d2cf665adbe1df5c))
+* **matomo:** Add Matomo tracking to various components ([8dad605](https://github.com/SocialGouv/recosante/commit/8dad605e4c3664d45ae67a66b4bbd6067b087f3f))
+
 ## [1.26.1](https://github.com/SocialGouv/recosante/compare/v1.26.0...v1.26.1) (2024-02-14)
 
 
