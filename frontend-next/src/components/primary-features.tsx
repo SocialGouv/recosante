@@ -29,6 +29,7 @@ import { WaterLogo } from '@/images/logos/water';
 import { WeatherLogo } from '@/images/logos/weather';
 import { PollenLogo } from '@/images/logos/pollen';
 import { AirLogo } from '@/images/logos/air';
+import { MatomoService } from '@/services/matomo';
 
 const MotionAppScreenHeader = motion(AppScreen.Header);
 const MotionAppScreenBody = motion(AppScreen.Body);
@@ -236,6 +237,7 @@ function FeaturesDesktop() {
           <div
             key={feature.name}
             className='relative rounded-2xl transition-colors hover:bg-gray-800/30'
+            onClick={() => MatomoService.trackClick('features-desktop-tab')}
           >
             {featureIndex === selectedIndex && (
               <motion.div
@@ -372,6 +374,7 @@ function FeaturesMobile() {
             )}
             aria-label={`Go to slide ${featureIndex + 1}`}
             onClick={() => {
+              MatomoService.trackClick('features-mobile-slide');
               slideRefs.current[featureIndex].scrollIntoView({
                 block: 'nearest',
                 inline: 'nearest',

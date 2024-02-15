@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+import { MatomoService } from '@/services/matomo';
 
 export function NavLinks() {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -24,6 +25,7 @@ export function NavLinks() {
     }
     return (
       <Link
+        onClick={() => MatomoService.trackClick(`footer-link-${href}`)}
         key={label}
         href={href}
         target='_blank'

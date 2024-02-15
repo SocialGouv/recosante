@@ -33,17 +33,15 @@ export function Footer() {
               <Logo />
               <GouvLogo className='h-40 w-auto' />
             </div>
-            <div className='mb-12 md:mb-0 group relative -mx-4 flex items-center self-stretch p-4 transition-colors hover:bg-gray-100 sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6'>
+            <div className='mb-12 md:mb-0 group relative -mx-4 flex items-center self-stretch p-4 transition-colors  sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6'>
               <div className='relative flex h-24 w-24 flex-none items-center justify-center '>
-                <QrCodeBorder className='absolute inset-0 h-full w-full stroke-gray-300 transition-colors group-hover:stroke-cyan-500' />
-                <Image src={qrCode} alt='' unoptimized />
+                <QrCodeBorder className='absolute inset-0 h-full w-full stroke-gray-300 transition-colors ' />
+                <Image src={qrCode} alt='qr code' unoptimized />
               </div>
               <div className='ml-8 lg:w-64'>
                 <p className='text-base font-semibold text-gray-900'>
-                  <Link href='#'>
-                    <span className='absolute inset-0 sm:rounded-2xl' />
-                    Télécharger l'application
-                  </Link>
+                  <span className='absolute inset-0 sm:rounded-2xl' />
+                  Télécharger l'application
                 </p>
                 <p className='mt-1 text-sm text-gray-700'>
                   Scannez le code QR pour télécharger l'application.

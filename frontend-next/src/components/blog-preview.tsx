@@ -1,3 +1,5 @@
+'use client';
+import { MatomoService } from '@/services/matomo';
 import Link from 'next/link';
 
 const posts = [
@@ -62,16 +64,19 @@ export default function BlogPreview() {
               </div>
               <div className='max-w-xl'>
                 <div className='mt-8 flex items-center gap-x-4 text-xs'>
-                  <a
-                    href='#'
-                    className='relative z-10 rounded-full bg-app-primary px-3 py-1.5 font-medium text-white hover:bg-gray-100'
-                  >
+                  <span className='relative z-10 rounded-full bg-app-primary px-3 py-1.5 font-medium text-white '>
                     {post.category.title}
-                  </a>
+                  </span>
                 </div>
                 <div className='group relative'>
                   <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
-                    <a href={post.href} target='_blank'>
+                    <a
+                      href={post.href}
+                      target='_blank'
+                      onClick={() =>
+                        MatomoService.trackClick(`article-${post.id}-clicked`)
+                      }
+                    >
                       <span className='absolute inset-0' />
                       {post.title}
                     </a>
@@ -87,6 +92,7 @@ export default function BlogPreview() {
 
         <div className='text-center mt-12'>
           <Link
+            onClick={() => MatomoService.trackClick('blog-see-all')}
             href='/articles'
             target='_blank'
             className=' text-center border-b border-black border-spacing-2 mx-auto  text-black font-semibold'

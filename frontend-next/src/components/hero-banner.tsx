@@ -1,3 +1,5 @@
+'use client';
+
 import { useId } from 'react';
 import Image from 'next/image';
 import { LandingMobileScreen } from '@/components/app-demo';
@@ -9,6 +11,7 @@ import rnsaLogo from '@/images/logos/rnsa.png';
 import irsnLogo from '@/images/logos/irsn.png';
 import { AppStoreLink } from './AppStoreLink';
 import { GoogleStoreLink } from './GoogleStoreLink';
+import { MatomoService } from '@/services/matomo';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -132,6 +135,7 @@ export function Hero() {
               le Haut conseil de santé publique et Santé publique France.
             </p>
             <a
+              onClick={() => MatomoService.trackClick('go-to-web-version')}
               href='https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr'
               target='_blank'
               className='border-b text-center text-sm  text-gray-500 lg:text-left '

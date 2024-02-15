@@ -1,4 +1,5 @@
 'use client';
+import { MatomoService } from '@/services/matomo';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 
@@ -43,6 +44,7 @@ export function Banner() {
           </svg>
           La nouvelle version de l'application est disponible.
           <a
+            onClick={() => MatomoService.trackClick('banner-download-app')}
             target='_blank'
             href='https://apps.apple.com/fr/app/recosant%C3%A9/id6476136888'
             className='border-b ml-2 border-black'
