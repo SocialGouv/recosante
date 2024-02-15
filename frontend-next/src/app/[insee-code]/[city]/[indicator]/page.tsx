@@ -18,15 +18,11 @@ export default function Page(props: PageProps) {
     </div>
   );
 }
-<<<<<<< Updated upstream
-=======
 
 export async function getStaticPaths() {
   const params = PageBuilderService.getMunicipalitiesParams();
-  console.log(params);
   return {
     paths: params,
     fallback: false,
   };
 }
->>>>>>> Stashed changes
