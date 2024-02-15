@@ -6,6 +6,7 @@ const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
 const nextConfig = {
   output: 'standalone',
+  trailingSlash: true,
   rewrites: async () => {
     return {
       beforeFiles: [
