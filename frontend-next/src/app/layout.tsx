@@ -13,6 +13,26 @@ export const metadata: Metadata = {
       "Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.",
   },
   description: 'Télécharger l’application Recosanté.',
+  openGraph: {
+    images: [
+      {
+        url: 'https://recosante-preprod.ovh.fabrique.social.gouv.fr/og-image-x2.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Recosanté',
+      },
+    ],
+  },
+  twitter: {
+    images: [
+      {
+        url: 'https://recosante-preprod.ovh.fabrique.social.gouv.fr/og-image-x2.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Recosanté',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
