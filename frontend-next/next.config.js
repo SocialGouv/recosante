@@ -2,7 +2,6 @@
 
 const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
-
 const nextConfig = {
   output: 'standalone',
   rewrites: async () => {
@@ -11,7 +10,6 @@ const nextConfig = {
         source: '/place/:path*',
         destination:
           `${PATH}/place`,
-        
       },
       {
         source: '/static/:path*',
@@ -22,25 +20,21 @@ const nextConfig = {
         source: '/accessibilite',
         destination:
           `${PATH}/accessibilite/`,
-        
       },
       {
         source: '/articles',
         destination:
           `${PATH}/articles`,
-        
       },
       {
         source: '/mentions-legales',
         destination:
           `${PATH}/mentions-legales/`,
-        
       },
       {
         source: '/donnees-personnelles',
         destination:
           `${PATH}/donnees-personnelles/`,
-        
       },
       {
         source: '/cookies',
@@ -52,25 +46,21 @@ const nextConfig = {
         source: '/partenaires',
         destination:
           `${PATH}/partenaires/`,
-        
       },
       {
         source: '/recommandations',
         destination:
           `${PATH}/recommandations/`,
-        
       },
       {
         source: '/stats',
         destination:
           `${PATH}/stats/`,
-        
       },
       {
         source: '/stats',
         destination:
           `${PATH}/stats/`,
-        
       },
       {
         source: '/',
@@ -83,7 +73,6 @@ const nextConfig = {
         ],
         destination:
           `${PATH}/`,
-        
       },
     ];
   },
