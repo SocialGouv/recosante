@@ -24,7 +24,7 @@ export function Meta(props: MetaProps) {
       <meta property='og:url' content={path!} key='og:url' />
       <meta
         property='og:image'
-        content='https://recosante.beta.gouv.fr/app-og-image.png'
+        content='https://recosante-preprod.ovh.fabrique.social.gouv.fr/og-image-x2.jpg'
       />
       <meta name='application-name' content={props.title} />
       <meta name='apple-mobile-web-app-capable' content='yes' />
@@ -55,7 +55,7 @@ export function Meta(props: MetaProps) {
       />
       <meta
         name='twitter:image'
-        content='https://recosante.beta.gouv.fr/app-og-image.png'
+        content='https://recosante-preprod.ovh.fabrique.social.gouv.fr/og-image-x2.jpg'
       />
 
       <meta property='og:url' content='https://recosante.beta.gouv.fr' />
