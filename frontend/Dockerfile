@@ -51,7 +51,7 @@ FROM base AS runner
 # RUN addgroup --system --gid 1001 nodejs && \
 #     adduser --system --uid 1001 frontend
 # COPY --from=builder --chown=nodejs:frontend /app ./
-COPY --from=builder --chown=user:group /app ./
+COPY --from=builder --chown=node:node /app ./
 ARG GITHUB_SHA
 ENV GITHUB_SHA $GITHUB_SHA
 ARG PRODUCTION
@@ -61,7 +61,6 @@ RUN yarn install --production && yarn cache clean
 
 RUN mkdir /.config
 RUN chown -R node:node /.config
-RUN chown -R node:node /app
 
 USER 1000
 
