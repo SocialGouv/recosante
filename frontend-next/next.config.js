@@ -10,16 +10,16 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/place/',
-          destination: `${PATH}/place/`,
+          source: '/place/:slug*',
+          destination: `${PATH}/place/:slug*`,
         },
         {
-          source: '/static/',
-          destination: `${PATH}/static/`,
+          source: '/articles/:slug*',
+          destination: `${PATH}/articles/:slug*`,
         },
         {
-          source: '/articles/',
-          destination: `${PATH}/articles/`,
+          source: '/static/:slug*',
+          destination: `${PATH}/static/:slug*`,
         },
         {
           source: '/',
