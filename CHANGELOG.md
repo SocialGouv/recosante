@@ -1,3 +1,10 @@
+## [1.27.1](https://github.com/SocialGouv/recosante/compare/v1.27.0...v1.27.1) (2024-02-15)
+
+
+### Bug Fixes
+
+* go to ovh on prod for master ([a75ba30](https://github.com/SocialGouv/recosante/commit/a75ba307a3955454aacab5f7cfb768bc27c0b701))
+
 # [1.27.0](https://github.com/SocialGouv/recosante/compare/v1.26.1...v1.27.0) (2024-02-15)
 
 
