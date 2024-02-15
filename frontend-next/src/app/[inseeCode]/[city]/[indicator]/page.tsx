@@ -21,6 +21,7 @@ export default function Page(props: PageProps) {
 
 export async function getStaticPaths() {
   const params = PageBuilderService.getMunicipalitiesParams();
+
   return {
     paths: params,
     fallback: false,
