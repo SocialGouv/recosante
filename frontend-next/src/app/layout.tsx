@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import '@/styles/tailwind.css';
 import { type Metadata } from 'next';
 import { marianneFont } from '@/assets/fonts';
-import { useEffect } from 'react';
 import { Matomo } from '@/components/matomo';
 
 export const metadata: Metadata = {
