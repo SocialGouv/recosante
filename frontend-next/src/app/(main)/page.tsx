@@ -5,7 +5,7 @@ import { PrimaryFeatures } from '@/components/primary-features';
 import { Notification } from '@/components/notifications';
 import { Incentive } from '@/components/incentive';
 // import { Carousel } from '@/components/carousel';
-import { Meta } from '@/components/head';
+import { Meta } from '@/components/meta';
 import BlogPreview from '@/components/blog-preview';
 
 export default function Home() {

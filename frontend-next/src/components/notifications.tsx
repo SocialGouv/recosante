@@ -11,19 +11,20 @@ import { useInView } from 'react-intersection-observer';
 const cards = [
   {
     name: 'Notifié le matin pour la journée',
-    description: 'Recevez des informations sur vos indicateurs le matin à 7h.',
+    description:
+      'Recevez des informations sur votre indicateur favori le matin à 7h. ',
     icon: '☕️',
   },
   {
     name: 'Notifié le soir pour le lendemain',
     description:
-      'Recevez des informations sur vos indicateurs le soir à 19h.',
+      'Recevez des informations sur votre indicateur favori le soir à 19h.',
     icon: '🌇',
   },
   {
-    name: "Notifié en cas de vigilance",
+    name: 'Notifié en cas de vigilance',
     description:
-      'Recevez une notification dès qu’un indicateur dépasse un seuil d’alerte',
+      "Recevez une notification dès qu'un indicateur dépasse un seuil de vigilance.",
     icon: '⚠️',
   },
 ];

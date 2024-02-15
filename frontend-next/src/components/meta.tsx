@@ -24,7 +24,7 @@ export function Meta(props: MetaProps) {
       <meta property='og:url' content={path!} key='og:url' />
       <meta
         property='og:image'
-        content='http://recosante.beta.gouv.fr/app-og-image.png'
+        content='https://recosante.beta.gouv.fr/app-og-image.png'
       />
       <meta name='application-name' content={props.title} />
       <meta name='apple-mobile-web-app-capable' content='yes' />
@@ -44,7 +44,7 @@ export function Meta(props: MetaProps) {
       />
 
       <meta name='twitter:card' content='summary' />
-      <meta name='twitter:url' content='http://recosante.beta.gouv.fr' />
+      <meta name='twitter:url' content='https://recosante.beta.gouv.fr' />
       <meta
         name='twitter:title'
         content="Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez."
@@ -55,10 +55,10 @@ export function Meta(props: MetaProps) {
       />
       <meta
         name='twitter:image'
-        content='http://recosante.beta.gouv.fr/app-og-image.png'
+        content='https://recosante.beta.gouv.fr/app-og-image.png'
       />
 
-      <meta property='og:url' content='http://recosante.beta.gouv.fr' />
+      <meta property='og:url' content='https://recosante.beta.gouv.fr' />
       <link rel='icon' href='/favicon.ico' sizes='any' />
     </Head>
   );
