@@ -28,4 +28,6 @@ celerybeat-schedule.db
 **/.next/
 **/next-env.d.ts
 frontend/public
+# all .env files
+.env*
 

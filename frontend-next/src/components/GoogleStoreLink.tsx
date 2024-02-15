@@ -1,10 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import clsx from 'clsx';
+import { MatomoService } from '@/services/matomo';
 
 export function GoogleStoreLink() {
   return (
     <div className='bg-gray-800 text-white hover:bg-gray-900 w-fit rounded-md '>
       <Link
+        onClick={() => MatomoService.trackClick('GoogleStoreLink')}
         href='https://play.google.com/store/apps/details?id=com.recosante.recosante'
         target='_blank'
         aria-label='Download on the Google Play'
