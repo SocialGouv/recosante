@@ -18,7 +18,7 @@ const nextConfig = {
           destination: `${PATH}/static/:key/:id/:slug`,
         },
         {
-          source: '/articles/*',
+          source: '/articles/',
           destination: `${PATH}/articles/`,
         },
         {
