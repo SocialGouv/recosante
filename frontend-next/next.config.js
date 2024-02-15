@@ -22,9 +22,9 @@ const nextConfig = {
           `${PATH}/accessibilite/`,
       },
       {
-        source: '/articles',
+        source: '/articles/:slug*',
         destination:
-          `${PATH}/articles`,
+          `${PATH}/articles/:slug*`,
       },
       {
         source: '/mentions-legales',
