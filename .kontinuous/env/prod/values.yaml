@@ -34,6 +34,11 @@ pg:
       limits:
         memory: 3Gi
 
+pg-api-node:
+  cnpg-cluster:
+    persistence:
+      size: "20Gi"
+
 flower:
   replicas: 1
   host: "flower-recosante.fabrique.social.gouv.fr"
