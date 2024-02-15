@@ -51,18 +51,20 @@ FROM base AS runner
 # RUN addgroup --system --gid 1001 nodejs && \
 #     adduser --system --uid 1001 frontend
 # COPY --from=builder --chown=nodejs:frontend /app ./
-COPY --from=builder --chown=node:node /app ./
+
 ARG GITHUB_SHA
 ENV GITHUB_SHA $GITHUB_SHA
 ARG PRODUCTION
 ENV PRODUCTION $PRODUCTION
 ENV NODE_ENV production
-RUN yarn install --production && yarn cache clean
 
 RUN mkdir /.config
 RUN chown -R node:node /.config
+COPY --from=builder --chown=1000:1000 /app ./
 
 USER 1000
+
+RUN yarn install --production && yarn cache clean
 
 WORKDIR /app/frontend
 CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
