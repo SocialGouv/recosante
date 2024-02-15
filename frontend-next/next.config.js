@@ -10,23 +10,17 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/place/:code-insee/:city',
-          destination: `${PATH}/place/:code-insee/:city`,
+          source: '/place/',
+          destination: `${PATH}/place/`,
         },
         {
-          source: '/static/:key/:id/:slug*',
-          destination: `${PATH}/static/:key/:id/:slug`,
+          source: '/static/',
+          destination: `${PATH}/static/`,
         },
         {
           source: '/articles/',
           destination: `${PATH}/articles/`,
         },
-        {
-          source: '/articles/:slug*',
-          destination: `${PATH}/articles/:slug*`,
-        },
-      ],
-      afterFiles: [
         {
           source: '/',
           has: [
@@ -38,12 +32,12 @@ const nextConfig = {
           ],
           destination: `${PATH}/`,
         },
-
+      ],
+      afterFiles: [
         {
           source: '/accessibilite',
           destination: `${PATH}/accessibilite/`,
         },
-
         {
           source: '/mentions-legales',
           destination: `${PATH}/mentions-legales/`,
