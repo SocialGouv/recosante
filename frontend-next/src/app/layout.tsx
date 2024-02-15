@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import '@/styles/tailwind.css';
 import { type Metadata } from 'next';
 import { marianneFont } from '@/assets/fonts';
+import { useEffect } from 'react';
+import { Matomo } from '@/components/matomo';
 
 export const metadata: Metadata = {
   title: {
@@ -23,6 +25,7 @@ export default function RootLayout({
       lang='fr'
       className={clsx('h-full bg-gray-50 antialiased', marianneFont.variable)}
     >
+      <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>
         <div className='flex min-h-full flex-col'>{children}</div>
       </body>

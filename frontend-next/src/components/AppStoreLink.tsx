@@ -1,6 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import clsx from 'clsx';
-
+import { push } from '@socialgouv/matomo-next';
 export function AppStoreLink({
   color = 'black',
 }: {
@@ -8,6 +10,7 @@ export function AppStoreLink({
 }) {
   return (
     <Link
+      onClick={() => push(['trackEvent', 'AppStore', 'click'])}
       href='https://apps.apple.com/fr/app/recosant%C3%A9/id6476136888'
       target='_blank'
       aria-label='Download on the App Store'

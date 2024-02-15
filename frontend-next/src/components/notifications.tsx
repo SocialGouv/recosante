@@ -12,13 +12,13 @@ const cards = [
   {
     name: 'Notifié le matin pour la journée',
     description:
-      'Recevez des informations sur votre indicateur favori le matin à 7h. ',
+      'Recevez une notification sur votre indicateur favori le matin à 7h. ',
     icon: '☕️',
   },
   {
     name: 'Notifié le soir pour le lendemain',
     description:
-      'Recevez des informations sur votre indicateur favori le soir à 19h.',
+      'Recevez une notification sur votre indicateur favori le soir à 19h.',
     icon: '🌇',
   },
   {
