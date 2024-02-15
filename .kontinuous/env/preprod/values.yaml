@@ -1,6 +1,3 @@
-global:
-  pgSecretName: pg-app
-
 pg:
   ~chart: pg
   backup:
@@ -18,7 +15,7 @@ jobs:
       image: ghcr.io/socialgouv/docker/psql:7.0.0
       envFrom:
         - secretRef:
-            name: "{{ $.Values.global.pgSecretName }}"
+            name: "pg-app"
       run: |
         if [[ $(psql -c "\dt public.alembic_version") ]]
         then

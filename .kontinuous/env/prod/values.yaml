@@ -2,7 +2,6 @@ global:
   host: "recosante.beta.gouv.fr"
   apiHost: "api.recosante.beta.gouv.fr"
   apiNodeHost: "recosante-api-node.fabrique.social.gouv.fr"
-  pgSecretName: pg-app
 
 pg:
   ~chart: pg

@@ -25,7 +25,7 @@ api:
       memory: 4Gi
   envFrom:
     - secretRef:
-        name: "{{ .Values.global.pgSecretName }}"
+        name: "pg-app"
     - secretRef:
         name: api-sealed-secret
     - configMapRef:
@@ -66,6 +66,8 @@ frontend:
   imagePackage: frontend
   containerPort: 8080
   probesPath: /healthz/
+  ingress:
+    enabled: false
   resources:
     requests:
       cpu: 0.1
@@ -111,7 +113,7 @@ indice:
     enabled: false
   envFrom:
     - secretRef:
-        name: "{{ .Values.global.pgSecretName }}"
+        name: "pg-app"
     - secretRef:
         name: indice-sealed-secret
     - configMapRef:
