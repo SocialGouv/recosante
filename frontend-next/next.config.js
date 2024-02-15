@@ -8,6 +8,17 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
+        source: '/place/:path*',
+        destination:
+          `${PATH}/place`,
+        
+      },
+      {
+        source: '/static/:path*',
+        destination:
+          `${PATH}/static`,
+      },
+      {
         source: '/accessibilite',
         destination:
           `${PATH}/accessibilite/`,
