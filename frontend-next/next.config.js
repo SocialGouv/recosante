@@ -7,14 +7,14 @@ const nextConfig = {
   rewrites: async () => {
     return [
       {
-        source: '/place/:path*',
+        source: '/place/:code-insee/:city',
         destination:
-          `${PATH}/place`,
+          `${PATH}/place/:code-insee/:city`,
       },
       {
-        source: '/static/:path*',
+        source: '/static/:key/:id/:slug*',
         destination:
-          `${PATH}/static`,
+          `${PATH}/static/:key/:id/:slug`,
       },
       {
         source: '/accessibilite',
