@@ -5,34 +5,34 @@ import Link from 'next/link';
 const posts = [
   {
     id: 1,
-    title: 'Quels gestes adopter en cas de vigilance météo avalanche ?',
-    href: 'https://recosante.beta.gouv.fr/articles/quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche/',
+    title: 'Les plantes améliorent-elles la qualité de l’air intérieur ?',
+    href: 'https://recosante.beta.gouv.fr/articles/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur/',
     description:
-      'Avant une sortie en montagne, consulter les bulletins avalanches disponibles sur le site de Météo France.      ',
+      'Pour améliorer l’air intérieur, aérer deux fois par jour pendant au moins 10 minutes et pendant les activités de nettoyage, cuisson et bricolage.',
     imageUrl:
-      'https://recosante.beta.gouv.fr/static/eaf85bc3642cb9838e984963fc21c89b/c3195/quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche.webp',
-    category: { title: 'Phénomènes météorologiques', href: '#' },
+      'https://recosante.beta.gouv.fr/static/38cf0297022fc36eae38fa9c65b1b4f5/a4aa2/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur.webp',
+    category: { title: 'A la maison' },
   },
   {
     id: 2,
-    title: 'Les microcapteurs de qualité de l’air ambiant sont-ils fiables ?',
-    href: 'https://recosante.beta.gouv.fr/articles/les-microcapteurs-de-qualite-de-l-air-ambiant-sont-ils-fiables/',
+    title: 'Comment adapter sa pratique sportive selon la qualité de l’air ?',
+    href: 'https://recosante.beta.gouv.fr/articles/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air/',
     description:
       'Pour connaître la qualité de l’air autour de chez soi, consulter l’indice national de qualité de l’air calculé par Associations agréées de surveillance de la qualité de l’air (AASQA).',
     imageUrl:
-      'https://recosante.beta.gouv.fr/static/5e66503198d761e612c6ad3e5d21361d/09444/les-microcapteurs-de-qualite-de-l-air-ambiant-sont-ils-fiables.webp',
-    category: { title: 'Pollution', href: '#' },
+      'https://recosante.beta.gouv.fr/static/be66f964700e076c6ab71b404e3b57e1/53b6a/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air.webp',
+    category: { title: 'Pollution' },
   },
   {
     id: 3,
     title:
-      'Quels gestes adopter pour profiter du sapin de Noël en toute sécurité à la maison ?',
-    href: 'https://recosante.beta.gouv.fr/articles/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-a-la-maison/',
+      '­À quelle période de l’année y a-t-il le plus de pollen dans l’air ?',
+    href: 'https://recosante.beta.gouv.fr/articles/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air/',
     description:
       'Veiller à éteindre les guirlandes en cas d’absence ou la nuit pour éviter tout risque d’incendie (chaleur excessive des lampes, court-circuit…).',
     imageUrl:
-      'https://recosante.beta.gouv.fr/static/3c51500a3c4e0d9c840adb5dcf4c02f1/b7ef5/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-a-la-maison.webp',
-    category: { title: 'Pollution', href: '#' },
+      'https://recosante.beta.gouv.fr/static/2d814a97c12e2b6cfe6cffff21b92c43/38f0f/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air.webp',
+    category: { title: 'Allergies aux pollens' },
   },
 ];
 
