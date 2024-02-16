@@ -22,9 +22,10 @@ const nextConfig = {
           `${PATH}/`,
       },
     ],
-      afterFiles: [
-      
-        // catch-all to gatsby (js scripts, json data, etc.), with and without trailing slash
+      fallback: [
+        // These rewrites are checked after both pages/public files
+        // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
+        // Catch-all to gatsby (js scripts, json data, etc.)
         {
           source: '/:slug*/',
           destination: `${PATH}/:slug*/`,
