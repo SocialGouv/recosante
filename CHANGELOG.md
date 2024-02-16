@@ -1,3 +1,11 @@
+# [1.28.0](https://github.com/SocialGouv/recosante/compare/v1.27.5...v1.28.0) (2024-02-16)
+
+
+### Features
+
+* alert notifs ([#424](https://github.com/SocialGouv/recosante/issues/424)) ([5532c7e](https://github.com/SocialGouv/recosante/commit/5532c7e995badfdfae36dbdee585f75d0cb5f032))
+* municipaliy page ([#412](https://github.com/SocialGouv/recosante/issues/412)) ([6bdfe69](https://github.com/SocialGouv/recosante/commit/6bdfe695efd8a3f5264bd87c514cd023fb5cec36))
+
 ## [1.27.5](https://github.com/SocialGouv/recosante/compare/v1.27.4...v1.27.5) (2024-02-16)
 
 
