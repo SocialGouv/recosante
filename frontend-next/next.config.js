@@ -20,9 +20,14 @@ const nextConfig = {
         ],
         destination:
           `${PATH}/`,
-      },],
+      },
+      {
+        source: '/download/',
+        destination: `${PATH}/download/`,
+      },
+    ],
       afterFiles: [
-        
+      
         // catch-all to gatsby (js scripts, json data, etc.), with and without trailing slash
         {
           source: '/:slug*/',
