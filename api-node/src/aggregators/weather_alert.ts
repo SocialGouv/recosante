@@ -8,6 +8,7 @@ import {
   AlertStatusEnum,
   type Municipality,
   type WeatherAlert,
+  IndicatorsSlugEnum,
 } from '@prisma/client';
 import {
   WeatherAlertColorIdEnum,
@@ -19,6 +20,8 @@ import { PORTAL_API_METEOFRANCE_API_KEY } from '~/config';
 import { departments, departmentsCoastalArea } from '~/utils/departments';
 import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
 import utc from 'dayjs/plugin/utc';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+import { sendAlertNotification } from '~/utils/notifications/alert';
 dayjs.extend(utc);
 /*
 Documentation:
@@ -240,7 +243,7 @@ export async function getWeatherAlert() {
             );
             const value = phenomenon.phenomenon_max_color_id;
             weatherAlert[weatherWalertDbKey] = value;
-            if (value >= 2) {
+            if (value >= AlertStatusThresholdEnum.WEATHER_ALERT) {
               weatherAlert.alert_status =
                 AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET;
             }
@@ -285,12 +288,41 @@ export async function getWeatherAlert() {
         });
       }
       // Step 7: insert data
-      const result = await prisma.weatherAlert.createMany({
-        data: weatherAlertRows,
-      });
+      let results = 0;
+      for (const weatherAlertByMunicipalityRow of weatherAlertRows) {
+        await prisma.weatherAlert
+          .create({
+            data: weatherAlertByMunicipalityRow,
+          })
+          .then(async (weatherAlertRow) => {
+            results++;
+            if (
+              weatherAlertRow.alert_status ===
+              AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            ) {
+              const alertSent = await sendAlertNotification(
+                IndicatorsSlugEnum.weather_alert,
+                weatherAlertRow,
+              );
+              await prisma.weatherAlert.update({
+                where: {
+                  id: weatherAlertRow.id,
+                },
+                data: {
+                  alert_status: alertSent
+                    ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
+                    : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+                },
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
 
       logStep(
-        `DONE INSERTING WEATHER ALERTS: ${result.count} rows inserted (${municipalities.length} municipalities)`,
+        `DONE INSERTING WEATHER ALERTS: ${results} rows inserted (${municipalities.length} municipalities)`,
       );
     }
     logStep('DONE INSERTING WEATHER ALERTS');

@@ -6,12 +6,15 @@ import dayjs from 'dayjs';
 import {
   AlertStatusEnum,
   DataAvailabilityEnum,
+  IndicatorsSlugEnum,
   type Municipality,
 } from '@prisma/client';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 // import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import utc from 'dayjs/plugin/utc';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+import { sendAlertNotification } from '~/utils/notifications/alert';
 dayjs.extend(utc);
 let now = Date.now();
 function logStep(step: string) {
@@ -170,7 +173,7 @@ export async function getIndiceUVIndicator() {
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          (indiceUvData.UV_J0 ?? 0) >= 6
+          (indiceUvData.UV_J0 ?? 0) >= AlertStatusThresholdEnum.INDICE_UV
             ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
             : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         uv_j0: indiceUvData.UV_J0,
@@ -181,11 +184,41 @@ export async function getIndiceUVIndicator() {
     }
     // Step 9: insert data
 
-    const result = await prisma.indiceUv.createMany({
-      data: indiceUVByMunicipalityRows,
-    });
+    let results = 0;
+    for (const indiceUvByMunicipality of indiceUVByMunicipalityRows) {
+      await prisma.indiceUv
+        .create({
+          data: indiceUvByMunicipality,
+        })
+        .then(async (indiceUvRow) => {
+          results++;
+          if (
+            indiceUvRow.alert_status ===
+            AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+          ) {
+            const alertSent = await sendAlertNotification(
+              IndicatorsSlugEnum.indice_uv,
+              indiceUvRow,
+            );
+            await prisma.indiceUv.update({
+              where: {
+                id: indiceUvRow.id,
+              },
+              data: {
+                alert_status: alertSent
+                  ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
+                  : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     logStep(
-      `DONE INSERTING INDICE UV : ${result.count} rows inserted upon ${municipalities.length} municipalities`,
+      `DONE INSERTING INDICE UV : ${results} rows inserted upon ${municipalities.length} municipalities`,
     );
     logStep(
       `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
