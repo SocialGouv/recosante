@@ -1,3 +1,10 @@
+## [1.27.4](https://github.com/SocialGouv/recosante/compare/v1.27.3...v1.27.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* redirect download page ([#418](https://github.com/SocialGouv/recosante/issues/418)) ([6266a18](https://github.com/SocialGouv/recosante/commit/6266a18d779f6d4c4483fcb9eb48577ee041d4e1))
+
 ## [1.27.3](https://github.com/SocialGouv/recosante/compare/v1.27.2...v1.27.3) (2024-02-16)
 
 
