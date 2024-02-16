@@ -21,10 +21,6 @@ const nextConfig = {
         destination:
           `${PATH}/`,
       },
-      {
-        source: '/download/',
-        destination: `${PATH}/download/`,
-      },
     ],
       afterFiles: [
       
