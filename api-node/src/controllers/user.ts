@@ -120,24 +120,27 @@ router.put(
       // > On iOS, it will also remain the same even after uninstalling the app and reinstalling it.
       // > On Android, this results in the push token changing.
       const pushToken = updatedDbUser.push_notif_token;
-      const usersWithSamePushToken = await prisma.user.findMany({
-        where: {
-          id: { not: updatedDbUser.id },
-          push_notif_token: pushToken,
-        },
-      });
 
-      if (usersWithSamePushToken.length > 0) {
-        await prisma.user.updateMany({
+      if (pushToken && pushToken?.length > 0) {
+        const usersWithSamePushToken = await prisma.user.findMany({
           where: {
-            id: { in: usersWithSamePushToken.map((user) => user.id) },
-          },
-          data: {
-            push_notif_token: `DELETED_${pushToken}`,
-            deleted_at: new Date(),
-            deleted_because: `push_notif_token taken by a more recent user (id: ${updatedDbUser.id})`,
+            id: { not: updatedDbUser.id },
+            push_notif_token: pushToken,
           },
         });
+
+        if (usersWithSamePushToken.length > 0) {
+          await prisma.user.updateMany({
+            where: {
+              id: { in: usersWithSamePushToken.map((user) => user.id) },
+            },
+            data: {
+              push_notif_token: `DELETED_${pushToken}`,
+              deleted_at: new Date(),
+              deleted_because: `push_notif_token taken by a more recent user (id: ${updatedDbUser.id})`,
+            },
+          });
+        }
       }
 
       res.status(200).send({ ok: true, data: updatedDbUser });
