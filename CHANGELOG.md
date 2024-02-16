@@ -1,3 +1,11 @@
+## [1.27.5](https://github.com/SocialGouv/recosante/compare/v1.27.4...v1.27.5) (2024-02-16)
+
+
+### Bug Fixes
+
+* rename old download page ([#423](https://github.com/SocialGouv/recosante/issues/423)) ([ef9da0e](https://github.com/SocialGouv/recosante/commit/ef9da0ef8ba8797b36ca812cb004a7c5d7173a4e))
+* update meta image ([#422](https://github.com/SocialGouv/recosante/issues/422)) ([9c1590f](https://github.com/SocialGouv/recosante/commit/9c1590f7be9008d3ed34d9f0b3ae7f773dd6a82a))
+
 ## [1.27.4](https://github.com/SocialGouv/recosante/compare/v1.27.3...v1.27.4) (2024-02-16)
 
 
