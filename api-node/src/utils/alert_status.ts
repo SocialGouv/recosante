@@ -2,12 +2,15 @@
 // copy pasted from Prisma way to do typescript from its schema
 // api-node/node_modules/.prisma/client/index.d.ts
 
+import { BathingWaterCurrentYearGradingEnum } from '@prisma/client';
+
 export namespace $AlertStatus {
   export const AlertStatusThresholdEnum = {
     POLLENS: 4,
     INDICE_ATMO: 6,
     WEATHER_ALERT: 3,
     INDICE_UV: 8,
+    BATHING_WATER: BathingWaterCurrentYearGradingEnum.PROHIBITION,
   };
 
   export type AlertStatusThresholdEnum = keyof typeof AlertStatusThresholdEnum;

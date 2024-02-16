@@ -1,238 +1,271 @@
-// import { IndicatorsSlugEnum, type User } from '@prisma/client';
-// import prisma from '~/prisma';
-// import dayjs from 'dayjs';
-// import utc from 'dayjs/plugin/utc';
-// import { capture } from '~/third-parties/sentry';
-// import {
-//   getAlertValueByColorId,
-//   getSortedPhenomenonsByValue,
-//   getWeatherAlertDotColor,
-// } from '~/utils/weather_alert';
-// import { sendPushNotification } from '~/service/expo-notifications';
-// import { getIndiceUVForJ } from '~/getters/indice_uv';
-// import { getIndiceAtmoForJ1 } from '~/getters/indice_atmo';
-// import { getPollensForJ1 } from '~/getters/pollens';
-// import { getWeatherAlertForJ1 } from '~/getters/weather_alert';
-// import type { IndiceUVNumber } from '~/types/api/indice_uv';
-// import { WeatherAlertPhenomenonEnum } from '~/types/api/weather_alert';
-// import { getIndiceUVDotColor, getIndiceUVStatus } from '~/utils/indice_uv';
-// import { getPollensDotColor, getPollensStatus } from '~/utils/pollens';
-// import {
-//   getIndiceAtmoDotColor,
-//   getIndiceAtmoStatus,
-// } from '~/utils/indice_atmo';
-// dayjs.extend(utc);
+import {
+  IndicatorsSlugEnum,
+  type IndiceUv,
+  type PollenAllergyRisk,
+  type WeatherAlert,
+  type IndiceAtmospheric,
+  type BathingWater,
+} from '@prisma/client';
+import prisma from '~/prisma';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { capture } from '~/third-parties/sentry';
+import {
+  getAlertValueByColorId,
+  getSortedPhenomenonsByValue,
+  getWeatherAlertDotColor,
+} from '~/utils/weather_alert';
+import { sendPushNotification } from '~/service/expo-notifications';
+import type { IndiceUVNumber } from '~/types/api/indice_uv';
+import { PolluantQualificatifsNumberEnum } from '~/types/api/indice_atmo';
+import { PollensRiskNumberEnum } from '~/types/api/pollens';
+import { WeatherAlertPhenomenonEnum } from '~/types/api/weather_alert';
+import { getIndiceUVDotColor, getIndiceUVStatus } from '~/utils/indice_uv';
+import { getPollensDotColor, getPollensStatus } from '~/utils/pollens';
+import {
+  getIndiceAtmoDotColor,
+  getIndiceAtmoStatus,
+} from '~/utils/indice_atmo';
+import { AlertStatusThresholdEnum } from '../alert_status';
 
-// type IndicatorRow =
-//   | IndiceUv
-//   | PollenAllergyRisk
-//   | WeatherAlert
-//   | IndiceAtmospheric;
+dayjs.extend(utc);
 
-// export async function sendAlertNotification(
-//   indicatorSlug: IndicatorsSlugEnum,
-//   indicatorRow: IndicatorRow,
-// ) {
-//   let indicatorValue = null;
-//   let indicatorStatus = null;
-//   const recommandationId = null;
-//   let typeWeatherAlert: WeatherAlertPhenomenonEnum | null = null;
-//   let typeWeatherAlertId: WeatherAlertPhenomenonIdEnum | null = null;
-//   const phenomenons: Phenomenon[] = [];
+type IndicatorRow =
+  | IndiceUv
+  | PollenAllergyRisk
+  | WeatherAlert
+  | IndiceAtmospheric
+  | BathingWater;
 
-//   if (indicatorSlug === 'weather_alert') {
-//     indicatorRow = indicatorRow as WeatherAlert;
-//     const phenomenons = getSortedPhenomenonsByValue(indicatorRow);
-//     const maxColorCodeId = phenomenons[0].value;
-//     const worstPhenomenonCodeId = phenomenons[0].id;
+export async function sendAlertNotification(
+  indicatorSlug: IndicatorsSlugEnum,
+  indicatorRow: IndicatorRow,
+): Promise<boolean> {
+  let indicatorValue = null;
 
-//     const isAlert = maxColorCodeId >= WeatherAlertColorIdEnum.ORANGE;
-//     if (!isAlert) return;
-//     indicatorValue = maxColorCodeId;
-//     indicatorStatus = getAlertValueByColorId(indicatorValue);
-//     typeWeatherAlertId = worstPhenomenonCodeId;
-//     typeWeatherAlert = phenomenons[0].name;
-//   }
+  const users = await prisma.user.findMany({
+    where: {
+      notifications_preference: {
+        has: 'alert',
+      },
+      municipality_insee_code: indicatorRow.municipality_insee_code,
+      push_notif_token: {
+        not: null,
+      },
+    },
+  });
 
-//   if (indicatorSlug === 'indice_uv') {
-//     indicatorRow = indicatorRow as IndiceUv;
-//     const isAlert = !!indicatorRow.uv_j0 && indicatorRow.uv_j0 >= 8;
-//     if (!isAlert) return;
-//     indicatorValue = indicatorRow.uv_j0;
-//     indicatorStatus = getIndiceUVStatus(indicatorRow.uv_j0 as IndiceUVNumber);
-//   }
+  if (!users.length) return false;
 
-//   if (indicatorSlug === 'indice_atmospheric') {
-//     indicatorRow = indicatorRow as IndiceAtmospheric;
-//     const isAlert =
-//       !!indicatorRow.code_qual &&
-//       indicatorRow.code_qual >= PolluantQualificatifsNumberEnum.POOR;
-//     if (!isAlert) return;
-//     indicatorValue = indicatorRow.code_qual;
-//     indicatorStatus = getIndiceAtmoStatus(indicatorRow.code_qual ?? 0);
-//   }
+  if (indicatorSlug === 'weather_alert') {
+    const weatherAlert = indicatorRow as WeatherAlert;
+    const phenomenons = getSortedPhenomenonsByValue(weatherAlert).filter(
+      (phenomenon) =>
+        phenomenon.value >= AlertStatusThresholdEnum.WEATHER_ALERT,
+    );
+    if (!phenomenons.length) return false;
+    const body: Array<string> = [];
+    const data: Record<
+      IndicatorsSlugEnum,
+      { id: string; text?: string } | undefined
+    > = {
+      indice_uv: undefined,
+      indice_atmospheric: undefined,
+      pollen_allergy: undefined,
+      weather_alert: undefined,
+      bathing_water: undefined,
+    };
+    let notificationsSent = 0;
+    let notificationsInDb = 0;
+    for (const phenomenon of phenomenons) {
+      const weatherAlertStatus = getAlertValueByColorId(phenomenon.value);
+      const weatherAlertDotColor = getWeatherAlertDotColor(phenomenon.value);
+      const typeWeatherAlert = phenomenon.name;
 
-//   if (indicatorSlug === 'pollen_allergy') {
-//     indicatorRow = indicatorRow as PollenAllergyRisk;
-//     const isAlert =
-//       !!indicatorRow.total && indicatorRow.total >= PollensRiskNumberEnum.HIGH;
-//     if (!isAlert) return;
-//     indicatorValue = indicatorRow.total;
-//     indicatorStatus = getPollensStatus(indicatorRow.total ?? 0);
-//   }
+      data.weather_alert = {
+        id: weatherAlert.id,
+      };
+      if (!weatherAlertDotColor) continue;
+      let weatherAlertText = '';
+      switch (typeWeatherAlert) {
+        case WeatherAlertPhenomenonEnum.VIOLENT_WIND:
+          weatherAlertText = `🌪️ Vent violent : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.RAIN_FLOOD:
+          weatherAlertText = `🌧️ Pluie-Inondation : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.STORM:
+          weatherAlertText = `🌩️ Orages : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.FLOOD:
+          weatherAlertText = `🌊 Crues : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.SNOW_ICE:
+          weatherAlertText = `⛸️ Neige-verglas : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.HEAT_WAVE:
+          weatherAlertText = `🥵 Canicule : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.COLD_WAVE:
+          weatherAlertText = `🥶 Grand Froid : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.AVALANCHE:
+          weatherAlertText = `🌨️ Avalanches : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+        case WeatherAlertPhenomenonEnum.WAVES_SUBMERSION:
+          weatherAlertText = `🌊 Vagues-Submersion : ${weatherAlertStatus} ${weatherAlertDotColor}`;
+          break;
+      }
+      body.push(weatherAlertText);
+      // I know data won't have all the phenomenons, but I don't care
+      data.weather_alert.text = weatherAlertText;
 
-//   if (indicatorValue === null) {
-//     capture('No indicatorValue found for alert notification', {
-//       extra: {
-//         indicatorSlug,
-//         indicatorRow,
-//       },
-//     });
-//     return;
-//   }
+      const recommandation = await prisma.recommandation.findFirst({
+        where: {
+          indicator: IndicatorsSlugEnum.weather_alert,
+          indicator_value: phenomenon.value,
+          type_weather_alert: phenomenon.id,
+        },
+        select: {
+          unique_key: true,
+          recommandation_content: true,
+        },
+      });
 
-//   console.log('indicatorValue', indicatorValue);
-//   console.log('indicatorStatus', indicatorStatus);
-//   console.log('typeWeatherAlertId', typeWeatherAlertId);
-//   console.log('phenomenons', phenomenons);
-//   console.log('recommandationId', recommandationId);
+      if (recommandation?.recommandation_content) {
+        body.push(recommandation?.recommandation_content);
+      }
 
-//   const users = await prisma.user.findMany({
-//     where: {
-//       notifications_preference: {
-//         has: 'alert',
-//       },
-//       municipality_insee_code: indicatorRow.municipality_insee_code,
-//       push_notif_token: {
-//         not: null,
-//       },
-//     },
-//   });
+      for (const user of users) {
+        const { notificationSent, notificationInDb } =
+          await sendPushNotification({
+            user,
+            title: 'ALERTE',
+            body: body.filter(Boolean).join('\n'),
+            data,
+          });
+        if (notificationSent) notificationsSent++;
+        if (notificationInDb) notificationsInDb++;
+      }
+    }
+    console.log('ALERT NOTIFICATIONS SENT');
+    console.log('number of users', users.length);
+    console.log('notifications sent', notificationsSent);
+    console.log('notifications in db', notificationsInDb);
+    return true;
+  }
 
-//   let notificationsSent = 0;
-//   let notificationsInDb = 0;
+  const body: Array<string> = [];
+  const data: Record<
+    IndicatorsSlugEnum,
+    { id: string; text?: string } | undefined
+  > = {
+    indice_uv: undefined,
+    indice_atmospheric: undefined,
+    pollen_allergy: undefined,
+    weather_alert: undefined,
+    bathing_water: undefined,
+  };
 
-//   if (phenomenons.length > 0) {
-//     for (const phenomenon of phenomenons) {
-//       const title = `Alerte ${phenomenon.name}: ${getAlertValueByColorId(
-//         phenomenon.value,
-//       )}`;
+  if (indicatorSlug === 'indice_uv') {
+    const indice_uv = indicatorRow as IndiceUv;
+    const indiceUvValue = indice_uv.uv_j0 as IndiceUVNumber;
+    const isAlert = !!indiceUvValue && indiceUvValue >= 8;
+    if (!isAlert) return false;
+    data.indice_uv = {
+      id: indice_uv.id,
+    };
+    const indiceUvStatus = getIndiceUVStatus(indiceUvValue);
+    const indiceUvDotColor = getIndiceUVDotColor(indiceUvValue);
+    if (indiceUvDotColor) {
+      const indiceUvText = `☀️ Indice UV : ${indiceUvStatus} ${indiceUvDotColor}`;
+      body.push(indiceUvText);
+      data.indice_uv.text = indiceUvText;
+      indicatorValue = indiceUvValue;
+    }
+  }
 
-//       const recommandation = await prisma.recommandation.findFirst({
-//         where: {
-//           indicator: IndicatorsSlugEnum.weather_alert,
-//           indicator_value: indicatorValue,
-//           type_weather_alert: typeWeatherAlertId,
-//         },
-//         select: {
-//           unique_key: true,
-//           recommandation_content: true,
-//         },
-//       });
+  if (indicatorSlug === 'indice_atmospheric') {
+    const indice_atmo = indicatorRow as IndiceAtmospheric;
+    const indiceAtmoValue = indice_atmo.code_qual;
+    const isAlert =
+      !!indiceAtmoValue &&
+      indiceAtmoValue >= PolluantQualificatifsNumberEnum.POOR;
+    if (!isAlert) return false;
+    data.indice_atmospheric = {
+      id: indice_atmo.id,
+    };
+    const indiceAtmoStatus = getIndiceAtmoStatus(indiceAtmoValue);
+    const indiceAtmoDotColor = getIndiceAtmoDotColor(indiceAtmoValue);
+    if (indiceAtmoDotColor) {
+      const indiceAtmoText = `💨 Indice ATMO : ${indiceAtmoStatus} ${indiceAtmoDotColor}`;
+      body.push(indiceAtmoText);
+      data.indice_atmospheric.text = indiceAtmoText;
+      indicatorValue = indiceAtmoValue;
+    }
+  }
 
-//       const body = recommandation?.recommandation_content ?? '';
+  if (indicatorSlug === 'pollen_allergy') {
+    const pollens = indicatorRow as PollenAllergyRisk;
+    const pollensValue = pollens.total ?? 0;
+    const isAlert =
+      !!pollensValue && pollensValue >= PollensRiskNumberEnum.HIGH;
+    if (!isAlert) return false;
+    data.pollen_allergy = {
+      id: pollens.id,
+    };
+    const pollensStatus = getPollensStatus(pollensValue);
+    const pollensDotColor = getPollensDotColor(pollensValue);
+    if (pollensDotColor) {
+      const pollensText = `🌿 Risque pollens : ${pollensStatus} ${pollensDotColor}`;
+      body.push(pollensText);
+      data.pollen_allergy.text = pollensText;
+      indicatorValue = pollensValue;
+    }
+  }
 
-//       for (const user of users) {
-//         const { notificationSent, notificationInDb } =
-//           await sendPushNotification({
-//             user,
-//             title,
-//             body,
-//             data: {
-//               indicatorSlug,
-//               indicatorId: indicatorRow.id,
-//               recommandationId,
-//               indicatorValue,
-//               typeWeatherAlert,
-//             },
-//           });
-//         if (notificationSent) notificationsSent++;
-//         if (notificationInDb) notificationsInDb++;
-//       }
-//     }
-//   } else {
-//     const title = `${getNotificationTitle(
-//       indicatorSlug,
-//       indicatorValue,
-//       typeWeatherAlert,
-//     )}: ${indicatorStatus}`;
+  if (indicatorValue === null) {
+    capture('No indicatorValue found for alert notification', {
+      extra: {
+        indicatorSlug,
+        indicatorRow,
+      },
+    });
+    return false;
+  }
 
-//     const recommandation = await prisma.recommandation.findFirst({
-//       where: {
-//         indicator: indicatorSlug,
-//         indicator_value: indicatorValue,
-//       },
-//       select: {
-//         unique_key: true,
-//         recommandation_content: true,
-//       },
-//     });
+  let notificationsSent = 0;
+  let notificationsInDb = 0;
 
-//     const body = recommandation?.recommandation_content ?? '';
+  const recommandation = await prisma.recommandation.findFirst({
+    where: {
+      indicator: indicatorSlug,
+      indicator_value: indicatorValue,
+    },
+    select: {
+      unique_key: true,
+      recommandation_content: true,
+    },
+  });
 
-//     for (const user of users) {
-//       const { notificationSent, notificationInDb } = await sendPushNotification(
-//         {
-//           user,
-//           title,
-//           body,
-//           data: {
-//             indicatorSlug,
-//             indicatorId: indicatorRow.id,
-//             recommandationId,
-//             indicatorValue,
-//             typeWeatherAlert,
-//           },
-//         },
-//       );
-//       if (notificationSent) notificationsSent++;
-//       if (notificationInDb) notificationsInDb++;
-//     }
-//   }
+  if (recommandation?.recommandation_content) {
+    body.push(recommandation.recommandation_content);
+  }
 
-//   console.log('EVENING NOTIFICATIONS SENT');
-//   console.log('number of users', users.length);
-//   console.log('notifications sent', notificationsSent);
-//   console.log('notifications in db', notificationsInDb);
-// }
+  for (const user of users) {
+    const { notificationSent, notificationInDb } = await sendPushNotification({
+      user,
+      title: 'ALERTE',
+      body: body.filter(Boolean).join('\n'),
+      data,
+    });
+    if (notificationSent) notificationsSent++;
+    if (notificationInDb) notificationsInDb++;
+  }
 
-// function getNotificationTitle(
-//   indicatorSlug: IndicatorsSlugEnum,
-//   indicatorValue: number,
-//   typeWeatherAlert: WeatherAlertPhenomenonEnum | null,
-// ) {
-//   switch (indicatorSlug) {
-//     case IndicatorsSlugEnum.indice_atmospheric:
-//       return "💨 Qualité de l'air";
-//     case IndicatorsSlugEnum.indice_uv:
-//       return '☀️ Indice UV';
-//     case IndicatorsSlugEnum.weather_alert:
-//       if (indicatorValue <= 2) return '☔ Vigilance Météo';
-//       switch (typeWeatherAlert) {
-//         case WeatherAlertPhenomenonEnum.VIOLENT_WIND:
-//           return '🌪️ Alerte Vent violent';
-//         case WeatherAlertPhenomenonEnum.RAIN_FLOOD:
-//           return '🌧️ Alerte Pluie-Inondation';
-//         case WeatherAlertPhenomenonEnum.STORM:
-//           return '🌩️ Alerte Orages';
-//         case WeatherAlertPhenomenonEnum.FLOOD:
-//           return '🌊 Alerte Crues';
-//         case WeatherAlertPhenomenonEnum.SNOW_ICE:
-//           return '⛸️ Alerte Neige-verglas';
-//         case WeatherAlertPhenomenonEnum.HEAT_WAVE:
-//           return '🥵 Alerte Canicule';
-//         case WeatherAlertPhenomenonEnum.COLD_WAVE:
-//           return '🥶 Alerte Grand Froid';
-//         case WeatherAlertPhenomenonEnum.AVALANCHE:
-//           return '🌨️ Alerte Avalanches';
-//         case WeatherAlertPhenomenonEnum.WAVES_SUBMERSION:
-//           return '🌊 Alerte Vagues-Submersion';
-//         default:
-//           return '☔ Vigilance Météo';
-//       }
-//     case IndicatorsSlugEnum.bathing_water:
-//       return '🐳 Eaux de baignade';
-//     case IndicatorsSlugEnum.pollen_allergy:
-//       return '🌿 Risque pollens';
-//   }
-// }
+  console.log('ALERT NOTIFICATIONS SENT');
+  console.log('number of users', users.length);
+  console.log('notifications sent', notificationsSent);
+  console.log('notifications in db', notificationsInDb);
+  return true;
+}

@@ -5,10 +5,13 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import { getIdCarteForDepartment } from '~/utils/bathing_water/bathing_water';
 import {
+  AlertStatusEnum,
   BathingWaterCurrentYearGradingEnum,
   DataAvailabilityEnum,
+  IndicatorsSlugEnum,
 } from '@prisma/client';
 import { scrapeHtmlBaignadesSitePage } from '~/utils/bathing_water/scrapping';
+import { sendAlertNotification } from '~/utils/notifications/alert';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -137,7 +140,6 @@ export async function getBathingWaterIndicator() {
         if (existingResults > 0) {
           continue;
         }
-        insertedNewRows++;
         await prisma.bathingWater
           .create({
             data: {
@@ -149,8 +151,8 @@ export async function getBathingWaterIndicator() {
               alert_status:
                 scrapingResult.current_year_grading ===
                 BathingWaterCurrentYearGradingEnum.PROHIBITION
-                  ? 'ALERT_NOTIFICATION_NOT_SENT_YET'
-                  : 'NOT_ALERT_THRESHOLD',
+                  ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+                  : AlertStatusEnum.NOT_ALERT_THRESHOLD,
               dptddass,
               id_site: idSite,
               id_carte: idCarte,
@@ -163,10 +165,27 @@ export async function getBathingWaterIndicator() {
               consult_site_url: consultSiteUrl.href,
             },
           })
-          .then((res) => {
-            // console.log(
-            //   `Inserted ${res.id_site} for ${res.municipality_insee_code} with ${res.result_value}`,
-            // );
+          .then(async (bathingWaterRow) => {
+            insertedNewRows++;
+            if (
+              bathingWaterRow.alert_status ===
+              AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            ) {
+              const alertSent = await sendAlertNotification(
+                IndicatorsSlugEnum.bathing_water,
+                bathingWaterRow,
+              );
+              await prisma.bathingWater.update({
+                where: {
+                  id: bathingWaterRow.id,
+                },
+                data: {
+                  alert_status: alertSent
+                    ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
+                    : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+                },
+              });
+            }
           })
           .catch((err) => {
             console.log(err);

@@ -4,6 +4,7 @@ import {
   DataAvailabilityEnum,
   AlertStatusEnum,
   type Municipality,
+  IndicatorsSlugEnum,
 } from '@prisma/client';
 import dayjs from 'dayjs';
 import { z } from 'zod';
@@ -14,6 +15,8 @@ import { capture } from '~/third-parties/sentry';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
+import { sendAlertNotification } from '~/utils/notifications/alert';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -153,7 +156,7 @@ export async function getPollensIndicator() {
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          pollenData.Total >= 4
+          pollenData.Total >= AlertStatusThresholdEnum.POLLENS
             ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
             : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         cypres: pollenData.cypres,
@@ -184,13 +187,32 @@ export async function getPollensIndicator() {
     //   data: pollensRows,
     // });
     let results = 0;
-    for (const pollensRow of pollensRows) {
+    for (const pollensRowByMunicipality of pollensRows) {
       await prisma.pollenAllergyRisk
         .create({
-          data: pollensRow,
+          data: pollensRowByMunicipality,
         })
-        .then(() => {
+        .then(async (pollensRow) => {
           results++;
+          if (
+            pollensRow.alert_status ===
+            AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+          ) {
+            const alertSent = await sendAlertNotification(
+              IndicatorsSlugEnum.pollen_allergy,
+              pollensRow,
+            );
+            await prisma.pollenAllergyRisk.update({
+              where: {
+                id: pollensRow.id,
+              },
+              data: {
+                alert_status: alertSent
+                  ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
+                  : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+              },
+            });
+          }
         })
         .catch((error) => {
           console.error(error);

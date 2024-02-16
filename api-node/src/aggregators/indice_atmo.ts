@@ -1,6 +1,8 @@
 import {
+  AlertStatusEnum,
   // AlertStatusEnum,
   DataAvailabilityEnum,
+  IndicatorsSlugEnum,
   // IndicatorsSlugEnum,
   type Municipality,
 } from '@prisma/client';
@@ -20,8 +22,8 @@ import { z } from 'zod';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
 import { grabEPCIsWithINSEEMunicipalityCodes } from '~/utils/epci';
-// import { AlertStatusThresholdEnum } from '~/utils/alert_status';
-// import { sendAlertNotification } from '~/utils/notifications';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+import { sendAlertNotification } from '~/utils/notifications/alert';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
@@ -365,9 +367,10 @@ export async function getAtmoIndicatorForDate(
         municipality_insee_code: municipality.COM,
         data_availability: DataAvailabilityEnum.AVAILABLE,
         alert_status:
-          canBeAnAlert && indiceAtmoData.code_qual >= 3
-            ? 'ALERT_NOTIFICATION_NOT_SENT_YET'
-            : 'NOT_ALERT_THRESHOLD',
+          canBeAnAlert &&
+          indiceAtmoData.code_qual >= AlertStatusThresholdEnum.INDICE_ATMO
+            ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+            : AlertStatusEnum.NOT_ALERT_THRESHOLD,
         code_no2: indiceAtmoData.code_no2,
         code_o3: indiceAtmoData.code_o3,
         code_pm10: indiceAtmoData.code_pm10,
@@ -421,8 +424,27 @@ export async function getAtmoIndicatorForDate(
           create: indiceAtmoByMunicipalityRow,
           update: indiceAtmoByMunicipalityRow,
         })
-        .then(() => {
+        .then(async (indiceAtmoRow) => {
           results++;
+          if (
+            indiceAtmoRow.alert_status ===
+            AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+          ) {
+            const alertSent = await sendAlertNotification(
+              IndicatorsSlugEnum.indice_atmospheric,
+              indiceAtmoRow,
+            );
+            await prisma.indiceAtmospheric.update({
+              where: {
+                id: indiceAtmoRow.id,
+              },
+              data: {
+                alert_status: alertSent
+                  ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
+                  : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+              },
+            });
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -461,11 +483,11 @@ export async function getAtmoIndicatorForDate(
     *
     *
     */
-    const depsArray = Object.keys(missingDepartments).map(
+    const departmentsArray = Object.keys(missingDepartments).map(
       (dep) => `${dep} (${missingDepartments[dep]})`,
     );
-    const depsString = depsArray.join(', ');
-    logStep(`Missing departments: ${depsArray.length}: ${depsString}`);
+    const depsString = departmentsArray.join(', ');
+    logStep(`Missing departments: ${departmentsArray.length}: ${depsString}`);
     logStep(
       `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
     );
