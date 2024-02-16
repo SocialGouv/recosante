@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-const { redirect } = require('next/dist/server/api-utils');
 
 const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
@@ -10,7 +9,20 @@ const nextConfig = {
 
   rewrites: async () => {
     return {
+      beforeFiles: [{
+        source: '/',
+        has: [
+          {
+            "type": "query",
+            "key": "iframe",
+            "value": "1"
+          }
+        ],
+        destination:
+          `${PATH}/`,
+      },],
       afterFiles: [
+        
         // catch-all to gatsby (js scripts, json data, etc.), with and without trailing slash
         {
           source: '/:slug*/',
@@ -20,6 +32,7 @@ const nextConfig = {
           source: '/:slug*',
           destination: `${PATH}/:slug*`,
         },
+        
       ],
     };
   },
