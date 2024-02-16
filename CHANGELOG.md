@@ -1,3 +1,10 @@
+## [1.27.3](https://github.com/SocialGouv/recosante/compare/v1.27.2...v1.27.3) (2024-02-16)
+
+
+### Bug Fixes
+
+* pushtokens null ([f89a787](https://github.com/SocialGouv/recosante/commit/f89a7872ddecf86569174c7fbb43f0610d12452d))
+
 ## [1.27.2](https://github.com/SocialGouv/recosante/compare/v1.27.1...v1.27.2) (2024-02-16)
 
 
