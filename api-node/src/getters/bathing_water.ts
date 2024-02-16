@@ -68,7 +68,7 @@ async function getBathingWaterFromMunicipalityAndDate({
       short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
       long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
       municipality_insee_code,
-      about_title: "à propos de l'indice UV",
+      about_title: 'à propos de la qualité de l’eau de baignade',
       about_description,
       j0: {
         id: 'empty',
@@ -149,7 +149,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
     long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
     municipality_insee_code,
-    about_title: "à propos de l'indice UV",
+    about_title: 'à propos de la qualité de l’eau de baignade',
     about_description,
     j0: bathingWaterIndicatorJ0AndJ1,
     j1: bathingWaterIndicatorJ0AndJ1,

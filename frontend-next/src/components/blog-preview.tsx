@@ -16,7 +16,7 @@ const posts = [
   {
     id: 2,
     title: 'Comment adapter sa pratique sportive selon la qualité de l’air ?',
-    href: 'https://recosante.beta.gouv.fr/articles/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air/',
+    href: '/articles/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air/',
     description:
       'Pour connaître la qualité de l’air autour de chez soi, consulter l’indice national de qualité de l’air calculé par Associations agréées de surveillance de la qualité de l’air (AASQA).',
     imageUrl:
@@ -27,7 +27,7 @@ const posts = [
     id: 3,
     title:
       '­À quelle période de l’année y a-t-il le plus de pollen dans l’air ?',
-    href: 'https://recosante.beta.gouv.fr/articles/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air/',
+    href: '/articles/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air/',
     description:
       'Veiller à éteindre les guirlandes en cas d’absence ou la nuit pour éviter tout risque d’incendie (chaleur excessive des lampes, court-circuit…).',
     imageUrl:
@@ -70,7 +70,7 @@ export default function BlogPreview() {
                 </div>
                 <div className='group relative'>
                   <h3 className='mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600'>
-                    <a
+                    <Link
                       href={post.href}
                       target='_blank'
                       onClick={() =>
@@ -79,7 +79,7 @@ export default function BlogPreview() {
                     >
                       <span className='absolute inset-0' />
                       {post.title}
-                    </a>
+                    </Link>
                   </h3>
                   <p className='mt-5 line-clamp-3 text-sm leading-6 text-gray-600'>
                     {post.description}

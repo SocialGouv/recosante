@@ -12,7 +12,11 @@ export function Meta(props: MetaProps) {
   const path = usePathname();
   return (
     <Head>
-      <title>{props.title}</title>
+      <title>{props.title}</title>{' '}
+      <meta
+        name='google-site-verification'
+        content='B5n63rvRKk7tboZXL2L6x56_O4gbl8NQbD_lNhzih0M'
+      />
       <meta name='description' content={props.description} key='description' />
       <meta property='og:title' content={props.title} key='og:title' />
       <meta
@@ -35,14 +39,12 @@ export function Meta(props: MetaProps) {
       <meta name='msapplication-TileColor' content='#2c2c2c' />
       <meta name='msapplication-tap-highlight' content='no' />
       <meta name='theme-color' content='#2c2c2c' />
-
       <link rel='manifest' href='/manifest.json' />
       <link
         rel='mask-icon'
         href='/icons/safari-pinned-tab.svg'
         color='#5bbad5'
       />
-
       <meta name='twitter:card' content='summary' />
       <meta name='twitter:url' content='https://recosante.beta.gouv.fr' />
       <meta
@@ -57,7 +59,6 @@ export function Meta(props: MetaProps) {
         name='twitter:image'
         content='https://recosante-preprod.ovh.fabrique.social.gouv.fr/og-image-x2.jpg'
       />
-
       <meta property='og:url' content='https://recosante.beta.gouv.fr' />
       <link rel='icon' href='/favicon.ico' sizes='any' />
     </Head>

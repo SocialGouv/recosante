@@ -1,3 +1,51 @@
+## [1.27.5](https://github.com/SocialGouv/recosante/compare/v1.27.4...v1.27.5) (2024-02-16)
+
+
+### Bug Fixes
+
+* rename old download page ([#423](https://github.com/SocialGouv/recosante/issues/423)) ([ef9da0e](https://github.com/SocialGouv/recosante/commit/ef9da0ef8ba8797b36ca812cb004a7c5d7173a4e))
+* update meta image ([#422](https://github.com/SocialGouv/recosante/issues/422)) ([9c1590f](https://github.com/SocialGouv/recosante/commit/9c1590f7be9008d3ed34d9f0b3ae7f773dd6a82a))
+
+## [1.27.4](https://github.com/SocialGouv/recosante/compare/v1.27.3...v1.27.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* redirect download page ([#418](https://github.com/SocialGouv/recosante/issues/418)) ([6266a18](https://github.com/SocialGouv/recosante/commit/6266a18d779f6d4c4483fcb9eb48577ee041d4e1))
+
+## [1.27.3](https://github.com/SocialGouv/recosante/compare/v1.27.2...v1.27.3) (2024-02-16)
+
+
+### Bug Fixes
+
+* pushtokens null ([f89a787](https://github.com/SocialGouv/recosante/commit/f89a7872ddecf86569174c7fbb43f0610d12452d))
+
+## [1.27.2](https://github.com/SocialGouv/recosante/compare/v1.27.1...v1.27.2) (2024-02-16)
+
+
+### Bug Fixes
+
+* add missing trailing slash to avoid redirection loops ([922f8ad](https://github.com/SocialGouv/recosante/commit/922f8ada42f0d278039fb73d877463b9f7986efc))
+* Add rewrite for iframe ([#416](https://github.com/SocialGouv/recosante/issues/416)) ([b19ba3e](https://github.com/SocialGouv/recosante/commit/b19ba3ec61c7bf7a95a975796def584203bee11c))
+* Add route for place and static files ([#413](https://github.com/SocialGouv/recosante/issues/413)) ([f343a74](https://github.com/SocialGouv/recosante/commit/f343a7445f2392bbb680983829e6e1bf94fb6208))
+* baignades ([3d013f9](https://github.com/SocialGouv/recosante/commit/3d013f989fce85e89a6674850c5e7499bb4a8a07))
+* ci/cd + routing wip ([a484613](https://github.com/SocialGouv/recosante/commit/a484613178789043ff8a5845812386ac9312ae80))
+* cnpg-cluster api-node ([26bf864](https://github.com/SocialGouv/recosante/commit/26bf86406a72f0f6f20d99a9bc20aa1f4d01aa15))
+* **frontend:** dockerfile ([ec3a7f0](https://github.com/SocialGouv/recosante/commit/ec3a7f0bd8480a6527735222a9ddde23ce71f0b9))
+* nextConfig ts to js ([b04c700](https://github.com/SocialGouv/recosante/commit/b04c7007f91d78dcefb57b9f0872224c34f1a00f))
+* nextjs ([00922d7](https://github.com/SocialGouv/recosante/commit/00922d74d3aeda73777dd59d4f661c465eee384a))
+* redirect page component and update blog preview links ([2b57da3](https://github.com/SocialGouv/recosante/commit/2b57da36047df3d40b542b32356189e34afaf4a5))
+* Refactor page component to remove unnecessary code ([fea9e9d](https://github.com/SocialGouv/recosante/commit/fea9e9db1bb666cea6d649255f38bda0b3d17f2a))
+* Remove unnecessary whitespace in next.config.js ([#414](https://github.com/SocialGouv/recosante/issues/414)) ([a1f4adb](https://github.com/SocialGouv/recosante/commit/a1f4adb069913549132b25ca572cdd4a25fb18f6))
+* test new rewrites ([#415](https://github.com/SocialGouv/recosante/issues/415)) ([10ba383](https://github.com/SocialGouv/recosante/commit/10ba383baaeb79f39813a07eb11e05ef27d2f543))
+* try beforeFiles ([0d380fa](https://github.com/SocialGouv/recosante/commit/0d380fa6c6c2fd7324251fc89ab574d43fefe783))
+* Update next.config.js routes ([4f77986](https://github.com/SocialGouv/recosante/commit/4f779865ebc7504c3998f1fe52f6e209a85493ce))
+* Update next.config.js routes ([7d58072](https://github.com/SocialGouv/recosante/commit/7d58072a2b830622df3dcf5f7088ca5d75e68f99))
+* Update next.config.js routing ([1e6cea9](https://github.com/SocialGouv/recosante/commit/1e6cea97c44582d9bb81a01fc06d7ab8f30d93b6))
+* Update next.config.js to fix routing issue ([a8d7da9](https://github.com/SocialGouv/recosante/commit/a8d7da9d56b8b4f4a11841ad696f7725ad0c5659))
+* update nextconfig rewrites ([44ec35d](https://github.com/SocialGouv/recosante/commit/44ec35d85bb42fe5e845bc5e700f699f6a82b7fb))
+* use catch all redirects in next config ([cc8db51](https://github.com/SocialGouv/recosante/commit/cc8db51a278c45a3fb44f83a9a135deaa1835ce8))
+
 ## [1.27.1](https://github.com/SocialGouv/recosante/compare/v1.27.0...v1.27.1) (2024-02-15)
 
 

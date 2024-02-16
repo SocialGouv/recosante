@@ -24,7 +24,7 @@ export function Footer() {
   return (
     <footer className='border-t border-gray-200'>
       <Container>
-        <nav className='lg:flex lg:overflow-scroll  mt-4 gap-8 w-full grid grid-cols-2 px-2 '>
+        <nav className='lg:flex mt-4 gap-4 w-full grid grid-cols-2 px-2 '>
           <NavLinks />
         </nav>
         <div className='flex flex-col items-start justify-between gap-y-12 pb-6 pt-16 lg:flex-row lg:items-center lg:py-16'>
