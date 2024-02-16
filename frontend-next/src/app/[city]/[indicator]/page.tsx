@@ -9,7 +9,6 @@ import { HeroCity } from '@/components/hero-city';
 
 interface PageProps {
   params: {
-    inseeCode: string;
     city: string;
     indicator: string;
   };
