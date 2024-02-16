@@ -1,3 +1,10 @@
+import { CallToAction } from '@/components/CallToAction';
+import BlogPreview from '@/components/blog-preview';
+import { HeroCity } from '@/components/hero-city';
+import { Incentive } from '@/components/incentive';
+import { Notification } from '@/components/notifications';
+import { Meta } from '@/components/meta';
+import { PrimaryFeatures } from '@/components/primary-features';
 import { PageBuilderService } from '@/services/page-builder';
 
 interface PageProps {
@@ -7,15 +14,20 @@ interface PageProps {
     indicator: string;
   };
 }
-
-export default function Page(props: PageProps) {
+export default function Home(props: PageProps) {
   return (
-    <div className='flex justify-center items-center h-screen flex-col'>
-      <h1 className='text-3xl'>Bienvenu à {props.params.city}</h1>
-      <h1 className='text-3xl font-bold'>
-        Vous regardez l'indicateur {props.params.indicator}
-      </h1>
-    </div>
+    <>
+      <Meta
+        title={`Recosanté - Des recommandations pour votre santé à ${props.params.city} sur l'indicateur ${props.params.indicator}`}
+        description='Télécharger l’application Recosanté.'
+      />
+      <HeroCity city={props.params.city} indicator={props.params.indicator} />
+      <PrimaryFeatures />
+      <Notification />
+      <CallToAction />
+      <Incentive />
+      <BlogPreview />
+    </>
   );
 }
 
