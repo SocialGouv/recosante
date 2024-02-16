@@ -19,7 +19,6 @@ export namespace PageBuilderService {
           .map((indicator) => {
             return {
               params: {
-                'insee-code': municipality.COM,
                 city: slugify(municipality.NCCENR),
                 indicator: indicator,
               },

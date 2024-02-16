@@ -1,67 +1,15 @@
 /** @type {import('next').NextConfig} */
 
-const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
+const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
 const nextConfig = {
   output: 'standalone',
+  trailingSlash: true,
+
   rewrites: async () => {
-    return [
-      {
-        source: '/accessibilite',
-        destination:
-          `${PATH}/accessibilite/`,
-        
-      },
-      {
-        source: '/articles',
-        destination:
-          `${PATH}/articles`,
-        
-      },
-      {
-        source: '/mentions-legales',
-        destination:
-          `${PATH}/mentions-legales/`,
-        
-      },
-      {
-        source: '/donnees-personnelles',
-        destination:
-          `${PATH}/donnees-personnelles/`,
-        
-      },
-      {
-        source: '/cookies',
-        destination:
-          `${PATH}/cookies/`,
-        
-      },
-      {
-        source: '/partenaires',
-        destination:
-          `${PATH}/partenaires/`,
-        
-      },
-      {
-        source: '/recommandations',
-        destination:
-          `${PATH}/recommandations/`,
-        
-      },
-      {
-        source: '/stats',
-        destination:
-          `${PATH}/stats/`,
-        
-      },
-      {
-        source: '/stats',
-        destination:
-          `${PATH}/stats/`,
-        
-      },
-      {
+    return {
+      beforeFiles: [{
         source: '/',
         has: [
           {
@@ -72,9 +20,23 @@ const nextConfig = {
         ],
         destination:
           `${PATH}/`,
-        
       },
-    ];
+    ],
+      fallback: [
+        // These rewrites are checked after both pages/public files
+        // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
+        // Catch-all to gatsby (js scripts, json data, etc.)
+        {
+          source: '/:slug*/',
+          destination: `${PATH}/:slug*/`,
+        },
+        {
+          source: '/:slug*',
+          destination: `${PATH}/:slug*`,
+        },
+        
+      ],
+    };
   },
 };
 
