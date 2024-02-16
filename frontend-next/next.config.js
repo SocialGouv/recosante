@@ -22,7 +22,7 @@ const nextConfig = {
           `${PATH}/`,
       },
     ],
-      fallback: [
+      afterFiles: [
         // These rewrites are checked after both pages/public files
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
