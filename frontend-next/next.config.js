@@ -21,8 +21,13 @@ const nextConfig = {
         destination:
           `${PATH}/`,
       },
+      {
+        source: '/city/indicator/',
+        destination:
+          "/city/indicator/",
+      }
     ],
-      afterFiles: [
+      fallback: [
         // These rewrites are checked after both pages/public files
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
