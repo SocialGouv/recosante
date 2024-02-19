@@ -21,11 +21,6 @@ const nextConfig = {
         destination:
           `${PATH}/`,
       },
-      {
-        source: '/city/indicator/',
-        destination:
-          "/city/indicator/",
-      }
     ],
       fallback: [
         // These rewrites are checked after both pages/public files
