@@ -13,7 +13,6 @@ class YarnSCSS(Sass):
         self.args = [
             'yarn',
             'run',
-            '-s',
             'node-scss',
             '--output-style',
             'expanded'
@@ -37,7 +36,6 @@ class RollupJS(Sass):
         self.args = [
             'yarn',
             'run',
-            '-s',
             'rollup',
             '-f', 'iife',
             "-p", "'commonjs,postcss'",
