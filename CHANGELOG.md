@@ -1,3 +1,11 @@
+## [1.29.1](https://github.com/SocialGouv/recosante/compare/v1.29.0...v1.29.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* disable redis persistence until volume permissions are fixed ([f5a9774](https://github.com/SocialGouv/recosante/commit/f5a9774e237a7adc9b4dc6a9508a19aa9e8cb599))
+* wording notifs ([1387813](https://github.com/SocialGouv/recosante/commit/1387813229536246b475ef172822e00f60566f74))
+
 # [1.29.0](https://github.com/SocialGouv/recosante/compare/v1.28.0...v1.29.0) (2024-02-20)
 
 
