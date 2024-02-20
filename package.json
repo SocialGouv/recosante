@@ -6,7 +6,6 @@
   "author": "Fabrique des ministères sociaux",
   "repository": "git@github.com:SocialGouv/recosante.git",
   "workspaces": [
-    "api-node",
     "api",
     "frontend",
     "frontend-next",
