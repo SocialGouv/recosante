@@ -42,12 +42,12 @@ flower:
   replicas: 1
   host: "flower-recosante.fabrique.social.gouv.fr"
 
-redis:
-  addVolumes:
-    - redis
-  volumeMounts:
-    - name: redis
-      mountPath: /data
+# redis:
+#   addVolumes:
+#     - redis
+#   volumeMounts:
+#     - name: redis
+#       mountPath: /data
 
 api:
   replicas: 1
