@@ -34,6 +34,7 @@
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/consistent-type-definitions": "off",
     "no-tabs": "off",
+    "@typescript-eslint/return-await": "off",
     "@typescript-eslint/ban-ts-comment": "off"
   }
 }
