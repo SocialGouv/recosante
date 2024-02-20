@@ -1,5 +1,4 @@
 import fetchRetry from 'fetch-retry';
-const fetch = fetchRetry(global.fetch);
 import {
   BathgWaterIdCarteEnum,
   type Municipality,
@@ -14,6 +13,8 @@ import {
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 import dayjs from 'dayjs';
+
+const fetch = fetchRetry(global.fetch);
 
 let now = Date.now();
 function logStep(step: string) {
@@ -83,6 +84,7 @@ async function updateMunicipalitiesWithBathingWaterSites() {
       const { sites } = await fetch(url.toString(), {
         retryDelay: 1000,
         retries: 3,
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
       }).then((res) => res.json());
       if (sites.length > 0) {
         console.log(

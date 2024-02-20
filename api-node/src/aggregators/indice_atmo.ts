@@ -7,7 +7,6 @@ import {
   type Municipality,
 } from '@prisma/client';
 import fetchRetry from 'fetch-retry';
-const fetch = fetchRetry(global.fetch);
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -26,6 +25,8 @@ import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
 import { grabEPCIsWithINSEEMunicipalityCodes } from '~/utils/epci';
 import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { sendAlertNotification } from '~/utils/notifications/alert';
+
+const fetch = fetchRetry(global.fetch);
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 

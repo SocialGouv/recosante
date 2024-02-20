@@ -1,5 +1,4 @@
 import fetchRetry from 'fetch-retry';
-const fetch = fetchRetry(global.fetch);
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
@@ -14,6 +13,8 @@ import {
 } from '@prisma/client';
 import { scrapeHtmlBaignadesSitePage } from '~/utils/bathing_water/scrapping';
 import { sendAlertNotification } from '~/utils/notifications/alert';
+
+const fetch = fetchRetry(global.fetch);
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 

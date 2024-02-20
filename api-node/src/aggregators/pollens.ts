@@ -1,7 +1,6 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
 import fetchRetry from 'fetch-retry';
-const fetch = fetchRetry(global.fetch);
 import {
   DataAvailabilityEnum,
   AlertStatusEnum,
@@ -21,6 +20,8 @@ import { sendAlertNotification } from '~/utils/notifications/alert';
 import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
+
+const fetch = fetchRetry(global.fetch);
 
 let now = Date.now();
 function logStep(step: string) {

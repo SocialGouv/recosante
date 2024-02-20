@@ -1,5 +1,4 @@
 import fetchRetry from 'fetch-retry';
-const fetch = fetchRetry(global.fetch);
 import {
   BathingWaterCurrentYearGradingEnum,
   BathingWaterResultEnum,
@@ -9,6 +8,7 @@ import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 import { capture } from '~/third-parties/sentry';
 
+const fetch = fetchRetry(global.fetch);
 // Regular expression to match the date in dd/mm/yyyy format
 const dateRegex = /(\d{2}\/\d{2}\/\d{4})/;
 
