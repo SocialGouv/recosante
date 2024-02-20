@@ -1,3 +1,20 @@
+# [1.29.0](https://github.com/SocialGouv/recosante/compare/v1.28.0...v1.29.0) (2024-02-20)
+
+
+### Bug Fixes
+
+* Add fallback route for /city/indicator/ ([92ea312](https://github.com/SocialGouv/recosante/commit/92ea312a06ce3d5517198016d5a4f7353da6b59c))
+* no send notif to deleted_at ([6913925](https://github.com/SocialGouv/recosante/commit/69139253bb280c9935d8016d5cbe2cfdb444b94a))
+* Remove unused files and update next.config.js ([28e5bda](https://github.com/SocialGouv/recosante/commit/28e5bdab18d3bdfd3d997663df713fd89ecefd4c))
+* Remove unused layout and page components ([b8a02ce](https://github.com/SocialGouv/recosante/commit/b8a02ce13ea988b87eea04fb63a5aeb7b800dad1))
+* rollback ([f0ee9cc](https://github.com/SocialGouv/recosante/commit/f0ee9cce137a83f43fc20a0789858f88e6281fcb))
+* sub and sup for indice atmo about ([#427](https://github.com/SocialGouv/recosante/issues/427)) ([811ef3d](https://github.com/SocialGouv/recosante/commit/811ef3de713efd1b4340c7951478fc1da5dd60c9))
+
+
+### Features
+
+* **subroute:** test generate page ([f637f63](https://github.com/SocialGouv/recosante/commit/f637f6368f1e4b86719d1297de70bd8d3edb7371))
+
 # [1.28.0](https://github.com/SocialGouv/recosante/compare/v1.27.5...v1.28.0) (2024-02-16)
 
 
