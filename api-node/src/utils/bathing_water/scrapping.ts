@@ -1,3 +1,4 @@
+import fetchRetry from 'fetch-retry';
 import {
   BathingWaterCurrentYearGradingEnum,
   BathingWaterResultEnum,
@@ -7,15 +8,17 @@ import * as cheerio from 'cheerio';
 import dayjs from 'dayjs';
 import { capture } from '~/third-parties/sentry';
 
+const fetch = fetchRetry(global.fetch);
 // Regular expression to match the date in dd/mm/yyyy format
 const dateRegex = /(\d{2}\/\d{2}\/\d{4})/;
 
 export async function scrapeHtmlBaignadesSitePage(
   consultSiteUrl: URL,
 ): Promise<ScrapingResult | null> {
-  const htmlSitePage = await fetch(consultSiteUrl).then(
-    async (res) => await res.text(),
-  );
+  const htmlSitePage = await fetch(consultSiteUrl, {
+    retryDelay: 1000,
+    retries: 3,
+  }).then(async (res) => await res.text());
   if (!htmlSitePage) {
     return null;
   }

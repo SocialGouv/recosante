@@ -1,4 +1,5 @@
 import { capture } from '~/third-parties/sentry';
+import fetchRetry from 'fetch-retry';
 
 import { z } from 'zod';
 import dayjs from 'dayjs';
@@ -22,6 +23,8 @@ import { getPhenomenonDBKeyById } from '~/utils/weather_alert';
 import utc from 'dayjs/plugin/utc';
 import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { sendAlertNotification } from '~/utils/notifications/alert';
+
+const fetch = fetchRetry(global.fetch);
 dayjs.extend(utc);
 /*
 Documentation:
@@ -63,6 +66,8 @@ export async function getWeatherAlert() {
         headers: {
           apiKey: PORTAL_API_METEOFRANCE_API_KEY,
         },
+        retries: 3,
+        retryDelay: 1000,
       },
     ).then(async (response) => {
       if (!response.ok) {
