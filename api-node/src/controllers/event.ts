@@ -10,6 +10,20 @@ router.post(
   catchErrors(async (req: RequestWithMatomoEvent, res: express.Response) => {
     const event = req.body.event;
 
+    if (
+      event.category === 'STORE_REVIEW' &&
+      event.action === 'TRIGGERED_FROM_SETTINGS'
+    ) {
+      await prisma.user.update({
+        where: {
+          matomo_id: req.body.userId,
+        },
+        data: {
+          asked_for_review: { increment: 1 },
+          asked_for_review_latest_at: new Date(),
+        },
+      });
+    }
     if (event.category === 'APP' && event.action === 'APP_OPEN') {
       const user = await prisma.user.findUnique({
         where: {
@@ -25,7 +39,7 @@ router.post(
           matomo_id: req.body.userId,
         },
         data: {
-          asked_for_review: (user?.asked_for_review ?? 0) + 1,
+          asked_for_review: { increment: 1 },
           asked_for_review_latest_at: new Date(),
         },
       });
