@@ -1,6 +1,6 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import BrevoApi from "./brevo-api.js";
+import BrevoApi from './brevo-api.js';
 
 /*
 Remove campaigns sent before YYYY-MM-DD
@@ -52,12 +52,30 @@ https://developers.brevo.com/reference/updatecampaignstatus
 // TIP ids are in the form 9967, 9966, etc.
 // So we don'tneed to fetch the campaigns abov
 
-for (let i = 7791; i > 0; i--) {
+// for (let i = 7791; i > 0; i--) {
+//   await new Promise((resolve) => setTimeout(resolve, 1000));
+//   const result = await BrevoApi.put({
+//     path: `/emailCampaigns/${i}/status`,
+//     body: { status: 'archive' },
+//   });
+//   if (result === 429) break;
+//   console.log(i, result);
+// }
+
+const listIds = [];
+
+/*
+
+https://developers.brevo.com/reference/deletelist-1
+
+max 300 lists,
+
+*/
+
+for (const constactListId of listIds) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const result = await BrevoApi.put({
-    path: `/emailCampaigns/${i}/status`,
-    body: { status: "archive" },
+  const result = await BrevoApi.remove({
+    path: `/contacts/lists/${constactListId}`,
   });
-  if (result === 429) break;
-  console.log(i, result);
+  console.log(constactListId, result);
 }
