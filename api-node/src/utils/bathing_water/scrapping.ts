@@ -1,3 +1,5 @@
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 import {
   BathingWaterCurrentYearGradingEnum,
   BathingWaterResultEnum,
@@ -13,9 +15,10 @@ const dateRegex = /(\d{2}\/\d{2}\/\d{4})/;
 export async function scrapeHtmlBaignadesSitePage(
   consultSiteUrl: URL,
 ): Promise<ScrapingResult | null> {
-  const htmlSitePage = await fetch(consultSiteUrl).then(
-    async (res) => await res.text(),
-  );
+  const htmlSitePage = await fetch(consultSiteUrl, {
+    retryDelay: 1000,
+    retries: 3,
+  }).then(async (res) => await res.text());
   if (!htmlSitePage) {
     return null;
   }

@@ -1,3 +1,5 @@
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 import {
   BathgWaterIdCarteEnum,
   type Municipality,
@@ -78,7 +80,10 @@ async function updateMunicipalitiesWithBathingWaterSites() {
         url.searchParams.append(key, query[key]);
       });
       // eslint-disable-next-line @typescript-eslint/promise-function-async
-      const { sites } = await fetch(url.toString()).then((res) => res.json());
+      const { sites } = await fetch(url.toString(), {
+        retryDelay: 1000,
+        retries: 3,
+      }).then((res) => res.json());
       if (sites.length > 0) {
         console.log(
           `${index} of ${municipalities.length} ${

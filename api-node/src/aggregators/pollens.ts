@@ -1,5 +1,7 @@
 // @ts-expect-error csvjson-csv2json is not typed
 import csv2json from 'csvjson-csv2json/csv2json.js';
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 import {
   DataAvailabilityEnum,
   AlertStatusEnum,
@@ -31,20 +33,21 @@ export async function getPollensIndicator() {
     // Step 1: Fetch data
     now = Date.now();
     logStep('Getting Pollens');
-    const data = await fetch('https://www.pollens.fr/docs/ecosante.csv').then(
-      async (response) => {
-        if (!response.ok) {
-          throw new Error(
-            `getPollensIndicator error! status: ${response.status}`,
-          );
-        }
-        const data = await response.text();
-        logStep('Formatting into json');
-        const rawFormatedJson = csv2json(data, { parseNumbers: true });
-        logStep('Formatting into json DONE');
-        return rawFormatedJson;
-      },
-    );
+    const data = await fetch('https://www.pollens.fr/docs/ecosante.csv', {
+      retryDelay: 1000,
+      retries: 3,
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw new Error(
+          `getPollensIndicator error! status: ${response.status}`,
+        );
+      }
+      const data = await response.text();
+      logStep('Formatting into json');
+      const rawFormatedJson = csv2json(data, { parseNumbers: true });
+      logStep('Formatting into json DONE');
+      return rawFormatedJson;
+    });
 
     // Step 2: Validate data
     const date = Object.keys(data[0])[0];

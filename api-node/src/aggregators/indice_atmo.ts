@@ -6,6 +6,8 @@ import {
   // IndicatorsSlugEnum,
   type Municipality,
 } from '@prisma/client';
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -86,6 +88,8 @@ export async function getAtmoIndicator() {
           username: ATMODATA_USERNAME,
           password: ATMODATA_PASSWORD,
         }),
+        retries: 3,
+        retryDelay: 1000,
       },
     ).then(async (response) => await response.json());
     const atmoJWTToken: string = loginRes.token;

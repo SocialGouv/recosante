@@ -1,3 +1,5 @@
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 import dayjs from 'dayjs';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
@@ -66,7 +68,10 @@ export async function getBathingWaterIndicator() {
         sitesListUrl.searchParams.append(key, sitesListQuery[key]);
       });
 
-      const sites: Array<Site> = await fetch(sitesListUrl.toString())
+      const sites: Array<Site> = await fetch(sitesListUrl.toString(), {
+        retryDelay: 1000,
+        retries: 3,
+      })
         .then(async (res) => await res.json())
         .then((res) => res.sites);
 

@@ -1,4 +1,6 @@
 import { capture } from '~/third-parties/sentry';
+import fetchRetry from 'fetch-retry';
+const fetch = fetchRetry(global.fetch);
 
 import { z } from 'zod';
 import dayjs from 'dayjs';
@@ -63,6 +65,8 @@ export async function getWeatherAlert() {
         headers: {
           apiKey: PORTAL_API_METEOFRANCE_API_KEY,
         },
+        retries: 3,
+        retryDelay: 1000,
       },
     ).then(async (response) => {
       if (!response.ok) {
