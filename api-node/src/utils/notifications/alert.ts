@@ -52,6 +52,7 @@ export async function sendAlertNotification(
       push_notif_token: {
         not: null,
       },
+      deleted_at: null,
     },
   });
 

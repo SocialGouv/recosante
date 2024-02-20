@@ -39,6 +39,7 @@ export async function sendEveningNotification() {
       push_notif_token: {
         not: null,
       },
+      deleted_at: null,
     },
   });
 
