@@ -1,3 +1,19 @@
+# [1.30.0](https://github.com/SocialGouv/recosante/compare/v1.29.1...v1.30.0) (2024-02-20)
+
+
+### Bug Fixes
+
+* inc app review counter triggered from app ([c8af524](https://github.com/SocialGouv/recosante/commit/c8af524084b1430a4688ac93149f9fc8ee324dce))
+* remove api-node from workspace ([#429](https://github.com/SocialGouv/recosante/issues/429)) ([dced2fe](https://github.com/SocialGouv/recosante/commit/dced2fee99cc348248a9f177c1aac1552b9cc49b))
+* yarn ([7e9fe87](https://github.com/SocialGouv/recosante/commit/7e9fe87fd5c4c39a067cab7c6a26e3adfb02d1db))
+* yarn 4 new setup ([#431](https://github.com/SocialGouv/recosante/issues/431)) ([a0c4e36](https://github.com/SocialGouv/recosante/commit/a0c4e366421de750019eac2d4a428891a37cb508))
+
+
+### Features
+
+* fetch retry ([#428](https://github.com/SocialGouv/recosante/issues/428)) ([bab5a04](https://github.com/SocialGouv/recosante/commit/bab5a048be751958f0d9901a41f264410bcfc676))
+* trigger send app review ([#430](https://github.com/SocialGouv/recosante/issues/430)) ([92cac52](https://github.com/SocialGouv/recosante/commit/92cac52e85faf5bb422610f165dd0b23adf2454d))
+
 ## [1.29.1](https://github.com/SocialGouv/recosante/compare/v1.29.0...v1.29.1) (2024-02-20)
 
 
