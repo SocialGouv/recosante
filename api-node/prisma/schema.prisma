@@ -25,23 +25,26 @@ enum IndicatorsSlugEnum {
 }
 
 model User {
-  id                       String              @id @default(uuid())
-  matomo_id                String              @unique
-  appversion               String?
-  appbuild                 String?
-  appdevice                String?
-  municipality_insee_code  String? // code INSEE
-  municipality_name        String?
-  municipality_zip_code    String?
-  push_notif_token         String?
-  created_at               DateTime            @default(now())
-  updated_at               DateTime            @default(now()) @updatedAt
-  deleted_at               DateTime?
-  deleted_because          String?
-  favorite_indicator       IndicatorsSlugEnum?
-  notifications_preference NotifationEnum[]    @default([evening, alert])
-  notifications            Notification[]
-  feedbacks                Feedback[]
+  id                         String              @id @default(uuid())
+  matomo_id                  String              @unique
+  appversion                 String?
+  appbuild                   String?
+  appdevice                  String?
+  municipality_insee_code    String? // code INSEE
+  municipality_name          String?
+  municipality_zip_code      String?
+  push_notif_token           String?
+  notifications_sent         Int?                @default(0) // cache the number of notifications sent
+  asked_for_review           Int?                @default(0)
+  asked_for_review_latest_at DateTime?
+  created_at                 DateTime            @default(now())
+  updated_at                 DateTime            @default(now()) @updatedAt
+  deleted_at                 DateTime?
+  deleted_because            String?
+  favorite_indicator         IndicatorsSlugEnum?
+  notifications_preference   NotifationEnum[]    @default([evening, alert])
+  notifications              Notification[]
+  feedbacks                  Feedback[]
 
   @@index([push_notif_token], type: Hash)
 }

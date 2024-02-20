@@ -71,7 +71,11 @@ router.put(
         return;
       }
 
-      const updatedUser: Partial<User> = {};
+      const updatedUser: Partial<User> = {
+        appversion: `${req.headers.appversion as string}`,
+        appbuild: `${req.headers.appbuild as string}`,
+        appdevice: `${req.headers.appdevice as string}`,
+      };
       function bodyHasProperty(property: string) {
         return Object.prototype.hasOwnProperty.call(req.body, property);
       }
@@ -91,15 +95,7 @@ router.put(
       if (bodyHasProperty('favorite_indicator')) {
         updatedUser.favorite_indicator = req.body.favorite_indicator;
       }
-      if (bodyHasProperty('appversion')) {
-        updatedUser.appversion = `${req.body.appversion}`;
-      }
-      if (bodyHasProperty('appbuild')) {
-        updatedUser.appbuild = `${req.body.appbuild}`;
-      }
-      if (bodyHasProperty('appdevice')) {
-        updatedUser.appdevice = req.body.appdevice;
-      }
+
       if (bodyHasProperty('notifications_preference')) {
         updatedUser.notifications_preference =
           req.body.notifications_preference;
