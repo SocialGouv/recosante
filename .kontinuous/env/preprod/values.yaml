@@ -2,6 +2,15 @@ pg:
   ~chart: pg
   backup:
     name: ovh # backup on a new folder
+  cnpg-cluster:
+    persistence:
+      size: "20Gi"
+
+pg-api-node:
+  ~chart: pg
+  cnpg-cluster:
+    persistence:
+      size: "20Gi"
 
 api:
   ~needs: [build-api, seed-db]
