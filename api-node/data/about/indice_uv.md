@@ -8,4 +8,6 @@ Cet indice chiffré (de 1 à 11+) reflète l’intensité du rayonnement ultravi
 
 La note de l'indice UV affichée correspond à l'indice UV maximal de la journée. Cet indice se situe en général dans une tranche de 2 à 4 heures autour du midi solaire.
 
+Source des informations : Meteo France
+
 [En savoir plus](https://meteofrance.com/comprendre-la-meteo/atmosphere/les-ultraviolets)
