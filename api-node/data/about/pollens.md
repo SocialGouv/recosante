@@ -4,4 +4,6 @@ Le **Risque d'Exposition aux Allergènes Polliniques (REAP)** est un indice qui 
 
 Le RAEP affiché correspond au RAEP maximal de la journée.
 
+Source des informations : Réseau National de Surveillance Aérobiologique (R.N.S.A.)
+
 [En savoir plus](https://www.pollens.fr/)
