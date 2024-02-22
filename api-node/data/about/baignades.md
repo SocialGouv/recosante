@@ -6,4 +6,6 @@ Dans l’évaluation de cette qualité, il convient de distinguer :
 - la qualité au terme de la saison balnéaire : le classement en catégorie « excellente », « bonne », « suffisante » ou « insuffisante » calculé de manière statistique à la fin de la saison balnéaire en prenant en compte les résultats obtenus sur les quatre dernières années.
   Des mesures de gestion telles que des interdictions de baignades temporaires ou permanentes peuvent être prises de manière à éviter que les baigneurs soient exposés à une pollution.
 
+Source des informations : Ministère de la Santé et de la Prévention
+
 [En savoir plus](https://baignades.sante.gouv.fr/baignades/editorial/fr/controle/organisation.html)
