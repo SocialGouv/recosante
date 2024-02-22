@@ -20,9 +20,6 @@ import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 
 import packageJson from '../package.json';
-// import { sendMorningNotification } from './utils/notifications/morning.ts';
-
-// sendMorningNotification();
 
 // Put together a schema
 const app = express();

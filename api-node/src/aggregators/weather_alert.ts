@@ -225,21 +225,22 @@ export async function getWeatherAlert() {
           continue;
         }
 
-        const weatherAlertForDepartment: WeatherAlertForDepartment = {
-          validity_start: dayjs(row.begin_validity_time).toDate(),
-          validity_end: dayjs(row.end_validity_time).toDate(),
-          diffusion_date: diffusionDate,
-          violent_wind: null,
-          rain_flood: null,
-          storm: null,
-          flood: null,
-          snow_ice: null,
-          heat_wave: null,
-          cold_wave: null,
-          avalanche: null,
-          waves_submersion: null,
-          alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
-        };
+        const weatherAlertForDepartment: WeatherAlertForDepartment =
+          weatherAlertsByDepartment[departmentCode] ?? {
+            validity_start: dayjs(row.begin_validity_time).toDate(),
+            validity_end: dayjs(row.end_validity_time).toDate(),
+            diffusion_date: diffusionDate,
+            violent_wind: null,
+            rain_flood: null,
+            storm: null,
+            flood: null,
+            snow_ice: null,
+            heat_wave: null,
+            cold_wave: null,
+            avalanche: null,
+            waves_submersion: null,
+            alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
+          };
 
         weatherAlertsByDepartment[departmentCode] =
           domain.phenomenon_items.reduce((weatherAlert, phenomenon) => {
