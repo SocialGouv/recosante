@@ -1,3 +1,11 @@
+## [1.30.1](https://github.com/SocialGouv/recosante/compare/v1.30.0...v1.30.1) (2024-02-22)
+
+
+### Bug Fixes
+
+* increase pg storage size ([2b875f9](https://github.com/SocialGouv/recosante/commit/2b875f9c6e4b4ce08fd8d301f40a5d84d229b66c))
+* weather alert not overwritten by department coastal ([73e026f](https://github.com/SocialGouv/recosante/commit/73e026fc0a5feb65d9e7c49daf2ba175176edaf3))
+
 # [1.30.0](https://github.com/SocialGouv/recosante/compare/v1.29.1...v1.30.0) (2024-02-20)
 
 
