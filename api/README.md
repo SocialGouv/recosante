@@ -111,9 +111,11 @@ You can adapt the [`.env.example`](./.env.example) file in a newly created `.env
 
 Also install dotenv-cli package, so that thew environment vairables get loaded: `npm install -g dotenv-cli`
 
+Then you need to run `source .venv/bin/activate` to activate the virtual environment.
+
 Once everything is ready, you can start the worker locally with the `start_all_local.sh` files in the project. Beware of the `alembic` migration.
 
-To stop everything, warn shutdown is `CTRL+C` and hard shutdown is `CTRL+Z`.
+To stop everything, warm shutdown is `CTRL+C` and hard shutdown is `CTRL+Z`.
 
 If you want to run a custom script such as `/libs/indice_pollution/send_newsletter.py`, you can do: `dotenv -f .env run /bin/sh -c "python ./send_newsletter.py"`
 You MIGHT have a problem with environment variable on first run (like `[2023-11-09 12:32:56,044: ERROR/ForkPoolWorker-8] The following env var is required: PORTAL_API_METEOFRANCE_API_KEY`). Just re-run the script it it could work :). Magic python.
