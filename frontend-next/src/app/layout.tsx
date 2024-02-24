@@ -6,12 +6,12 @@ import { marianneFont } from '@/assets/fonts';
 import { Matomo } from '@/components/matomo';
 
 export const metadata: Metadata = {
-  title: {
-    template: '%s - Recosanté',
-    default:
-      "Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.",
-  },
-  description: 'Télécharger l’application Recosanté.',
+  // title: {
+  //   template: '%s - Recosanté',
+  //   default:
+  //     "Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.",
+  // },
+  // description: 'Télécharger l’application Recosanté.',
   openGraph: {
     images: [
       {
