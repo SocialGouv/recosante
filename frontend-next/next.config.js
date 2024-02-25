@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 
-const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+ const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
 const nextConfig = {
   output: 'standalone',
@@ -9,7 +9,8 @@ const nextConfig = {
 
   rewrites: async () => {
     return {
-      beforeFiles: [{
+      beforeFiles: [
+        {
         source: '/',
         has: [
           {
@@ -23,6 +24,7 @@ const nextConfig = {
       },
     ],
       fallback: [
+        
         // These rewrites are checked after both pages/public files
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
@@ -34,7 +36,6 @@ const nextConfig = {
           source: '/:slug*',
           destination: `${PATH}/:slug*`,
         },
-        
       ],
     };
   },
