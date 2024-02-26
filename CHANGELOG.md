@@ -1,3 +1,11 @@
+## [1.30.2](https://github.com/SocialGouv/recosante/compare/v1.30.1...v1.30.2) (2024-02-26)
+
+
+### Bug Fixes
+
+* minimum version ([3f5f700](https://github.com/SocialGouv/recosante/commit/3f5f700c87130f503ec0e600cd392123315da45e))
+* preprod variable ([#441](https://github.com/SocialGouv/recosante/issues/441)) ([6fee39f](https://github.com/SocialGouv/recosante/commit/6fee39f56fcf24510bc0e2a43c457a92fdc27a73))
+
 ## [1.30.1](https://github.com/SocialGouv/recosante/compare/v1.30.0...v1.30.1) (2024-02-22)
 
 
