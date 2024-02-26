@@ -63,8 +63,8 @@ const nextConfig = {
         },
         // This rewrite explicitly avoids rewriting for the "not-found" slug
         {
-          source: '/not-found',
-          destination: '/',
+          source: '/not-found/',
+          destination: '/not-found/',
         },
       ],
     };
