@@ -37,9 +37,9 @@ export default function Page(props: {
   );
 }
 
-export async function generateStaticParams() {
-  return municipalitesParam.map((param) => ({
-    city: param.params.city,
-    indicator: param.params.indicator,
-  }));
-}
+// export async function generateStaticParams() {
+//   return municipalitesParam.map((param) => ({
+//     city: param.params.city,
+//     indicator: param.params.indicator,
+//   }));
+// }
