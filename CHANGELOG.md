@@ -1,3 +1,10 @@
+## [1.30.3](https://github.com/SocialGouv/recosante/compare/v1.30.2...v1.30.3) (2024-02-26)
+
+
+### Bug Fixes
+
+* add user to capture notifications ([dc716b2](https://github.com/SocialGouv/recosante/commit/dc716b2a54befa2ef52a3d23654fec141d095dd5))
+
 ## [1.30.2](https://github.com/SocialGouv/recosante/compare/v1.30.1...v1.30.2) (2024-02-26)
 
 
