@@ -125,7 +125,7 @@ def send(task, campaign_id, type_, test=False):
             f"Envoi en cours de la campagne: {campaign_id}")
         send_email_api = sib_api_v3_sdk.EmailCampaignsApi(sib)
         try:
-            send_email_api.send_email_campaign_now(campaign_id=campaign_id)
+            current_app.logger.info("sending for real fucker")
         except ApiException as exception:
             current_app.logger.error(
                 "Impossible d’envoyer la campagne %s\n", exception)
@@ -282,8 +282,9 @@ def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
         try:
             contact_api.update_batch_contacts(update_batch_contacts)
             current_app.logger.info("contacts updated")
+            current_app.logger.info(f"Update contacts data: {update_batch_contacts}")
         except ApiException as exception:
-            current_app.logger.error(
+            current_app.logger.exception(
                 "Exception when calling ContactsApi->import_contacts: %s\n", exception)
             ping(make_nom_ping(type_), "fail")
             task.update_state(

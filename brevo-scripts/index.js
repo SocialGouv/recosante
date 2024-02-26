@@ -62,20 +62,26 @@ https://developers.brevo.com/reference/updatecampaignstatus
 //   console.log(i, result);
 // }
 
-const listIds = [];
+// const listIds = [];
+
+// /*
+
+// https://developers.brevo.com/reference/deletelist-1
+
+// max 300 lists,
+
+// */
+
+// for (const constactListId of listIds) {
+//   await new Promise((resolve) => setTimeout(resolve, 1000));
+//   const result = await BrevoApi.remove({
+//     path: `/contacts/lists/${constactListId}`,
+//   });
+//   console.log(constactListId, result);
+// }
 
 /*
 
-https://developers.brevo.com/reference/deletelist-1
-
-max 300 lists,
+Delete contact
 
 */
-
-for (const constactListId of listIds) {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const result = await BrevoApi.remove({
-    path: `/contacts/lists/${constactListId}`,
-  });
-  console.log(constactListId, result);
-}
