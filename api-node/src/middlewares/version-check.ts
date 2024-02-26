@@ -1,6 +1,6 @@
 import type express from 'express';
 
-const MINIMUM_MOBILE_APP_VERSION = 10;
+const MINIMUM_MOBILE_APP_VERSION = 20;
 
 export default function (
   {
