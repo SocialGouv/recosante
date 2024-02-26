@@ -92,6 +92,7 @@ export async function sendEveningNotification() {
         tags: {
           municipality_insee_code,
         },
+        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
       });
     } else {
       data.indice_uv = {
@@ -126,6 +127,7 @@ export async function sendEveningNotification() {
         tags: {
           municipality_insee_code,
         },
+        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
       });
     } else {
       data.indice_atmospheric = {
@@ -159,6 +161,7 @@ export async function sendEveningNotification() {
         tags: {
           municipality_insee_code,
         },
+        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
       });
     } else {
       data.pollen_allergy = {
@@ -192,6 +195,7 @@ export async function sendEveningNotification() {
         tags: {
           municipality_insee_code,
         },
+        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
       });
     } else {
       const phenomenonsJ1 = getSortedPhenomenonsByValue(weatherAlertJ1);
@@ -253,6 +257,7 @@ export async function sendEveningNotification() {
         tags: {
           municipality_insee_code,
         },
+        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
       });
       continue;
     }
