@@ -15,6 +15,18 @@ pg-api-node:
 api:
   ~needs: [build-api, seed-db]
 
+
+api-node:
+  env:
+    - name: ENVIRONMENT
+      value: "preproduction"
+
+cronjobs:
+  env:
+    - name: ENVIRONMENT
+      value: "preproduction"
+
+
 jobs:
   runs:
     seed-db:
