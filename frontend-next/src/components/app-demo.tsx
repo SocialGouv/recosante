@@ -7,7 +7,7 @@ import ScreenShot from '@/images/screenshot/hp.jpg';
 export function LandingMobileScreen() {
   return (
     <AppScreen>
-      <Image src={ScreenShot} alt='App demo' priority />
+      <Image src={ScreenShot} alt='App demo' priority className='z-50' />
     </AppScreen>
   );
 }
