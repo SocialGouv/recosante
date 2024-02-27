@@ -12,7 +12,7 @@ const iframe = document.createElement("iframe");
 const iframeAttributes = {
   src,
   id: "recosante-iframe",
-  style: "border: none; width: 100%; display: block; margin: 0 auto;",
+  style: "border: none; width: 100%; display: block; margin: 0 auto; min-height: 510px",
   allowfullscreen: true,
   webkitallowfullscreen: true,
   mozallowfullscreen: true,
