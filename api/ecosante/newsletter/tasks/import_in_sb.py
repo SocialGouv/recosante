@@ -125,7 +125,7 @@ def send(task, campaign_id, type_, test=False):
             f"Envoi en cours de la campagne: {campaign_id}")
         send_email_api = sib_api_v3_sdk.EmailCampaignsApi(sib)
         try:
-            current_app.logger.info("sending for real fucker")
+            send_email_api.send_email_campaign_now(campaign_id=campaign_id)
         except ApiException as exception:
             current_app.logger.error(
                 "Impossible d’envoyer la campagne %s\n", exception)
