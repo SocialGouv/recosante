@@ -1,7 +1,7 @@
 pg:
   ~chart: pg
   backup:
-    name: ovh # backup on a new folder
+    name: 2023-02-27-14-34 # backup on a new folder
   cnpg-cluster:
     persistence:
       size: "20Gi"
