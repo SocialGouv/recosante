@@ -65,7 +65,7 @@ export async function sendAlertNotification(
         phenomenon.value >= AlertStatusThresholdEnum.WEATHER_ALERT,
     );
     if (!phenomenons.length) return false;
-    const body: Array<string> = [];
+    const rawBody: Array<string> = [];
     const data: Record<
       IndicatorsSlugEnum,
       { id: string; text?: string } | undefined
@@ -117,7 +117,7 @@ export async function sendAlertNotification(
           weatherAlertText = `🌊 Vagues-Submersion : ${weatherAlertStatus} ${weatherAlertDotColor}`;
           break;
       }
-      body.push(weatherAlertText);
+      rawBody.push(weatherAlertText);
       // I know data won't have all the phenomenons, but I don't care
       data.weather_alert.text = weatherAlertText;
 
@@ -134,15 +134,32 @@ export async function sendAlertNotification(
       });
 
       if (recommandation?.recommandation_content) {
-        body.push(recommandation?.recommandation_content);
+        rawBody.push(recommandation?.recommandation_content);
       }
 
+      const title = 'ALERTE';
+      const body = rawBody.filter(Boolean).join('\n');
+
       for (const user of users) {
+        const alreadySentNotification = await prisma.notification.findFirst({
+          where: {
+            user_id: user.id,
+            title,
+            body,
+            created_at: {
+              gte: dayjs().utc().startOf('day').toDate(),
+            },
+          },
+        });
+        if (alreadySentNotification) {
+          console.log('already sent notification', alreadySentNotification);
+          continue;
+        }
         const { notificationSent, notificationInDb } =
           await sendPushNotification({
             user,
-            title: 'ALERTE',
-            body: body.filter(Boolean).join('\n'),
+            title,
+            body,
             data,
           });
         if (notificationSent) notificationsSent++;
@@ -156,7 +173,7 @@ export async function sendAlertNotification(
     return true;
   }
 
-  const body: Array<string> = [];
+  const rawBody: Array<string> = [];
   const data: Record<
     IndicatorsSlugEnum,
     { id: string; text?: string } | undefined
@@ -180,7 +197,7 @@ export async function sendAlertNotification(
     const indiceUvDotColor = getIndiceUVDotColor(indiceUvValue);
     if (indiceUvDotColor) {
       const indiceUvText = `☀️ Indice UV : ${indiceUvStatus} ${indiceUvDotColor}`;
-      body.push(indiceUvText);
+      rawBody.push(indiceUvText);
       data.indice_uv.text = indiceUvText;
       indicatorValue = indiceUvValue;
     }
@@ -200,7 +217,7 @@ export async function sendAlertNotification(
     const indiceAtmoDotColor = getIndiceAtmoDotColor(indiceAtmoValue);
     if (indiceAtmoDotColor) {
       const indiceAtmoText = `💨 Indice ATMO : ${indiceAtmoStatus} ${indiceAtmoDotColor}`;
-      body.push(indiceAtmoText);
+      rawBody.push(indiceAtmoText);
       data.indice_atmospheric.text = indiceAtmoText;
       indicatorValue = indiceAtmoValue;
     }
@@ -219,7 +236,7 @@ export async function sendAlertNotification(
     const pollensDotColor = getPollensDotColor(pollensValue);
     if (pollensDotColor) {
       const pollensText = `🌿 Risque pollens : ${pollensStatus} ${pollensDotColor}`;
-      body.push(pollensText);
+      rawBody.push(pollensText);
       data.pollen_allergy.text = pollensText;
       indicatorValue = pollensValue;
     }
@@ -250,14 +267,31 @@ export async function sendAlertNotification(
   });
 
   if (recommandation?.recommandation_content) {
-    body.push(recommandation.recommandation_content);
+    rawBody.push(recommandation.recommandation_content);
   }
 
+  const title = 'ALERTE';
+  const body = rawBody.filter(Boolean).join('\n');
+
   for (const user of users) {
+    const alreadySentNotification = await prisma.notification.findFirst({
+      where: {
+        user_id: user.id,
+        title,
+        body,
+        created_at: {
+          gte: dayjs().utc().startOf('day').toDate(),
+        },
+      },
+    });
+    if (alreadySentNotification) {
+      console.log('already sent notification', alreadySentNotification);
+      continue;
+    }
     const { notificationSent, notificationInDb } = await sendPushNotification({
       user,
-      title: 'ALERTE',
-      body: body.filter(Boolean).join('\n'),
+      title,
+      body,
       data,
     });
     if (notificationSent) notificationsSent++;
