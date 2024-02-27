@@ -119,6 +119,7 @@ export async function scrapeHtmlBaignadesSitePage(
           },
           tags: {
             consultSiteUrl,
+            label: value,
           },
         });
         return BathingWaterResultEnum.GOOD;
