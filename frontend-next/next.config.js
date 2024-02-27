@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-const { redirect } = require('next/dist/server/api-utils');
-
-
  const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
 const nextConfig = {
@@ -42,30 +39,32 @@ const nextConfig = {
         {
           source: '/:slug*/',
           destination: `${PATH}/:slug*/`,
-          has: [
-            {
-              type: 'query',
-              key: 'slug',
-              value: '(?!not-found).*',
-            },
-          ],
+          // has: [
+          //   {
+          //     type: 'query',
+          //     key: 'slug',
+          //     value: '(?!not-found|ifr).*',
+
+          //   },
+          // ],
         },
         {
           source: '/:slug*',
           destination: `${PATH}/:slug*`,
-          has: [
-            {
-              type: 'query',
-              key: 'slug',
-              value: '(?!not-found).*',
-            },
-          ],
+          // has: [
+          //   {
+          //     type: 'query',
+          //     key: 'slug',
+          //     // value is not "not-found" and "iframe".
+          //     value: '(?!not-found|ifr).*',
+          //   },
+          // ],
         },
         // This rewrite explicitly avoids rewriting for the "not-found" slug
-        {
-          source: '/not-found/',
-          destination: '/not-found/',
-        },
+        // {
+        //   source: '/not-found/',
+        //   destination: '/not-found/',
+        // },
       ],
     };
   },
