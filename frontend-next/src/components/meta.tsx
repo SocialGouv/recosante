@@ -17,6 +17,10 @@ export function Meta(props: MetaProps) {
         name='google-site-verification'
         content='B5n63rvRKk7tboZXL2L6x56_O4gbl8NQbD_lNhzih0M'
       />
+      <meta
+        name='apple-itunes-app'
+        content='app-id=6476136888, app-argument=https://recosante.beta.gouv.fr/'
+      ></meta>
       <meta name='description' content={props.description} key='description' />
       <meta property='og:title' content={props.title} key='og:title' />
       <meta
