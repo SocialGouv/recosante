@@ -1,3 +1,18 @@
+# [1.31.0](https://github.com/SocialGouv/recosante/compare/v1.30.3...v1.31.0) (2024-02-27)
+
+
+### Bug Fixes
+
+* add tag for scrapping ([d3e2e62](https://github.com/SocialGouv/recosante/commit/d3e2e62b7b53abc86fca0ab9e3636b42ee01609e))
+* capture error for recommandations from google sheet ([232da36](https://github.com/SocialGouv/recosante/commit/232da362090a1fa2c9f5c637277f86b07801951b))
+* only one notif a day ([#452](https://github.com/SocialGouv/recosante/issues/452)) ([171ccac](https://github.com/SocialGouv/recosante/commit/171ccacefb23f36e379cc0e8081b49e18932d38c))
+* Update next.config.js to fix rewrite for "not-found" slug ([#446](https://github.com/SocialGouv/recosante/issues/446)) ([711c427](https://github.com/SocialGouv/recosante/commit/711c4274bd1950b8128211b0305a5b003bea0029))
+
+
+### Features
+
+* **iframe:** add iframe page ([#449](https://github.com/SocialGouv/recosante/issues/449)) ([4ee3ed0](https://github.com/SocialGouv/recosante/commit/4ee3ed0d8c4271cbba927091dc8a39c5329d4218))
+
 ## [1.30.3](https://github.com/SocialGouv/recosante/compare/v1.30.2...v1.30.3) (2024-02-26)
 
 
