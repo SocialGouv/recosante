@@ -26,7 +26,10 @@ import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
 } from '~/utils/indice_atmo';
-import { AlertStatusThresholdEnum } from '../alert_status';
+import { AlertStatusThresholdEnum } from '~/utils/alert_status';
+import { NotificationDotColor } from '~/types/notifications';
+import { BathingWaterStatusEnum } from '~/types/api/bathing_water';
+import { getBathingWaterSummaryValue } from '../bathing_water/bathing_water';
 
 dayjs.extend(utc);
 
@@ -240,6 +243,23 @@ export async function sendAlertNotification(
       data.pollen_allergy.text = pollensText;
       indicatorValue = pollensValue;
     }
+  }
+
+  if (indicatorSlug === 'bathing_water') {
+    const bathingWater = indicatorRow as BathingWater;
+    const isAlert =
+      bathingWater.current_year_grading ===
+      AlertStatusThresholdEnum.BATHING_WATER;
+    if (!isAlert) return false;
+    data.bathing_water = {
+      id: bathingWater.id,
+    };
+    const { value } = getBathingWaterSummaryValue([bathingWater]);
+    const bathingWaterDotColor = NotificationDotColor.EXTREMELY_POOR;
+    const bathingWaterText = `🐳 Eaux de baignade : ${BathingWaterStatusEnum.PROHIBITION} ${bathingWaterDotColor}`;
+    rawBody.push(bathingWaterText);
+    data.bathing_water.text = bathingWaterText;
+    indicatorValue = value;
   }
 
   if (indicatorValue === null) {

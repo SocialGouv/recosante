@@ -21,6 +21,7 @@ import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
 } from '~/utils/indice_atmo';
+
 dayjs.extend(utc);
 
 export async function sendEveningNotification() {
@@ -246,6 +247,15 @@ export async function sendEveningNotification() {
         data.weather_alert.text = weatherAlertText;
       }
     }
+
+    /*
+    Bathing Water
+    */
+    //  We don't do bathing waters for two reasons
+    // 1. The data is updated at the most every week, or even sometimes less often,
+    // so it's not relevant to send it every morning or evening
+    // 2. The body of a notification has maximum 4 visible lines
+    // so we can't add more than 4 indicators, and we sacrifice the bathing water indicator
 
     if (!body.length) {
       capture('No indicators found for evening notification', {

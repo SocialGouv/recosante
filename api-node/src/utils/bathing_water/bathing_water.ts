@@ -10,6 +10,7 @@ import {
   BathingWaterNumberValueEnum,
   BathingWaterStatusEnum,
 } from '~/types/api/bathing_water';
+import { NotificationDotColor } from '~/types/notifications';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 import dayjs from 'dayjs';
@@ -267,6 +268,26 @@ function buildBathingWaterUrl(bathingWater: BathingWater): string {
   return consultSiteUrl.toString();
 }
 
+function getBathingWaterDotColor(
+  code_indice_atmo: BathingWaterStatusEnum,
+): NotificationDotColor | null {
+  switch (code_indice_atmo) {
+    case BathingWaterStatusEnum.GOOD:
+      return NotificationDotColor.GOOD;
+    case BathingWaterStatusEnum.AVERAGE:
+      return NotificationDotColor.FAIR;
+    case BathingWaterStatusEnum.POOR:
+      return NotificationDotColor.POOR;
+    case BathingWaterStatusEnum.PROHIBITION:
+      return NotificationDotColor.EXTREMELY_POOR;
+    case BathingWaterStatusEnum.UNRANKED_SITE:
+    case BathingWaterStatusEnum.OFF_SEASON:
+    case BathingWaterStatusEnum.NO_DATA:
+    default:
+      return null;
+  }
+}
+
 export {
   getIdCarteForDepartment,
   updateMunicipalitiesWithBathingWaterSites,
@@ -274,4 +295,5 @@ export {
   getBathingWaterSiteValueDerivedFromBathingWaterRow,
   getBathingWaterLatestResultDate,
   buildBathingWaterUrl,
+  getBathingWaterDotColor,
 };
