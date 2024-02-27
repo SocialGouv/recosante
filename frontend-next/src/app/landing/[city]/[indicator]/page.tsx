@@ -9,6 +9,7 @@ import { PageBuilderService } from '@/services/page-builder';
 import { redirect } from 'next/navigation';
 import { Metadata, ResolvingMetadata } from 'next';
 import { IndicatorService } from '@/services/indicator';
+import Head from 'next/head';
 
 const municipalitesParam = PageBuilderService.getMunicipalitiesParams();
 const cities = municipalitesParam.map((param) => param.params.city);
@@ -31,6 +32,10 @@ export async function generateMetadata(
     openGraph: {
       images: [...previousImages],
     },
+    itunes: {
+      appId: '6476136888',
+      appArgument: `https://recosante.beta.gouv.fr/`,
+    },
   };
 }
 
@@ -48,6 +53,12 @@ export default function Page(props: {
 
   return (
     <>
+      <Head>
+        <meta
+          name='apple-itunes-app'
+          content='app-id=6476136888, app-argument=https://recosante.beta.gouv.fr/'
+        ></meta>
+      </Head>
       <HeroCity city={props.params.city} indicator={indicatorName} />
       <PrimaryFeatures />
       <Notification />
@@ -57,4 +68,3 @@ export default function Page(props: {
     </>
   );
 }
-

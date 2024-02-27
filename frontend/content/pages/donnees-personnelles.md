@@ -28,7 +28,7 @@ Les sociétés CleverCloud (hébergeur), Scopyleft et Sendinblue interviennent �
 - **Traitement réalisé**&#8239;: envoi des lettres d'information aux utilisateurs
 - **Garanties**&#8239;: https://fr.sendinblue.com/legal/privacypolicy/
 
-- **Partenaire**&#8239;: CleverCloud
+- **Partenaire**&#8239;: Ovh
 - **Pays destinataire**&#8239;: France
 - **Traitement réalisé**&#8239;: hébergement du site
 - **Garanties**&#8239;: https://www.clever-cloud.com/en/privacy-policy
