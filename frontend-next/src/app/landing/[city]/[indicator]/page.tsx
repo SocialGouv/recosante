@@ -22,7 +22,6 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
   const indicatorName = IndicatorService.getNameBySlug(params.indicator);
 
@@ -38,6 +37,8 @@ export async function generateMetadata(
 export default function Page(props: {
   params: { city: string; indicator: string };
 }) {
+  const indicatorName = IndicatorService.getNameBySlug(props.params.indicator);
+
   if (!cities.includes(props.params.city)) {
     redirect('/not-found');
   }
@@ -47,11 +48,7 @@ export default function Page(props: {
 
   return (
     <>
-      <Meta
-        title={`${props.params.city} sur l'indicateur ${props.params.indicator}`}
-        description='Télécharger l’application Recosanté.'
-      />
-      <HeroCity city={props.params.city} indicator={props.params.indicator} />
+      <HeroCity city={props.params.city} indicator={indicatorName} />
       <PrimaryFeatures />
       <Notification />
       <CallToAction />
