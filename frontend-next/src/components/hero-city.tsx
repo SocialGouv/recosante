@@ -91,7 +91,7 @@ export function HeroCity(props: HeroCityProps) {
         <div className='lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12'>
           <div className='relative z-10 mx-auto max-w-2xl lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
             <h1 className='md:text-4xl text-3xl font-bold  tracking-tight text-app-primary   font-app uppercase'>
-              Des questions sur les{' '}
+              Des questions sur{' '}
               <span className='text-app-yellow'>{props.indicator} à </span>
               <span className='text-app-yellow'>{props.city} ?</span> <br />
               <br />
