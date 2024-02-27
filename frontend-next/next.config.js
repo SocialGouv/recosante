@@ -19,7 +19,7 @@ const nextConfig = {
           }
         ],
         destination:
-          `${PATH}/`,
+          `/iframe`,
       },
     ],
       fallback: [
@@ -28,43 +28,39 @@ const nextConfig = {
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
 
-        // {
-        //   source: '/:slug*/',
-        //   destination: `${PATH}/:slug*/`,
-        // },
-        // {
-        //   source: '/:slug*',
-        //   destination: `${PATH}/:slug*`,
-        // },
+        {
+          source: '/:slug*',
+          destination: `${PATH}/:slug*`,
+        },
         {
           source: '/:slug*/',
           destination: `${PATH}/:slug*/`,
-          // has: [
-          //   {
-          //     type: 'query',
-          //     key: 'slug',
-          //     value: '(?!not-found|ifr).*',
+          has: [
+            {
+              type: 'query',
+              key: 'slug',
+              value: '(?!not-found|iframe).*',
 
-          //   },
-          // ],
+            },
+          ],
         },
         {
           source: '/:slug*',
           destination: `${PATH}/:slug*`,
-          // has: [
-          //   {
-          //     type: 'query',
-          //     key: 'slug',
-          //     // value is not "not-found" and "iframe".
-          //     value: '(?!not-found|ifr).*',
-          //   },
-          // ],
+          has: [
+            {
+              type: 'query',
+              key: 'slug',
+              // value is not "not-found" and "iframe".
+              value: '(?!not-found|iframe).*',
+            },
+          ],
         },
         // This rewrite explicitly avoids rewriting for the "not-found" slug
-        // {
-        //   source: '/not-found/',
-        //   destination: '/not-found/',
-        // },
+        {
+          source: '/not-found/',
+          destination: '/not-found/',
+        },
       ],
     };
   },
