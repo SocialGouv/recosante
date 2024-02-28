@@ -171,7 +171,14 @@ export async function getAtmoIndicatorForDate(
       headers: {
         Authorization: `Bearer ${atmoJWTToken}`,
       },
-    }).then(async (response) => await response.json());
+    })
+      .then(async (response) => await response.json())
+      .catch((error) => {
+        capture(error, {
+          extra: { functionCall: 'getAtmoIndicator', url, query },
+        });
+        return null;
+      });
     logStep(
       `Step A: Fetched Atmo data for ${indiceForDate.format(
         'YYYY-MM-DD dddd',
