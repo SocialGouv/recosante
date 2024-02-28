@@ -1,3 +1,11 @@
+## [1.31.3](https://github.com/SocialGouv/recosante/compare/v1.31.2...v1.31.3) (2024-02-28)
+
+
+### Bug Fixes
+
+* bathing water capture label value ([2e8cc3b](https://github.com/SocialGouv/recosante/commit/2e8cc3b3598b7ba904dce679c9ec85072824cf88))
+* Update hero banner links and styles ([129e087](https://github.com/SocialGouv/recosante/commit/129e087bb6a2c790ecf119dd154044ac8369b1ec))
+
 ## [1.31.2](https://github.com/SocialGouv/recosante/compare/v1.31.1...v1.31.2) (2024-02-28)
 
 
