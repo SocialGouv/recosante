@@ -1,5 +1,6 @@
 import type { Municipality } from '@prisma/client';
 import prisma from '~/prisma';
+import { capture } from '~/third-parties/sentry';
 
 export async function grabEPCIsWithINSEEMunicipalityCodes(): Promise<
   Record<Exclude<Municipality['EPCI'], null>, Array<Municipality['COM']>>
@@ -21,6 +22,13 @@ export async function grabEPCIsWithINSEEMunicipalityCodes(): Promise<
 
   for (const row of epcisRows) {
     municipalitiesINSEECodeByEPCIObject[row.EPCI] = row.COM;
+  }
+
+  // if no 200070233, capture to sentry for debug
+  if (!municipalitiesINSEECodeByEPCIObject['200070233']) {
+    capture('No 200070233 in municipalitiesINSEECodeByEPCIObject', {
+      extra: { municipalitiesINSEECodeByEPCIObject },
+    });
   }
 
   return municipalitiesINSEECodeByEPCIObject;
