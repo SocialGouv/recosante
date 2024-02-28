@@ -1,3 +1,11 @@
+## [1.31.2](https://github.com/SocialGouv/recosante/compare/v1.31.1...v1.31.2) (2024-02-28)
+
+
+### Bug Fixes
+
+* baignades alerte notif ([#454](https://github.com/SocialGouv/recosante/issues/454)) ([311a3ec](https://github.com/SocialGouv/recosante/commit/311a3ec4c158bf46e3b65f72b2b5dc8e008ba647))
+* brevo not working ([#443](https://github.com/SocialGouv/recosante/issues/443)) ([d7d4d4c](https://github.com/SocialGouv/recosante/commit/d7d4d4cf7d9092a47318b2abb0fe9a2c6f76daed))
+
 ## [1.31.1](https://github.com/SocialGouv/recosante/compare/v1.31.0...v1.31.1) (2024-02-27)
 
 
