@@ -256,18 +256,23 @@ def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
     window_size = 100  # or whatever limit you like
     window_idx = 0
     send_in_blue_mails = {c['email'] for c in send_in_blue_contacts}
+    processed_emails = set()  # Set to track processed emails
+
     while True:
-        start, stop = window_size*window_idx, window_size*(window_idx+1)
-        attributes = [
-            nl.attributes()
-            for nl in NewsletterDB.query.filter_by(mail_list_id=mail_list_id).slice(start, stop).all()
-            if nl.inscription.mail in send_in_blue_mails
-        ]
-        if attributes is None or len(attributes) == 0:
-            break
+        start, stop = window_size * window_idx, window_size * (window_idx + 1)
+        attributes = []
+        for nl in NewsletterDB.query.filter_by(mail_list_id=mail_list_id).slice(start, stop).all():
+            if nl.inscription.mail in send_in_blue_mails and nl.inscription.mail not in processed_emails:
+                attributes.append(nl.attributes())
+                # Mark the email as processed
+                processed_emails.add(nl.inscription.mail)
+
+        if not attributes:
+            break  # Exit the loop if no new attributes to process
+
         window_idx += 1
         update_batch_contacts = sib_api_v3_sdk.UpdateBatchContacts(
-            [
+            contacts=[
                 sib_api_v3_sdk.UpdateBatchContactsContacts(
                     email=a['EMAIL'],
                     list_ids=[mail_list_id],
@@ -281,9 +286,9 @@ def import_contacts_in_sb(task, mail_list_id, send_in_blue_contacts, type_):
         current_app.logger.info("About to update contacts with params")
         try:
             contact_api.update_batch_contacts(update_batch_contacts)
-            current_app.logger.info("contacts updated")
+            current_app.logger.info("Contacts updated successfully.")
         except ApiException as exception:
-            current_app.logger.error(
+            current_app.logger.exception(
                 "Exception when calling ContactsApi->import_contacts: %s\n", exception)
             ping(make_nom_ping(type_), "fail")
             task.update_state(
