@@ -1,3 +1,11 @@
+## [1.31.4](https://github.com/SocialGouv/recosante/compare/v1.31.3...v1.31.4) (2024-02-28)
+
+
+### Bug Fixes
+
+* Add Apple iTunes app metadata / update wording legals ([#457](https://github.com/SocialGouv/recosante/issues/457)) ([91906ab](https://github.com/SocialGouv/recosante/commit/91906ab0f3f14928169d472cadc99e6007c4a3cc))
+* update rewrites ([ee41fb7](https://github.com/SocialGouv/recosante/commit/ee41fb7dd7abe746520c3cffe9faa1b8a0e53dc9))
+
 ## [1.31.3](https://github.com/SocialGouv/recosante/compare/v1.31.2...v1.31.3) (2024-02-28)
 
 
