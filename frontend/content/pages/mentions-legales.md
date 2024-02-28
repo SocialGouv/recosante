@@ -17,9 +17,11 @@ Anne JeanJean - Directrice du Numérique
 
 ## Hébergement de la Plateforme
 
-Ce site est hébergé par Microsoft Azure France (région France centre) :
+Cette application est hébergée par OVH, situé : 
+2, rue Kellermann
+59100 Roubaix
+France
 
-Microsoft France 37 Quai du Président Roosevelt 92130 ISSY-LES-MOULINEAUX
 
 ## Accessibilité
 
