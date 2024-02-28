@@ -2,7 +2,7 @@
 import { MatomoService } from '@/services/matomo';
 import Link from 'next/link';
 
-const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+const PATH = 'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr';
 
 const posts = [
   {
