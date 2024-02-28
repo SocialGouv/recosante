@@ -31,7 +31,7 @@ Les sociétés CleverCloud (hébergeur), Scopyleft et Sendinblue interviennent �
 - **Partenaire**&#8239;: Ovh
 - **Pays destinataire**&#8239;: France
 - **Traitement réalisé**&#8239;: hébergement du site
-- **Garanties**&#8239;: https://www.clever-cloud.com/en/privacy-policy
+- **Garanties**&#8239;: https://www.ovhcloud.com/en/terms-and-conditions/privacy-policy/
 
 - **Partenaire**&#8239;: Little Big Connection
 - **Pays destinataire**&#8239;: France
