@@ -112,7 +112,7 @@ export async function scrapeHtmlBaignadesSitePage(
       case 'Bon':
         return BathingWaterResultEnum.GOOD;
       default:
-        capture('Unknown bathing water label', {
+        capture(`Unknown bathing water label ${value}`, {
           extra: {
             value,
             consultSiteUrl,
