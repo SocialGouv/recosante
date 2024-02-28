@@ -1,3 +1,12 @@
+## [1.31.5](https://github.com/SocialGouv/recosante/compare/v1.31.4...v1.31.5) (2024-02-28)
+
+
+### Bug Fixes
+
+* add back redis persistence ([2decee3](https://github.com/SocialGouv/recosante/commit/2decee35116dfccfc6a48d65b3c945fb77eebc71))
+* blog url ([4df19c9](https://github.com/SocialGouv/recosante/commit/4df19c9f0b76cb270a2527bc35751e8f546488d3))
+* metadata ([eb83d5e](https://github.com/SocialGouv/recosante/commit/eb83d5e67f759eee8487f4ae2029198f990bff96))
+
 ## [1.31.4](https://github.com/SocialGouv/recosante/compare/v1.31.3...v1.31.4) (2024-02-28)
 
 
