@@ -42,7 +42,7 @@ api:
 
 api-node:
   ~chart: app
-  ~needs: [build-api-node]
+  ~needs: [build-api-node, pg-api-node]
   containerPort: 3000
   imagePackage: api-node
   host: "{{ tpl .Values.global.apiNodeHost . }}"
@@ -167,7 +167,6 @@ flower:
     - name: FLOWER_PERSISTENT
       value: "True"
 
-
 pg-api-node:
   ~chart: pg
 
@@ -182,7 +181,6 @@ cronjobs:
         name: "pg-api-node-app"
     - secretRef:
         name: api-node-sealed-secret
-
 
 jobs:
   runs:
