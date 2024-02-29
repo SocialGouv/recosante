@@ -1,3 +1,10 @@
+## [1.31.6](https://github.com/SocialGouv/recosante/compare/v1.31.5...v1.31.6) (2024-02-29)
+
+
+### Bug Fixes
+
+* routing issue in next.config.js ([4715a93](https://github.com/SocialGouv/recosante/commit/4715a933e8c28858e860eb0bbf74f7cf8fc82fb9))
+
 ## [1.31.5](https://github.com/SocialGouv/recosante/compare/v1.31.4...v1.31.5) (2024-02-28)
 
 
