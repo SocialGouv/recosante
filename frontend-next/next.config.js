@@ -32,7 +32,7 @@ const nextConfig = {
         {
           source: '/:slug*/',
           destination: `${PATH}/:slug*/`,
-          has: [
+          missing: [
             {
               type: 'query',
               key: 'slug',
@@ -44,7 +44,7 @@ const nextConfig = {
         {
           source: '/:slug*',
           destination: `${PATH}/:slug*`,
-          has: [
+          missing: [
             {
               type: 'query',
               key: 'slug',
@@ -54,6 +54,7 @@ const nextConfig = {
           ],
         },
         // This rewrite explicitly avoids rewriting for the "not-found" slug
+       
         {
           source: '/not-found/',
           destination: '/not-found/',
