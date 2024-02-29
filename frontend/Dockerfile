@@ -15,9 +15,6 @@ ARG GATSBY_REPOSITORY_URL
 ENV GATSBY_REPOSITORY_URL $GATSBY_REPOSITORY_URL
 ENV GATSBY_TELEMETRY_DISABLED 1
 WORKDIR /app
-# Need lscpu
-RUN apk add --no-cache --update util-linux && \
-  rm -rf /var/cache/apk/* > /dev/null 2>&1
 
 COPY yarn.lock .yarnrc.yml ./
 COPY .yarn .yarn
@@ -43,5 +40,5 @@ COPY --from=builder --chown=1000:1000 /app ./
 
 USER 1000
 
-WORKDIR /app/frontend
-CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
+# CMD ["node", "node_modules/.bin/gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
+CMD ["yarn", "workspace", "recosante-frontend", "gatsby", "serve", "--port", "8080", "--host", "0.0.0.0"]
