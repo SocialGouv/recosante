@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn iframe && gatsby build",
     "format": "prettier --write '**/*.{js,jsx}'",
-    "iframe": "webpack",
+    "iframe": "webpack-cli",
     "lint": "prettier --check '**/*.{js,jsx}'",
     "lint-debug": "prettier --debug-check '**/*.{js,jsx}'",
     "serve": "gatsby serve",
