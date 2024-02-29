@@ -29,11 +29,11 @@ export function Footer() {
         </nav>
         <div className='flex flex-col items-start justify-between gap-y-12 pb-6 pt-16 lg:flex-row lg:items-center lg:py-16'>
           <div className='flex items-center justify-between w-full md:flex-row flex-col-reverse'>
-            <div className='flex items-center  md:justify-start justify-between  w-full'>
+            <div className='flex items-center   justify-between  w-full'>
               <Logo />
               <GouvLogo className='h-40 w-auto' />
             </div>
-            <div className='mb-12 md:mb-0 group relative -mx-4 flex items-center self-stretch p-4 transition-colors  sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6'>
+            {/* <div className='mb-12 md:mb-0 group relative -mx-4 flex items-center self-stretch p-4 transition-colors  sm:self-auto sm:rounded-2xl lg:mx-0 lg:self-auto lg:p-6'>
               <div className='relative flex h-24 w-24 flex-none items-center justify-center '>
                 <QrCodeBorder className='absolute inset-0 h-full w-full stroke-gray-300 transition-colors ' />
                 <Image src={qrCode} alt='qr code' unoptimized />
@@ -47,7 +47,7 @@ export function Footer() {
                   Scannez le code QR pour télécharger l'application.
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Container>
