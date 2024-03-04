@@ -1,11 +1,14 @@
+'use client';
+
 import { useId } from 'react';
 import { LandingMobileScreen } from '@/components/app-demo';
 import { Container } from '@/components/Container';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import { GouvLogo } from '@/images/logos/gouv';
-import { Logo } from '../Logo';
+
 import { AppStoreLink } from '../AppStoreLink';
 import { GoogleStoreLink } from '../GoogleStoreLink';
+import { MatomoService } from '@/services/matomo';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -76,6 +79,9 @@ function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
 }
 
 export function Hero() {
+  function handleClick() {
+    MatomoService.trackClick('link-in-iframe');
+  }
   return (
     <div className='overflow-hidden pt-2 lg:pb-32 xl:pb-36 '>
       <Container>
@@ -83,27 +89,39 @@ export function Hero() {
           <div className='relative z-50  mx-auto  lg:col-span-7 lg:max-w-none lg:pt-6 xl:col-span-6'>
             <div className='flex items-start flex-col '>
               <a
+                onClick={handleClick}
                 className='w-full  '
                 href='https://recosante.beta.gouv.fr'
                 target='_blank'
               >
                 <GouvLogo className='-ml-2 md:max-w-[120px] max-w-[70px] ' />
               </a>
-              <a href='https://recosante.beta.gouv.fr' target='_blank'>
+              <a
+                href='https://recosante.beta.gouv.fr'
+                target='_blank'
+                onClick={handleClick}
+              >
                 <h1 className='md:text-3xl text-xl  font-bold  tracking-tight  text-app-primary  font-app uppercase '>
                   RECOSANTé,
                   <br /> VOTRE NOUVELLE APPLICATION POUR LA SANTÉ AU QUOTIDIEN.
                 </h1>
               </a>
             </div>
-            <a href='https://recosante.beta.gouv.fr' target='_blank'>
+            <a
+              href='https://recosante.beta.gouv.fr'
+              target='_blank'
+              onClick={handleClick}
+            >
               <p className=' text-md md:text-xl mt-4  text-["#2D2D2D"]  '>
                 Découvrez comment l’environnement impacte votre santé.
                 <br /> Protégez vous de la pollution de l’air, de l’eau, des UV
                 ou du pollen.
               </p>
             </a>
-            <div className=' z-50 scale-[0.7] md:scale-100 flex items-center space-x-4  md:mt-6 mt-2 mx-auto justify-center '>
+            <div
+              className='z-50 scale-[0.7] md:scale-100 flex items-center space-x-4  md:mt-6 mt-2 mx-auto justify-center'
+              onClick={handleClick}
+            >
               <AppStoreLink />
               <GoogleStoreLink />
             </div>
