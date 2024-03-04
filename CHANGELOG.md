@@ -1,3 +1,10 @@
+# [1.32.0](https://github.com/SocialGouv/recosante/compare/v1.31.6...v1.32.0) (2024-03-04)
+
+
+### Features
+
+* **qrcode:** add qr code + add matomo event on iframe ([7f2af23](https://github.com/SocialGouv/recosante/commit/7f2af235015a58ade300349e07ddc2de7027c649))
+
 ## [1.31.6](https://github.com/SocialGouv/recosante/compare/v1.31.5...v1.31.6) (2024-02-29)
 
 
