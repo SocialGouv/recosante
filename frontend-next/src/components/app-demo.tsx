@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { AppScreen } from '@/components/AppScreen';
-import ScreenShot from '@/images/screenshot/hp.jpg';
+import ScreenShot from '@/images/screenshot/hp.webp';
 
 export function LandingMobileScreen() {
   return (

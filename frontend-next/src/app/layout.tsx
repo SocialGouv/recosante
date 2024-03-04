@@ -6,12 +6,6 @@ import { marianneFont } from '@/assets/fonts';
 import { Matomo } from '@/components/matomo';
 
 export const metadata: Metadata = {
-  // title: {
-  //   template: '%s - Recosanté',
-  //   default:
-  //     "Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.",
-  // },
-  // description: 'Télécharger l’application Recosanté.',
   openGraph: {
     images: [
       {
@@ -42,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang='fr'
-      className={clsx('h-full bg-gray-50 antialiased', marianneFont.variable)}
+      className={`h-full bg-gray-50 antialiased  ${marianneFont.variable} font-sans`}
     >
       <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>

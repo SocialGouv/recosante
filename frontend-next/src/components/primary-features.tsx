@@ -1,9 +1,9 @@
 'use client';
-import PollenScreenshot from '@/images/screenshot/pollen.png';
-import AirScreenshot from '@/images/screenshot/air.png';
-import UvScreenshot from '@/images/screenshot/uv.png';
-import WeatherScreenshot from '@/images/screenshot/weather.png';
-import WaterScreenshot from '@/images/screenshot/water.png';
+import PollenScreenshot from '@/images/screenshot/pollen.webp';
+import AirScreenshot from '@/images/screenshot/air.webp';
+import UvScreenshot from '@/images/screenshot/uv.webp';
+import WeatherScreenshot from '@/images/screenshot/weather.webp';
+import WaterScreenshot from '@/images/screenshot/water.webp';
 
 import Image from 'next/image';
 
@@ -369,7 +369,7 @@ function FeaturesMobile() {
             type='button'
             key={featureIndex}
             className={clsx(
-              'relative h-0.5 w-4 rounded-full',
+              'relative h-2 w-8 rounded-full ',
               featureIndex === activeIndex ? 'bg-gray-300' : 'bg-gray-500',
             )}
             aria-label={`Go to slide ${featureIndex + 1}`}
