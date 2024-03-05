@@ -10,7 +10,7 @@ export function Header() {
       <nav>
         <Container className='relative z-50 flex justify-between py-8'>
           <div className='relative z-10 flex md:flex-row flex-col-reverse items-center w-full justify-between '>
-            <h1 className='md:text-4xl text-3xl font-bold  mt-4 md:mt-0 tracking-tight leading-10 text-app-primary   font-app uppercase'>
+            <h1 className='md:text-4xl text-3xl font-bold  mt-4 md:mt-0 tracking-tight leading-10 text-app-primary font-app uppercase'>
               Votre nouvelle application de santé au quotidien.
             </h1>
             <div

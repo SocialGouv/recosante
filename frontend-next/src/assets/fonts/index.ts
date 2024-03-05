@@ -59,4 +59,5 @@ export const marianneFont = localFont({
     },
   ],
   variable: '--font-marianne',
+  display: 'swap',
 });
