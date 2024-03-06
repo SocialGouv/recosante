@@ -1,5 +1,6 @@
 {
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["./data/*, **/*.json"],
   "compilerOptions": {
     "isolatedModules": true,
     "esModuleInterop": true,

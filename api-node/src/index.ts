@@ -17,6 +17,7 @@ import environmentRouter from './controllers/environment.ts';
 import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 import mailRouter from './controllers/mail.ts';
+import udiRouter from './controllers/udi.ts';
 import feedbackRouter from './controllers/feedback.ts';
 
 import packageJson from '../package.json';
@@ -108,6 +109,7 @@ app.use('/event', eventRouter);
 app.use('/user', userRouter);
 app.use('/indicators', indicatorsRouter);
 app.use('/mail', mailRouter);
+app.use('/udi', udiRouter);
 app.use('/feedback', feedbackRouter);
 
 app.use(Sentry.Handlers.errorHandler());

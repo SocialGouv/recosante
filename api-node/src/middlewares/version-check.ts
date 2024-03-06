@@ -17,12 +17,12 @@ export default function (
   res: express.Response,
   next: express.NextFunction,
 ) {
-  if (!appbuild) {
-    return res.status(403).send({
-      ok: false,
-      sendInApp: ['Veuillez mettre à jour votre application!'],
-    });
-  }
+  // if (!appbuild) {
+  //   return res.status(403).send({
+  //     ok: false,
+  //     sendInApp: ['Veuillez mettre à jour votre application!'],
+  //   });
+  // }
 
   const ANDROID_APP_ID = 'com.recosante.recosante';
   const IOS_APP_ID = '6476136888';
