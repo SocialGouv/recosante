@@ -8,6 +8,8 @@ pg:
 
 pg-api-node:
   ~chart: pg
+  backup:
+    name: 2023-03-06-11-56 # backup on a new folder
   cnpg-cluster:
     persistence:
       size: "20Gi"
