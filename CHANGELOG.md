@@ -1,3 +1,12 @@
+## [1.32.1](https://github.com/SocialGouv/recosante/compare/v1.32.0...v1.32.1) (2024-03-07)
+
+
+### Bug Fixes
+
+* Add Link import and update link URL ([af90d9b](https://github.com/SocialGouv/recosante/commit/af90d9b6c8e357465602f68fed5dade5c42e7ee9))
+* cnpg preprod backup for api-node ([0990d31](https://github.com/SocialGouv/recosante/commit/0990d3101c5273184c5c17c9e6028cbb4892adf2))
+* pg-api-node storage size ([5e44b99](https://github.com/SocialGouv/recosante/commit/5e44b99ecab45303ff04ce6f685650f773de5f10))
+
 # [1.32.0](https://github.com/SocialGouv/recosante/compare/v1.31.6...v1.32.0) (2024-03-04)
 
 
