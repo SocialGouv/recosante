@@ -44,5 +44,8 @@
   "engines": {
     "npm": "please-use-yarn"
   },
-  "packageManager": "yarn@4.1.0"
+  "packageManager": "yarn@4.1.0",
+  "dependencies": {
+    "@turf/boolean-point-in-polygon": "^6.5.0"
+  }
 }
