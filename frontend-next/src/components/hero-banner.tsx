@@ -153,7 +153,7 @@ export function Hero() {
             </p>
             <Link
               onClick={() => MatomoService.trackClick('go-to-web-version')}
-              href='/'
+              href='/web-version'
               target='_blank'
               className='border-b text-center text-sm  text-gray-500 lg:text-left '
             >
