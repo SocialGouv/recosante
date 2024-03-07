@@ -38,6 +38,8 @@ const Text = styled.textarea`
   cursor: copy;
 `;
 
+
+const URL = "www.recosante.beta.gouv.fr";
 export default function Code(props) {
   let location = useLocation();
   const { theme } = useContext(StyleContext);
@@ -47,7 +49,7 @@ export default function Code(props) {
   useEffect(() => {
     setScript(
       `<script id="widget-recosante" src="${
-        window.location.origin
+        URL
       }/iframe.js" data-search="${
         props.defaultPlace
           ? formatPlaceUrl(props.defaultPlace).substring(1)

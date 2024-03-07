@@ -13,6 +13,7 @@ import { AppStoreLink } from './AppStoreLink';
 import { GoogleStoreLink } from './GoogleStoreLink';
 import { MatomoService } from '@/services/matomo';
 import qrCode from '@/images/qr-code.svg';
+import Link from 'next/link';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -98,7 +99,7 @@ export function Hero() {
                   className='animate-pulse'
                 />
               </div>
-              <div className='  flex flex-col  justify-center mx-auto items-start'>
+              <div className='flex flex-col  justify-center mx-auto items-start'>
                 <p className='text-md text-app-primary '>
                   Scannez ici
                   <br /> pour télécharger l'application.
@@ -150,14 +151,14 @@ export function Hero() {
               Les recommandations sont issues de sources fiables et validés par
               le Haut conseil de santé publique et Santé publique France.
             </p>
-            <a
+            <Link
               onClick={() => MatomoService.trackClick('go-to-web-version')}
-              href='https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr'
+              href='/'
               target='_blank'
               className='border-b text-center text-sm  text-gray-500 lg:text-left '
             >
               Accéder à la version web
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

@@ -41,11 +41,12 @@ export default function Code(props) {
   let location = useLocation();
   const { theme } = useContext(StyleContext);
   const [script, setScript] = useState("");
+  const URL = "www.recosante.beta.gouv.fr";
 
   useEffect(() => {
     setScript(
       `<script id="${props.id || "widget-recosante"}" src="${
-        window.location.origin
+        URL
       }/iframe.js" data-search="${
         props.typeShare === "result" ? location.pathname.substring(1) : ""
       }?theme=${theme}"></script>`
