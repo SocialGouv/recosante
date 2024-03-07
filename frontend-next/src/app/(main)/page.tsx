@@ -4,7 +4,8 @@ import { PrimaryFeatures } from '@/components/primary-features';
 import { Notification } from '@/components/notifications';
 import { Incentive } from '@/components/incentive';
 import BlogPreview from '@/components/blog-preview';
-import { ResolvingMetadata, Metadata } from 'next';
+import { Metadata } from 'next';
+import { MetadataService } from '@/services/metadatas';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -16,10 +17,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-
+const jsonLd = MetadataService.getJsonLd();
 export default function Home() {
   return (
     <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Hero />
       <PrimaryFeatures />
       <Notification />

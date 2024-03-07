@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { Metadata, ResolvingMetadata } from 'next';
 import { IndicatorService } from '@/services/indicator';
 import Head from 'next/head';
+import { MetadataService } from '@/services/metadatas';
 
 const municipalitesParam = PageBuilderService.getMunicipalitiesParams();
 const cities = municipalitesParam.map((param) => param.params.city);
@@ -49,15 +50,23 @@ export default function Page(props: {
   if (!indicators.includes(props.params.indicator)) {
     redirect('/not-found');
   }
+  const jsonLd = MetadataService.getJsonLd(
+    `Télécharger l'application officielle du gouvernement français pour suivre en temps réel ${indicatorName} à ${props.params.city}.`,
+  );
 
   return (
     <>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Head>
         <meta
           name='apple-itunes-app'
           content='app-id=6476136888, app-argument=https://recosante.beta.gouv.fr/'
         ></meta>
       </Head>
+
       <HeroCity city={props.params.city} indicator={indicatorName} />
       <PrimaryFeatures />
       <Notification />
