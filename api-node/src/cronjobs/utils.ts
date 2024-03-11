@@ -49,6 +49,16 @@ export async function launchCronJob(
         active: false,
       },
     });
+    // cleanup old cronjob still active
+    await prisma.cronJob.updateMany({
+      where: {
+        name,
+        active: true,
+      },
+      data: {
+        active: false,
+      },
+    });
     return true;
   } catch (cronError: any) {
     capture(cronError, { level: 'error', extra: { name } });
