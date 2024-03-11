@@ -358,8 +358,8 @@ model Feedback {
 }
 
 model udis {
-  ogc_fid      Int                                        @id
-  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")
-  gid          Int
-  code_udi     String
+  ogc_fid      Int                                         @id @default(autoincrement())
+  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
+  gid          Int?
+  code_udi     String?
 }

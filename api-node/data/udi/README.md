@@ -15,6 +15,8 @@ Puis nous traduisons les fichiers .json en .sql : `ogr2ogr -f "PGDump" -t_srs EP
 
 Enfin nous enregistrons les données dans notre base de données: `psql "postgresql://recosante:{password}@localhost:5442/recosante" -f bretagne.sql` par exemple
 
+ATTENTION: certains champs des colonnes `wkb_geometry` ou `code_udi` peuvent être nuls, pensez à les supprimer pour ne pas faire bugger Prisma
+
 ## Requête pour obtenir les UDIS en fonction de coordonnées
 
 ATTENTION: les coordonnées doivent être dans un format RGF93 / Lambert 93 et non GPS (il y a donc une conversion à faire entre le GPS renvoyé par les téléphones et les coordonnées utilisées pour requêter la base de données)
