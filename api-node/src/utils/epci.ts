@@ -1,10 +1,15 @@
 import type { Municipality } from '@prisma/client';
 import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
+import fs from 'fs';
 
 export async function grabEPCIsWithINSEEMunicipalityCodes(): Promise<
   Record<Exclude<Municipality['EPCI'], null>, Array<Municipality['COM']>>
 > {
+  /*
+
+  I don't know why but sometimes the query below doesn't work
+
   const epcisRows: Array<{
     EPCI: Exclude<Municipality['EPCI'], null>;
     COM: Array<Municipality['COM']>;
@@ -30,6 +35,31 @@ export async function grabEPCIsWithINSEEMunicipalityCodes(): Promise<
       extra: { municipalitiesINSEECodeByEPCIObject },
     });
   }
+
+  return municipalitiesINSEECodeByEPCIObject;
+   */
+
+  /*
+
+  I don't know why but sometimes the query above doesn't work
+  cf RECOSANTE-API-NODE-1G
+  https://sentry.fabrique.social.gouv.fr/share/issue/06a7636be775414e88b12fe2d7fec7c3/
+
+  so I wrote a backup file to make sure we have the data
+  and we'll use this data instead of the query result
+
+  fs.writeFileSync(
+    './data/municipalitiesINSEECodeByEPCIObject.json',
+    JSON.stringify(municipalitiesINSEECodeByEPCIObject),
+  );
+   */
+
+  const municipalitiesINSEECodeByEPCIObject: Record<
+    Exclude<Municipality['EPCI'], null>,
+    Array<Municipality['COM']>
+  > = JSON.parse(
+    fs.readFileSync('./data/municipalitiesINSEECodeByEPCIObject.json', 'utf8'),
+  );
 
   return municipalitiesINSEECodeByEPCIObject;
 }
