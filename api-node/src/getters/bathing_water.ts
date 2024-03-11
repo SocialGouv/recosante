@@ -182,7 +182,10 @@ async function getBathingWaters({
   const municipality = await prisma.municipality.findUnique({
     where: { COM: municipality_insee_code },
   });
-  if (municipality?.COMPARENT) {
+  if (
+    municipality?.COMPARENT &&
+    municipality.COMPARENT !== municipality_insee_code
+  ) {
     return await getBathingWaters({
       municipality_insee_code: municipality.COMPARENT,
       date_UTC_ISO,
