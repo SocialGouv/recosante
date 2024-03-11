@@ -1,3 +1,10 @@
+# [1.33.0](https://github.com/SocialGouv/recosante/compare/v1.32.4...v1.33.0) (2024-03-11)
+
+
+### Features
+
+* eau potable UDIS ([#464](https://github.com/SocialGouv/recosante/issues/464)) ([6ae77ba](https://github.com/SocialGouv/recosante/commit/6ae77ba907d46b54e95b75a4240f535a8de2abcc))
+
 ## [1.32.4](https://github.com/SocialGouv/recosante/compare/v1.32.3...v1.32.4) (2024-03-11)
 
 
