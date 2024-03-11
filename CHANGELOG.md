@@ -1,3 +1,11 @@
+## [1.32.3](https://github.com/SocialGouv/recosante/compare/v1.32.2...v1.32.3) (2024-03-11)
+
+
+### Bug Fixes
+
+* ingnore alert for know municiaplities with no data ([3312e63](https://github.com/SocialGouv/recosante/commit/3312e632b6ce3d81c1a6cecfe505f23d8aca1267))
+* RECOSANTE-API-NODE-X RECOSANTE-API-NODE-1M Unknown bathing water label communiqué ([cda4f67](https://github.com/SocialGouv/recosante/commit/cda4f67c04492c7937ef6f9d1c3b98cedce0cc54))
+
 ## [1.32.2](https://github.com/SocialGouv/recosante/compare/v1.32.1...v1.32.2) (2024-03-11)
 
 
