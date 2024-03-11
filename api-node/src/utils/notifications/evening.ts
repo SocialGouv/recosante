@@ -9,10 +9,22 @@ import {
   getWeatherAlertDotColor,
 } from '~/utils/weather_alert';
 import { sendPushNotification } from '~/service/expo-notifications';
-import { getIndiceUVForJ } from '~/getters/indice_uv';
-import { getIndiceAtmoForJ1 } from '~/getters/indice_atmo';
-import { getPollensForJ1 } from '~/getters/pollens';
-import { getWeatherAlertForJ1 } from '~/getters/weather_alert';
+import {
+  getIndiceUVForJ,
+  knownMissingMunicipalitiesForIndiceUv,
+} from '~/getters/indice_uv';
+import {
+  getIndiceAtmoForJ1,
+  knownMissingMunicipalitiesForIndiceAtmo,
+} from '~/getters/indice_atmo';
+import {
+  getPollensForJ1,
+  knownMissingMunicipalitiesForPollens,
+} from '~/getters/pollens';
+import {
+  getWeatherAlertForJ1,
+  knownMissingMunicipalitiesForWeatherAlert,
+} from '~/getters/weather_alert';
 import type { IndiceUVNumber } from '~/types/api/indice_uv';
 import { WeatherAlertPhenomenonEnum } from '~/types/api/weather_alert';
 import { getIndiceUVDotColor, getIndiceUVStatus } from '~/utils/indice_uv';
@@ -84,17 +96,21 @@ export async function sendEveningNotification() {
       date_UTC_ISO: dayjs().toISOString(),
     });
     if (indice_uv?.uv_j1 == null) {
-      capture('No indice_uv found for evening notification', {
-        extra: {
-          municipality_insee_code,
-          indicatorSlug,
-          date: dayjs().utc().startOf('day').toISOString(),
-        },
-        tags: {
-          municipality_insee_code,
-        },
-        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
-      });
+      if (
+        !knownMissingMunicipalitiesForIndiceUv.includes(municipality_insee_code)
+      ) {
+        capture('[EVENING NOTIFICATION] No indice_uv found', {
+          extra: {
+            municipality_insee_code,
+            indicatorSlug,
+            date: dayjs().utc().startOf('day').toISOString(),
+          },
+          tags: {
+            municipality_insee_code,
+          },
+          user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
+        });
+      }
     } else {
       data.indice_uv = {
         id: indice_uv.id,
@@ -119,17 +135,23 @@ export async function sendEveningNotification() {
     });
 
     if (indice_atmo_j1?.code_qual == null) {
-      capture('No indice_atmo_j1 found for evening notification', {
-        extra: {
+      if (
+        !knownMissingMunicipalitiesForIndiceAtmo.includes(
           municipality_insee_code,
-          indicatorSlug,
-          date: dayjs().utc().startOf('day').toISOString(),
-        },
-        tags: {
-          municipality_insee_code,
-        },
-        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
-      });
+        )
+      ) {
+        capture('[EVENING NOTIFICATION] No indice_atmo_j1 found', {
+          extra: {
+            municipality_insee_code,
+            indicatorSlug,
+            date: dayjs().utc().startOf('day').toISOString(),
+          },
+          tags: {
+            municipality_insee_code,
+          },
+          user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
+        });
+      }
     } else {
       data.indice_atmospheric = {
         id: indice_atmo_j1.id,
@@ -153,17 +175,21 @@ export async function sendEveningNotification() {
     });
 
     if (!pollensJ1) {
-      capture('No pollensJ1 found for evening notification', {
-        extra: {
-          municipality_insee_code,
-          indicatorSlug,
-          date: dayjs().utc().startOf('day').toISOString(),
-        },
-        tags: {
-          municipality_insee_code,
-        },
-        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
-      });
+      if (
+        !knownMissingMunicipalitiesForPollens.includes(municipality_insee_code)
+      ) {
+        capture('[EVENING NOTIFICATION] No pollensJ1 found', {
+          extra: {
+            municipality_insee_code,
+            indicatorSlug,
+            date: dayjs().utc().startOf('day').toISOString(),
+          },
+          tags: {
+            municipality_insee_code,
+          },
+          user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
+        });
+      }
     } else {
       data.pollen_allergy = {
         id: pollensJ1.id,
@@ -187,17 +213,23 @@ export async function sendEveningNotification() {
     });
 
     if (!weatherAlertJ1) {
-      capture('No weatherAlertJ1 found for evening notification', {
-        extra: {
+      if (
+        !knownMissingMunicipalitiesForWeatherAlert.includes(
           municipality_insee_code,
-          indicatorSlug,
-          date: dayjs().utc().startOf('day').toISOString(),
-        },
-        tags: {
-          municipality_insee_code,
-        },
-        user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
-      });
+        )
+      ) {
+        capture('[EVENING NOTIFICATION] No weatherAlertJ1 found', {
+          extra: {
+            municipality_insee_code,
+            indicatorSlug,
+            date: dayjs().utc().startOf('day').toISOString(),
+          },
+          tags: {
+            municipality_insee_code,
+          },
+          user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
+        });
+      }
     } else {
       const phenomenonsJ1 = getSortedPhenomenonsByValue(weatherAlertJ1);
       const maxColorCodeIdJ1 = phenomenonsJ1[0].value;
@@ -258,7 +290,7 @@ export async function sendEveningNotification() {
     // so we can't add more than 4 indicators, and we sacrifice the bathing water indicator
 
     if (!body.length) {
-      capture('No indicators found for evening notification', {
+      capture('[EVENING NOTIFICATION] No indicators found', {
         extra: {
           municipality_insee_code,
           indicatorSlug,

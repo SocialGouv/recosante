@@ -49,8 +49,10 @@ async function getPollensFromMunicipalityAndDate({
   });
 
   if (!pollensJ0) {
-    if (!missingMunicipalities.includes(municipality_insee_code)) {
-      capture('No pollens found', {
+    if (
+      !knownMissingMunicipalitiesForPollens.includes(municipality_insee_code)
+    ) {
+      capture('[POLLENS] New insee code with unavailable data', {
         extra: {
           municipality_insee_code,
           date_UTC_ISO,
@@ -258,7 +260,7 @@ async function getPollensForJ1({
   return null;
 }
 
-const missingMunicipalities = [
+const knownMissingMunicipalitiesForPollens: Array<Municipality['COM']> = [
   '2B033',
   '2A004',
   '97102',
@@ -288,4 +290,9 @@ const missingMunicipalities = [
   '2A284',
 ];
 
-export { getPollensFromMunicipalityAndDate, getPollensForJ0, getPollensForJ1 };
+export {
+  getPollensFromMunicipalityAndDate,
+  getPollensForJ0,
+  getPollensForJ1,
+  knownMissingMunicipalitiesForPollens,
+};
