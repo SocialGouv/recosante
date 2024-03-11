@@ -30,7 +30,8 @@ function logStep(step: string) {
   );
   now = Date.now();
 }
-export async function fillOrUpdateMunicipalitiesInDB() {
+
+async function fillOrUpdateMunicipalitiesInDB() {
   /*
   Steps:
   1. grab the municipalities list (around 37500 in 2023)
@@ -217,3 +218,20 @@ export async function fillOrUpdateMunicipalitiesInDB() {
   }
   logStep('Step 5: saved that in the database');
 }
+
+async function groupUsersByMunicipality() {
+  const result: Array<{
+    municipality_insee_code: Municipality['COM'];
+    user_count: number;
+  }> = await prisma.$queryRaw`
+SELECT "municipality_insee_code", COUNT(*) AS user_count
+FROM "User"
+WHERE "municipality_insee_code" IS NOT NULL
+GROUP BY "municipality_insee_code"
+ORDER BY user_count DESC;
+`;
+
+  return result;
+}
+
+export { fillOrUpdateMunicipalitiesInDB, groupUsersByMunicipality };

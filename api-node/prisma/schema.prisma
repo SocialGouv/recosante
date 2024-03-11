@@ -272,26 +272,6 @@ enum PollutionCodeEnum {
   BENZENE // Benzène - code 60
 }
 
-model AlertPollutionAtmospheric {
-  id String @id @default(uuid())
-
-  // common fields for all indicators
-  municipality_insee_code String
-  municipality            Municipality         @relation(fields: [municipality_insee_code], references: [COM])
-  validity_start          DateTime // the date is the first date of the validity period, included
-  validity_end            DateTime // the date is the last date of the validity period, included
-  diffusion_date          DateTime
-  data_availability       DataAvailabilityEnum @default(AVAILABLE)
-  alert_status            AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
-  created_at              DateTime             @default(now())
-  updated_at              DateTime             @default(now()) @updatedAt
-  // specific fields for this indicator
-  state                   PollutionStateEnum
-  code                    PollutionCodeEnum
-  comment_short           String
-  comment_long            String
-}
-
 model CronJob {
   id         String   @id @default(uuid())
   unique_key String   @unique
@@ -302,29 +282,28 @@ model CronJob {
 }
 
 model Municipality {
-  COM                       String                      @id // Code commune
-  TYPECOM                   String
-  REG                       String // Code région
-  DEP                       String // Code département
-  CTCD                      String? // Code de la collectivité territoriale ayant les compétences départementales
-  ARR                       String? // Code arrondissement
-  CAN                       String? // Code canton. Pour les communes « multi-cantonales », code décliné de 99 à 90 (pseudo-canton) ou de 89 à 80 (communes nouvelles)
-  EPCI                      String? // Code EPCI
-  LIBEPCI                   String? // Nom de l'EPCI ou métropole
-  TNCC                      String? //  Type de nom en clair (majuscules) (https://www.insee.fr/fr/information/2114773)
-  NCC                       String? // Nom en clair (majuscules)
-  NCCENR                    String? // Nom en clair (typographie riche)
-  LIBELLE                   String? // Nom en clair (typographie riche) avec article
-  COMPARENT                 String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
-  bathing_water_sites       Int                         @default(0)
-  created_at                DateTime                    @default(now())
-  updated_at                DateTime                    @default(now()) @updatedAt
-  IndiceUv                  IndiceUv[]
-  PollenAllergyRisk         PollenAllergyRisk[]
-  WeatherAlert              WeatherAlert[]
-  IndiceAtmospheric         IndiceAtmospheric[]
-  AlertPollutionAtmospheric AlertPollutionAtmospheric[]
-  BathingWater              BathingWater[]
+  COM                 String              @id // Code commune
+  TYPECOM             String
+  REG                 String // Code région
+  DEP                 String // Code département
+  CTCD                String? // Code de la collectivité territoriale ayant les compétences départementales
+  ARR                 String? // Code arrondissement
+  CAN                 String? // Code canton. Pour les communes « multi-cantonales », code décliné de 99 à 90 (pseudo-canton) ou de 89 à 80 (communes nouvelles)
+  EPCI                String? // Code EPCI
+  LIBEPCI             String? // Nom de l'EPCI ou métropole
+  TNCC                String? //  Type de nom en clair (majuscules) (https://www.insee.fr/fr/information/2114773)
+  NCC                 String? // Nom en clair (majuscules)
+  NCCENR              String? // Nom en clair (typographie riche)
+  LIBELLE             String? // Nom en clair (typographie riche) avec article
+  COMPARENT           String? // Code de la commune parente pour les arrondissements municipaux et les communes associées ou déléguées.
+  bathing_water_sites Int                 @default(0)
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @default(now()) @updatedAt
+  IndiceUv            IndiceUv[]
+  PollenAllergyRisk   PollenAllergyRisk[]
+  WeatherAlert        WeatherAlert[]
+  IndiceAtmospheric   IndiceAtmospheric[]
+  BathingWater        BathingWater[]
 }
 
 enum SeasonEnum {
