@@ -221,7 +221,10 @@ async function getPollensForJ0({
   const municipality = await prisma.municipality.findUnique({
     where: { COM: municipality_insee_code },
   });
-  if (municipality?.COMPARENT) {
+  if (
+    municipality?.COMPARENT &&
+    municipality.COMPARENT !== municipality_insee_code
+  ) {
     return await getPollensForJ0({
       municipality_insee_code: municipality.COMPARENT,
       date_UTC_ISO,
@@ -251,7 +254,10 @@ async function getPollensForJ1({
   const municipality = await prisma.municipality.findUnique({
     where: { COM: municipality_insee_code },
   });
-  if (municipality?.COMPARENT) {
+  if (
+    municipality?.COMPARENT &&
+    municipality.COMPARENT !== municipality_insee_code
+  ) {
     return await getPollensForJ1({
       municipality_insee_code: municipality.COMPARENT,
       date_UTC_ISO,

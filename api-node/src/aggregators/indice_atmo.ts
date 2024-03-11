@@ -340,7 +340,11 @@ export async function getAtmoIndicatorForDate(
     const missingDepartments: Record<Municipality['DEP'], number> = {};
     for (const municipality of municipalities) {
       let indiceAtmoData = indiceAtmoByMunicipalityInseeCode[municipality.COM];
-      if (!indiceAtmoData && municipality.COMPARENT) {
+      if (
+        !indiceAtmoData &&
+        municipality.COMPARENT &&
+        municipality.COMPARENT !== municipality.COM
+      ) {
         indiceAtmoData =
           indiceAtmoByMunicipalityInseeCode[municipality.COMPARENT];
       }
