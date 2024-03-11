@@ -1,3 +1,10 @@
+## [1.33.2](https://github.com/SocialGouv/recosante/compare/v1.33.1...v1.33.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* inifinite loop checking comparent ([#469](https://github.com/SocialGouv/recosante/issues/469)) ([8c16c67](https://github.com/SocialGouv/recosante/commit/8c16c67c8904dedcfbf52c755bb8953cfe8d1723))
+
 ## [1.33.1](https://github.com/SocialGouv/recosante/compare/v1.33.0...v1.33.1) (2024-03-11)
 
 
