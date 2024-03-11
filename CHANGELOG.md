@@ -1,3 +1,14 @@
+## [1.32.2](https://github.com/SocialGouv/recosante/compare/v1.32.1...v1.32.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* capture "No indice_atmo_j0 found" error only for new municipalities ([a1b3064](https://github.com/SocialGouv/recosante/commit/a1b3064b9b52c7dbb80bfffdc1ec7e36f9563370))
+* capture "No pollens found" error only for new municipalities ([ff076b1](https://github.com/SocialGouv/recosante/commit/ff076b15ea1329142bf71218ad222804c961d6a1))
+* clean old data ([#466](https://github.com/SocialGouv/recosante/issues/466)) ([f21ef15](https://github.com/SocialGouv/recosante/commit/f21ef15705c522cf0582072fd31dd9a0f85e7fe3))
+* RECOSANTE-API-NODE-1D ([888fdee](https://github.com/SocialGouv/recosante/commit/888fdee1c1692fb3edcc61d6866a36fb6af9fde1))
+* RECOSANTE-API-NODE-1G RECOSANTE-API-NODE-1E No EPCI found for code ([bfd86ce](https://github.com/SocialGouv/recosante/commit/bfd86ceb857e61c80489eda1e8028d8c1d2e1991))
+
 ## [1.32.1](https://github.com/SocialGouv/recosante/compare/v1.32.0...v1.32.1) (2024-03-07)
 
 
