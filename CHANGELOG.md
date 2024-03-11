@@ -1,3 +1,10 @@
+## [1.32.4](https://github.com/SocialGouv/recosante/compare/v1.32.3...v1.32.4) (2024-03-11)
+
+
+### Bug Fixes
+
+* lint ([c4b7f50](https://github.com/SocialGouv/recosante/commit/c4b7f50299a78847590a67d63290aac07f361620))
+
 ## [1.32.3](https://github.com/SocialGouv/recosante/compare/v1.32.2...v1.32.3) (2024-03-11)
 
 
