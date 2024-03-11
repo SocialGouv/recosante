@@ -53,15 +53,19 @@ async function getIndiceUvFromMunicipalityAndDate({
   });
 
   if (indice_uv?.uv_j0 == null) {
-    capture('No indice_uv found', {
-      extra: {
-        municipality_insee_code,
-        date_UTC_ISO,
-      },
-      tags: {
-        municipality_insee_code,
-      },
-    });
+    if (
+      !knownMissingMunicipalitiesForIndiceUv.includes(municipality_insee_code)
+    ) {
+      capture('[INDICE UV] New insee code with unavailable data', {
+        extra: {
+          municipality_insee_code,
+          date_UTC_ISO,
+        },
+        tags: {
+          municipality_insee_code,
+        },
+      });
+    }
     const indiceUvEmpty: Indicator = {
       slug: IndicatorsSlugEnum.indice_uv,
       name: indicatorsObject[IndicatorsSlugEnum.indice_uv].name,
@@ -229,4 +233,26 @@ async function getIndiceUVForJ({
   return null;
 }
 
-export { getIndiceUvFromMunicipalityAndDate, getIndiceUVForJ };
+const knownMissingMunicipalitiesForIndiceUv: Array<Municipality['COM']> = [
+  '97102',
+  '97416',
+  '97107',
+  '97407',
+  '97411',
+  '97221',
+  '97110',
+  '97615',
+  '97227',
+  '97209',
+  '97122',
+  '98818',
+  '97415',
+  '97311',
+  '97213',
+];
+
+export {
+  getIndiceUvFromMunicipalityAndDate,
+  getIndiceUVForJ,
+  knownMissingMunicipalitiesForIndiceUv,
+};

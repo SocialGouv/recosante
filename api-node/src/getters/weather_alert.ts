@@ -55,15 +55,21 @@ async function getWeatherAlertFromMunicipalityAndDate({
   });
 
   if (!weatherAlertJ0) {
-    capture('No weatherAlertJ0 found', {
-      extra: {
+    if (
+      !knownMissingMunicipalitiesForWeatherAlert.includes(
         municipality_insee_code,
-        date_UTC_ISO,
-      },
-      tags: {
-        municipality_insee_code,
-      },
-    });
+      )
+    ) {
+      capture('[WEATHER ALERT] New insee code with unavailable data', {
+        extra: {
+          municipality_insee_code,
+          date_UTC_ISO,
+        },
+        tags: {
+          municipality_insee_code,
+        },
+      });
+    }
     const weatherAlertEmpty: Indicator = {
       slug: IndicatorsSlugEnum.weather_alert,
       name: indicatorsObject[IndicatorsSlugEnum.weather_alert].name,
@@ -279,8 +285,27 @@ async function getWeatherAlertForJ1({
   return null;
 }
 
+const knownMissingMunicipalitiesForWeatherAlert: Array<Municipality['COM']> = [
+  '97102',
+  '97416',
+  '97107',
+  '97407',
+  '97411',
+  '97221',
+  '97110',
+  '97615',
+  '97227',
+  '97209',
+  '97122',
+  '98818',
+  '97415',
+  '97311',
+  '97213',
+];
+
 export {
   getWeatherAlertFromMunicipalityAndDate,
   getWeatherAlertForJ0,
   getWeatherAlertForJ1,
+  knownMissingMunicipalitiesForWeatherAlert,
 };

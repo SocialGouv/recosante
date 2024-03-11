@@ -52,8 +52,10 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   });
 
   if (indice_atmo_j0?.code_qual == null) {
-    if (!missingMunicipalities.includes(municipality_insee_code)) {
-      capture('No indice_atmo_j0 found', {
+    if (
+      !knownMissingMunicipalitiesForIndiceAtmo.includes(municipality_insee_code)
+    ) {
+      capture('[INDICE ATMO] New insee code with unavailable data', {
         extra: {
           municipality_insee_code,
           date_UTC_ISO,
@@ -303,7 +305,7 @@ async function getIndiceAtmoForJ1({
   return null;
 }
 
-const missingMunicipalities = [
+const knownMissingMunicipalitiesForIndiceAtmo: Array<Municipality['COM']> = [
   '08316',
   '08248',
   '02245',
@@ -347,4 +349,5 @@ export {
   getIndiceAtmoFromMunicipalityAndDate,
   getIndiceAtmoForJ0,
   getIndiceAtmoForJ1,
+  knownMissingMunicipalitiesForIndiceAtmo,
 };
