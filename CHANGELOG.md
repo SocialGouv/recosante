@@ -1,3 +1,10 @@
+## [1.33.1](https://github.com/SocialGouv/recosante/compare/v1.33.0...v1.33.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* udis schema ([61e5f56](https://github.com/SocialGouv/recosante/commit/61e5f56ba8a0dfd42de491ca3f9183f76368937e))
+
 # [1.33.0](https://github.com/SocialGouv/recosante/compare/v1.32.4...v1.33.0) (2024-03-11)
 
 
