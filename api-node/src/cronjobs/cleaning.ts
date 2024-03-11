@@ -1,10 +1,5 @@
-import { getAtmoIndicator } from '~/aggregators/indice_atmo.ts';
-import { getPollensIndicator } from '~/aggregators/pollens.ts';
-import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { getWeatherAlert } from '~/aggregators/weather_alert';
-import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
 import { groupUsersByMunicipality } from '~/utils/municipalities';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';

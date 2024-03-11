@@ -1,6 +1,4 @@
 import type { Municipality } from '@prisma/client';
-import prisma from '~/prisma';
-import { capture } from '~/third-parties/sentry';
 import fs from 'fs';
 
 export async function grabEPCIsWithINSEEMunicipalityCodes(): Promise<
