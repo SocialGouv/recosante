@@ -112,16 +112,20 @@ export async function scrapeHtmlBaignadesSitePage(
       case 'Bon':
         return BathingWaterResultEnum.GOOD;
       default:
-        capture(`Unknown bathing water label ${value}`, {
-          extra: {
-            value,
-            consultSiteUrl,
-          },
-          tags: {
-            consultSiteUrl,
-            label: value,
-          },
-        });
+        // if there is no test result, the parsing fails and the value is 'communiqué'
+        if (value !== 'communiqué' && !!value) {
+          capture(`Unknown bathing water label ${value}`, {
+            extra: {
+              value,
+              consultSiteUrl,
+            },
+            tags: {
+              consultSiteUrl,
+              label: value,
+            },
+          });
+        }
+        // TODO FIXME: we should return BathingWaterResultEnum.NO_RESULT_FOUND
         return BathingWaterResultEnum.GOOD;
     }
   }
