@@ -7,6 +7,7 @@ import { initRecommandations } from './recommandations';
 import { initAggregators } from './aggregators';
 import { initNotifications } from './notifications';
 import { ENVIRONMENT, SENTRY_KEY, VERSION } from '~/config';
+import { initIndicatorsCleaning } from './cleaning';
 
 const sentryEnabled = process.env.NODE_ENV !== 'development';
 
@@ -28,6 +29,7 @@ if (sentryEnabled) {
 }
 
 Promise.resolve()
+  .then(initIndicatorsCleaning) //
   .then(initMunicipalities) //
   .then(initRecommandations) //
   .then(initAggregators) //
