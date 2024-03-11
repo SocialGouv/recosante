@@ -10,6 +10,11 @@ router.post(
   catchErrors(async (req: RequestWithMatomoEvent, res: express.Response) => {
     const event = req.body.event;
 
+    if (!req.body.userId) {
+      res.status(200).send({ ok: true });
+      return;
+    }
+
     if (
       event.category === 'STORE_REVIEW' &&
       event.action === 'TRIGGERED_FROM_SETTINGS'
