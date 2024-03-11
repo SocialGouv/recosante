@@ -49,15 +49,17 @@ async function getPollensFromMunicipalityAndDate({
   });
 
   if (!pollensJ0) {
-    capture('No pollens found', {
-      extra: {
-        municipality_insee_code,
-        date_UTC_ISO,
-      },
-      tags: {
-        municipality_insee_code,
-      },
-    });
+    if (!missingMunicipalities.includes(municipality_insee_code)) {
+      capture('No pollens found', {
+        extra: {
+          municipality_insee_code,
+          date_UTC_ISO,
+        },
+        tags: {
+          municipality_insee_code,
+        },
+      });
+    }
     const pollensEmpty: Indicator = {
       slug: IndicatorsSlugEnum.pollen_allergy,
       name: indicatorsObject[IndicatorsSlugEnum.pollen_allergy].name,
@@ -255,5 +257,35 @@ async function getPollensForJ1({
   }
   return null;
 }
+
+const missingMunicipalities = [
+  '2B033',
+  '2A004',
+  '97102',
+  '97416',
+  '2A247',
+  '97407',
+  '97411',
+  '97221',
+  '97110',
+  '97107',
+  '2B123',
+  '2B003',
+  '2A008',
+  '2A001',
+  '97615',
+  '97227',
+  '97209',
+  '97122',
+  '98818',
+  '97415',
+  '97311',
+  '97213',
+  '2B353',
+  '2B311',
+  '2B307',
+  '2B063',
+  '2A284',
+];
 
 export { getPollensFromMunicipalityAndDate, getPollensForJ0, getPollensForJ1 };
