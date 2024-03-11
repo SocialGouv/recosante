@@ -52,15 +52,17 @@ async function getIndiceAtmoFromMunicipalityAndDate({
   });
 
   if (indice_atmo_j0?.code_qual == null) {
-    capture('No indice_atmo_j0 found', {
-      extra: {
-        municipality_insee_code,
-        date_UTC_ISO,
-      },
-      tags: {
-        municipality_insee_code,
-      },
-    });
+    if (!missingMunicipalities.includes(municipality_insee_code)) {
+      capture('No indice_atmo_j0 found', {
+        extra: {
+          municipality_insee_code,
+          date_UTC_ISO,
+        },
+        tags: {
+          municipality_insee_code,
+        },
+      });
+    }
     const indiceAtmoEmpty: Indicator = {
       slug: IndicatorsSlugEnum.indice_atmospheric,
       name: indicatorsObject[IndicatorsSlugEnum.indice_atmospheric].name,
@@ -300,6 +302,46 @@ async function getIndiceAtmoForJ1({
   }
   return null;
 }
+
+const missingMunicipalities = [
+  '08316',
+  '08248',
+  '02245',
+  '02659',
+  '02722',
+  '69152',
+  '02484',
+  '97416',
+  '08228',
+  '02389',
+  '02312',
+  '02168',
+  '02072',
+  '97407',
+  '02239',
+  '97411',
+  '02543',
+  '02358',
+  '02061',
+  '97615',
+  '08163',
+  '02824',
+  '02738',
+  '02487',
+  '02372',
+  '02238',
+  '02183',
+  '98818',
+  '97415',
+  '97311',
+  '08105',
+  '02610',
+  '02465',
+  '02340',
+  '02180',
+  '02173',
+  '02097',
+];
 
 export {
   getIndiceAtmoFromMunicipalityAndDate,
