@@ -1,11 +1,13 @@
 generator client {
-  provider   = "prisma-client-js"
-  engineType = "binary"
+  provider        = "prisma-client-js"
+  engineType      = "binary"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
 }
 
 enum NotifationEnum {
@@ -353,4 +355,11 @@ model Feedback {
   user_id    String
   user       User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
+}
+
+model udis {
+  ogc_fid      Int                                        @id
+  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")
+  gid          Int
+  code_udi     String
 }
