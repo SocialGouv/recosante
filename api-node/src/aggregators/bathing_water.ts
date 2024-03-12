@@ -202,7 +202,7 @@ export async function getBathingWaterIndicator() {
     }
 
     logStep(
-      `DONE INSERTING POLLENS: ${insertedNewRows} rows inserted upon ${municipalities.length} municipalities`,
+      `DONE INSERTING BATHING WATER: ${insertedNewRows} rows inserted upon ${municipalities.length} municipalities`,
     );
     logStep(
       `MISSING DATA : ${missingData} missing upon ${municipalities.length} municipalities`,
