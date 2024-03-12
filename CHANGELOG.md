@@ -1,3 +1,10 @@
+## [1.33.3](https://github.com/SocialGouv/recosante/compare/v1.33.2...v1.33.3) (2024-03-12)
+
+
+### Bug Fixes
+
+* batyhing water alert ([#470](https://github.com/SocialGouv/recosante/issues/470)) ([1c5b5b5](https://github.com/SocialGouv/recosante/commit/1c5b5b5f0eb935dc5f38777befa041a0a3ffa470))
+
 ## [1.33.2](https://github.com/SocialGouv/recosante/compare/v1.33.1...v1.33.2) (2024-03-11)
 
 
