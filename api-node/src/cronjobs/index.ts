@@ -28,9 +28,11 @@ if (sentryEnabled) {
   });
 }
 
-Promise.resolve()
-  .then(initIndicatorsCleaning) //
-  .then(initMunicipalities) //
-  .then(initRecommandations) //
-  .then(initAggregators) //
-  .then(initNotifications); //
+if (ENVIRONMENT !== 'development') {
+  Promise.resolve()
+    .then(initIndicatorsCleaning) //
+    .then(initMunicipalities) //
+    .then(initRecommandations) //
+    .then(initAggregators) //
+    .then(initNotifications); //
+}

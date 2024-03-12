@@ -7,6 +7,16 @@ api:
 indice:
   ~needs: [build-indice, api]
 
+api-node:
+  env:
+    - name: ENVIRONMENT
+      value: "development"
+
+cronjobs:
+  env:
+    - name: ENVIRONMENT
+      value: "development"
+
 jobs:
   runs:
     seed-db:
