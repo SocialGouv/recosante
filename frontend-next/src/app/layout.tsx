@@ -2,6 +2,8 @@ import '@/styles/tailwind.css';
 import { type Metadata } from 'next';
 import { marianneFont } from '@/assets/fonts';
 import { Matomo } from '@/components/matomo';
+import { CookieBanner } from '@/components/cookie-banner/cookie-banner';
+
 export const metadata: Metadata = {
   openGraph: {
     images: [
@@ -37,7 +39,8 @@ export default function RootLayout({
     >
       <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>
-        {children}
+        <CookieBanner />
+        <div className='flex min-h-full flex-col'>{children}</div>
       </body>
     </html>
   );
