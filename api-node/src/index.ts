@@ -19,6 +19,8 @@ import indicatorsRouter from './controllers/indicators.ts';
 import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 import notificationRouter from './controllers/notification.ts';
+import udiRouter from './controllers/udi.ts';
+
 import packageJson from '../package.json';
 
 // Put together a schema
@@ -99,17 +101,18 @@ app.post('/sentry-check', async (req, res) => {
 });
 
 // check version before checking other controllers
-// @ts-expect-error TODO: Fix this when using version-check.ts
-app.use(versionCheck);
 
 // Routes
-app.use('/environment', environmentRouter);
-app.use('/event', eventRouter);
-app.use('/user', userRouter);
-app.use('/indicators', indicatorsRouter);
-app.use('/mail', mailRouter);
-app.use('/feedback', feedbackRouter);
-app.use('/notification', notificationRouter);
+app.use('/environment', versionCheck, environmentRouter);
+app.use('/event', versionCheck, eventRouter);
+app.use('/user', versionCheck, userRouter);
+app.use('/indicators', versionCheck, indicatorsRouter);
+app.use('/mail', versionCheck, mailRouter);
+app.use('/feedback', versionCheck, feedbackRouter);
+app.use('/notification', versionCheck, notificationRouter);
+app.use('/udi', udiRouter);
+
+>>>>>>> 1aff47c (feat: udi controller)
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
