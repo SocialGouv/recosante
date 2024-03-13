@@ -35,6 +35,7 @@ model User {
   municipality_insee_code    String? // code INSEE
   municipality_name          String?
   municipality_zip_code      String?
+  udi                        String? // code UDI for drinking water
   push_notif_token           String?
   notifications_sent         Int?                @default(0) // cache the number of notifications sent
   asked_for_review           Int?                @default(0)
@@ -257,21 +258,89 @@ model BathingWater {
   @@index([municipality_insee_code, id_site, diffusion_date], name: "bathing_water_insee_code_id_site_diffusion_date")
 }
 
-enum PollutionStateEnum {
-  ALERT // ALERTE
-  INFORMATION_AND_RECOMMANDATION // INFORMATION ET RECOMMANDATION
-  NO_ALERT // PAS DE DEPASSEMENT
-  ALERT_PERSISTANCE // ALERTE SUR PERSISTANCE
+// L’unité de distribution (UDI) correspond à un ensemble de canalisations de distribution de l’eau potable au sein duquel la qualité de l’eau délivrée est considérée comme homogène.
+model udis {
+  ogc_fid      Int                                         @id @default(autoincrement())
+  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
+  gid          Int?
+  code_udi     String?
 }
 
-enum PollutionCodeEnum {
-  SULFUR_DIOXIDE // Dioxyde de soufre - code 1
-  NITROGEN_DIOXIDE // Dioxyde d'azote - code 3 / code 8
-  FINES_PARTICLES // Particules fines PM10 - code 5
-  OZONE // Ozone - code 7
-  PM10 // Particules en suspension PM10 - code 24
-  PM25 // Particules en suspension PM2.5 - code 39
-  BENZENE // Benzène - code 60
+model DrinkingWater {
+  id                                     String               @id @default(uuid())
+  udi                                    String // example: "076000534"
+  validity_start                         DateTime // the date is the first date of the validity period, included
+  validity_end                           DateTime // the date is the last date of the validity period, included
+  diffusion_date                         DateTime
+  data_availability                      DataAvailabilityEnum @default(AVAILABLE)
+  alert_status                           AlertStatusEnum      @default(NOT_ALERT_THRESHOLD)
+  created_at                             DateTime             @default(now())
+  updated_at                             DateTime             @default(now()) @updatedAt
+  // specific fields for this indicator, raw data extracted from the API
+  // note: we couldn't use Prisma enum here because
+  // Prisma enum are restricted to: start with letter, no space, etc.
+  // the API returns numbers, letters, spaces, etc. soo
+  // we specify out TypeScript types in comment instead
+  code_prelevement                       String? // example: "07600287349"
+  code_lieu_analyse                      String? // example: "L"
+  nom_uge                                String? // example: "SYN. VALMONT"
+  nom_distributeur                       String? // example: "AGENCE VEOLIA POINTE DE CAUX"
+  nom_moa                                String? // example: "SYN. VALMONT"
+  nom_reseau                             String? // example: "VALMONT HS NORD"
+  date_prelevement                       DateTime? // example: "2024-01-16"
+  conclusion_conformite_prelevement      String? // example: "Conforme"
+  conformite_limites_bact_prelevement    String? // example: "Conforme"
+  conformite_limites_pc_prelevement      String? // example: "Conforme"
+  conformite_references_bact_prelevement String? // example: "Conforme"
+  conformite_references_pc_prelevement   String? // example: "Conforme"
+  hubeau_url                             String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
+  ACPT                                   String?
+  ANPHT                                  String?
+  NH4                                    String?
+  ANTHRA                                 String?
+  SB                                     String?
+  ASP                                    String?
+  GT22_68                                String?
+  GT36_44                                String?
+  BSIR                                   String?
+  CTF                                    String?
+  BENZAN                                 String?
+  BAPYR                                  String?
+  BBFLUO                                 String?
+  BGPERY                                 String?
+  BKFLUO                                 String?
+  CD                                     String?
+  CL2LIB                                 String?
+  CL2TOT                                 String?
+  CLVYL                                  String?
+  CRT                                    String?
+  CHRYS                                  String?
+  CDT25                                  String?
+  COULQ                                  String?
+  DBENZAN                                String?
+  STRF                                   String?
+  ECOLI                                  String?
+  FET                                    String?
+  FLUORA                                 String?
+  FLUORE                                 String?
+  HPAT4                                  String?
+  HPAT                                   String?
+  INDPYR                                 String?
+  ME2FL                                  String?
+  ME2NA                                  String?
+  NAPHTA                                 String?
+  NO3                                    String?
+  NO3_NO2                                String?
+  NO2                                    String?
+  ODQ                                    String?
+  PH                                     String?
+  PHENAN                                 String?
+  PYR                                    String?
+  SAVQ                                   String?
+  TEAU                                   String?
+  TURBNFU                                String?
+
+  @@index([udi, diffusion_date, validity_start], name: "drinking_water_udi_diffusion_date_validity_start")
 }
 
 model CronJob {
@@ -360,11 +429,4 @@ model Feedback {
   user_id    String
   user       User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
-}
-
-model udis {
-  ogc_fid      Int                                         @id @default(autoincrement())
-  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
-  gid          Int?
-  code_udi     String?
 }
