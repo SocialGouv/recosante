@@ -17,24 +17,23 @@ if (process.env.NODE_ENV === 'production') {
         },
       ],
     });
-    globalWithPrisma.prisma.$on('query', (e) => {
-      console.log(formatSQLQueryWithParams(e));
-    });
+    // globalWithPrisma.prisma.$on('query', (e) => {
+    //   console.log(formatSQLQueryWithParams(e));
+    // });
+    // function formatSQLQueryWithParams(queryOutput: any) {
+    //   const { query, params } = queryOutput;
+
+    //   let formattedParams = JSON.parse(params);
+    //   let finalQuery = query;
+
+    //   for (let i = 0; i < formattedParams.length; i++) {
+    //     finalQuery = finalQuery.replace(`$${i + 1}`, `'${formattedParams[i]}'`);
+    //   }
+
+    //   return finalQuery;
+    // }
   }
   prisma = globalWithPrisma.prisma;
-}
-
-function formatSQLQueryWithParams(queryOutput) {
-  const { query, params } = queryOutput;
-
-  let formattedParams = JSON.parse(params);
-  let finalQuery = query;
-
-  for (let i = 0; i < formattedParams.length; i++) {
-    finalQuery = finalQuery.replace(`$${i + 1}`, `'${formattedParams[i]}'`);
-  }
-
-  return finalQuery;
 }
 
 export default prisma;

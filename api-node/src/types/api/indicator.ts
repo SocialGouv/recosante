@@ -10,12 +10,16 @@ export type IndicatorItem = {
 
 export type IndicatorDay = 'j0' | 'j1';
 
-export type IndicatorByPeriodValues = Array<{
+export type IndicatorByPeriodValue = {
   slug: string;
   name: string;
-  value: number;
-  link?: string;
-}>;
+  value?: number;
+  link?: string; // specific for bathing water
+  conformity?: boolean; // specific for drinking water
+  result?: string; // specific for drinking water
+};
+
+export type IndicatorByPeriodValues = Array<IndicatorByPeriodValue>;
 export interface IndicatorByPeriod {
   id: string;
   validity_start: string;
