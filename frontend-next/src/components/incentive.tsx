@@ -31,8 +31,9 @@ export function Incentive() {
         <div className='mx-auto max-w-2xl px-4 lg:max-w-none'>
           <div className='grid grid-cols-1 items-center gap-x-16 gap-y-10 lg:grid-cols-2'>
             <div>
-              <h2 className='text-4xl font-bold tracking-tight text-gray-900'>
-                Une application facile, gratuite, et sans collecte de données.
+              <h2 className='text-4xl font-medium tracking-tight text-gray-900 font-marianneBold'>
+                Votre application santé gratuite, facile, et sans collecte de
+                données.
               </h2>
               <p className='mt-4 text-gray-500'>
                 Pas de publicité, pas de collecte de données, pas de frais, pas

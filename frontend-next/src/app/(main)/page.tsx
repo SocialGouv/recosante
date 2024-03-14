@@ -9,8 +9,8 @@ import { MetadataService } from '@/services/metadatas';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.`,
-    description: `Télécharger l’application Recosanté.`,
+    title: `Qualité de l'air, qualité de l'eau, alertes pollen, météo et indice UV dans votre ville - Recosanté`,
+    description: `Recevez des alertes et prévisions en temps réel sur la qualité de l'air, qualité de l'eau, l'indice UV, le taux de pollen et les conditions météorologiques.`,
     itunes: {
       appId: '6476136888',
       appArgument: `https://recosante.beta.gouv.fr/`,
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 const jsonLd = MetadataService.getJsonLd();
 export default function Home() {
   return (
-    <>
+    <div className='flex h-full flex-col font-app font-medium'>
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -31,6 +31,6 @@ export default function Home() {
       <CallToAction />
       <Incentive />
       <BlogPreview />
-    </>
+    </div>
   );
 }

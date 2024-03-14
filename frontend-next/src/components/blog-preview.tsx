@@ -8,7 +8,7 @@ const posts = [
   {
     id: 1,
     title: 'Les plantes améliorent-elles la qualité de l’air intérieur ?',
-    href: `${PATH}/articles/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur/`,
+    href: '/articles/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur/',
     description:
       'Pour améliorer l’air intérieur, aérer deux fois par jour pendant au moins 10 minutes et pendant les activités de nettoyage, cuisson et bricolage.',
     imageUrl: `${PATH}/static/38cf0297022fc36eae38fa9c65b1b4f5/a4aa2/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur.webp`,
@@ -39,14 +39,12 @@ export default function BlogPreview() {
   return (
     <div className='bg-white py-24 sm:py-32'>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
-        <div className='mx-auto max-w-2xl text-center'>
-          <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
-            Le blog de Recosanté
-          </h2>
-          <p className='mt-2 text-lg leading-8 text-gray-600'>
-            Découvrez nos derniers articles et actualités.
-          </p>
-        </div>
+        <h2 className='text-4xl font-medium tracking-tight text-gray-900 font-marianneBold'>
+          Le blog de Recosanté
+        </h2>
+        <p className='mt-2 text-lg leading-8 text-gray-600'>
+          Découvrez nos derniers articles et actualités.
+        </p>
         <div className='mx-auto mt-16 grid items-start max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3'>
           {posts.map((post) => (
             <article

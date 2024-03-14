@@ -399,7 +399,7 @@ export function PrimaryFeatures() {
       <Container>
         <div className='mx-auto max-w-2xl lg:mx-0 lg:max-w-3xl'>
           <h2 className='text-4xl font-medium tracking-tight text-white font-marianneBold'>
-            Un suivi personnalisé.
+            Un suivi de la pollution en temps réel.
           </h2>
           <p className='mt-2 text-lg text-gray-200'>
             Adaptée à vos besoins et à votre localisation, l’application va vous

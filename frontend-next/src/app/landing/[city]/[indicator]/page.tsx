@@ -29,9 +29,6 @@ export async function generateMetadata(
   return {
     title: `Obtenez des informations sur ${indicatorName} à ${params.city}  `,
     description: `Télécharger l’application Recosanté, pour obtenir des informations sur ${indicatorName} à ${params.city}.`,
-    openGraph: {
-      images: [...previousImages],
-    },
     itunes: {
       appId: '6476136888',
       appArgument: `https://recosante.beta.gouv.fr/`,
@@ -60,14 +57,8 @@ export default function Page(props: {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Head>
-        <meta
-          name='apple-itunes-app'
-          content='app-id=6476136888, app-argument=https://recosante.beta.gouv.fr/'
-        ></meta>
-      </Head>
 
-      <HeroCity city={props.params.city} indicator={indicatorName} />
+      <HeroCity />
       <PrimaryFeatures />
       <Notification />
       <CallToAction />

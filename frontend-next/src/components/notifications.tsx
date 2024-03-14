@@ -89,11 +89,11 @@ export function Notification() {
       </div>
       <div className='mx-auto max-w-7xl px-6 lg:px-8'>
         <div className='mx-auto  lg:mx-0'>
-          <h2 className='text-4xl font-bold tracking-tight text-white sm:text-6xl'>
-            Recevez vos notifications
+          <h2 className='text-4xl font-medium tracking-tight text-white font-marianneBold'>
+            Recevez vos alertes pollen et météo chaque jour.
           </h2>
 
-          <p className='mt-6 text-lg leading-8 text-gray-100 max-w-2xl'>
+          <p className='mt-2 text-lg leading-8 text-gray-100 max-w-2xl'>
             Restez toujours informé et réagissez rapidement grâce à nos
             notifications en temps réel.
           </p>
