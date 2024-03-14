@@ -33,7 +33,7 @@ router.get(
       const { lat, lon } = req.query;
       if (!lat || !lon) {
         const customError = new Error(
-          `Invalid request in get udi: lat and lon are required`,
+          'Invalid request in get udi: lat and lon are required',
         ) as CustomError;
         customError.status = 400;
         next(customError);

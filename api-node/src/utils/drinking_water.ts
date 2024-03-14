@@ -23,10 +23,12 @@ function checkPrelevementConformity(
   const conformityReferenceBacteriological =
     prelevement.conformite_references_bact_prelevement;
 
-  if (conformityLimitChemical === ConformityEnum.NOT_CONFORM)
+  if (conformityLimitChemical === ConformityEnum.NOT_CONFORM) {
     return ConformityEnum.NOT_CONFORM;
-  if (conformityReferenceChemical === ConformityEnum.NOT_CONFORM)
+  }
+  if (conformityReferenceChemical === ConformityEnum.NOT_CONFORM) {
     return ConformityEnum.NOT_CONFORM;
+  }
   if (conformityLimitBacteriological === ConformityEnum.NOT_CONFORM) {
     return ConformityEnum.NOT_CONFORM;
   }
@@ -50,8 +52,8 @@ function getPrelevementConformityStatus(drinkingWater: DrinkingWater) {
       return ConformityStatusEnum.CONFORM;
     case ConformityEnum.NOT_CONFORM:
       return ConformityStatusEnum.NOT_CONFORM;
-    default:
     case ConformityEnum.NOT_TESTED:
+    default:
       return ConformityStatusEnum.NOT_TESTED;
   }
 }
@@ -62,8 +64,8 @@ function getPrelevementConformityValue(drinkingWater: DrinkingWater) {
       return ConformityNumberEnum.CONFORM;
     case ConformityEnum.NOT_CONFORM:
       return ConformityNumberEnum.NOT_CONFORM;
-    default:
     case ConformityEnum.NOT_TESTED:
+    default:
       return ConformityNumberEnum.NOT_TESTED;
   }
 }

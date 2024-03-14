@@ -67,9 +67,7 @@ async function getDrinkingWaterFromUdi({
     summary: {
       value: getPrelevementConformityValue(drinkingWater),
       status: getPrelevementConformityStatus(drinkingWater),
-      recommendations: [
-        drinkingWater.conclusion_conformite_prelevement as string,
-      ],
+      recommendations: [drinkingWater.conclusion_conformite_prelevement ?? ''],
     },
     values: [],
     diffusion_date: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
