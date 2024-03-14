@@ -13,10 +13,10 @@ export type IndicatorDay = 'j0' | 'j1';
 export type IndicatorByPeriodValue = {
   slug: string;
   name: string;
-  value?: number;
+  value: number | string;
   link?: string; // specific for bathing water
-  conformity?: boolean; // specific for drinking water
-  result?: string; // specific for drinking water
+  isConform?: boolean; // specific for drinking water
+  datePrelevement?: string; // specific for drinking water
 };
 
 export type IndicatorByPeriodValues = Array<IndicatorByPeriodValue>;

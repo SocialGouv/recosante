@@ -4,7 +4,11 @@ import prisma from '~/prisma';
 import { capture } from '~/third-parties/sentry';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
-import { type HubEAUResponse } from '~/types/api/drinking_water';
+import {
+  type HubEAUResponse,
+  type CodeParametreSISEEaux,
+  ConformityStatusEnum,
+} from '~/types/api/drinking_water';
 import {
   AlertStatusEnum,
   DataAvailabilityEnum,
@@ -12,7 +16,10 @@ import {
   type User,
 } from '@prisma/client';
 import { sendAlertNotification } from '~/utils/notifications/alert';
-import { checkPrelevementConformity } from '~/utils/drinking_water';
+import {
+  getUdiConformityStatus,
+  mapParameterToRowData,
+} from '~/utils/drinking_water';
 
 const fetch = fetchRetry(global.fetch);
 dayjs.extend(customParseFormat);
@@ -45,6 +52,7 @@ async function getDrinkingWaterIndicator() {
     let alreadyExistingRows = 0;
     let missingData = 0;
     for await (const udi of udis) {
+      if (!udi) continue;
       const result = await fetchDrinkingWaterData(udi);
       if (result.alreadyExistingRow) alreadyExistingRows++;
       if (result.insertedNewRow) insertedNewRows++;
@@ -69,17 +77,42 @@ async function fetchDrinkingWaterData(udi: string) {
   // a test has an id: the `code_prelevement`
   // Hub'eau lists all the results for each parameter for each test
   // and for each paramter for one given test, the global conclusion are always the same
+  // but each test doesn't have the same parameters tested
 
   // so what we need to do is:
-  // 1. get the latest test results from hubeau for the given udi - we'll get only one row for a random parameter
-  // 2. grab the conslusion for this test
-  // 3. [TODO] grab the `code_prelevement` to grab all the paramters results for this test, when we'll have decided which parameter we want to grab
-  // Note: some tests have only 1 parameter tested, some other have 632 (!) parameters tested, so we need to select
+  // 1. know which parameters we are interested in
+  // 2. select for the udi and the selected parameters the latest test results
 
   // 1. get the latest test results from hubeau
   // doc: https://hubeau.eaufrance.fr/page/api-qualite-eau-potable#/qualite_eau_potable/resultats
-  const hubeauUdiUrl = `https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis?size=1&code_reseau=${udi}`;
-  const hubeauUdiResponse: HubEAUResponse = await fetch(hubeauUdiUrl, {
+  // max 20 paramters
+  const parameters: Array<CodeParametreSISEEaux> = [
+    'PH',
+    'TEAU',
+    'PESTOT',
+    'COULF',
+    'SAVQ',
+    'COULQ',
+    'ASP',
+    'ODQ',
+  ];
+
+  const hubEauQuery = {
+    size: 500, // to mazimize the chance to get the latest test results for all the parameters
+    code_reseau: udi,
+    code_parametre_se: parameters.join(','),
+  } as any;
+  const hubeauUdiUrl = new URL(
+    'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis',
+  );
+
+  // Pour chaque municipalité, on récupère la liste des sites de baignade
+  Object.keys(hubEauQuery).forEach((key) => {
+    hubeauUdiUrl.searchParams.append(key, hubEauQuery[key]);
+  });
+
+  const hubeau_parameters_url = hubeauUdiUrl.toString();
+  const hubeauUdiResponse: HubEAUResponse = await fetch(hubeau_parameters_url, {
     retryDelay: 1000,
     retries: 3,
   }).then(async (res) => res.json());
@@ -96,9 +129,14 @@ async function fetchDrinkingWaterData(udi: string) {
     };
   }
 
+  const datePrelevement = dayjs(latestTestResult.date_prelevement)
+    .utc()
+    .toDate();
+
   const existingPrelevement = await prisma.drinkingWater.findFirst({
     where: {
-      code_prelevement: latestTestResult.code_prelevement,
+      udi,
+      diffusion_date: datePrelevement,
     },
   });
   if (existingPrelevement) {
@@ -110,55 +148,110 @@ async function fetchDrinkingWaterData(udi: string) {
     };
   }
 
-  const testDate = dayjs(latestTestResult.date_prelevement).utc().toDate();
+  const phTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'PH'),
+  );
+  const teauTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'TEAU'),
+  );
+  const pestotTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'PESTOT'),
+  );
+  const coulfTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'COULF'),
+  );
+  const savqTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'SAVQ'),
+  );
+  const coulqTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'COULQ'),
+  );
+  const aspTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'ASP'),
+  );
+  const odqTestResult = mapParameterToRowData(
+    results.find((r) => r.code_parametre_se === 'ODQ'),
+  );
 
-  // 2. get all the parameters results for this test
-  const hubeauTestUrl = `https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis?size=1000&code_prelevement=${latestTestResult.code_prelevement}`;
-  // TODO
-  // - select the sub indicators
-  // - save the sub indicators
-
-  const newDrinkingWaterRow = await prisma.drinkingWater.create({
+  let newDrinkingWaterRow = await prisma.drinkingWater.create({
     data: {
       udi,
-      validity_start: testDate,
-      validity_end: dayjs(testDate).add(1, 'year').toDate(),
-      diffusion_date: testDate,
+      validity_start: datePrelevement,
+      validity_end: dayjs(datePrelevement).add(1, 'year').toDate(),
+      diffusion_date: datePrelevement,
       data_availability:
         hubeauUdiResponse.data.length > 0
           ? DataAvailabilityEnum.AVAILABLE
           : DataAvailabilityEnum.NOT_AVAILABLE,
-      alert_status: checkPrelevementConformity(latestTestResult)
-        ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
-        : AlertStatusEnum.NOT_ALERT_THRESHOLD,
-      code_prelevement: latestTestResult.code_prelevement,
-      nom_uge: latestTestResult.nom_uge,
-      nom_distributeur: latestTestResult.nom_distributeur,
-      nom_moa: latestTestResult.nom_moa,
-      date_prelevement: testDate,
-      conclusion_conformite_prelevement:
-        latestTestResult.conclusion_conformite_prelevement,
-      conformite_limites_bact_prelevement:
-        latestTestResult.conformite_limites_bact_prelevement,
-      conformite_limites_pc_prelevement:
-        latestTestResult.conformite_limites_pc_prelevement,
-      conformite_references_bact_prelevement:
-        latestTestResult.conformite_references_bact_prelevement,
-      conformite_references_pc_prelevement:
-        latestTestResult.conformite_references_pc_prelevement,
-      hubeau_udi_url: hubeauUdiUrl,
-      hubeau_test_url: hubeauTestUrl,
+      alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
+      hubeau_parameters_url,
+      PH_conformity: phTestResult.conformity,
+      PH_value: phTestResult.value,
+      PH_code_prelevement: phTestResult.code_prelevement,
+      PH_date_prelevement: phTestResult.date_prelevement,
+      PH_conclusion_conformite_prelevement:
+        phTestResult.conclusion_conformite_prelevement,
+      TEAU_conformity: teauTestResult.conformity,
+      TEAU_value: teauTestResult.value,
+      TEAU_code_prelevement: teauTestResult.code_prelevement,
+      TEAU_date_prelevement: teauTestResult.date_prelevement,
+      TEAU_conclusion_conformite_prelevement:
+        teauTestResult.conclusion_conformite_prelevement,
+      PESTOT_conformity: pestotTestResult.conformity,
+      PESTOT_value: pestotTestResult.value,
+      PESTOT_code_prelevement: pestotTestResult.code_prelevement,
+      PESTOT_date_prelevement: pestotTestResult.date_prelevement,
+      PESTOT_conclusion_conformite_prelevement:
+        pestotTestResult.conclusion_conformite_prelevement,
+      COULF_conformity: coulfTestResult.conformity,
+      COULF_value: coulfTestResult.value,
+      COULF_code_prelevement: coulfTestResult.code_prelevement,
+      COULF_date_prelevement: coulfTestResult.date_prelevement,
+      COULF_conclusion_conformite_prelevement:
+        coulfTestResult.conclusion_conformite_prelevement,
+      SAVQ_conformity: savqTestResult.conformity,
+      SAVQ_value: savqTestResult.value,
+      SAVQ_code_prelevement: savqTestResult.code_prelevement,
+      SAVQ_date_prelevement: savqTestResult.date_prelevement,
+      SAVQ_conclusion_conformite_prelevement:
+        savqTestResult.conclusion_conformite_prelevement,
+      COULQ_conformity: coulqTestResult.conformity,
+      COULQ_value: coulqTestResult.value,
+      COULQ_code_prelevement: coulqTestResult.code_prelevement,
+      COULQ_date_prelevement: coulqTestResult.date_prelevement,
+      COULQ_conclusion_conformite_prelevement:
+        coulqTestResult.conclusion_conformite_prelevement,
+      ASP_conformity: aspTestResult.conformity,
+      ASP_value: aspTestResult.value,
+      ASP_code_prelevement: aspTestResult.code_prelevement,
+      ASP_date_prelevement: aspTestResult.date_prelevement,
+      ASP_conclusion_conformite_prelevement:
+        aspTestResult.conclusion_conformite_prelevement,
+      ODQ_conformity: odqTestResult.conformity,
+      ODQ_value: odqTestResult.value,
+      ODQ_code_prelevement: odqTestResult.code_prelevement,
+      ODQ_date_prelevement: odqTestResult.date_prelevement,
+      ODQ_conclusion_conformite_prelevement:
+        odqTestResult.conclusion_conformite_prelevement,
     },
   });
   if (
-    newDrinkingWaterRow.alert_status ===
-    AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+    getUdiConformityStatus(newDrinkingWaterRow) ===
+    ConformityStatusEnum.NOT_CONFORM
   ) {
+    newDrinkingWaterRow = await prisma.drinkingWater.update({
+      where: {
+        id: newDrinkingWaterRow.id,
+      },
+      data: {
+        alert_status: AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET,
+      },
+    });
     const alertSent = await sendAlertNotification(
       IndicatorsSlugEnum.drinking_water,
       newDrinkingWaterRow,
     );
-    await prisma.drinkingWater.update({
+    newDrinkingWaterRow = await prisma.drinkingWater.update({
       where: {
         id: newDrinkingWaterRow.id,
       },
@@ -169,6 +262,7 @@ async function fetchDrinkingWaterData(udi: string) {
       },
     });
   }
+
   return {
     data: newDrinkingWaterRow,
     insertedNewRow: true,

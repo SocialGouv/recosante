@@ -19,11 +19,27 @@ export enum ConformityNumberEnum {
   NOT_TESTED = 0, // Sans objet lorsqu'aucun paramètre microbio n'a été mesuré
 }
 
-export type CodeParametreSISEEaux = string;
+export type CodeParametreSISEEaux =
+  | 'PH'
+  | 'TEAU'
+  | 'PESTOT'
+  | 'COULF'
+  | 'SAVQ'
+  | 'COULQ'
+  | 'ASP'
+  | 'ODQ';
 
 export type LibelleParametre = string;
 
 type LibelleParametreMaj = string;
+
+export interface ParameterInDataRow {
+  value: string;
+  conformity: ConformityEnum;
+  code_prelevement: string;
+  date_prelevement: string | null;
+  conclusion_conformite_prelevement: string; // this is what we use for recommandation
+}
 
 export interface PrelevementResult {
   // code_departement?: string;
