@@ -34,9 +34,7 @@ async function getDrinkingWaterFromUdi({
   municipality_insee_code: Municipality['COM'];
   date_UTC_ISO: string;
 }) {
-  if (!udi) {
-    return getDrinkingWaterEmpty(municipality_insee_code);
-  }
+  if (!udi) return null;
 
   try {
     z.object({
