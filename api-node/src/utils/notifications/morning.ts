@@ -85,7 +85,8 @@ export async function sendMorningNotification() {
       indice_atmospheric: undefined,
       pollen_allergy: undefined,
       weather_alert: undefined,
-      bathing_water: undefined,
+      bathing_water: undefined, // won't do because the changes are not frequent enough
+      drinking_water: undefined, // won't do because the changes are not frequent enough
     };
 
     /*

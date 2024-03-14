@@ -1,11 +1,8 @@
+-- AlterEnum
+ALTER TYPE "IndicatorsSlugEnum" ADD VALUE 'drinking_water';
+
 -- AlterTable
 ALTER TABLE "User" ADD COLUMN     "udi" TEXT;
-
--- DropEnum
-DROP TYPE "PollutionCodeEnum";
-
--- DropEnum
-DROP TYPE "PollutionStateEnum";
 
 -- CreateTable
 CREATE TABLE "DrinkingWater" (
@@ -19,7 +16,6 @@ CREATE TABLE "DrinkingWater" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "code_prelevement" TEXT,
-    "code_lieu_analyse" TEXT,
     "nom_uge" TEXT,
     "nom_distributeur" TEXT,
     "nom_moa" TEXT,
@@ -30,55 +26,14 @@ CREATE TABLE "DrinkingWater" (
     "conformite_limites_pc_prelevement" TEXT,
     "conformite_references_bact_prelevement" TEXT,
     "conformite_references_pc_prelevement" TEXT,
-    "hubeau_url" TEXT,
-    "ACPT" TEXT,
-    "ANPHT" TEXT,
-    "NH4" TEXT,
-    "ANTHRA" TEXT,
-    "SB" TEXT,
-    "ASP" TEXT,
-    "GT22_68" TEXT,
-    "GT36_44" TEXT,
-    "BSIR" TEXT,
-    "CTF" TEXT,
-    "BENZAN" TEXT,
-    "BAPYR" TEXT,
-    "BBFLUO" TEXT,
-    "BGPERY" TEXT,
-    "BKFLUO" TEXT,
-    "CD" TEXT,
-    "CL2LIB" TEXT,
-    "CL2TOT" TEXT,
-    "CLVYL" TEXT,
-    "CRT" TEXT,
-    "CHRYS" TEXT,
-    "CDT25" TEXT,
-    "COULQ" TEXT,
-    "DBENZAN" TEXT,
-    "STRF" TEXT,
-    "ECOLI" TEXT,
-    "FET" TEXT,
-    "FLUORA" TEXT,
-    "FLUORE" TEXT,
-    "HPAT4" TEXT,
-    "HPAT" TEXT,
-    "INDPYR" TEXT,
-    "ME2FL" TEXT,
-    "ME2NA" TEXT,
-    "NAPHTA" TEXT,
-    "NO3" TEXT,
-    "NO3_NO2" TEXT,
-    "NO2" TEXT,
-    "ODQ" TEXT,
-    "PH" TEXT,
-    "PHENAN" TEXT,
-    "PYR" TEXT,
-    "SAVQ" TEXT,
-    "TEAU" TEXT,
-    "TURBNFU" TEXT,
+    "hubeau_udi_url" TEXT,
+    "hubeau_test_url" TEXT,
 
     CONSTRAINT "DrinkingWater_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "DrinkingWater_code_prelevement_key" ON "DrinkingWater"("code_prelevement");
 
 -- CreateIndex
 CREATE INDEX "drinking_water_udi_diffusion_date_validity_start" ON "DrinkingWater"("udi", "diffusion_date", "validity_start");

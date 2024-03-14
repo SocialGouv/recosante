@@ -36,10 +36,12 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
     short_name: 'Baignade',
     slug: IndicatorsSlugEnum.bathing_water,
   },
-  // [IndicatorsSlugEnum.tap_water]: {
-  //   name: 'Eau du robinet',
-  //   slug: IndicatorsSlugEnum.tap_water,
-  // },
+  [IndicatorsSlugEnum.drinking_water]: {
+    name: 'Eau du robinet',
+    long_name: "La qualité de l'eau du robinet",
+    short_name: 'Eau du robinet',
+    slug: IndicatorsSlugEnum.drinking_water,
+  },
 };
 
 const indicatorsList: IndicatorItem[] = Object.values(indicatorsObject).filter(
