@@ -8,7 +8,8 @@ import { Button } from '../Button';
 
 export function CookieBanner() {
   const [showCookieBanner, setShowCookieBanner] = useState(false);
-
+  const [showPreference, setShowPreference] = useState(false);
+  const [isSelected, setIsSelected] = useState(true);
   function hideBanner() {
     sessionStorage.setItem('hideCookieBanner', 'true');
     closeBanner();
@@ -16,8 +17,28 @@ export function CookieBanner() {
   function closeBanner() {
     setShowCookieBanner(false);
   }
-  function allowCookies() {
+
+  function handleChangePreference() {
+    setShowPreference((showPreference) => !showPreference);
+  }
+
+  function handleGtagChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.checked) {
+      setIsSelected(true);
+    } else {
+      setIsSelected(false);
+    }
+  }
+
+  function allowAllCookies() {
     setGTag();
+    hideBanner();
+  }
+
+  function acceptSelection() {
+    if (isSelected) {
+      setGTag();
+    }
     hideBanner();
   }
 
@@ -49,22 +70,47 @@ export function CookieBanner() {
         >
           Cookies et mesure d’audience
         </Link>
+        <br />
+        <p
+          onClick={handleChangePreference}
+          className='underline cursor-pointer'
+        >
+          Voir la sélection
+        </p>
       </div>
-
+      {showPreference ? (
+        <div className='my-4 '>
+          <label className='flex items-center space-x-2 cursor-pointer'>
+            <input
+              type='checkbox'
+              checked={isSelected}
+              onChange={handleGtagChange}
+            />
+            <p className='text-sm'>Google Tag Manager</p>
+          </label>
+        </div>
+      ) : null}
       <div>
         <Button
           className='rounded-none'
           variant='outline'
-          onClick={allowCookies}
+          onClick={allowAllCookies}
         >
-          Accepter les cookies
+          Accepter tous les cookies
+        </Button>
+        <Button
+          className=' ml-4 rounded-none'
+          variant='outline'
+          onClick={acceptSelection}
+        >
+          Accepter la sélection
         </Button>
         <Button
           className=' ml-4 rounded-none'
           variant='outline'
           onClick={hideBanner}
         >
-          Reffuser les cookies
+          Refuser tous les cookies
         </Button>
       </div>
     </div>
