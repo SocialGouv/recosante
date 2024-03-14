@@ -273,6 +273,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'PH',
       name: 'pH',
       value: drinkingWaterRow.PH_value ?? '',
+      isConform: drinkingWaterRow.PH_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.PH_date_prelevement
         ? dayjs(drinkingWaterRow.PH_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -281,6 +282,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'TEAU',
       name: 'Température de l’eau',
       value: drinkingWaterRow.TEAU_value ?? '',
+      isConform: drinkingWaterRow.TEAU_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.TEAU_date_prelevement
         ? dayjs(drinkingWaterRow.TEAU_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -289,6 +291,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'PESTOT',
       name: 'Pesticides totaux',
       value: drinkingWaterRow.PESTOT_value ?? '',
+      isConform: drinkingWaterRow.PESTOT_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.PESTOT_date_prelevement
         ? dayjs(drinkingWaterRow.PESTOT_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -297,6 +300,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'COULF',
       name: 'Couleur',
       value: drinkingWaterRow.COULF_value ?? '',
+      isConform: drinkingWaterRow.COULF_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.COULF_date_prelevement
         ? dayjs(drinkingWaterRow.COULF_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -305,6 +309,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'SAVQ',
       name: 'Saveur',
       value: drinkingWaterRow.SAVQ_value ?? '',
+      isConform: drinkingWaterRow.SAVQ_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.SAVQ_date_prelevement
         ? dayjs(drinkingWaterRow.SAVQ_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -313,6 +318,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'COULQ',
       name: 'Couleur',
       value: drinkingWaterRow.COULQ_value ?? '',
+      isConform: drinkingWaterRow.COULQ_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.COULQ_date_prelevement
         ? dayjs(drinkingWaterRow.COULQ_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -321,6 +327,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'ASP',
       name: 'Aspect',
       value: drinkingWaterRow.ASP_value ?? '',
+      isConform: drinkingWaterRow.ASP_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.ASP_date_prelevement
         ? dayjs(drinkingWaterRow.ASP_date_prelevement).format('YYYY-MM-DD')
         : '',
@@ -329,6 +336,7 @@ function mapParameterRowDataToIndicatorByPeriodValues(
       slug: 'ODQ',
       name: 'Odeur',
       value: drinkingWaterRow.ODQ_value ?? '',
+      isConform: drinkingWaterRow.ODQ_conformity === ConformityEnum.CONFORM,
       datePrelevement: drinkingWaterRow.ODQ_date_prelevement
         ? dayjs(drinkingWaterRow.ODQ_date_prelevement).format('YYYY-MM-DD')
         : '',
