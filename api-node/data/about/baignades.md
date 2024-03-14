@@ -10,7 +10,7 @@ Dans l’évaluation de cette qualité, il convient de distinguer :
 
 Concernant les seuils définissant la qualité de l'eau de baignade, ils dépendront de la qualité microbiologique d'un échantillon d'eau de baignade prélevé qui sera qualifiée de « bon », « moyen » ou « mauvais » selon les modalités suivantes :
 
-![Alt text](https://baignades.sante.gouv.fr/baignades/editorial/fr/controle/qualification.jpg)
+![tableau montrant comment on qualifie un test de bon ou mauvais](https://baignades.sante.gouv.fr/baignades/editorial/fr/controle/qualification.jpg)
 
 Ces valeurs limites sont proposées par l'AFSSET (Agence française de sécurité sanitaire de l'environnement et du travail), dans son rapport intitulé «Valeurs seuils échantillon unique pour les eaux de baignade : étude de faisabilité méthodologique » de septembre 2007.
 
