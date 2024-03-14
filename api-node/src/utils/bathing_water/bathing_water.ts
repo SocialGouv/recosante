@@ -84,7 +84,7 @@ async function updateMunicipalitiesWithBathingWaterSites() {
       const { sites } = await fetch(url.toString(), {
         retryDelay: 1000,
         retries: 3,
-      }).then((res) => res.json());
+      }).then(async (res) => res.json());
       if (sites.length > 0) {
         console.log(
           `${index} of ${municipalities.length} ${

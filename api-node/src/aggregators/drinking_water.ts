@@ -83,7 +83,7 @@ async function fetchDrinkingWaterData(udi: string) {
   const hubeauUdiResponse: HubEAUResponse = await fetch(hubeauUdiUrl, {
     retryDelay: 1000,
     retries: 3,
-  }).then((res) => res.json());
+  }).then(async (res) => res.json());
 
   const results = hubeauUdiResponse.data;
   const latestTestResult = results[0];
