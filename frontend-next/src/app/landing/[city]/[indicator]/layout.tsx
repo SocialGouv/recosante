@@ -1,15 +1,22 @@
 import { Footer } from '@/components/Footer';
-import { Header } from '@/components/landing/Header';
+import { LandingHeader } from '@/components/LandingHeader';
 import { Banner } from '@/components/banner';
-import { Toaster } from '@/components/toast';
+import { IndicatorService } from '@/services/indicator';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { city: string; indicator: string };
+}) {
+  const indicatorName = IndicatorService.getNameBySlug(params.indicator);
+
   return (
     <>
       <Banner />
-      <Header />
+      <LandingHeader city={params.city} indicatorName={indicatorName} />
       <main className='flex-auto'>{children}</main>
-      <Toaster position='top-right' expand={false} />
       <Footer />
     </>
   );

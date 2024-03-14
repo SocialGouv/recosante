@@ -15,7 +15,7 @@ export function AppStoreLink({
       target='_blank'
       aria-label='Download on the App Store'
       className={clsx(
-        'rounded-lg transition-colors',
+        'rounded-lg transition-colors scale-[95%]',
         color === 'black'
           ? 'bg-gray-800 text-white hover:bg-gray-900 w-fit'
           : 'bg-white text-gray-900 hover:bg-gray-50',

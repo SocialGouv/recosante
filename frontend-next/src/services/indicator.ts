@@ -14,7 +14,7 @@ export namespace IndicatorService {
       case 'indice-uv':
         return "l'indice UV";
       case 'pollens':
-        return 'les pollens';
+        return 'le taux de pollen';
       case 'alerte-meteo':
         return 'les alertes météo';
       case 'eau-de-baignade':
