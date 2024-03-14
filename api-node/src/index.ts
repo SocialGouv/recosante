@@ -22,8 +22,6 @@ import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
 
 import packageJson from '../package.json';
-import { getDrinkingWaterIndicator } from './aggregators/drinking_water.ts';
-getDrinkingWaterIndicator();
 
 // Put together a schema
 const app = express();
