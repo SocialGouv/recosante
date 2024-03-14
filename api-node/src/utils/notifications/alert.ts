@@ -36,7 +36,6 @@ import {
 } from '~/types/api/drinking_water';
 import { getBathingWaterSummaryValue } from '~/utils/bathing_water/bathing_water';
 import { checkPrelevementConformity } from '~/utils/drinking_water';
-import { MINIMUM_VERSION_DRINKING_WATER } from '~/config';
 
 dayjs.extend(utc);
 
@@ -69,9 +68,6 @@ export async function sendAlertNotification(
         deleted_at: null,
       },
     });
-    users = users.filter(
-      (u) => Number(u.appbuild) >= MINIMUM_VERSION_DRINKING_WATER,
-    );
   } else {
     const row = indicatorRow as Exclude<IndicatorRow, DrinkingWater>;
     users = await prisma.user.findMany({
