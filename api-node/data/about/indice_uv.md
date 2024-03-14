@@ -14,7 +14,7 @@ Les UVB (280-315 nm), de longueur d’onde moyenne, ont une activité biologique
 
 Les UVA (315 - 400 nm), dont la longueur d’onde est relativement longue, représentent près de 95 % du rayonnement UV qui atteint la surface de la terre. Ils peuvent pénétrer dans les couches profondes de la peau et sont responsables de l’effet de bronzage immédiat. En outre, ils favorisent également le vieillissement de la peau et l’apparition de rides. Pendant longtemps, on a pensé que les UVA ne pouvaient être à l'origine de lésions durables. Des études récentes laissent fortement à penser qu’ils pourraient également favoriser le développement des cancers cutanés.
 
-![Alt text](https://www.santepubliquefrance.fr/var/site/storage/images/4/4/4/0/1690444-1-fre-FR/spectre.jpg)
+![Longueur d'onde des lumières visibles et invisibles](https://www.santepubliquefrance.fr/var/site/storage/images/4/4/4/0/1690444-1-fre-FR/spectre.jpg)
 
 #### Comment est calculé notre indice UV
 
