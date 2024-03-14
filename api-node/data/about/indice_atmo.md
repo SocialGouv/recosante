@@ -8,9 +8,9 @@ L’ozone est un gaz irritant à l’origine de toux, d’altération pulmonaire
 
 ### Description du dioxyde d'azote (NO~2~)
 
-Le dioxyde d’azote (NO~2~) est issu de l’oxydation du monoxyde d’azote (NO). Il nait de la combustion à haute température de combustibles fossiles comme le charbon, le fuel, le pétrole.
+Le dioxyde d’azote (NO~2~) est issu de l’oxydation du monoxyde d’azote (NO). Il naît de la combustion à haute température de combustibles fossiles comme le charbon, le fuel, le pétrole.
 Il provient des véhicules automobiles (60 % des émissions de dioxyde d’azote) et des appareils à combustion (gazinière, chauffe-eau, etc.).
-Le dioxyde d'azote est un gaz, irritant pour les bronches, qui augmente la fréquence et la gravité des crises d’asthme et peut entraîner des infections pulmonaires chez l’enfant.
+Le dioxyde d'azote est un gaz, irritant pour les bronches, qui augmentent la fréquence et la gravité des crises d’asthme et peut entraîner des infections pulmonaires chez l’enfant.
 
 ### Description du dioxyde de souffre (SO~2~)
 
@@ -19,7 +19,7 @@ Il irrite les muqueuses, la peau et les voies respiratoires supérieures (toux, 
 
 ### Description des particules fines (PM~2,5~/PM~10~)
 
-Les particules en suspension PM~2,5~ sont inférieures à 2,5 micromètres et pénètrent plus profondément dans l’appareil respiratoire, les particles en suspension PM~10~ sont des particules dont le diamètre est inférieur à 10 micromètres (poussières inhalables).
+Les particules en suspension PM~2,5~ sont inférieures à 2,5 micromètres et pénètrent plus profondément dans l’appareil respiratoire, les particules en suspension PM~10~ sont des particules dont le diamètre est inférieur à 10 micromètres (poussières inhalables).
 Une partie des poussières en suspension, qui se trouvent dans l’air, est d’origine naturelle : sable du Sahara, embrun marin, pollens, etc. S’y ajoutent les poussières d’origines anthropiques, émises notamment par les installations de combustion (chauffage), les transports (moteurs diesels), les activités industrielles (construction, secteur minier), l'érosion de la chaussée, etc.
 La taille des poussières en suspension est un facteur important : plus elles sont fines, plus elles irritent les voies respiratoires. Certaines particules ont des propriétés mutagènes et cancérigènes.
 
