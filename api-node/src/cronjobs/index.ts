@@ -28,7 +28,11 @@ if (sentryEnabled) {
   });
 }
 
-if (ENVIRONMENT !== 'development') {
+const isLocalDevelopment = process.env.NODE_ENV === 'development';
+const isReviewBranch = ENVIRONMENT === 'development';
+console.log('BIM', isLocalDevelopment, process.env.NODE_ENV);
+
+if (isLocalDevelopment || !isReviewBranch) {
   Promise.resolve()
     .then(initIndicatorsCleaning) //
     .then(initMunicipalities) //

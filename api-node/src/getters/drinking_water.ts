@@ -14,8 +14,10 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import { ConformityStatusEnum } from '~/types/api/drinking_water';
 import { fetchDrinkingWaterData } from '~/aggregators/drinking_water';
 import {
-  getPrelevementConformityStatus,
-  getPrelevementConformityValue,
+  getAllConclusions,
+  getUdiConformityStatus,
+  getUdiConformityValue,
+  mapParameterRowDataToIndicatorByPeriodValues,
 } from '~/utils/drinking_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
@@ -65,11 +67,11 @@ async function getDrinkingWaterFromUdi({
   const drinkingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: drinkingWater.id,
     summary: {
-      value: getPrelevementConformityValue(drinkingWater),
-      status: getPrelevementConformityStatus(drinkingWater),
-      recommendations: [drinkingWater.conclusion_conformite_prelevement ?? ''],
+      value: getUdiConformityValue(drinkingWater),
+      status: getUdiConformityStatus(drinkingWater),
+      recommendations: getAllConclusions(drinkingWater),
     },
-    values: [],
+    values: mapParameterRowDataToIndicatorByPeriodValues(drinkingWater),
     diffusion_date: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_start: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_end: 'N/A',
@@ -78,10 +80,10 @@ async function getDrinkingWaterFromUdi({
   };
 
   const drinkingWaterIndicator: Indicator = {
-    slug: IndicatorsSlugEnum.bathing_water,
-    name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
-    short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
-    long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
+    slug: IndicatorsSlugEnum.drinking_water,
+    name: indicatorsObject[IndicatorsSlugEnum.drinking_water].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].short_name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].long_name,
     municipality_insee_code,
     about_title: 'à propos de la qualité de l’eau du robinet',
     about_description,
@@ -94,10 +96,10 @@ async function getDrinkingWaterFromUdi({
 
 function getDrinkingWaterEmpty(municipality_insee_code: Municipality['COM']) {
   const drinkingWaterEmpty: Indicator = {
-    slug: IndicatorsSlugEnum.bathing_water,
-    name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
-    short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
-    long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
+    slug: IndicatorsSlugEnum.drinking_water,
+    name: indicatorsObject[IndicatorsSlugEnum.drinking_water].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].short_name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].long_name,
     about_title: 'à propos de la qualité de l’eau du robinet',
     municipality_insee_code, // we keep this municipality_insee_code for now to not break alkl the types around
     about_description,
