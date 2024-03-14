@@ -23,7 +23,7 @@ enum IndicatorsSlugEnum {
   weather_alert
   // episode_pollution_atmospheric
   bathing_water
-  // tap_water
+  drinking_water
 }
 
 model User {
@@ -281,8 +281,7 @@ model DrinkingWater {
   // Prisma enum are restricted to: start with letter, no space, etc.
   // the API returns numbers, letters, spaces, etc. soo
   // we specify out TypeScript types in comment instead
-  code_prelevement                       String? // example: "07600287349"
-  code_lieu_analyse                      String? // example: "L"
+  code_prelevement                       String?              @unique // example: "076000534"
   nom_uge                                String? // example: "SYN. VALMONT"
   nom_distributeur                       String? // example: "AGENCE VEOLIA POINTE DE CAUX"
   nom_moa                                String? // example: "SYN. VALMONT"
@@ -293,52 +292,8 @@ model DrinkingWater {
   conformite_limites_pc_prelevement      String? // example: "Conforme"
   conformite_references_bact_prelevement String? // example: "Conforme"
   conformite_references_pc_prelevement   String? // example: "Conforme"
-  hubeau_url                             String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
-  ACPT                                   String?
-  ANPHT                                  String?
-  NH4                                    String?
-  ANTHRA                                 String?
-  SB                                     String?
-  ASP                                    String?
-  GT22_68                                String?
-  GT36_44                                String?
-  BSIR                                   String?
-  CTF                                    String?
-  BENZAN                                 String?
-  BAPYR                                  String?
-  BBFLUO                                 String?
-  BGPERY                                 String?
-  BKFLUO                                 String?
-  CD                                     String?
-  CL2LIB                                 String?
-  CL2TOT                                 String?
-  CLVYL                                  String?
-  CRT                                    String?
-  CHRYS                                  String?
-  CDT25                                  String?
-  COULQ                                  String?
-  DBENZAN                                String?
-  STRF                                   String?
-  ECOLI                                  String?
-  FET                                    String?
-  FLUORA                                 String?
-  FLUORE                                 String?
-  HPAT4                                  String?
-  HPAT                                   String?
-  INDPYR                                 String?
-  ME2FL                                  String?
-  ME2NA                                  String?
-  NAPHTA                                 String?
-  NO3                                    String?
-  NO3_NO2                                String?
-  NO2                                    String?
-  ODQ                                    String?
-  PH                                     String?
-  PHENAN                                 String?
-  PYR                                    String?
-  SAVQ                                   String?
-  TEAU                                   String?
-  TURBNFU                                String?
+  hubeau_udi_url                         String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
+  hubeau_test_url                        String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
 
   @@index([udi, diffusion_date, validity_start], name: "drinking_water_udi_diffusion_date_validity_start")
 }
