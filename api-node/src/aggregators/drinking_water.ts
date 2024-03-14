@@ -9,6 +9,7 @@ import {
   AlertStatusEnum,
   DataAvailabilityEnum,
   IndicatorsSlugEnum,
+  type User,
 } from '@prisma/client';
 import { sendAlertNotification } from '~/utils/notifications/alert';
 import { checkPrelevementConformity } from '~/utils/drinking_water';
@@ -30,15 +31,13 @@ function logStep(step: string) {
   now = Date.now();
 }
 
-type Udi = string;
-
 async function getDrinkingWaterIndicator() {
   try {
     now = Date.now();
     logStep('Getting Drinking Waters');
 
     // Step 1: grab the udis list from the database
-    const udisRows: Record<'udi', Udi>[] =
+    const udisRows: Record<'udi', User['udi']>[] =
       await prisma.$queryRaw`SELECT DISTINCT udi FROM "User";`;
     const udis = udisRows.map((row) => row.udi).filter(Boolean);
 
