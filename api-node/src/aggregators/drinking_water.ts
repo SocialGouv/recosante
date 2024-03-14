@@ -83,8 +83,6 @@ async function fetchDrinkingWaterData(udi: string) {
   // 1. know which parameters we are interested in
   // 2. select for the udi and the selected parameters the latest test results
 
-  // 1. get the latest test results from hubeau
-  // doc: https://hubeau.eaufrance.fr/page/api-qualite-eau-potable#/qualite_eau_potable/resultats
   // max 20 paramters
   const parameters: Array<CodeParametreSISEEaux> = [
     'PH',
@@ -106,7 +104,6 @@ async function fetchDrinkingWaterData(udi: string) {
     'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis',
   );
 
-  // Pour chaque municipalité, on récupère la liste des sites de baignade
   Object.keys(hubEauQuery).forEach((key) => {
     hubeauUdiUrl.searchParams.append(key, hubEauQuery[key]);
   });
