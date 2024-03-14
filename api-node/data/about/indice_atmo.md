@@ -30,7 +30,7 @@ La taille des poussières en suspension est un facteur important : plus elles 
 
 À partir de la modélisation régionale de la qualité de l’air, un qualificatif est donné pour chaque polluant en fonction des concentrations prévues (voir tableau ci-dessous). Le qualificatif de l’indice ATMO retenu correspond au qualificatif le plus pénalisant des 5 polluants considérés (pour le jour donné et la zone géographique considérée).
 
-![Alt text](https://www.atmo-bfc.org/medias/images/echelle.png?v=85)
+![Correspondance entre concentrations (ug/m3) et sous-indices](https://www.atmo-bfc.org/medias/images/echelle.png?v=85)
 
 _Source des informations : ATMO France_
 
