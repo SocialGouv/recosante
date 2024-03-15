@@ -1,4 +1,4 @@
-import packageJson from '../../package.json';
+import packageJson from '../package.json';
 const version = packageJson.version;
 
 const PORT = process.env.PORT ?? 3000;
