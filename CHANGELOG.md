@@ -1,3 +1,10 @@
+## [1.33.5](https://github.com/SocialGouv/recosante/compare/v1.33.4...v1.33.5) (2024-03-15)
+
+
+### Bug Fixes
+
+* Update descriptions of air pollutants in indice_atmo.md ([d56d659](https://github.com/SocialGouv/recosante/commit/d56d6591131a84294d80f9e0c489bd8a72c1bd92))
+
 ## [1.33.4](https://github.com/SocialGouv/recosante/compare/v1.33.3...v1.33.4) (2024-03-12)
 
 
