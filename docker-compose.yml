@@ -66,6 +66,20 @@ services:
     env_file:
       - api/.env.docker
 
+  api-node:
+    image: api-node
+    build:
+      context: api-node
+    ports:
+      - 8080:3000
+    env_file:
+      - api-node/.env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/recosante   
+    depends_on:
+      - db     
+    restart: always
+
   frontend:
     image: recosante-frontend
     build:
