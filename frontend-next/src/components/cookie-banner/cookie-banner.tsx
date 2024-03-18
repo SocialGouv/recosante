@@ -65,10 +65,10 @@ export function CookieBanner() {
         consulter notre politique de confidentialité pour en savoir plus.
         <Link
           className='underline ml-1 font-bold '
-          href='/cookies'
+          href='/donnees-personnelles'
           target='_blank'
         >
-          Cookies et mesure d’audience
+          Données personnelles
         </Link>
         <br />
         <p
