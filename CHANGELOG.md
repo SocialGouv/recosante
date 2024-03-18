@@ -1,3 +1,10 @@
+## [1.33.6](https://github.com/SocialGouv/recosante/compare/v1.33.5...v1.33.6) (2024-03-18)
+
+
+### Bug Fixes
+
+* incorrect enum value in BathingWaterStatusEnum ([66d3bc5](https://github.com/SocialGouv/recosante/commit/66d3bc54141db7b83060c2097a05fd4f42f77626))
+
 ## [1.33.5](https://github.com/SocialGouv/recosante/compare/v1.33.4...v1.33.5) (2024-03-15)
 
 
