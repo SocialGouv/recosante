@@ -40,7 +40,7 @@ export enum BathingWaterNumberValueEnum {
 
 export enum BathingWaterStatusEnum {
   NO_DATA = 'Aucune donnée',
-  OFF_SEASON = 'Hors saison',
+  OFF_SEASON = 'Aucune donnée',
   UNRANKED_SITE = 'Site non classé',
   GOOD = 'Bon',
   AVERAGE = 'Moyen',
