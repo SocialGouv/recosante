@@ -1,8 +1,10 @@
 'use client';
 import { MatomoService } from '@/services/matomo';
+import Image from 'next/image';
 import Link from 'next/link';
-
-const PATH = 'https://frontend-recosante-preprod.dev.fabrique.social.gouv.fr';
+import Image1 from '@/images/blog/article-1.webp';
+import Image2 from '@/images/blog/article-2.webp';
+import Image3 from '@/images/blog/article-3.webp';
 
 const posts = [
   {
@@ -11,7 +13,7 @@ const posts = [
     href: '/articles/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur/',
     description:
       'Pour améliorer l’air intérieur, aérer deux fois par jour pendant au moins 10 minutes et pendant les activités de nettoyage, cuisson et bricolage.',
-    imageUrl: `${PATH}/static/38cf0297022fc36eae38fa9c65b1b4f5/a4aa2/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur.webp`,
+    imageUrl: Image1,
     category: { title: 'A la maison' },
   },
   {
@@ -20,7 +22,7 @@ const posts = [
     href: '/articles/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air/',
     description:
       'Pour connaître la qualité de l’air autour de chez soi, consulter l’indice national de qualité de l’air calculé par Associations agréées de surveillance de la qualité de l’air (AASQA).',
-    imageUrl: `${PATH}/static/be66f964700e076c6ab71b404e3b57e1/53b6a/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air.webp`,
+    imageUrl: Image2,
     category: { title: 'Pollution' },
   },
   {
@@ -30,7 +32,7 @@ const posts = [
     href: '/articles/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air/',
     description:
       'Veiller à éteindre les guirlandes en cas d’absence ou la nuit pour éviter tout risque d’incendie (chaleur excessive des lampes, court-circuit…).',
-    imageUrl: `${PATH}/static/2d814a97c12e2b6cfe6cffff21b92c43/38f0f/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air.webp`,
+    imageUrl: Image3,
     category: { title: 'Allergies aux pollens' },
   },
 ];
@@ -52,7 +54,9 @@ export default function BlogPreview() {
               className='flex flex-col items-start justify-between'
             >
               <div className='relative w-full'>
-                <img
+                <Image
+                  width={400}
+                  height={225}
                   src={post.imageUrl}
                   alt=''
                   className='aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]'
