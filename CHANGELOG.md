@@ -1,3 +1,10 @@
+## [1.33.7](https://github.com/SocialGouv/recosante/compare/v1.33.6...v1.33.7) (2024-03-19)
+
+
+### Bug Fixes
+
+* image blog url ([#490](https://github.com/SocialGouv/recosante/issues/490)) ([f9aac2e](https://github.com/SocialGouv/recosante/commit/f9aac2e293d5e919a42e1ce5b9412e15aa747dad))
+
 ## [1.33.6](https://github.com/SocialGouv/recosante/compare/v1.33.5...v1.33.6) (2024-03-18)
 
 
