@@ -5,11 +5,15 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useEffect, useState } from 'react';
 import { setGTag } from './utils';
 import { Button } from '../Button';
+import { usePathname } from 'next/navigation';
 
 export function CookieBanner() {
+  const location = usePathname();
+  const isIframe = location.includes('iframe');
   const [showCookieBanner, setShowCookieBanner] = useState(false);
   const [showPreference, setShowPreference] = useState(false);
   const [isSelected, setIsSelected] = useState(true);
+
   function hideBanner() {
     sessionStorage.setItem('hideCookieBanner', 'true');
     closeBanner();
@@ -44,7 +48,7 @@ export function CookieBanner() {
 
   useEffect(() => {
     const hideCookieBanner = sessionStorage.getItem('hideCookieBanner');
-    if (!hideCookieBanner) {
+    if (!hideCookieBanner && !isIframe) {
       setShowCookieBanner(true);
     }
   }, []);
