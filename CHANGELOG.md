@@ -1,3 +1,10 @@
+## [1.33.8](https://github.com/SocialGouv/recosante/compare/v1.33.7...v1.33.8) (2024-03-19)
+
+
+### Bug Fixes
+
+* hide cookie on iframe ([2857794](https://github.com/SocialGouv/recosante/commit/2857794c004517f6d6147b2827d37f90f394a9f9))
+
 ## [1.33.7](https://github.com/SocialGouv/recosante/compare/v1.33.6...v1.33.7) (2024-03-19)
 
 
