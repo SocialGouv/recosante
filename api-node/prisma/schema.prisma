@@ -330,10 +330,14 @@ model Recommandation {
   @@index([indicator, indicator_value], name: "recommandation_indeicator_indicator_value")
 }
 
+enum NotificationEnum {
+  CLICKED
+}
+
 model Notification {
-  id               String   @id @default(uuid())
+  id               String            @id @default(uuid())
   user_id          String
-  user             User     @relation(fields: [user_id], references: [id])
+  user             User              @relation(fields: [user_id], references: [id])
   title            String
   body             String
   data             String
@@ -343,8 +347,9 @@ model Notification {
   appversion       String? // for debug purpose
   appbuild         String? // for debug purpose
   appdevice        String? // for debug purpose
-  created_at       DateTime @default(now())
-  updated_at       DateTime @default(now()) @updatedAt
+  created_at       DateTime          @default(now())
+  updated_at       DateTime          @default(now()) @updatedAt
+  status           NotificationEnum?
 }
 
 model Feedback {
