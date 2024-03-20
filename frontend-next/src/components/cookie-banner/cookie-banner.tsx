@@ -68,20 +68,23 @@ export function CookieBanner() {
         <XMarkIcon className='w-6 h-6 cursor-pointer' onClick={closeBanner} />
       </div>
       <div className='mb-4 '>
-        Les cookies nous permettent de vous offrir des fonctionnalités utiles et
-        de mesurer les performances afin d’améliorer votre expérience. Veuillez
-        consulter notre politique de confidentialité pour en savoir plus.
-        <Link
-          className='underline ml-1 font-bold '
-          href='/donnees-personnelles'
-          target='_blank'
-        >
-          Données personnelles
-        </Link>
-        <br />
+        <p>
+          Les cookies nous permettent de vous offrir des fonctionnalités utiles
+          et de mesurer les performances afin d’améliorer votre expérience.
+          Veuillez consulter notre politique de confidentialité pour en savoir
+          plus:{' '}
+          <Link
+            className='underline  mt-2 '
+            href='/donnees-personnelles'
+            target='_blank'
+          >
+            Données personnelles
+          </Link>
+        </p>
+
         <p
           onClick={handleChangePreference}
-          className='underline cursor-pointer'
+          className='underline cursor-pointer mt-2'
         >
           Voir la sélection
         </p>
@@ -98,7 +101,7 @@ export function CookieBanner() {
           </label>
         </div>
       ) : null}
-      <div>
+      <div className='grid md:grid-cols-3 md:gap-2 space-y-1 md:space-y-0'>
         <Button
           className='rounded-none'
           variant='outline'
@@ -107,17 +110,13 @@ export function CookieBanner() {
           Accepter tous les cookies
         </Button>
         <Button
-          className=' ml-4 rounded-none'
+          className='rounded-none'
           variant='outline'
           onClick={acceptSelection}
         >
           Accepter la sélection
         </Button>
-        <Button
-          className=' ml-4 rounded-none'
-          variant='outline'
-          onClick={hideBanner}
-        >
+        <Button className='rounded-none' variant='outline' onClick={hideBanner}>
           Refuser tous les cookies
         </Button>
       </div>
