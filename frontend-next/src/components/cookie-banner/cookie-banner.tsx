@@ -6,10 +6,14 @@ import { useEffect, useState } from 'react';
 import { setGTag } from './utils';
 import { Button } from '../Button';
 import { usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 export function CookieBanner() {
   const location = usePathname();
-  const isIframe = location.includes('iframe');
+  const searchParams = useSearchParams();
+  const search = searchParams.get('iframe');
+  const isIframe = location.includes('iframe') || search === '1';
+
   const [showCookieBanner, setShowCookieBanner] = useState(false);
   const [showPreference, setShowPreference] = useState(false);
   const [isSelected, setIsSelected] = useState(true);
