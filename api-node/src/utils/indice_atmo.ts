@@ -17,7 +17,7 @@ function getIndiceAtmoStatus(
     case PolluantQualificatifsNumberEnum.GOOD:
       return PolluantQualificatifsLabelEnum.GOOD;
     case PolluantQualificatifsNumberEnum.FAIR:
-      return PolluantQualificatifsLabelEnum.FAIR;
+      return PolluantQualificatifsLabelEnum.ACCEPTABLE;
     case PolluantQualificatifsNumberEnum.MODERATE:
       return PolluantQualificatifsLabelEnum.MODERATE;
     case PolluantQualificatifsNumberEnum.POOR:
