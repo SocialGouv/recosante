@@ -33,7 +33,7 @@ export enum PolluantQualificatifsNumberEnum {
 
 export enum PolluantQualificatifsLabelEnum {
   GOOD = 'Bon',
-  FAIR = 'Moyen',
+  ACCEPTABLE = 'Acceptable',
   MODERATE = 'Dégradé',
   POOR = 'Mauvais',
   VERY_POOR = 'Très Mauvais',
