@@ -3,6 +3,7 @@ import { type Metadata } from 'next';
 import { marianneFont } from '@/assets/fonts';
 import { Matomo } from '@/components/matomo';
 import { CookieBanner } from '@/components/cookie-banner/cookie-banner';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -39,7 +40,9 @@ export default function RootLayout({
     >
       <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>
-        <CookieBanner />
+        <Suspense>
+          <CookieBanner />
+        </Suspense>
         <div className='flex min-h-full flex-col'>{children}</div>
       </body>
     </html>
