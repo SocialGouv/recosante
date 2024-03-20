@@ -18,7 +18,7 @@ import userRouter from './controllers/user.ts';
 import indicatorsRouter from './controllers/indicators.ts';
 import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
-
+import notificationRouter from './controllers/notification.ts';
 import packageJson from '../package.json';
 
 // Put together a schema
@@ -109,7 +109,7 @@ app.use('/user', userRouter);
 app.use('/indicators', indicatorsRouter);
 app.use('/mail', mailRouter);
 app.use('/feedback', feedbackRouter);
-
+app.use('/notification', notificationRouter);
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
