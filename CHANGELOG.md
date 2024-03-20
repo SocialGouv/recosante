@@ -1,3 +1,10 @@
+## [1.34.1](https://github.com/SocialGouv/recosante/compare/v1.34.0...v1.34.1) (2024-03-20)
+
+
+### Bug Fixes
+
+* update colors ([#492](https://github.com/SocialGouv/recosante/issues/492)) ([fbaf626](https://github.com/SocialGouv/recosante/commit/fbaf626fde71475ecc6b6b79fcb9a62771e640d8))
+
 # [1.34.0](https://github.com/SocialGouv/recosante/compare/v1.33.8...v1.34.0) (2024-03-20)
 
 
