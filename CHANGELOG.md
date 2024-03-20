@@ -1,3 +1,15 @@
+# [1.34.0](https://github.com/SocialGouv/recosante/compare/v1.33.8...v1.34.0) (2024-03-20)
+
+
+### Bug Fixes
+
+* Remove cookie on page with ?iframe=1 ([01b98a3](https://github.com/SocialGouv/recosante/commit/01b98a3a5e25d6477cb41f26a8e7f44081a0aba7))
+
+
+### Features
+
+* **notification:** Add clicked status when user open notification ([#491](https://github.com/SocialGouv/recosante/issues/491)) ([ec210ac](https://github.com/SocialGouv/recosante/commit/ec210ac7a63c2a756516bd4c5964c319975c54f7))
+
 ## [1.33.8](https://github.com/SocialGouv/recosante/compare/v1.33.7...v1.33.8) (2024-03-19)
 
 
