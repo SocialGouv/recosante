@@ -88,18 +88,18 @@ export function Hero() {
     <div className='overflow-hidden pt-2 lg:pb-32 xl:pb-36 '>
       <header>
         <nav>
-          <Container className='relative z-50  py-8'>
+          <Container className='relative z-50  md:py-8'>
             <div
               aria-label='Home'
               className='flex items-center  w-full justify-between '
             >
-              <div className='flex items-center space-x-6'>
+              <div className='flex items-center space-x-6 justify-between  md:w-fit w-full'>
                 <a
                   onClick={handleClick}
                   href='https://recosante.beta.gouv.fr'
                   target='_blank'
                 >
-                  <GouvLogo className='h-24 md:h-32 w-auto -ml-4 ' />
+                  <GouvLogo className='h-14 md:h-32 w-auto -ml-2 md:-ml-4 ' />
                 </a>
 
                 <a
@@ -107,7 +107,7 @@ export function Hero() {
                   href='https://recosante.beta.gouv.fr'
                   target='_blank'
                 >
-                  <Logo className='h-12  md:h-16' />
+                  <Logo className='h-6  md:h-16 -mr-12 -mt-4 md:mr-0 md:mt-0' />
                 </a>
               </div>
               <div className='hidden md:mb-0 group relative md:flex sm:self-auto sm:rounded-2xl space-x-6'>
@@ -129,8 +129,8 @@ export function Hero() {
                 </div>
               </div>
             </div>
-            <div className='relative z-10 flex md:flex-row flex-col-reverse items-start w-full justify-between mt-12'>
-              <h1 className='md:text-5xl w-full text-3xl  mt-4 md:mt-0  text-dark font-app'>
+            <div className='relative z-10 flex md:flex-row flex-col-reverse items-start w-full justify-between mt-4 md:mt-8'>
+              <h1 className='md:text-5xl w-full text-md  md:mt-4 -mt-2  text-dark font-app'>
                 Suivez <span className='text-app-primary'>les pollens</span>,
                 <br />
                 <span className='text-app-primary'>
@@ -141,10 +141,25 @@ export function Hero() {
                 en temps réel dans votre ville.
               </h1>
             </div>
-            <p className='mt-4 text-xl text-gray-700'>
+            <p className='mt-2 md:mt-4 text-xs md:text-xl text-gray-700'>
               Une application gratuite pour protéger votre santé et celle de
               votre famille.
             </p>
+            <div className=' flex items-center justify-center md:hidden mt-4'>
+              <div className='flex  justify-center mx-auto items-start  w-full '>
+                <p className='text-xs text-app-primary '>
+                  Scannez ici
+                  <br /> pour télécharger l'application.
+                </p>
+                <Arrow className='rotate-[280deg]' />
+              </div>
+              <Image
+                src={qrCode}
+                alt='qr code'
+                unoptimized
+                className='animate-pulse w-[120px] -mt-2'
+              />
+            </div>
           </Container>
         </nav>
       </header>

@@ -38,6 +38,12 @@ export default function RootLayout({
       lang='fr'
       className={`h-full bg-gray-50 antialiased  ${marianneFont.variable} font-sans`}
     >
+      <head>
+        <meta
+          name='facebook-domain-verification'
+          content='y7jqtp2f7pqd0v2nofbm1ko075p8dq'
+        />
+      </head>
       <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>
         <Suspense>
