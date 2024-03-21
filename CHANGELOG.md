@@ -1,3 +1,11 @@
+## [1.34.2](https://github.com/SocialGouv/recosante/compare/v1.34.1...v1.34.2) (2024-03-21)
+
+
+### Bug Fixes
+
+* iframe on mobile ([729d17f](https://github.com/SocialGouv/recosante/commit/729d17f33b9118308ecfd8060e83f8f78100e1c4))
+* Update download link text in banner component ([17fce35](https://github.com/SocialGouv/recosante/commit/17fce351c420c6582f3bf06bce7a5515fddd50ca))
+
 ## [1.34.1](https://github.com/SocialGouv/recosante/compare/v1.34.0...v1.34.1) (2024-03-20)
 
 
