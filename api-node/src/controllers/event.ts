@@ -3,13 +3,13 @@ import prisma from '~/prisma';
 import { catchErrors } from '../middlewares/errors';
 import type { RequestWithMatomoEvent } from '~/types/request';
 import { canAskReviewForUser } from '~/utils/user';
+import { WebhookService } from '~/utils/webhook';
 const router = express.Router();
 
 router.post(
   '/',
   catchErrors(async (req: RequestWithMatomoEvent, res: express.Response) => {
     const event = req.body.event;
-
     if (!req.body.userId) {
       res.status(200).send({ ok: true });
       return;
@@ -51,6 +51,11 @@ router.post(
       res.status(200).send({ ok: true, askForReview: true });
       return;
     }
+
+    if (event.category === 'APP' && event.action === 'FIRST_TIME_LAUNCH') {
+      WebhookService.sendToMattermost(req);
+    }
+
     res.status(200).send({ ok: true });
   }),
 );
