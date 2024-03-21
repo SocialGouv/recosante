@@ -1,3 +1,10 @@
+## [1.34.3](https://github.com/SocialGouv/recosante/compare/v1.34.2...v1.34.3) (2024-03-21)
+
+
+### Bug Fixes
+
+* Add ID to store links ([26b72fd](https://github.com/SocialGouv/recosante/commit/26b72fd7b0a1a5aba00978f0600a0dc6e669d2f8))
+
 ## [1.34.2](https://github.com/SocialGouv/recosante/compare/v1.34.1...v1.34.2) (2024-03-21)
 
 
