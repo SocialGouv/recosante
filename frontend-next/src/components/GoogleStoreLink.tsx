@@ -1,12 +1,12 @@
 'use client';
 
-import Link from 'next/link';
 import clsx from 'clsx';
 import { MatomoService } from '@/services/matomo';
 
 export function GoogleStoreLink() {
   return (
-    <Link
+    <a
+      id='google-store-link'
       onClick={() => MatomoService.trackClick('GoogleStoreLink')}
       href='https://play.google.com/store/apps/details?id=com.recosante.recosante'
       target='_blank'
@@ -49,6 +49,6 @@ export function GoogleStoreLink() {
           fill='white'
         />
       </svg>
-    </Link>
+    </a>
   );
 }

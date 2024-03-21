@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import clsx from 'clsx';
 import { MatomoService } from '@/services/matomo';
 export function AppStoreLink({
@@ -9,7 +8,8 @@ export function AppStoreLink({
   color?: 'black' | 'white';
 }) {
   return (
-    <Link
+    <a
+      id='app-store-link'
       onClick={() => MatomoService.trackClick('AppStoreLink')}
       href='https://apps.apple.com/fr/app/recosant%C3%A9/id6476136888'
       target='_blank'
@@ -77,6 +77,6 @@ export function AppStoreLink({
           fill='white'
         />
       </svg>
-    </Link>
+    </a>
   );
 }
