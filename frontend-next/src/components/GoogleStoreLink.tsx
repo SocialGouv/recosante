@@ -14,6 +14,7 @@ export function GoogleStoreLink() {
       className={clsx('rounded-lg transition-colors scale-[95%]')}
     >
       <svg
+        id='google-store-link'
         width='204'
         height='59'
         viewBox='0 0 204 59'

@@ -22,6 +22,7 @@ export function AppStoreLink({
       )}
     >
       <svg
+        id='app-store-link'
         width='203'
         height='57'
         viewBox='0 0 203 57'
