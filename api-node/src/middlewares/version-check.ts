@@ -1,7 +1,5 @@
 import type express from 'express';
 
-const MINIMUM_MOBILE_APP_VERSION = 20;
-
 export default function (
   {
     headers: { appversion, appbuild, appdevice, currentroute, authorization },
@@ -29,14 +27,17 @@ export default function (
   const ANDROID_URL = `https://play.google.com/store/apps/details?id=${ANDROID_APP_ID}`;
   const IOS_URL = `https://apps.apple.com/fr/app/id${IOS_APP_ID}`;
 
-  const storeLink = appdevice === 'ios' ? IOS_URL : ANDROID_URL;
+  const deviceIsIOS = appdevice === 'ios';
+  const storeLink = deviceIsIOS ? IOS_URL : ANDROID_URL;
+
+  const MINIMUM_MOBILE_APP_VERSION = deviceIsIOS ? 48 : 60;
 
   if (Number(appbuild) < MINIMUM_MOBILE_APP_VERSION) {
     return res.status(403).send({
       ok: false,
       sendInApp: [
-        "Votre application n'est pas à jour !",
-        'Vous pouvez la mettre à jour en cliquant sur le lien ci-dessous',
+        'Nouvelle version disponible',
+        "Nous avons corrigé des bugs et ajouté de nouvelles fonctionnalités qui nécessite une mise à jour de l'application.",
         [{ text: 'Mettre à jour', link: storeLink }],
         { cancelable: true },
       ],
