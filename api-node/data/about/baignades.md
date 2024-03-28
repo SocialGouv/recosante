@@ -1,4 +1,4 @@
-Connaître la qualité de l’eau de baignade en eau de mer ou en eau douce est un moyen pour prévenir tout risque pour la santé des baigneurs.
+Connaître la qualité de l’eau de baignade en eau de mer (mer, océan) ou en eau douce (canal, rivière, fleuve, lac) est un moyen pour prévenir tout risque pour la santé des baigneurs.
 
 Dans l’évaluation de cette qualité, il convient de distinguer :
 
