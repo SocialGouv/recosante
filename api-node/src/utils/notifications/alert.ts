@@ -5,6 +5,7 @@ import {
   type WeatherAlert,
   type IndiceAtmospheric,
   type BathingWater,
+  type DrinkingWater,
 } from '@prisma/client';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
@@ -29,7 +30,15 @@ import {
 import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { NotificationDotColor } from '~/types/notifications';
 import { BathingWaterStatusEnum } from '~/types/api/bathing_water';
-import { getBathingWaterSummaryValue } from '../bathing_water/bathing_water';
+import {
+  ConformityStatusEnum,
+  ConformityNumberEnum,
+} from '~/types/api/drinking_water';
+import { getBathingWaterSummaryValue } from '~/utils/bathing_water/bathing_water';
+import {
+  getAllConclusions,
+  getUdiConformityStatus,
+} from '~/utils/drinking_water';
 
 dayjs.extend(utc);
 
@@ -38,7 +47,8 @@ type IndicatorRow =
   | PollenAllergyRisk
   | WeatherAlert
   | IndiceAtmospheric
-  | BathingWater;
+  | BathingWater
+  | DrinkingWater;
 
 export async function sendAlertNotification(
   indicatorSlug: IndicatorsSlugEnum,
@@ -46,22 +56,40 @@ export async function sendAlertNotification(
 ): Promise<boolean> {
   let indicatorValue = null;
 
-  const users = await prisma.user.findMany({
-    where: {
-      notifications_preference: {
-        has: 'alert',
+  let users = [];
+  if (indicatorSlug === IndicatorsSlugEnum.drinking_water) {
+    const row = indicatorRow as DrinkingWater;
+    users = await prisma.user.findMany({
+      where: {
+        notifications_preference: {
+          has: 'alert',
+        },
+        udi: row.udi,
+        push_notif_token: {
+          not: null,
+        },
+        deleted_at: null,
       },
-      municipality_insee_code: indicatorRow.municipality_insee_code,
-      push_notif_token: {
-        not: null,
+    });
+  } else {
+    const row = indicatorRow as Exclude<IndicatorRow, DrinkingWater>;
+    users = await prisma.user.findMany({
+      where: {
+        notifications_preference: {
+          has: 'alert',
+        },
+        municipality_insee_code: row.municipality_insee_code,
+        push_notif_token: {
+          not: null,
+        },
+        deleted_at: null,
       },
-      deleted_at: null,
-    },
-  });
+    });
+  }
 
   if (!users.length) return false;
 
-  if (indicatorSlug === 'weather_alert') {
+  if (indicatorSlug === IndicatorsSlugEnum.weather_alert) {
     const weatherAlert = indicatorRow as WeatherAlert;
     const phenomenons = getSortedPhenomenonsByValue(weatherAlert).filter(
       (phenomenon) =>
@@ -78,6 +106,7 @@ export async function sendAlertNotification(
       pollen_allergy: undefined,
       weather_alert: undefined,
       bathing_water: undefined,
+      drinking_water: undefined,
     };
     let notificationsSent = 0;
     let notificationsInDb = 0;
@@ -186,9 +215,10 @@ export async function sendAlertNotification(
     pollen_allergy: undefined,
     weather_alert: undefined,
     bathing_water: undefined,
+    drinking_water: undefined,
   };
 
-  if (indicatorSlug === 'indice_uv') {
+  if (indicatorSlug === IndicatorsSlugEnum.indice_uv) {
     const indice_uv = indicatorRow as IndiceUv;
     const indiceUvValue = indice_uv.uv_j0 as IndiceUVNumber;
     const isAlert = !!indiceUvValue && indiceUvValue >= 8;
@@ -206,7 +236,7 @@ export async function sendAlertNotification(
     }
   }
 
-  if (indicatorSlug === 'indice_atmospheric') {
+  if (indicatorSlug === IndicatorsSlugEnum.indice_atmospheric) {
     const indice_atmo = indicatorRow as IndiceAtmospheric;
     const indiceAtmoValue = indice_atmo.code_qual;
     const isAlert =
@@ -226,7 +256,7 @@ export async function sendAlertNotification(
     }
   }
 
-  if (indicatorSlug === 'pollen_allergy') {
+  if (indicatorSlug === IndicatorsSlugEnum.pollen_allergy) {
     const pollens = indicatorRow as PollenAllergyRisk;
     const pollensValue = pollens.total ?? 0;
     const isAlert =
@@ -245,7 +275,7 @@ export async function sendAlertNotification(
     }
   }
 
-  if (indicatorSlug === 'bathing_water') {
+  if (indicatorSlug === IndicatorsSlugEnum.bathing_water) {
     const bathingWater = indicatorRow as BathingWater;
     const isAlert =
       bathingWater.current_year_grading ===
@@ -262,6 +292,26 @@ export async function sendAlertNotification(
     indicatorValue = value;
   }
 
+  if (indicatorSlug === IndicatorsSlugEnum.drinking_water) {
+    const drinkingWater = indicatorRow as DrinkingWater;
+    const isAlert =
+      getUdiConformityStatus(drinkingWater) ===
+      ConformityStatusEnum.NOT_CONFORM;
+    if (!isAlert) return false;
+    data.drinking_water = {
+      id: drinkingWater.id,
+    };
+    const drinkingWaterDotColor = NotificationDotColor.EXTREMELY_POOR;
+    const bathingWaterText = `🚰 Eaux du robinet : Non conforme ${drinkingWaterDotColor}`;
+    rawBody.push(bathingWaterText);
+    data.drinking_water.text = bathingWaterText;
+    const recommandation = getAllConclusions(drinkingWater)[0];
+    if (recommandation) {
+      rawBody.push(recommandation);
+    }
+    indicatorValue = ConformityNumberEnum.NOT_CONFORM;
+  }
+
   if (indicatorValue === null) {
     capture('No indicatorValue found for alert notification', {
       extra: {
@@ -275,19 +325,22 @@ export async function sendAlertNotification(
   let notificationsSent = 0;
   let notificationsInDb = 0;
 
-  const recommandation = await prisma.recommandation.findFirst({
-    where: {
-      indicator: indicatorSlug,
-      indicator_value: indicatorValue,
-    },
-    select: {
-      unique_key: true,
-      recommandation_content: true,
-    },
-  });
+  if (indicatorSlug !== IndicatorsSlugEnum.drinking_water) {
+    // drinking water recommandation is included with the row as a test conclusion
+    const recommandation = await prisma.recommandation.findFirst({
+      where: {
+        indicator: indicatorSlug,
+        indicator_value: indicatorValue,
+      },
+      select: {
+        unique_key: true,
+        recommandation_content: true,
+      },
+    });
 
-  if (recommandation?.recommandation_content) {
-    rawBody.push(recommandation.recommandation_content);
+    if (recommandation?.recommandation_content) {
+      rawBody.push(recommandation.recommandation_content);
+    }
   }
 
   const title = 'ALERTE';

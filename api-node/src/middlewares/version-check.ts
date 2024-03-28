@@ -1,25 +1,24 @@
 import type express from 'express';
 
 export default function (
-  {
-    headers: { appversion, appbuild, appdevice, currentroute, authorization },
-  }: {
-    headers: {
-      appversion: string;
-      appbuild: string;
-      appdevice: string;
-      currentroute: string;
-      authorization: string;
-    };
-  },
+  req: express.Request,
   res: express.Response,
   next: express.NextFunction,
 ) {
+  const {
+    // appversion,
+    appbuild,
+    appdevice,
+    // currentroute,
+    // authorization,
+  } = req.headers;
+
   if (!appbuild) {
-    return res.status(403).send({
+    res.status(403).send({
       ok: false,
       sendInApp: ['Veuillez mettre à jour votre application!'],
     });
+    return;
   }
 
   const ANDROID_APP_ID = 'com.recosante.recosante';
@@ -33,7 +32,7 @@ export default function (
   const MINIMUM_MOBILE_APP_VERSION = deviceIsIOS ? 48 : 60;
 
   if (Number(appbuild) < MINIMUM_MOBILE_APP_VERSION) {
-    return res.status(403).send({
+    res.status(403).send({
       ok: false,
       sendInApp: [
         'Nouvelle version disponible',
@@ -42,6 +41,7 @@ export default function (
         { cancelable: true },
       ],
     });
+    return;
   }
   next();
 }

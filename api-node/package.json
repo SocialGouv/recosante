@@ -6,7 +6,7 @@
   "scripts": {
     "pre:dev": "npm run prisma-setup && cross-env NODE_ENV=development npx prisma db push && npm run format && npm run ts:check",
     "dev": "npm run pre:dev && tsx watch ./src/index.ts",
-    "dev-cronjobs": "npm run pre:dev && tsx watch ./src/cronjobs/index.ts",
+    "dev-cronjobs": "npm run pre:dev && cross-env NODE_ENV=development tsx watch ./src/cronjobs/index.ts",
     "start": "cross-env NODE_ENV=production npm run prisma-setup && npm run prisma-deploy && tsx ./src/index.ts",
     "start-cronjobs": "cross-env NODE_ENV=production npm run prisma-setup && npm run prisma-deploy && tsx ./src/cronjobs/index.ts",
     "prisma-setup": "prisma generate && prisma migrate deploy",

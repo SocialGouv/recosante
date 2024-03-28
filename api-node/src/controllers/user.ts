@@ -56,6 +56,7 @@ router.put(
           municipality_insee_code: z.string().optional(),
           municipality_name: z.string().optional(),
           municipality_zip_code: z.string().optional(),
+          udi: z.string().optional(),
           push_notif_token: z.string().optional(),
           favorite_indicator: z.string().optional(),
           notification_preference: z.array(z.string()).optional(),
@@ -88,6 +89,9 @@ router.put(
       }
       if (bodyHasProperty('municipality_zip_code')) {
         updatedUser.municipality_zip_code = req.body.municipality_zip_code;
+      }
+      if (bodyHasProperty('udi')) {
+        updatedUser.udi = req.body.udi;
       }
       if (bodyHasProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
