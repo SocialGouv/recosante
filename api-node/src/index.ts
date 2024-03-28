@@ -112,7 +112,6 @@ app.use('/feedback', versionCheck, feedbackRouter);
 app.use('/notification', versionCheck, notificationRouter);
 app.use('/udi', udiRouter);
 
->>>>>>> 1aff47c (feat: udi controller)
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
