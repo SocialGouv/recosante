@@ -1,7 +1,4 @@
-import {
-  type PrelevementResult,
-  ConformityEnum,
-} from '~/types/api/drinking_water';
+import { ConformityEnum } from '~/types/api/drinking_water';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
