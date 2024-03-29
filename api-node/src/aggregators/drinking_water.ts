@@ -5,20 +5,24 @@ import { capture } from '~/third-parties/sentry';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import utc from 'dayjs/plugin/utc';
 import {
-  type HubEAUResponse,
-  type CodeParametreSISEEaux,
-  ConformityStatusEnum,
+  type HubEAUShortResponse,
+  type ShortPrelevementResult,
+  type HubEAUResultsParameters,
+  type ExtendedShortPrelevementResult,
+  ConformityEnum,
 } from '~/types/api/drinking_water';
 import {
   AlertStatusEnum,
   DataAvailabilityEnum,
   IndicatorsSlugEnum,
   type User,
+  Prisma,
 } from '@prisma/client';
 import { sendAlertNotification } from '~/utils/notifications/alert';
 import {
-  getUdiConformityStatus,
-  mapParameterToRowData,
+  checkPrelevementConformity,
+  getWorstConclusion,
+  getWorstConformity,
 } from '~/utils/drinking_water';
 
 const fetch = fetchRetry(global.fetch);
@@ -28,6 +32,9 @@ dayjs.extend(utc);
 // documentation about indicators:
 // https://www.data.gouv.fr/en/datasets/resultats-du-controle-sanitaire-de-leau-distribuee-commune-par-commune/
 // https://www.data.gouv.fr/fr/datasets/r/36afc708-42dc-4a89-b039-7fde6bcc83d8
+
+// documentation about Hub'eau API:
+// https://hubeau.eaufrance.fr/api/v1/doc
 
 let now = Date.now();
 function logStep(step: string) {
@@ -71,7 +78,15 @@ async function getDrinkingWaterIndicator() {
   }
 }
 
-async function fetchDrinkingWaterData(udi: string) {
+async function fetchDrinkingWaterData(udi: User['udi']) {
+  if (!udi) {
+    return {
+      data: null,
+      insertedNewRow: false,
+      alreadyExistingRow: false,
+      missingData: false,
+    };
+  }
   // what does Hub'eau provide? IT's not written in the documentation so we figured this out ourselves
   // you can put an udi as parameter, you will receive the latest test results for this udi
   // a test has an id: the `code_prelevement`
@@ -79,96 +94,226 @@ async function fetchDrinkingWaterData(udi: string) {
   // and for each paramter for one given test, the global conclusion are always the same
   // but each test doesn't have the same parameters tested
 
+  // the agreement we have with the Health Autohrity right now is
+  // - we can't make our own conclusion
   // so what we need to do is:
-  // 1. know which parameters we are interested in
-  // 2. select for the udi and the selected parameters the latest test results
+  // 1. select all the tests after a date_min_prelevement (1 year ago)
+  // 2. the latest test will be the one we'll show in the summary
+  // 3. we'll show all the tests results in the details
 
-  // max 20 paramters
-  const parameters: Array<CodeParametreSISEEaux> = [
-    'PH',
-    'TEAU',
-    'PESTOT',
-    'COULF',
-    'SAVQ',
-    'COULQ',
-    'ASP',
-    'ODQ',
-  ];
+  const hubeEauEndpoint =
+    'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis';
 
-  const hubEauQuery = {
-    size: 500, // to mazimize the chance to get the latest test results for all the parameters
-    code_reseau: udi,
-    code_parametre_se: parameters.join(','),
-  } as any;
-  const hubeauUdiUrl = new URL(
-    'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis',
-  );
+  // first we check the latest test results for the udi to know if we have it in DB
+  const hubEauLastTestCheckURL = new URL(hubeEauEndpoint);
+  const hubeEauLastTestCheckQuery: HubEAUResultsParameters = {
+    size: 1,
+    code_reseau: [udi],
+    fields: ['code_prelevement'],
+    date_min_prelevement: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
+    date_max_prelevement: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+  };
 
-  Object.keys(hubEauQuery).forEach((key) => {
-    hubeauUdiUrl.searchParams.append(key, hubEauQuery[key]);
+  Object.keys(hubeEauLastTestCheckQuery).forEach((key) => {
+    let value =
+      hubeEauLastTestCheckQuery[key as keyof typeof hubeEauLastTestCheckQuery];
+    if (value) {
+      hubEauLastTestCheckURL.searchParams.append(
+        key,
+        Array.isArray(value) ? value.join(',') : `${value}`,
+      );
+    }
   });
 
-  const hubeau_parameters_url = hubeauUdiUrl.toString();
-  const hubeauUdiResponse: HubEAUResponse = await fetch(hubeau_parameters_url, {
-    retryDelay: 1000,
-    retries: 3,
-  }).then(async (res) => res.json());
+  const hubEauLastTestCheckResponse: HubEAUShortResponse = await fetch(
+    hubEauLastTestCheckURL.toString(),
+    {
+      retryDelay: 1000,
+      retries: 3,
+    },
+  ).then(async (res) => res.json());
+  if (hubEauLastTestCheckResponse.data?.length > 0) {
+    const hubEauLastTestCheckResuklt = hubEauLastTestCheckResponse.data[0];
+    const existingDrinkingWaterRow = await prisma.drinkingWater.findFirst({
+      where: {
+        udi,
+        last_prelevement_code: hubEauLastTestCheckResuklt.code_prelevement,
+      },
+    });
+    if (existingDrinkingWaterRow) {
+      return {
+        data: existingDrinkingWaterRow,
+        insertedNewRow: false,
+        alreadyExistingRow: true,
+        missingData: false,
+      };
+    }
+  }
 
-  const results = hubeauUdiResponse.data;
-  const latestTestResult = results[0];
+  // there is new data to fetch ! let's do it
+  const hubEauURL = new URL(hubeEauEndpoint);
 
-  if (!latestTestResult) {
+  const hubEauQuery: HubEAUResultsParameters = {
+    size: 1000, // to mazimize the chance to get the latest test results for all the parameters
+    code_reseau: [udi],
+    // code_parametre_se: [
+    //   'PH',
+    //   'TEAU',
+    //   'PESTOT',
+    //   'COULF',
+    //   'SAVQ',
+    //   'COULQ',
+    //   'ASP',
+    //   'ODQ',
+    // ],
+    fields: [
+      'date_prelevement',
+      'code_prelevement',
+      'conclusion_conformite_prelevement',
+      'conformite_limites_bact_prelevement',
+      'conformite_limites_pc_prelevement',
+      'conformite_references_bact_prelevement',
+      'conformite_references_pc_prelevement',
+    ],
+    date_min_prelevement: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
+    date_max_prelevement: dayjs().add(1, 'day').format('YYYY-MM-DD'),
+  };
+
+  Object.keys(hubEauQuery).forEach((key) => {
+    let value = hubEauQuery[key as keyof typeof hubEauQuery];
+    if (value) {
+      hubEauURL.searchParams.append(
+        key,
+        Array.isArray(value) ? value.join(',') : `${value}`,
+      );
+    }
+  });
+
+  const hubeau_first_url = hubEauURL.toString();
+
+  const prelevements: Array<ExtendedShortPrelevementResult> = [];
+  const prelevementsDone: Record<
+    ShortPrelevementResult['code_prelevement'],
+    boolean
+  > = {};
+  let currentPrelevementCode: ShortPrelevementResult['code_prelevement'] = '';
+  let currentPrelevementConclusions: ShortPrelevementResult | null = null;
+  let currentPrelevementParametersCount = 0;
+
+  async function getHubeauDataRecursive(hubeau_url: string) {
+    const hubeauUdiResponse: HubEAUShortResponse = await fetch(hubeau_url, {
+      retryDelay: 1000,
+      retries: 3,
+    }).then(async (res) => res.json());
+    if (hubeauUdiResponse.data?.length > 0) {
+      // let's group by code_prelevement
+      const hubEAUResults = hubeauUdiResponse.data;
+      for (const result of hubEAUResults) {
+        if (result.code_prelevement !== currentPrelevementCode) {
+          if (currentPrelevementConclusions) {
+            prelevements.push({
+              ...currentPrelevementConclusions,
+              parameters_count: currentPrelevementParametersCount,
+            });
+          }
+          currentPrelevementParametersCount = 0;
+          currentPrelevementConclusions = result;
+          if (prelevementsDone[result.code_prelevement]) {
+            capture(
+              new Error(
+                '[Hubeau] Response is not sorted by prelevement because prelevement already done',
+              ),
+              {
+                extra: {
+                  prelevementCode: result.code_prelevement,
+                  udi,
+                  hubeau_first_url,
+                  hubeau_url,
+                  prelevementsDone,
+                },
+              },
+            );
+          }
+          currentPrelevementCode = result.code_prelevement;
+        }
+        if (
+          JSON.stringify(currentPrelevementConclusions) !==
+          JSON.stringify(result)
+        ) {
+          capture(new Error('[Hubeau] Conclusion is different for same test'), {
+            extra: {
+              result,
+              udi,
+              hubeau_first_url,
+              hubeau_url,
+              currentPrelevementConclusions,
+              currentPrelevementCode,
+            },
+            tags: {
+              udi,
+              currentPrelevementCode,
+            },
+          });
+          if (!currentPrelevementConclusions) continue;
+          const worstPrelevement: ShortPrelevementResult = {
+            // order matters
+            code_prelevement: currentPrelevementCode,
+            date_prelevement: currentPrelevementConclusions.date_prelevement,
+            conclusion_conformite_prelevement: getWorstConclusion(
+              currentPrelevementConclusions.conclusion_conformite_prelevement,
+              result.conclusion_conformite_prelevement,
+            ),
+            conformite_limites_bact_prelevement: getWorstConformity(
+              currentPrelevementConclusions.conformite_limites_bact_prelevement,
+              result.conformite_limites_bact_prelevement,
+            ),
+            conformite_limites_pc_prelevement: getWorstConformity(
+              currentPrelevementConclusions.conformite_limites_pc_prelevement,
+              result.conformite_limites_pc_prelevement,
+            ),
+            conformite_references_bact_prelevement: getWorstConformity(
+              currentPrelevementConclusions.conformite_references_bact_prelevement,
+              result.conformite_references_bact_prelevement,
+            ),
+            conformite_references_pc_prelevement: getWorstConformity(
+              currentPrelevementConclusions.conformite_references_pc_prelevement,
+              result.conformite_references_pc_prelevement,
+            ),
+          };
+          currentPrelevementConclusions = worstPrelevement;
+        }
+        currentPrelevementParametersCount++;
+      }
+    }
+    if (hubeauUdiResponse.next) {
+      getHubeauDataRecursive(hubeauUdiResponse.next);
+    } else {
+      if (currentPrelevementConclusions && currentPrelevementParametersCount)
+        prelevements.push({
+          ...currentPrelevementConclusions,
+          parameters_count: currentPrelevementParametersCount,
+        });
+    }
+  }
+
+  await getHubeauDataRecursive(hubeau_first_url);
+  // results are sorted by latest date, and one prelevement has one date, so
+  // results are also sorted by prelevement
+
+  if (!prelevements.length) {
     return {
       data: null,
       insertedNewRow: false,
       alreadyExistingRow: false,
-      missingData: true,
-    };
-  }
-
-  const datePrelevement = dayjs(latestTestResult.date_prelevement)
-    .utc()
-    .toDate();
-
-  const existingPrelevement = await prisma.drinkingWater.findFirst({
-    where: {
-      udi,
-      diffusion_date: datePrelevement,
-    },
-  });
-  if (existingPrelevement) {
-    return {
-      data: existingPrelevement,
-      insertedNewRow: false,
-      alreadyExistingRow: true,
       missingData: false,
     };
   }
 
-  const phTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'PH'),
-  );
-  const teauTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'TEAU'),
-  );
-  const pestotTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'PESTOT'),
-  );
-  const coulfTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'COULF'),
-  );
-  const savqTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'SAVQ'),
-  );
-  const coulqTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'COULQ'),
-  );
-  const aspTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'ASP'),
-  );
-  const odqTestResult = mapParameterToRowData(
-    results.find((r) => r.code_parametre_se === 'ODQ'),
-  );
+  const lastPrelevement = prelevements[0];
+
+  const datePrelevement = dayjs(lastPrelevement.date_prelevement)
+    .utc()
+    .toDate();
 
   let newDrinkingWaterRow = await prisma.drinkingWater.create({
     data: {
@@ -177,73 +322,34 @@ async function fetchDrinkingWaterData(udi: string) {
       validity_end: dayjs(datePrelevement).add(1, 'year').toDate(),
       diffusion_date: datePrelevement,
       data_availability:
-        hubeauUdiResponse.data.length > 0
+        prelevements.length > 0
           ? DataAvailabilityEnum.AVAILABLE
           : DataAvailabilityEnum.NOT_AVAILABLE,
-      alert_status: AlertStatusEnum.NOT_ALERT_THRESHOLD,
-      hubeau_parameters_url,
-      PH_conformity: phTestResult.conformity,
-      PH_value: phTestResult.value,
-      PH_code_prelevement: phTestResult.code_prelevement,
-      PH_date_prelevement: phTestResult.date_prelevement,
-      PH_conclusion_conformite_prelevement:
-        phTestResult.conclusion_conformite_prelevement,
-      TEAU_conformity: teauTestResult.conformity,
-      TEAU_value: teauTestResult.value,
-      TEAU_code_prelevement: teauTestResult.code_prelevement,
-      TEAU_date_prelevement: teauTestResult.date_prelevement,
-      TEAU_conclusion_conformite_prelevement:
-        teauTestResult.conclusion_conformite_prelevement,
-      PESTOT_conformity: pestotTestResult.conformity,
-      PESTOT_value: pestotTestResult.value,
-      PESTOT_code_prelevement: pestotTestResult.code_prelevement,
-      PESTOT_date_prelevement: pestotTestResult.date_prelevement,
-      PESTOT_conclusion_conformite_prelevement:
-        pestotTestResult.conclusion_conformite_prelevement,
-      COULF_conformity: coulfTestResult.conformity,
-      COULF_value: coulfTestResult.value,
-      COULF_code_prelevement: coulfTestResult.code_prelevement,
-      COULF_date_prelevement: coulfTestResult.date_prelevement,
-      COULF_conclusion_conformite_prelevement:
-        coulfTestResult.conclusion_conformite_prelevement,
-      SAVQ_conformity: savqTestResult.conformity,
-      SAVQ_value: savqTestResult.value,
-      SAVQ_code_prelevement: savqTestResult.code_prelevement,
-      SAVQ_date_prelevement: savqTestResult.date_prelevement,
-      SAVQ_conclusion_conformite_prelevement:
-        savqTestResult.conclusion_conformite_prelevement,
-      COULQ_conformity: coulqTestResult.conformity,
-      COULQ_value: coulqTestResult.value,
-      COULQ_code_prelevement: coulqTestResult.code_prelevement,
-      COULQ_date_prelevement: coulqTestResult.date_prelevement,
-      COULQ_conclusion_conformite_prelevement:
-        coulqTestResult.conclusion_conformite_prelevement,
-      ASP_conformity: aspTestResult.conformity,
-      ASP_value: aspTestResult.value,
-      ASP_code_prelevement: aspTestResult.code_prelevement,
-      ASP_date_prelevement: aspTestResult.date_prelevement,
-      ASP_conclusion_conformite_prelevement:
-        aspTestResult.conclusion_conformite_prelevement,
-      ODQ_conformity: odqTestResult.conformity,
-      ODQ_value: odqTestResult.value,
-      ODQ_code_prelevement: odqTestResult.code_prelevement,
-      ODQ_date_prelevement: odqTestResult.date_prelevement,
-      ODQ_conclusion_conformite_prelevement:
-        odqTestResult.conclusion_conformite_prelevement,
+      alert_status:
+        checkPrelevementConformity(lastPrelevement) ===
+        ConformityEnum.NOT_CONFORM
+          ? AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
+          : AlertStatusEnum.NOT_ALERT_THRESHOLD,
+      last_prelevement_code: lastPrelevement.code_prelevement,
+      last_prelevement_date: datePrelevement,
+      conclusion_conformite_prelevement:
+        lastPrelevement.conclusion_conformite_prelevement,
+      conformite_limites_bact_prelevement:
+        lastPrelevement.conformite_limites_bact_prelevement,
+      conformite_limites_pc_prelevement:
+        lastPrelevement.conformite_limites_pc_prelevement,
+      conformite_references_bact_prelevement:
+        lastPrelevement.conformite_references_bact_prelevement,
+      conformite_references_pc_prelevement:
+        lastPrelevement.conformite_references_pc_prelevement,
+      hubeau_first_url,
+      all_tests_results: prelevements as unknown as Prisma.JsonArray,
     },
   });
   if (
-    getUdiConformityStatus(newDrinkingWaterRow) ===
-    ConformityStatusEnum.NOT_CONFORM
+    newDrinkingWaterRow.alert_status ===
+    AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET
   ) {
-    newDrinkingWaterRow = await prisma.drinkingWater.update({
-      where: {
-        id: newDrinkingWaterRow.id,
-      },
-      data: {
-        alert_status: AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET,
-      },
-    });
     const alertSent = await sendAlertNotification(
       IndicatorsSlugEnum.drinking_water,
       newDrinkingWaterRow,

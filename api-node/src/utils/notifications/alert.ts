@@ -31,14 +31,11 @@ import { AlertStatusThresholdEnum } from '~/utils/alert_status';
 import { NotificationDotColor } from '~/types/notifications';
 import { BathingWaterStatusEnum } from '~/types/api/bathing_water';
 import {
-  ConformityStatusEnum,
+  ConformityEnum,
   ConformityNumberEnum,
 } from '~/types/api/drinking_water';
 import { getBathingWaterSummaryValue } from '~/utils/bathing_water/bathing_water';
-import {
-  getAllConclusions,
-  getUdiConformityStatus,
-} from '~/utils/drinking_water';
+import { checkPrelevementConformity } from '~/utils/drinking_water';
 
 dayjs.extend(utc);
 
@@ -295,8 +292,7 @@ export async function sendAlertNotification(
   if (indicatorSlug === IndicatorsSlugEnum.drinking_water) {
     const drinkingWater = indicatorRow as DrinkingWater;
     const isAlert =
-      getUdiConformityStatus(drinkingWater) ===
-      ConformityStatusEnum.NOT_CONFORM;
+      checkPrelevementConformity(drinkingWater) === ConformityEnum.NOT_CONFORM;
     if (!isAlert) return false;
     data.drinking_water = {
       id: drinkingWater.id,
@@ -305,7 +301,7 @@ export async function sendAlertNotification(
     const bathingWaterText = `🚰 Eaux du robinet : Non conforme ${drinkingWaterDotColor}`;
     rawBody.push(bathingWaterText);
     data.drinking_water.text = bathingWaterText;
-    const recommandation = getAllConclusions(drinkingWater)[0];
+    const recommandation = drinkingWater.conclusion_conformite_prelevement;
     if (recommandation) {
       rawBody.push(recommandation);
     }

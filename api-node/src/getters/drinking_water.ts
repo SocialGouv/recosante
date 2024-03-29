@@ -3,21 +3,25 @@ import fs from 'fs';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import type { Indicator, IndicatorByPeriod } from '~/types/api/indicator';
+import type { ExtendedShortPrelevementResult } from '~/types/api/drinking_water';
 import {
   IndicatorsSlugEnum,
+  Prisma,
   type Municipality,
   type User,
 } from '@prisma/client';
 import { indicatorsObject } from './indicators_list';
 import utc from 'dayjs/plugin/utc';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import { ConformityStatusEnum } from '~/types/api/drinking_water';
+import {
+  ConformityStatusEnum,
+  ConformityEnum,
+} from '~/types/api/drinking_water';
 import { fetchDrinkingWaterData } from '~/aggregators/drinking_water';
 import {
-  getAllConclusions,
-  getUdiConformityStatus,
-  getUdiConformityValue,
-  mapParameterRowDataToIndicatorByPeriodValues,
+  checkPrelevementConformityChemical,
+  checkPrelevementConformityBacteriological,
+  checkPrelevementConformity,
 } from '~/utils/drinking_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
@@ -29,7 +33,7 @@ const about_description = fs.readFileSync(
 
 async function getDrinkingWaterFromUdi({
   udi,
-  municipality_insee_code, // we keep this municipality_insee_code for now to not break alkl the types around
+  municipality_insee_code, // we keep this municipality_insee_code for now to not break all the types around in the Indicator response
   date_UTC_ISO,
 }: {
   udi: User['udi'];
@@ -63,15 +67,47 @@ async function getDrinkingWaterFromUdi({
   if (drinkingWaterResult.missingData || !drinkingWater) {
     return getDrinkingWaterEmpty(municipality_insee_code);
   }
+  const lastPrelevementConformity = checkPrelevementConformity(drinkingWater);
+
+  if (lastPrelevementConformity === ConformityEnum.NOT_TESTED) {
+    return getDrinkingWaterEmpty(municipality_insee_code);
+  }
 
   const drinkingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: drinkingWater.id,
     summary: {
-      value: getUdiConformityValue(drinkingWater),
-      status: getUdiConformityStatus(drinkingWater),
-      recommendations: getAllConclusions(drinkingWater),
+      value: {
+        chemical: checkPrelevementConformityChemical(drinkingWater),
+        bacteriological:
+          checkPrelevementConformityBacteriological(drinkingWater),
+      },
+      status: lastPrelevementConformity,
+      recommendations: [
+        drinkingWater.conclusion_conformite_prelevement as string,
+      ],
     },
-    values: mapParameterRowDataToIndicatorByPeriodValues(drinkingWater),
+    values: ((drinkingWater.all_tests_results ?? []) as Prisma.JsonArray)?.map(
+      (jsonValue) => {
+        const test_result =
+          jsonValue as unknown as ExtendedShortPrelevementResult;
+        return {
+          slug: test_result.code_prelevement,
+          name: `Test du ${dayjs(test_result.date_prelevement).format(
+            'DD MMM YYYY',
+          )}`,
+          value: {
+            chemical: checkPrelevementConformityChemical(test_result),
+            bacteriological:
+              checkPrelevementConformityBacteriological(test_result),
+          },
+          drinkingWaterMetadata: {
+            parameters_count: test_result.parameters_count,
+            prelevement_code: test_result.code_prelevement,
+            prelevement_date: test_result.date_prelevement,
+          },
+        };
+      },
+    ),
     diffusion_date: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_start: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_end: 'N/A',

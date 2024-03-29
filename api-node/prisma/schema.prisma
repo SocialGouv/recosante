@@ -274,70 +274,25 @@ enum DrinkingWaterPrelevementConformity {
 }
 
 model DrinkingWater {
-  id                                       String                             @id @default(uuid())
-  udi                                      String // example: "076000534"
-  validity_start                           DateTime // the date is the first date of the validity period, included
-  validity_end                             DateTime // the date is the last date of the validity period, included
-  diffusion_date                           DateTime // the latest test date
-  data_availability                        DataAvailabilityEnum               @default(AVAILABLE)
-  alert_status                             AlertStatusEnum                    @default(NOT_ALERT_THRESHOLD)
-  created_at                               DateTime                           @default(now())
-  updated_at                               DateTime                           @default(now()) @updatedAt
+  id                                     String                              @id @default(uuid())
+  udi                                    String // example: "076000534"
+  validity_start                         DateTime // the date is the first date of the validity period, included
+  validity_end                           DateTime // the date is the last date of the validity period, included
+  diffusion_date                         DateTime // the latest test date
+  data_availability                      DataAvailabilityEnum                @default(AVAILABLE)
+  alert_status                           AlertStatusEnum                     @default(NOT_ALERT_THRESHOLD)
+  created_at                             DateTime                            @default(now())
+  updated_at                             DateTime                            @default(now()) @updatedAt
   // specific fields for this indicator, raw data extracted from the API
-  // note: we couldn't use Prisma enum here because
-  // Prisma enum are restricted to: start with letter, no space, etc.
-  // the API returns numbers, letters, spaces, etc. soo
-  // we specify out TypeScript types in comment instead
-  hubeau_udi_url                           String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
-  hubeau_parameters_url                    String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
-  // PH
-  PH_value                                 String? // PH
-  PH_conformity                            DrinkingWaterPrelevementConformity
-  PH_code_prelevement                      String?
-  PH_date_prelevement                      DateTime?
-  PH_conclusion_conformite_prelevement     String? // example: "Eau conforme, buvez sereinement"
-  // TEMPÉRATURE DE L'EAU
-  TEAU_value                               String?
-  TEAU_conformity                          DrinkingWaterPrelevementConformity
-  TEAU_code_prelevement                    String?
-  TEAU_date_prelevement                    DateTime?
-  TEAU_conclusion_conformite_prelevement   String? // example: "Eau conforme, buvez sereinement"
-  // TOTAL DES PESTICIDES ANALYSÉS
-  PESTOT_value                             String?
-  PESTOT_conformity                        DrinkingWaterPrelevementConformity
-  PESTOT_code_prelevement                  String?
-  PESTOT_date_prelevement                  DateTime?
-  PESTOT_conclusion_conformite_prelevement String? // example: "Eau conforme, buvez sereinement"
-  // COLORATION
-  COULF_value                              String?
-  COULF_conformity                         DrinkingWaterPrelevementConformity
-  COULF_code_prelevement                   String?
-  COULF_date_prelevement                   DateTime?
-  COULF_conclusion_conformite_prelevement  String? // example: "Eau conforme, buvez sereinement"
-  // SAVEUR (QUALITATIF)
-  SAVQ_value                               String?
-  SAVQ_conformity                          DrinkingWaterPrelevementConformity
-  SAVQ_code_prelevement                    String?
-  SAVQ_date_prelevement                    DateTime?
-  SAVQ_conclusion_conformite_prelevement   String? // example: "Eau conforme, buvez sereinement"
-  // COULEUR (QUALITATIF)
-  COULQ_value                              String?
-  COULQ_conformity                         DrinkingWaterPrelevementConformity
-  COULQ_code_prelevement                   String?
-  COULQ_date_prelevement                   DateTime?
-  COULQ_conclusion_conformite_prelevement  String? // example: "Eau conforme, buvez sereinement"
-  // ASPECT (QUALITATIF)
-  ASP_value                                String?
-  ASP_conformity                           DrinkingWaterPrelevementConformity
-  ASP_code_prelevement                     String?
-  ASP_date_prelevement                     DateTime?
-  ASP_conclusion_conformite_prelevement    String? // example: "Eau conforme, buvez sereinement"
-  // ODEUR (QUALITATIF)
-  ODQ_value                                String?
-  ODQ_conformity                           DrinkingWaterPrelevementConformity
-  ODQ_code_prelevement                     String?
-  ODQ_date_prelevement                     DateTime?
-  ODQ_conclusion_conformite_prelevement    String? // example: "Eau conforme, buvez sereinement"
+  hubeau_first_url                       String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
+  last_prelevement_code                  String?
+  last_prelevement_date                  DateTime?
+  conclusion_conformite_prelevement      String?
+  conformite_limites_bact_prelevement    DrinkingWaterPrelevementConformity?
+  conformite_limites_pc_prelevement      DrinkingWaterPrelevementConformity?
+  conformite_references_bact_prelevement DrinkingWaterPrelevementConformity?
+  conformite_references_pc_prelevement   DrinkingWaterPrelevementConformity?
+  all_tests_results                      Json?
 
   @@index([udi, diffusion_date, validity_start], name: "drinking_water_udi_diffusion_date_validity_start")
 }
