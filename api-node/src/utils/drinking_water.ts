@@ -65,7 +65,6 @@ function checkPrelevementConformityChemical(
   prelevement?: PrelevementConformity,
 ): ConformityEnum {
   if (!prelevement) return ConformityEnum.NOT_TESTED;
-  if (!prelevement) return ConformityEnum.NOT_TESTED;
   if (!prelevement.conclusion_conformite_prelevement)
     return ConformityEnum.NOT_TESTED;
   if (!prelevement.conformite_limites_pc_prelevement)
@@ -95,7 +94,6 @@ function checkPrelevementConformityChemical(
 function checkPrelevementConformityBacteriological(
   prelevement?: PrelevementConformity,
 ): ConformityEnum {
-  if (!prelevement) return ConformityEnum.NOT_TESTED;
   if (!prelevement) return ConformityEnum.NOT_TESTED;
   if (!prelevement.conclusion_conformite_prelevement)
     return ConformityEnum.NOT_TESTED;
