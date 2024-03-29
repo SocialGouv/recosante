@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import prisma from '~/prisma';
+import '~/prisma';
 
 import * as Sentry from '@sentry/node';
 import express from 'express';
@@ -21,35 +21,7 @@ import feedbackRouter from './controllers/feedback.ts';
 import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
 
-console.log(
-  (async () => {
-    const udis = await prisma.udis.findMany({
-      select: {
-        code_udi: true,
-      },
-    });
-    for (const [index, { code_udi }] of Object.entries(udis)) {
-      if (Number(index) < 15427) continue;
-      console.log(
-        'index',
-        index,
-        ' of all ',
-        udis.length,
-        ' code_udi',
-        code_udi,
-      );
-      const result = await getDrinkingWaterFromUdi({
-        date_UTC_ISO: '2022-03-01T00:00:00.000Z',
-        municipality_insee_code: '12345',
-        udi: code_udi,
-      });
-      console.log('result', result?.j0.summary?.recommendations?.[0]);
-    }
-  })(),
-);
-
 import packageJson from '../package.json';
-import { getDrinkingWaterFromUdi } from './getters/drinking_water.ts';
 
 // Put together a schema
 const app = express();

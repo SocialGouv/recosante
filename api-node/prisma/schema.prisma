@@ -295,6 +295,7 @@ model DrinkingWater {
   all_tests_results                      Json?
 
   @@index([udi, diffusion_date, validity_start], name: "drinking_water_udi_diffusion_date_validity_start")
+  @@index([udi, last_prelevement_code], name: "drinking_water_udi_last_prelevement_code")
 }
 
 model CronJob {
