@@ -1,4 +1,8 @@
-import type { IndicatorsSlugEnum, Municipality } from '@prisma/client';
+import type {
+  DrinkingWaterPrelevementConformity,
+  IndicatorsSlugEnum,
+  Municipality,
+} from '@prisma/client';
 
 export type IndicatorItem = {
   name: string;
@@ -10,12 +14,26 @@ export type IndicatorItem = {
 
 export type IndicatorDay = 'j0' | 'j1';
 
-export type IndicatorByPeriodValues = Array<{
+export type DrinkingWaterValue = {
+  chemical: DrinkingWaterPrelevementConformity;
+  bacteriological: DrinkingWaterPrelevementConformity;
+};
+
+export type DrinkingWaterMetadata = {
+  parameters_count: number;
+  prelevement_code: string;
+  prelevement_date: string;
+};
+
+export type IndicatorByPeriodValue = {
   slug: string;
   name: string;
-  value: number;
-  link?: string;
-}>;
+  value: number | string | DrinkingWaterValue;
+  link?: string; // specific for bathing water
+  drinkingWater?: DrinkingWaterMetadata;
+};
+
+export type IndicatorByPeriodValues = Array<IndicatorByPeriodValue>;
 export interface IndicatorByPeriod {
   id: string;
   validity_start: string;
@@ -24,8 +42,8 @@ export interface IndicatorByPeriod {
   created_at: string;
   updated_at: string;
   summary: {
-    value: number | null;
-    status: string;
+    value: number | null | DrinkingWaterValue;
+    status: string | null;
     status_description?: string;
     recommendations?: string[];
   };

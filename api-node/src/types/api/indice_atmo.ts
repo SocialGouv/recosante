@@ -102,7 +102,7 @@ type IndiceAtmoLibPol = 'PM2.5' | 'PM10' | 'O3' | 'NO2' | 'SO2';
 
 export type IndiceAtmoSearchOperatorEpisodePollution = {
   code_zone: Municipality['DEP']; // code département selon l’INSEE;
-  date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’alerte, au format international (YYYY-DD-MM);
+  date_ech: DATE_CALENDAR_YYYY_MM_DD; // date de l’alerte, au format international (YYYY-MM-DD);
   etat: 'information et recommandation' | 'alerte sur persistance' | 'alerte'; // niveau d’alerte
   lib_pol: IndiceAtmoLibPol; // le polluant déclencheur
 };

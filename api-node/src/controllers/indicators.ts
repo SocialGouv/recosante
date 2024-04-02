@@ -13,6 +13,7 @@ import { indicatorsList } from '~/getters/indicators_list';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
 import { getBathingWaterFromMunicipalityAndDate } from '~/getters/bathing_water';
+import { getDrinkingWaterFromUdi } from '~/getters/drinking_water';
 dayjs.extend(utc);
 
 const router = express.Router();
@@ -98,7 +99,16 @@ router.get(
 
       if (bathingWater) indicators.push(bathingWater);
 
-      // indicators.push(...indicatorsMock);
+      const drinkingWater = await getDrinkingWaterFromUdi({
+        udi: req.user.udi,
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (drinkingWater instanceof Error) {
+        next(drinkingWater);
+        return;
+      }
+      if (drinkingWater) indicators.push(drinkingWater);
 
       res.status(200).send({ ok: true, data: indicators });
     },

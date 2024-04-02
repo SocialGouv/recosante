@@ -23,7 +23,7 @@ enum IndicatorsSlugEnum {
   weather_alert
   // episode_pollution_atmospheric
   bathing_water
-  // tap_water
+  drinking_water
 }
 
 model User {
@@ -35,6 +35,7 @@ model User {
   municipality_insee_code    String? // code INSEE
   municipality_name          String?
   municipality_zip_code      String?
+  udi                        String? // code UDI for drinking water
   push_notif_token           String?
   notifications_sent         Int?                @default(0) // cache the number of notifications sent
   asked_for_review           Int?                @default(0)
@@ -257,21 +258,44 @@ model BathingWater {
   @@index([municipality_insee_code, id_site, diffusion_date], name: "bathing_water_insee_code_id_site_diffusion_date")
 }
 
-enum PollutionStateEnum {
-  ALERT // ALERTE
-  INFORMATION_AND_RECOMMANDATION // INFORMATION ET RECOMMANDATION
-  NO_ALERT // PAS DE DEPASSEMENT
-  ALERT_PERSISTANCE // ALERTE SUR PERSISTANCE
+// L’unité de distribution (UDI) correspond à un ensemble de canalisations de distribution de l’eau potable au sein duquel la qualité de l’eau délivrée est considérée comme homogène.
+model udis {
+  ogc_fid      Int                                         @id @default(autoincrement())
+  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
+  gid          Int?
+  code_udi     String?
 }
 
-enum PollutionCodeEnum {
-  SULFUR_DIOXIDE // Dioxyde de soufre - code 1
-  NITROGEN_DIOXIDE // Dioxyde d'azote - code 3 / code 8
-  FINES_PARTICLES // Particules fines PM10 - code 5
-  OZONE // Ozone - code 7
-  PM10 // Particules en suspension PM10 - code 24
-  PM25 // Particules en suspension PM2.5 - code 39
-  BENZENE // Benzène - code 60
+enum DrinkingWaterPrelevementConformity {
+  C
+  D
+  N
+  S
+}
+
+model DrinkingWater {
+  id                                     String                              @id @default(uuid())
+  udi                                    String // example: "076000534"
+  validity_start                         DateTime // the date is the first date of the validity period, included
+  validity_end                           DateTime // the date is the last date of the validity period, included
+  diffusion_date                         DateTime // the latest test date
+  data_availability                      DataAvailabilityEnum                @default(AVAILABLE)
+  alert_status                           AlertStatusEnum                     @default(NOT_ALERT_THRESHOLD)
+  created_at                             DateTime                            @default(now())
+  updated_at                             DateTime                            @default(now()) @updatedAt
+  // specific fields for this indicator, raw data extracted from the API
+  hubeau_first_url                       String? // example: "https://hubeau.eaufrance.fr/page/telechargement-donnees"
+  last_prelevement_code                  String?
+  last_prelevement_date                  DateTime?
+  conclusion_conformite_prelevement      String?
+  conformite_limites_bact_prelevement    DrinkingWaterPrelevementConformity?
+  conformite_limites_pc_prelevement      DrinkingWaterPrelevementConformity?
+  conformite_references_bact_prelevement DrinkingWaterPrelevementConformity?
+  conformite_references_pc_prelevement   DrinkingWaterPrelevementConformity?
+  all_tests_results                      Json?
+
+  @@index([udi, diffusion_date, validity_start], name: "drinking_water_udi_diffusion_date_validity_start")
+  @@index([udi, last_prelevement_code], name: "drinking_water_udi_last_prelevement_code")
 }
 
 model CronJob {
@@ -360,11 +384,4 @@ model Feedback {
   user_id    String
   user       User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
-}
-
-model udis {
-  ogc_fid      Int                                         @id @default(autoincrement())
-  wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
-  gid          Int?
-  code_udi     String?
 }
