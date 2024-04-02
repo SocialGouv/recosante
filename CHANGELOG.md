@@ -1,3 +1,15 @@
+# [1.35.0](https://github.com/SocialGouv/recosante/compare/v1.34.3...v1.35.0) (2024-04-02)
+
+
+### Bug Fixes
+
+* delete lists again ([#504](https://github.com/SocialGouv/recosante/issues/504)) ([3829f12](https://github.com/SocialGouv/recosante/commit/3829f129187a1b1d7b5fd461492d76480f73e178))
+
+
+### Features
+
+* **cta:** add new call-to-action controllers for managing call to action in dashboard page ([#498](https://github.com/SocialGouv/recosante/issues/498)) ([e0e18e5](https://github.com/SocialGouv/recosante/commit/e0e18e50a5256f1c6785af690443059a63987c9f))
+
 ## [1.34.3](https://github.com/SocialGouv/recosante/compare/v1.34.2...v1.34.3) (2024-03-21)
 
 
