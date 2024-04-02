@@ -22,6 +22,7 @@ import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
 
 import packageJson from '../package.json';
+import callToActionRouter from './controllers/call-to-action.ts';
 
 // Put together a schema
 const app = express();
@@ -110,6 +111,7 @@ app.use('/indicators', versionCheck, indicatorsRouter);
 app.use('/mail', versionCheck, mailRouter);
 app.use('/feedback', versionCheck, feedbackRouter);
 app.use('/notification', versionCheck, notificationRouter);
+app.use('/call-to-action', versionCheck, callToActionRouter);
 app.use('/udi', udiRouter);
 
 app.use(Sentry.Handlers.errorHandler());

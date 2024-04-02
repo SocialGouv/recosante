@@ -62,47 +62,45 @@ def get_blacklisted_contacts(contacts):
 
 
 def deactivate_contacts(task, contacts):
-    current_app.logger.info("deactivate_contacts")
     # if current_app.config['ENV'] == 'production':
-    #     if task:
-    #         task.update_state(
-    #             state='STARTED',
-    #             meta={
-    #                 "progress": 0,
-    #                 "details": "Prise en compte de la désincription des membres"
-    #             }
-    #         )
-    #     for contact in get_blacklisted_contacts(contacts):
-    #         db_contact = Inscription.active_query().filter(
-    #             Inscription.mail == contact['email']).first()
-    #         if not db_contact or not db_contact.is_active:
-    #             continue
-    #         db_contact.unsubscribe()
+    if task:
+        task.update_state(
+            state='STARTED',
+            meta={
+                "progress": 0,
+                "details": "Prise en compte de la désincription des membres"
+            }
+        )
+    for contact in get_blacklisted_contacts(contacts):
+        db_contact = Inscription.active_query().filter(
+            Inscription.mail == contact['email']).first()
+        if not db_contact or not db_contact.is_active:
+            continue
+        db_contact.unsubscribe()
 
 
 def delete_lists(task):
-    current_app.logger.info("delete_lists")
     # if current_app.config['ENV'] == 'production':
-    #     if task:
-    #         task.update_state(
-    #             state='STARTED',
-    #             meta={
-    #                 "progress": 0,
-    #                 "details": "Suppression des anciennes listes"
-    #             }
-    #         )
-    #     list_ids_to_delete = get_lists_ids_to_delete()
-    #     contacts_api = sib_api_v3_sdk.ContactsApi(sib)
-    #     for i, list_id in enumerate(list_ids_to_delete, 1):
-    #         contacts_api.delete_list(list_id)
-    #         if task:
-    #             task.update_state(
-    #                 state='STARTED',
-    #                 meta={
-    #                     "progress": 0,
-    #                     "details": f"Suppression des anciennes listes ({i}/{len(list_ids_to_delete)})"
-    #                 }
-    #             )
+    if task:
+        task.update_state(
+            state='STARTED',
+            meta={
+                "progress": 0,
+                "details": "Suppression des anciennes listes"
+            }
+        )
+    list_ids_to_delete = get_lists_ids_to_delete()
+    contacts_api = sib_api_v3_sdk.ContactsApi(sib)
+    for i, list_id in enumerate(list_ids_to_delete, 1):
+        contacts_api.delete_list(list_id)
+        if task:
+            task.update_state(
+                state='STARTED',
+                meta={
+                    "progress": 0,
+                    "details": f"Suppression des anciennes listes ({i}/{len(list_ids_to_delete)})"
+                }
+            )
 
 
 def import_and_send(task, type_='quotidien', force_send=False):
