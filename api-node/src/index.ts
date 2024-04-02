@@ -20,6 +20,7 @@ import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 import notificationRouter from './controllers/notification.ts';
 import packageJson from '../package.json';
+import callToActionRouter from './controllers/call-to-action.ts';
 
 // Put together a schema
 const app = express();
@@ -110,6 +111,7 @@ app.use('/indicators', indicatorsRouter);
 app.use('/mail', mailRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/notification', notificationRouter);
+app.use('/call-to-action', callToActionRouter);
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
