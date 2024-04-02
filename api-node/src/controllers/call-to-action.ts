@@ -2,7 +2,6 @@ import express from 'express';
 import { withUser } from '~/middlewares/auth';
 
 import { catchErrors } from '~/middlewares/errors';
-import { type RequestWithUser } from '~/types/request';
 
 const callToActionRouter = express.Router();
 
@@ -22,9 +21,9 @@ callToActionRouter.get(
   withUser,
   catchErrors(
     async (
-      req: RequestWithUser,
+      _req: express.Request,
       res: express.Response,
-      next: express.NextFunction,
+      _next: express.NextFunction,
     ) => {
       res.status(200).send({ ok: true, data: callToAction });
     },
