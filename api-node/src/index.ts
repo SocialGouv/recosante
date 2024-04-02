@@ -20,9 +20,9 @@ import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
+import callToActionRouter from './controllers/call-to-action.ts';
 
 import packageJson from '../package.json';
-import callToActionRouter from './controllers/call-to-action.ts';
 
 // Put together a schema
 const app = express();

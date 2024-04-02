@@ -38,7 +38,7 @@ notificationRouter.post(
 
       await prisma.notification.update({
         where: {
-          id: req.body.id,
+          expo_id: req.body.id,
         },
         data: {
           status: req.body.status,
