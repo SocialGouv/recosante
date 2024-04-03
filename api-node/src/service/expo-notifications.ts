@@ -84,6 +84,7 @@ export async function sendPushNotification({
             appbuild: user.appbuild,
             appdevice: user.appdevice,
             user: { connect: { id: user.id } },
+            expo_id: ticket[0].id,
             ticket: JSON.stringify(ticket),
           },
         })
@@ -114,6 +115,7 @@ export async function sendPushNotification({
             appbuild: user.appbuild,
             appdevice: user.appdevice,
             user: { connect: { id: user.id } },
+            expo_id: `ERROR_${new Date().toISOString()}`,
             error: JSON.stringify(error),
           },
         })

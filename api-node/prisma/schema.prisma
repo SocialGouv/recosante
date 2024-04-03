@@ -361,6 +361,7 @@ enum NotificationEnum {
 model Notification {
   id               String            @id @default(uuid())
   user_id          String
+  expo_id          String?           @unique
   user             User              @relation(fields: [user_id], references: [id])
   title            String
   body             String
