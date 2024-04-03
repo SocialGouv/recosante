@@ -6,7 +6,7 @@ import type { Indicator, IndicatorByPeriod } from '~/types/api/indicator';
 import type { ExtendedShortPrelevementResult } from '~/types/api/drinking_water';
 import {
   IndicatorsSlugEnum,
-  Prisma,
+  type Prisma,
   type Municipality,
   type User,
 } from '@prisma/client';
@@ -82,9 +82,8 @@ async function getDrinkingWaterFromUdi({
           checkPrelevementConformityBacteriological(drinkingWater),
       },
       status: lastPrelevementConformity,
-      recommendations: [
-        drinkingWater.conclusion_conformite_prelevement as string,
-      ],
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      recommendations: [drinkingWater.conclusion_conformite_prelevement!],
     },
     values: ((drinkingWater.all_tests_results ?? []) as Prisma.JsonArray)?.map(
       (jsonValue) => {
