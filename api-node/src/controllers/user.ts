@@ -6,6 +6,7 @@ import { type CustomError } from '~/types/error';
 import { type User } from '@prisma/client';
 import { withUser } from '~/middlewares/auth.js';
 import type { RequestWithUser } from '~/types/request';
+import { getUdiByCoordinates } from '~/service/udi.js';
 const router = express.Router();
 
 router.post(
@@ -53,6 +54,7 @@ router.put(
     ) => {
       try {
         z.object({
+          coordinates: z.array(z.number()).optional(),
           municipality_insee_code: z.string().optional(),
           municipality_name: z.string().optional(),
           municipality_zip_code: z.string().optional(),
@@ -81,6 +83,10 @@ router.put(
         return Object.prototype.hasOwnProperty.call(req.body, property);
       }
 
+      if (bodyHasProperty('coordinates')) {
+        const udi = (await getUdiByCoordinates(req.body.coordinates)).code_udi;
+        updatedUser.udi = udi;
+      }
       if (bodyHasProperty('municipality_insee_code')) {
         updatedUser.municipality_insee_code = req.body.municipality_insee_code;
       }
