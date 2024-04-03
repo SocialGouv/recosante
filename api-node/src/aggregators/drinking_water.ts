@@ -16,7 +16,7 @@ import {
   DataAvailabilityEnum,
   IndicatorsSlugEnum,
   type User,
-  Prisma,
+  type Prisma,
 } from '@prisma/client';
 import { sendAlertNotification } from '~/utils/notifications/alert';
 import {
@@ -115,7 +115,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
   };
 
   Object.keys(hubeEauLastTestCheckQuery).forEach((key) => {
-    let value =
+    const value =
       hubeEauLastTestCheckQuery[key as keyof typeof hubeEauLastTestCheckQuery];
     if (value) {
       hubEauLastTestCheckURL.searchParams.append(
@@ -180,7 +180,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
   };
 
   Object.keys(hubEauQuery).forEach((key) => {
-    let value = hubEauQuery[key as keyof typeof hubEauQuery];
+    const value = hubEauQuery[key as keyof typeof hubEauQuery];
     if (value) {
       hubEauURL.searchParams.append(
         key,
@@ -288,11 +288,12 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
     if (hubeauUdiResponse.next) {
       getHubeauDataRecursive(hubeauUdiResponse.next);
     } else {
-      if (currentPrelevementConclusions && currentPrelevementParametersCount)
+      if (currentPrelevementConclusions && currentPrelevementParametersCount) {
         prelevements.push({
           ...currentPrelevementConclusions,
           parameters_count: currentPrelevementParametersCount,
         });
+      }
     }
   }
 

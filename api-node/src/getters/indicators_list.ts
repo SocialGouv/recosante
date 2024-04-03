@@ -37,6 +37,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
     slug: IndicatorsSlugEnum.bathing_water,
   },
   [IndicatorsSlugEnum.drinking_water]: {
+    active: false,
     name: 'Eau du robinet',
     long_name: "La qualité de l'eau du robinet",
     short_name: 'Eau du robinet',
