@@ -1,3 +1,15 @@
+# [1.36.0](https://github.com/SocialGouv/recosante/compare/v1.35.0...v1.36.0) (2024-04-03)
+
+
+### Bug Fixes
+
+* expo_id ([#505](https://github.com/SocialGouv/recosante/issues/505)) ([d7facf0](https://github.com/SocialGouv/recosante/commit/d7facf0408e2b2d10e00f1604f0656065382c1fa))
+
+
+### Features
+
+* indicator drinking water ([#479](https://github.com/SocialGouv/recosante/issues/479)) ([cef837f](https://github.com/SocialGouv/recosante/commit/cef837f931974ca3ccc2f94b6fd9558f2fa3956d))
+
 # [1.35.0](https://github.com/SocialGouv/recosante/compare/v1.34.3...v1.35.0) (2024-04-02)
 
 
