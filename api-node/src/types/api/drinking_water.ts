@@ -162,6 +162,7 @@ export type ShortPrelevementResult = Pick<
   | 'conformite_limites_pc_prelevement'
   | 'conformite_references_bact_prelevement'
   | 'conformite_references_pc_prelevement'
+  | 'code_installation_amont'
 >;
 
 export interface ExtendedShortPrelevementResult extends ShortPrelevementResult {

@@ -17,7 +17,7 @@ import {
   ConformityStatusEnum,
   ConformityEnum,
 } from '~/types/api/drinking_water';
-import { fetchDrinkingWaterData } from '~/aggregators/drinking_water';
+import { fetchDrinkingWaterDataCascade } from '~/aggregators/drinking_water';
 import {
   checkPrelevementConformityChemical,
   checkPrelevementConformityBacteriological,
@@ -61,7 +61,7 @@ async function getDrinkingWaterFromUdi({
     throw error;
   }
 
-  const drinkingWaterResult = await fetchDrinkingWaterData(udi);
+  const drinkingWaterResult = await fetchDrinkingWaterDataCascade(udi);
   const drinkingWater = drinkingWaterResult.data;
 
   if (drinkingWaterResult.missingData || !drinkingWater) {

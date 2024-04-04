@@ -16,6 +16,7 @@ import {
   DataAvailabilityEnum,
   IndicatorsSlugEnum,
   type User,
+  type DrinkingWater,
   type Prisma,
 } from '@prisma/client';
 import { sendAlertNotification } from '~/utils/notifications/alert';
@@ -31,10 +32,11 @@ dayjs.extend(utc);
 
 // documentation about indicators:
 // https://www.data.gouv.fr/en/datasets/resultats-du-controle-sanitaire-de-leau-distribuee-commune-par-commune/
+// https://www.data.gouv.fr/fr/datasets/resultats-du-controle-sanitaire-de-leau-du-robinet/
 // https://www.data.gouv.fr/fr/datasets/r/36afc708-42dc-4a89-b039-7fde6bcc83d8
 
 // documentation about Hub'eau API:
-// https://hubeau.eaufrance.fr/api/v1/doc
+// https://hubeau.eaufrance.fr/page/api-qualite-eau-potable#/qualite_eau_potable/resultats
 
 let now = Date.now();
 function logStep(step: string) {
@@ -178,6 +180,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
       'conformite_limites_pc_prelevement',
       'conformite_references_bact_prelevement',
       'conformite_references_pc_prelevement',
+      'code_installation_amont',
     ],
     date_min_prelevement: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
     date_max_prelevement: dayjs().add(1, 'day').format('YYYY-MM-DD'),
@@ -217,6 +220,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
           if (currentPrelevementConclusions) {
             prelevements.push({
               ...currentPrelevementConclusions,
+              code_installation_amont: result.code_installation_amont,
               parameters_count: currentPrelevementParametersCount,
             });
           }
@@ -379,4 +383,77 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
   };
 }
 
-export { getDrinkingWaterIndicator, fetchDrinkingWaterData };
+type PrelevementsByCode = Record<
+  ExtendedShortPrelevementResult['code_prelevement'],
+  ExtendedShortPrelevementResult
+>;
+
+async function fetchDrinkingWaterDataCascade(udi: User['udi']) {
+  const result = await fetchDrinkingWaterData(udi);
+  if (!result.data) return result;
+  const drinkingWater = result.data;
+  const allTestsResults = [
+    ...((drinkingWater.all_tests_results ?? []) as Prisma.JsonArray),
+  ];
+  const allTestsResultsByPrelevementCode: PrelevementsByCode = {};
+  for (const jsonValue of allTestsResults) {
+    const testResult = jsonValue as unknown as ExtendedShortPrelevementResult;
+    allTestsResultsByPrelevementCode[testResult.code_prelevement] = testResult;
+    const reseauAmont = testResult.code_installation_amont;
+    if (!reseauAmont) continue;
+    if (reseauAmont === udi) continue;
+    const amontTests = await fetchDrinkingWaterDataCascade(reseauAmont);
+    if (!amontTests.data) continue;
+    const amontAllTestsResults = [
+      ...((amontTests.data.all_tests_results ?? []) as Prisma.JsonArray),
+    ];
+    for (const amontJsonValue of amontAllTestsResults) {
+      const amontTestResult =
+        amontJsonValue as unknown as ExtendedShortPrelevementResult;
+      allTestsResultsByPrelevementCode[amontTestResult.code_prelevement] =
+        amontTestResult;
+    }
+  }
+  const allPrelevements = Object.values(allTestsResultsByPrelevementCode).sort(
+    (a, b) => {
+      return dayjs(b.date_prelevement).diff(dayjs(a.date_prelevement));
+    },
+  );
+
+  const lastPrelevement = allPrelevements[0];
+
+  const datePrelevement = dayjs(lastPrelevement.date_prelevement)
+    .utc()
+    .toDate();
+
+  const augmentedDrinkingWaterWithAmont: DrinkingWater = {
+    ...drinkingWater,
+    validity_start: datePrelevement,
+    validity_end: dayjs(datePrelevement).add(1, 'year').toDate(),
+    diffusion_date: datePrelevement,
+    last_prelevement_code: lastPrelevement.code_prelevement,
+    last_prelevement_date: datePrelevement,
+    conclusion_conformite_prelevement:
+      lastPrelevement.conclusion_conformite_prelevement,
+    conformite_limites_bact_prelevement:
+      lastPrelevement.conformite_limites_bact_prelevement,
+    conformite_limites_pc_prelevement:
+      lastPrelevement.conformite_limites_pc_prelevement,
+    conformite_references_bact_prelevement:
+      lastPrelevement.conformite_references_bact_prelevement,
+    conformite_references_pc_prelevement:
+      lastPrelevement.conformite_references_pc_prelevement,
+    all_tests_results: allPrelevements as unknown as Prisma.JsonArray,
+  };
+
+  return {
+    ...result,
+    data: augmentedDrinkingWaterWithAmont,
+  };
+}
+
+export {
+  getDrinkingWaterIndicator,
+  fetchDrinkingWaterData,
+  fetchDrinkingWaterDataCascade,
+};
