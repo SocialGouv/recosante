@@ -52,15 +52,15 @@ https://developers.brevo.com/reference/updatecampaignstatus
 // TIP ids are in the form 9967, 9966, etc.
 // So we don'tneed to fetch the campaigns abov
 
-// for (let i = 7791; i > 0; i--) {
-//   await new Promise((resolve) => setTimeout(resolve, 1000));
-//   const result = await BrevoApi.put({
-//     path: `/emailCampaigns/${i}/status`,
-//     body: { status: 'archive' },
-//   });
-//   if (result === 429) break;
-//   console.log(i, result);
-// }
+for (let i = 9120; i > 0; i--) {
+  const result = await BrevoApi.put({
+    path: `/emailCampaigns/${i}/status`,
+    body: { status: 'archive' },
+  });
+  if (result?.status === 429) break;
+  console.log({ i, result });
+  await new Promise((resolve) => setTimeout(resolve, 50000));
+}
 
 // const listIds = [];
 

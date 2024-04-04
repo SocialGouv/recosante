@@ -7,9 +7,9 @@ async function execute({ method, path, query = null, body = null }) {
   const response = await fetch(url.href, {
     method: method,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "api-key": process.env.BREVO_API_KEY,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY,
     },
     body: body ? JSON.stringify(body) : null,
   });
@@ -21,14 +21,14 @@ async function execute({ method, path, query = null, body = null }) {
       try {
         return JSON.parse(body);
       } catch (e) {
-        return body;
+        return response;
       }
     }
   } catch (e) {
     console.error(e);
     console.log({
       extra: { url: `${BREVO_ENDPOINT}${path}`, method, path, query },
-      level: "error",
+      level: 'error',
     });
   }
   return response;
@@ -36,9 +36,9 @@ async function execute({ method, path, query = null, body = null }) {
 
 const BrevoApi = {
   get: async (args) => execute({ ...args }),
-  put: async (args) => execute({ method: "PUT", ...args }),
-  post: async (args) => execute({ method: "POST", ...args }),
-  remove: async (args) => execute({ method: "DELETE", ...args }),
+  put: async (args) => execute({ method: 'PUT', ...args }),
+  post: async (args) => execute({ method: 'POST', ...args }),
+  remove: async (args) => execute({ method: 'DELETE', ...args }),
 };
 
 export default BrevoApi;
