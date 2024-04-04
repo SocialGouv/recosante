@@ -51,9 +51,13 @@ async function getDrinkingWaterIndicator() {
     logStep('Getting Drinking Waters');
 
     // Step 1: grab the udis list from the database
-    const udisRows: Record<'udi', User['udi']>[] =
-      await prisma.$queryRaw`SELECT DISTINCT udi FROM "User";`;
-    const udis = udisRows.map((row) => row.udi).filter(Boolean);
+    const udis = await prisma.udis
+      .findMany({
+        select: {
+          code_udi: true,
+        },
+      })
+      .then((udis) => udis.map((udi) => udi.code_udi).filter(Boolean));
 
     let insertedNewRows = 0;
     let alreadyExistingRows = 0;

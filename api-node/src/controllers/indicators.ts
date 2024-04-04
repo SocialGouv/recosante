@@ -9,19 +9,32 @@ import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
 import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
 import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 import { indicatorsList } from '~/getters/indicators_list';
-// import { indicatorsMock } from './mocks/indicators';
 import { withUser } from '~/middlewares/auth';
 import utc from 'dayjs/plugin/utc';
 import { getBathingWaterFromMunicipalityAndDate } from '~/getters/bathing_water';
-// import { getDrinkingWaterFromUdi } from '~/getters/drinking_water';
+import { getDrinkingWaterFromUdi } from '~/getters/drinking_water';
+import { IndicatorsSlugEnum } from '@prisma/client';
 dayjs.extend(utc);
 
 const router = express.Router();
 
 router.get(
   '/list',
-  catchErrors(async (_req: express.Request, res: express.Response) => {
+  withUser,
+  catchErrors(async (req: RequestWithUser, res: express.Response) => {
+    if (Number(req.user.appbuild) < 62) {
+      res
+        .status(200)
+        .send({
+          ok: true,
+          data: indicatorsList.filter(
+            (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
+          ),
+        });
+      return;
+    }
     res.status(200).send({ ok: true, data: indicatorsList });
+    return;
   }),
 );
 
@@ -99,16 +112,16 @@ router.get(
 
       if (bathingWater) indicators.push(bathingWater);
 
-      // const drinkingWater = await getDrinkingWaterFromUdi({
-      //   udi: req.user.udi,
-      //   municipality_insee_code,
-      //   date_UTC_ISO: dayjs().utc().toISOString(),
-      // });
-      // if (drinkingWater instanceof Error) {
-      //   next(drinkingWater);
-      //   return;
-      // }
-      // if (drinkingWater) indicators.push(drinkingWater);
+      const drinkingWater = await getDrinkingWaterFromUdi({
+        udi: req.user.udi,
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (drinkingWater instanceof Error) {
+        next(drinkingWater);
+        return;
+      }
+      if (drinkingWater) indicators.push(drinkingWater);
 
       res.status(200).send({ ok: true, data: indicators });
     },

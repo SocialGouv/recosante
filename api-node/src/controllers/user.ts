@@ -6,6 +6,7 @@ import { type CustomError } from '~/types/error';
 import { type User } from '@prisma/client';
 import { withUser } from '~/middlewares/auth.js';
 import type { RequestWithUser } from '~/types/request';
+import { type udis as UdiType } from '@prisma/client';
 const router = express.Router();
 
 router.post(
@@ -59,6 +60,12 @@ router.put(
           udi: z.string().optional(),
           push_notif_token: z.string().optional(),
           favorite_indicator: z.string().optional(),
+          coordinates: z
+            .object({
+              lat: z.number(),
+              lon: z.number(),
+            })
+            .optional(),
           notification_preference: z.array(z.string()).optional(),
         }).parse(req.body);
       } catch (zodError) {
@@ -92,6 +99,25 @@ router.put(
       }
       if (bodyHasProperty('udi')) {
         updatedUser.udi = req.body.udi;
+      }
+      if (bodyHasProperty('coordinates')) {
+        if (req.body.coordinates.lat && req.body.coordinates.lon) {
+          const longitude = parseFloat(req.body.coordinates.lon);
+          const latitude = parseFloat(req.body.coordinates.lat);
+
+          const udis: Array<UdiType> = await prisma.$queryRaw`
+            SELECT code_udi
+            FROM public.udis
+            WHERE ST_Within(
+                ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326),
+                wkb_geometry
+            );
+        `;
+
+          if (udis?.length) {
+            updatedUser.udi = udis[0].code_udi;
+          }
+        }
       }
       if (bodyHasProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
