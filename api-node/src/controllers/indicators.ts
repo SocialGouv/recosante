@@ -23,14 +23,12 @@ router.get(
   withUser,
   catchErrors(async (req: RequestWithUser, res: express.Response) => {
     if (Number(req.user.appbuild) < 62) {
-      res
-        .status(200)
-        .send({
-          ok: true,
-          data: indicatorsList.filter(
-            (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
-          ),
-        });
+      res.status(200).send({
+        ok: true,
+        data: indicatorsList.filter(
+          (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
+        ),
+      });
       return;
     }
     res.status(200).send({ ok: true, data: indicatorsList });
