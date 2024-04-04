@@ -132,6 +132,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
       retries: 3,
     },
   ).then(async (res) => res.json());
+
   if (hubEauLastTestCheckResponse.data?.length > 0) {
     const hubEauLastTestCheckResuklt = hubEauLastTestCheckResponse.data[0];
     const existingDrinkingWaterRow = await prisma.drinkingWater.findFirst({
