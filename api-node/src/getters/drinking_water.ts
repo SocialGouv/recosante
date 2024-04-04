@@ -85,8 +85,9 @@ async function getDrinkingWaterFromUdi({
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       recommendations: [drinkingWater.conclusion_conformite_prelevement!],
     },
-    values: ((drinkingWater.all_tests_results ?? []) as Prisma.JsonArray)?.map(
-      (jsonValue) => {
+    values: ((drinkingWater.all_tests_results ?? []) as Prisma.JsonArray)
+      ?.filter((_, index) => index < 10)
+      .map((jsonValue) => {
         const test_result =
           jsonValue as unknown as ExtendedShortPrelevementResult;
         return {
@@ -99,14 +100,13 @@ async function getDrinkingWaterFromUdi({
             bacteriological:
               checkPrelevementConformityBacteriological(test_result),
           },
-          drinkingWaterMetadata: {
+          drinkingWater: {
             parameters_count: test_result.parameters_count,
             prelevement_code: test_result.code_prelevement,
             prelevement_date: test_result.date_prelevement,
           },
         };
-      },
-    ),
+      }),
     diffusion_date: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_start: dayjs(drinkingWater.diffusion_date).format('YYYY-MM-DD'),
     validity_end: 'N/A',

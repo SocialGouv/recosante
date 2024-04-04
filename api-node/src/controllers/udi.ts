@@ -3,7 +3,7 @@ import { z } from 'zod';
 import prisma from '~/prisma';
 import { catchErrors } from '../middlewares/errors';
 import { type CustomError } from '~/types/error';
-import { type udis } from '@prisma/client';
+import { type udis as UdiType } from '@prisma/client';
 
 const router = express.Router();
 
@@ -43,7 +43,7 @@ router.get(
       const longitude = parseFloat(lon as string);
       const latitude = parseFloat(lat as string);
 
-      const udi: udis = await prisma.$queryRaw`
+      const udis: Array<UdiType> = await prisma.$queryRaw`
             SELECT code_udi
             FROM public.udis
             WHERE ST_Within(
@@ -52,7 +52,7 @@ router.get(
             );
         `;
 
-      res.status(200).send({ ok: true, data: udi });
+      res.status(200).send({ ok: true, data: udis[0] });
     },
   ),
 );

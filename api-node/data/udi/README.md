@@ -13,7 +13,7 @@ Puis nous traduisons les fichiers .json en .sql : `ogr2ogr -f "PGDump" -t_srs EP
 	•	`udis` est le nom de la table dans notre base de données (pas de uppercase possible)
 	•	`-t_srs EPSG:4326` : pour spécifier le SRID (Spatial Reference Identifier) de la géographie à importer. Ici, 4326 correspond au système de coordonnées WGS 84 (GPS).
 
-Enfin nous enregistrons les données dans notre base de données: `psql "postgresql://recosante:{password}@localhost:5442/recosante" -f bretagne.sql` par exemple
+Enfin nous enregistrons les données dans notre base de données: `psql "postgresql://recosante:{password}@localhost:5442/recosante" -f output.sql` par exemple
 
 ATTENTION: certains champs des colonnes `wkb_geometry` ou `code_udi` peuvent être nuls, pensez à les supprimer pour ne pas faire bugger Prisma
 
