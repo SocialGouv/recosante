@@ -416,7 +416,7 @@ async function fetchDrinkingWaterDataCascade(udi: User['udi']) {
   }
   const allPrelevements = Object.values(allTestsResultsByPrelevementCode).sort(
     (a, b) => {
-      return dayjs(b.date_prelevement).diff(dayjs(a.date_prelevement));
+      return a.date_prelevement > b.date_prelevement ? -1 : 1;
     },
   );
 
