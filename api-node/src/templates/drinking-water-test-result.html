@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html class=""h-full w-full">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://recosante.beta.gouv.fr/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class=""h-full w-full">
+    <div class="px-4 sm:px-6 lg:px-8 mt-8">
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h1 class="text-base font-semibold leading-6 text-gray-900">Test {{CODE_PRELEVEMENT}}</h1>
+          <p class="mt-2 text-sm text-gray-700"><b>Date de prélèvement&nbsp;:</b> {{DATE_PRELEVEMENT}}</p>
+          <p class="mt-2 text-sm text-gray-700"><b>Lieu de prélèvement&nbsp;:</b> {{PLACE_PRELEVEMENT}}</p>
+          <p class="mt-2 text-sm text-gray-700"><b>Nombre de paramètres testés&nbsp;:</b> {{COUNT_PARAMETERS}} (<a href="{{HUBEAU_LINK}}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center text-indigo-600 hover:text-indigo-900">lien vers les données brutes <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 inline ml-2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg></a>)</p>
+          <p class="mt-2 text-sm text-gray-700"><b>Distributeur&nbsp;:</b> {{NOM_DISTRIBUTEUR}}</p>
+          <p class="mt-2 text-sm text-gray-700"><b>Réseaux concernés&nbsp;:</b>{{UDIS}}</p>
+          <p class="mt-2 text-sm text-gray-700"><b>Conclusion conformité prélèvement&nbsp;:</b> {{CONCLUSION_CONFORMITE_PRELEVEMENT}}</p>
+        </div>
+      </div>
+      <div class="-mx-4 mt-8 sm:-mx-0">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0" data-field="libelle_parametre,code_parametre_se">Paramètre</th>
+              <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell" data-field="resultat_alphanumerique,libelle_unite">Résultat</th>
+              <th scope="col" class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell" data-field="limite_qualite_parametre">Limite(s) de qualité </th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900" data-field="reference_qualite_parametre">Référence(s) de qualité</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            {{RESULTS}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

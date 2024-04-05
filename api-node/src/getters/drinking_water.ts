@@ -100,6 +100,7 @@ async function getDrinkingWaterFromUdi({
             bacteriological:
               checkPrelevementConformityBacteriological(test_result),
           },
+          link: `https://recosante-api-node.fabrique.social.gouv.fr/hubeau-prelevement?code_prelevement=${test_result.code_prelevement}`,
           drinkingWater: {
             parameters_count: test_result.parameters_count,
             prelevement_code: test_result.code_prelevement,

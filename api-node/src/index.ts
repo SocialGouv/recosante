@@ -20,6 +20,7 @@ import mailRouter from './controllers/mail.ts';
 import feedbackRouter from './controllers/feedback.ts';
 import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
+import hubeauPrelevementRouter from './controllers/hubeau-prelevement.ts';
 import callToActionRouter from './controllers/call-to-action.ts';
 
 import packageJson from '../package.json';
@@ -113,6 +114,7 @@ app.use('/feedback', versionCheck, feedbackRouter);
 app.use('/notification', versionCheck, notificationRouter);
 app.use('/call-to-action', versionCheck, callToActionRouter);
 app.use('/udi', udiRouter);
+app.use('/hubeau-prelevement', hubeauPrelevementRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
