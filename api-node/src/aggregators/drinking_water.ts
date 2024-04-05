@@ -477,6 +477,7 @@ async function fetchDrinkingWaterPrelevement(code_prelevement: string) {
   });
 
   const hubeau_first_url = hubEauURL.toString();
+  let hubeauUdiFirstResponse: HubEAUCompleteResponse | null = null;
 
   const parametersTested: Array<PrelevementResult> = [];
 
@@ -485,6 +486,9 @@ async function fetchDrinkingWaterPrelevement(code_prelevement: string) {
       retryDelay: 1000,
       retries: 3,
     }).then(async (res) => res.json());
+    if (hubeau_url === hubeau_first_url) {
+      hubeauUdiFirstResponse = hubeauUdiResponse;
+    }
     if (hubeauUdiResponse.data?.length > 0) {
       parametersTested.push(...hubeauUdiResponse.data);
     }
@@ -495,7 +499,10 @@ async function fetchDrinkingWaterPrelevement(code_prelevement: string) {
 
   await getHubeauDataRecursive(hubeau_first_url);
 
-  return parametersTested;
+  return {
+    ...(hubeauUdiFirstResponse as unknown as HubEAUCompleteResponse),
+    data: parametersTested,
+  };
 }
 
 export {
