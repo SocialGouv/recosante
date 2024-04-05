@@ -110,16 +110,18 @@ router.get(
 
       if (bathingWater) indicators.push(bathingWater);
 
-      const drinkingWater = await getDrinkingWaterFromUdi({
-        udi: req.user.udi,
-        municipality_insee_code,
-        date_UTC_ISO: dayjs().utc().toISOString(),
-      });
-      if (drinkingWater instanceof Error) {
-        next(drinkingWater);
-        return;
+      if (Number(req.user.appbuild) > 62) {
+        const drinkingWater = await getDrinkingWaterFromUdi({
+          udi: req.user.udi,
+          municipality_insee_code,
+          date_UTC_ISO: dayjs().utc().toISOString(),
+        });
+        if (drinkingWater instanceof Error) {
+          next(drinkingWater);
+          return;
+        }
+        if (drinkingWater) indicators.push(drinkingWater);
       }
-      if (drinkingWater) indicators.push(drinkingWater);
 
       res.status(200).send({ ok: true, data: indicators });
     },
