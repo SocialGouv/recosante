@@ -29,10 +29,9 @@ router.get(
           (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
         ),
       });
-      return;
+    } else {
+      res.status(200).send({ ok: true, data: indicatorsList });
     }
-    res.status(200).send({ ok: true, data: indicatorsList });
-    return;
   }),
 );
 
