@@ -1,3 +1,11 @@
+## [1.36.1](https://github.com/SocialGouv/recosante/compare/v1.36.0...v1.36.1) (2024-04-05)
+
+
+### Bug Fixes
+
+* add test from udi amont ([#511](https://github.com/SocialGouv/recosante/issues/511)) ([709e1ce](https://github.com/SocialGouv/recosante/commit/709e1ce40d6abab2245e7f0ef8b70587e5539a2e))
+* fine tune drinking water ([#510](https://github.com/SocialGouv/recosante/issues/510)) ([efda976](https://github.com/SocialGouv/recosante/commit/efda9766a2ef3bfa8d816f59ee990610743585d2))
+
 # [1.36.0](https://github.com/SocialGouv/recosante/compare/v1.35.0...v1.36.0) (2024-04-03)
 
 
