@@ -3,10 +3,9 @@ import { z } from 'zod';
 import { catchErrors } from '../middlewares/errors';
 import prisma from '../prisma.js';
 import { type CustomError } from '~/types/error';
-import { type User } from '@prisma/client';
+import { type User, type udis as UdiType } from '@prisma/client';
 import { withUser } from '~/middlewares/auth.js';
 import type { RequestWithUser } from '~/types/request';
-import { type udis as UdiType } from '@prisma/client';
 const router = express.Router();
 
 router.post(

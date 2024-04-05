@@ -16,16 +16,21 @@ function checkPrelevementConformity(
   prelevement?: PrelevementConformity,
 ): ConformityEnum {
   if (!prelevement) return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conclusion_conformite_prelevement)
+  if (!prelevement.conclusion_conformite_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_limites_pc_prelevement)
+  }
+  if (!prelevement.conformite_limites_pc_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_references_pc_prelevement)
+  }
+  if (!prelevement.conformite_references_pc_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_limites_bact_prelevement)
+  }
+  if (!prelevement.conformite_limites_bact_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_references_bact_prelevement)
+  }
+  if (!prelevement.conformite_references_bact_prelevement) {
     return ConformityEnum.NOT_TESTED;
+  }
 
   const conformityLimitChemical = prelevement.conformite_limites_pc_prelevement;
   const conformityReferenceChemical =
@@ -62,12 +67,15 @@ function checkPrelevementConformityChemical(
   prelevement?: PrelevementConformity,
 ): ConformityEnum {
   if (!prelevement) return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conclusion_conformite_prelevement)
+  if (!prelevement.conclusion_conformite_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_limites_pc_prelevement)
+  }
+  if (!prelevement.conformite_limites_pc_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_references_pc_prelevement)
+  }
+  if (!prelevement.conformite_references_pc_prelevement) {
     return ConformityEnum.NOT_TESTED;
+  }
 
   const conformityLimitChemical = prelevement.conformite_limites_pc_prelevement;
   const conformityReferenceChemical =
@@ -92,12 +100,15 @@ function checkPrelevementConformityBacteriological(
   prelevement?: PrelevementConformity,
 ): ConformityEnum {
   if (!prelevement) return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conclusion_conformite_prelevement)
+  if (!prelevement.conclusion_conformite_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_limites_bact_prelevement)
+  }
+  if (!prelevement.conformite_limites_bact_prelevement) {
     return ConformityEnum.NOT_TESTED;
-  if (!prelevement.conformite_references_bact_prelevement)
+  }
+  if (!prelevement.conformite_references_bact_prelevement) {
     return ConformityEnum.NOT_TESTED;
+  }
 
   const conformityLimitBacteriological =
     prelevement.conformite_limites_bact_prelevement;
