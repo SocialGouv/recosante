@@ -9,6 +9,8 @@ import {
   type ShortPrelevementResult,
   type HubEAUResultsParameters,
   type ExtendedShortPrelevementResult,
+  type PrelevementResult,
+  type HubEAUCompleteResponse,
   ConformityEnum,
 } from '~/types/api/drinking_water';
 import {
@@ -294,7 +296,7 @@ async function fetchDrinkingWaterData(udi: User['udi']) {
       }
     }
     if (hubeauUdiResponse.next) {
-      getHubeauDataRecursive(hubeauUdiResponse.next);
+      await getHubeauDataRecursive(hubeauUdiResponse.next);
     } else {
       if (currentPrelevementConclusions && currentPrelevementParametersCount) {
         prelevements.push({
@@ -452,8 +454,53 @@ async function fetchDrinkingWaterDataCascade(udi: User['udi']) {
   };
 }
 
+async function fetchDrinkingWaterPrelevement(code_prelevement: string) {
+  const hubeEauEndpoint =
+    'https://hubeau.eaufrance.fr/api/v1/qualite_eau_potable/resultats_dis';
+
+  // there is new data to fetch ! let's do it
+  const hubEauURL = new URL(hubeEauEndpoint);
+
+  const hubEauQuery: HubEAUResultsParameters = {
+    size: 1000,
+    code_prelevement,
+  };
+
+  Object.keys(hubEauQuery).forEach((key) => {
+    const value = hubEauQuery[key as keyof typeof hubEauQuery];
+    if (value) {
+      hubEauURL.searchParams.append(
+        key,
+        Array.isArray(value) ? value.join(',') : `${value}`,
+      );
+    }
+  });
+
+  const hubeau_first_url = hubEauURL.toString();
+
+  const parametersTested: Array<PrelevementResult> = [];
+
+  async function getHubeauDataRecursive(hubeau_url: string) {
+    const hubeauUdiResponse: HubEAUCompleteResponse = await fetch(hubeau_url, {
+      retryDelay: 1000,
+      retries: 3,
+    }).then(async (res) => res.json());
+    if (hubeauUdiResponse.data?.length > 0) {
+      parametersTested.push(...hubeauUdiResponse.data);
+    }
+    if (hubeauUdiResponse.next) {
+      await getHubeauDataRecursive(hubeauUdiResponse.next);
+    }
+  }
+
+  await getHubeauDataRecursive(hubeau_first_url);
+
+  return parametersTested;
+}
+
 export {
   getDrinkingWaterIndicator,
   fetchDrinkingWaterData,
   fetchDrinkingWaterDataCascade,
+  fetchDrinkingWaterPrelevement,
 };
