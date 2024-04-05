@@ -1,3 +1,10 @@
+## [1.36.4](https://github.com/SocialGouv/recosante/compare/v1.36.3...v1.36.4) (2024-04-05)
+
+
+### Bug Fixes
+
+* drink water lint ([#514](https://github.com/SocialGouv/recosante/issues/514)) ([d890fce](https://github.com/SocialGouv/recosante/commit/d890fcebac727a6114c0938ffde6a99f7f2f3338))
+
 ## [1.36.3](https://github.com/SocialGouv/recosante/compare/v1.36.2...v1.36.3) (2024-04-05)
 
 
