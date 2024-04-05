@@ -1,3 +1,10 @@
+## [1.36.3](https://github.com/SocialGouv/recosante/compare/v1.36.2...v1.36.3) (2024-04-05)
+
+
+### Bug Fixes
+
+* drinking water test display ([#512](https://github.com/SocialGouv/recosante/issues/512)) ([ab7b8fe](https://github.com/SocialGouv/recosante/commit/ab7b8fe1924df7f3647bc8a8c034cf372148e875))
+
 ## [1.36.2](https://github.com/SocialGouv/recosante/compare/v1.36.1...v1.36.2) (2024-04-05)
 
 
