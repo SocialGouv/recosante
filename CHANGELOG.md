@@ -1,3 +1,10 @@
+## [1.36.2](https://github.com/SocialGouv/recosante/compare/v1.36.1...v1.36.2) (2024-04-05)
+
+
+### Bug Fixes
+
+* disable drinking water for not compatible apps ([#513](https://github.com/SocialGouv/recosante/issues/513)) ([ab94946](https://github.com/SocialGouv/recosante/commit/ab949468abf7a42b163d7f23a95b8cd397fa0879))
+
 ## [1.36.1](https://github.com/SocialGouv/recosante/compare/v1.36.0...v1.36.1) (2024-04-05)
 
 
