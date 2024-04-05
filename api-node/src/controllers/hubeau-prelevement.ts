@@ -3,8 +3,6 @@ import helmet from 'helmet';
 import { z } from 'zod';
 import fs from 'fs';
 import { catchErrors } from '../middlewares/errors';
-import { type CustomError } from '~/types/error';
-import { type udis as UdiType } from '@prisma/client';
 import { fetchDrinkingWaterPrelevement } from '~/aggregators/drinking_water';
 import dayjs from 'dayjs';
 
@@ -86,7 +84,7 @@ router.get(
             ?.map(
               (reseau) => `${reseau.code} - ${reseau.nom} (${reseau.debit})`,
             )
-            .join('<br />') || '',
+            .join('<br />') ?? '',
         )
         .replace(
           '{{RESULTS}}',
