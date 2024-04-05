@@ -13,6 +13,10 @@ const drinkingWater403 = fs.readFileSync(
   './src/templates/drinking-water-403-no-code-provided.html',
   'utf8',
 );
+const drinkingWater = fs.readFileSync(
+  './src/templates/drinking-water-test-result.html',
+  'utf8',
+);
 
 router.get(
   '/',
@@ -55,8 +59,8 @@ router.get(
       );
       const prelevement = hubeauResponse.data;
       const metadata = prelevement[0];
-      const drinkingWater = fs
-        .readFileSync('./src/templates/drinking-water-test-result.html', 'utf8')
+
+      const testDisplay = drinkingWater
         .replace('{{CODE_PRELEVEMENT}}', metadata.code_prelevement)
         .replace(
           '{{PLACE_PRELEVEMENT}}',
@@ -130,7 +134,7 @@ router.get(
             .join('\n') || '',
         );
 
-      res.status(200).send(drinkingWater);
+      res.status(200).send(testDisplay);
     },
   ),
 );
