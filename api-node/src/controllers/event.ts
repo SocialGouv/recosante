@@ -24,7 +24,7 @@ router.post(
           matomo_id: req.body.userId,
         },
         data: {
-          asked_for_review: { increment: 1 },
+          asked_for_review: { increment: 1 }, // TODO FIXME: `asked_for_review` should be rename to `triggered_manually_from_app`
           asked_for_review_latest_at: new Date(),
         },
       });
