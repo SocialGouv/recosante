@@ -44,7 +44,6 @@ router.post(
           matomo_id: req.body.userId,
         },
         data: {
-          asked_for_review: { increment: 1 },
           asked_for_review_latest_at: new Date(),
         },
       });
