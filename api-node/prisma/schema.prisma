@@ -375,6 +375,8 @@ model Notification {
   created_at       DateTime          @default(now())
   updated_at       DateTime          @default(now()) @updatedAt
   status           NotificationEnum?
+
+  @@index([user_id], name: "notification_user_id")
 }
 
 model Feedback {
