@@ -171,7 +171,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         },
         {
           slug: 'code_pm25',
-          name: 'PM25',
+          name: 'PM2,5',
           value: indice_atmo_j0.code_pm25 ?? 0,
         },
         {
