@@ -37,8 +37,8 @@ model User {
   municipality_zip_code      String?
   udi                        String? // code UDI for drinking water
   push_notif_token           String?
-  notifications_sent         Int?                @default(0) // cache the number of notifications sent
-  asked_for_review           Int?                @default(0)
+  notifications_sent         Int?                @default(0) // cache the number of notifications sent TODO FIXME: not used
+  asked_for_review           Int?                @default(0) // TODO FIXME: should be rename to `triggered_manually_from_app`
   asked_for_review_latest_at DateTime?
   created_at                 DateTime            @default(now())
   updated_at                 DateTime            @default(now()) @updatedAt
@@ -375,6 +375,8 @@ model Notification {
   created_at       DateTime          @default(now())
   updated_at       DateTime          @default(now()) @updatedAt
   status           NotificationEnum?
+
+  @@index([user_id], name: "notification_user_id")
 }
 
 model Feedback {
