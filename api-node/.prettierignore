@@ -2,3 +2,4 @@ data
 .yarn
 # all .md files
 *.md
+*.html

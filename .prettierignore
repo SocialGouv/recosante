@@ -19,4 +19,4 @@ README.md
 api-node/.yarn
 api-node/.yarnrc.yml
 *.md
-
+*.html

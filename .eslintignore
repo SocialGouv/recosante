@@ -17,3 +17,4 @@ pyrightconfig.json
 README.md
 api-node/.yarn
 api-node/.yarnrc.yml
+*.html
