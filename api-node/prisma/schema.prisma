@@ -381,7 +381,8 @@ model Notification {
 
 model Feedback {
   id         String   @id @default(uuid())
-  score      Int
+  score      Int?
+  helpful    String?
   message    String?
   contact    String?
   user_id    String

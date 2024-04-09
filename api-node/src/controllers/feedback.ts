@@ -21,7 +21,8 @@ feedbackRouter.post(
     ) => {
       try {
         z.object({
-          score: z.number(),
+          score: z.number().optional(),
+          helpful: z.string().optional(),
           message: z.string().optional(),
           contact: z.string().optional(),
         }).parse(req.body);
@@ -40,6 +41,7 @@ feedbackRouter.post(
       await prisma.feedback.create({
         data: {
           user_id: req.user.id,
+          helpful: req.body.helpful,
           score: req.body.score,
           message: req.body.message,
           contact: req.body.contact,
