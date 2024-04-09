@@ -195,7 +195,7 @@ async function getIndiceAtmoFromMunicipalityAndDate({
         },
         take: 2,
       })
-      .then((recommandations) =>
+      .then((recommandations: any[]) =>
         recommandations.map(
           (recommandation) => recommandation.recommandation_content,
         ),
