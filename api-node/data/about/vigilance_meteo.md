@@ -17,6 +17,6 @@ Vigilance verte : Pas de vigilance particulière.
 
 ![Alt text](https://www.georisques.gouv.fr/sites/default/files/2022-08/Vigilance%202.jpg)
 
-_Source des informations : Meteo France_
+_Source des informations : Météo France_
 
 [En savoir plus](https://vigilance.meteofrance.fr/fr/guide-vigilance-meteo)
