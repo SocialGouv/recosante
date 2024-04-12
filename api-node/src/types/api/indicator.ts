@@ -48,6 +48,7 @@ export interface IndicatorByPeriod {
     recommendations?: string[];
   };
   values?: IndicatorByPeriodValues;
+  help_text?: string;
 }
 
 export interface Indicator {

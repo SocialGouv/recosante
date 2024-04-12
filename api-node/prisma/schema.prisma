@@ -26,6 +26,11 @@ enum IndicatorsSlugEnum {
   drinking_water
 }
 
+enum GranularityEnum {
+  street
+  city
+}
+
 model User {
   id                         String              @id @default(uuid())
   matomo_id                  String              @unique
@@ -48,6 +53,7 @@ model User {
   notifications_preference   NotifationEnum[]    @default([evening, alert])
   notifications              Notification[]
   feedbacks                  Feedback[]
+  granularity                GranularityEnum?
 
   @@index([push_notif_token], type: Hash)
 }

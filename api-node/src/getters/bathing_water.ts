@@ -54,7 +54,6 @@ async function getBathingWaterFromMunicipalityAndDate({
     municipality_insee_code,
     date_UTC_ISO,
   });
-
   if (!bathingWaters.length) {
     const municipality = await prisma.municipality.findUnique({
       where: { COM: municipality_insee_code },
@@ -62,7 +61,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     if (!municipality?.bathing_water_sites) {
       return null;
     }
-    const indiceAtmoEmpty: Indicator = {
+    const bathingWaterEmpty: Indicator = {
       slug: IndicatorsSlugEnum.bathing_water,
       name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
       short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
@@ -79,6 +78,8 @@ async function getBathingWaterFromMunicipalityAndDate({
             "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
           ],
         },
+        help_text:
+          'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
         validity_start: 'NA',
         validity_end: 'NA',
         diffusion_date: dayjs().toISOString(),
@@ -94,6 +95,8 @@ async function getBathingWaterFromMunicipalityAndDate({
             'Aucune donnée disponible pour cet indicateur dans cette zone demain',
           ],
         },
+        help_text:
+          'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
         validity_start: 'NA',
         validity_end: 'NA',
         diffusion_date: dayjs().toISOString(),
@@ -101,7 +104,7 @@ async function getBathingWaterFromMunicipalityAndDate({
         updated_at: 'NA',
       },
     };
-    return indiceAtmoEmpty;
+    return bathingWaterEmpty;
   }
 
   const { value, status } = getBathingWaterSummaryValue(bathingWaters);
@@ -136,6 +139,8 @@ async function getBathingWaterFromMunicipalityAndDate({
       value: getBathingWaterSiteValueDerivedFromBathingWaterRow(bathingWater),
       link: buildBathingWaterUrl(bathingWater),
     })),
+    help_text:
+      'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
     diffusion_date: getBathingWaterLatestResultDate(bathingWaters),
     validity_start: 'N/A',
     validity_end: 'N/A',

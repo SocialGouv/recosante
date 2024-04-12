@@ -31,6 +31,10 @@ const about_description = fs.readFileSync(
   'utf8',
 );
 
+const enum UdiValueEnum {
+  multiple = 'multiple',
+}
+
 async function getDrinkingWaterFromUdi({
   udi,
   municipality_insee_code, // we keep this municipality_insee_code for now to not break all the types around in the Indicator response
@@ -60,7 +64,10 @@ async function getDrinkingWaterFromUdi({
     error.status = 400;
     throw error;
   }
-
+  if (udi === UdiValueEnum.multiple) {
+    // If the UDI is multiple, we do not fetch the data and return an empty indicator with a specific message
+    return getDrinkingWaterWithMultipleUdi(municipality_insee_code);
+  }
   const drinkingWaterResult = await fetchDrinkingWaterDataCascade(udi);
   const drinkingWater = drinkingWaterResult.data;
 
@@ -126,8 +133,52 @@ async function getDrinkingWaterFromUdi({
     j0: drinkingWaterIndicatorJ0AndJ1,
     j1: drinkingWaterIndicatorJ0AndJ1,
   };
-
   return drinkingWaterIndicator;
+}
+
+function getDrinkingWaterWithMultipleUdi(
+  municipality_insee_code: Municipality['COM'],
+) {
+  const drinkingWaterEmpty: Indicator = {
+    slug: IndicatorsSlugEnum.drinking_water,
+    name: indicatorsObject[IndicatorsSlugEnum.drinking_water].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].short_name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.drinking_water].long_name,
+    about_title: 'à propos de la qualité de l’eau du robinet',
+    municipality_insee_code, // we keep this municipality_insee_code for now to not break alkl the types around
+    about_description,
+    j0: {
+      id: 'empty',
+      summary: {
+        value: null,
+        status: ConformityStatusEnum.NOT_TESTED,
+        recommendations: [],
+      },
+      help_text:
+        "Votre ville possède plusieurs réseaux de distribution : veuillez rentrer une adresse précise pour obtenir la conformité de l'eau du robinet à votre emplacement.",
+      validity_start: 'NA',
+      validity_end: 'NA',
+      diffusion_date: dayjs().toISOString(),
+      created_at: 'NA',
+      updated_at: 'NA',
+    },
+    j1: {
+      id: 'empty',
+      summary: {
+        value: null,
+        status: ConformityStatusEnum.NOT_TESTED,
+        recommendations: [],
+      },
+      help_text:
+        "Votre ville possède plusieurs réseaux de distribution : veuillez rentrer une adresse précise pour obtenir la conformité de l'eau du robinet à votre emplacement.",
+      validity_start: 'NA',
+      validity_end: 'NA',
+      diffusion_date: dayjs().toISOString(),
+      created_at: 'NA',
+      updated_at: 'NA',
+    },
+  };
+  return drinkingWaterEmpty;
 }
 
 function getDrinkingWaterEmpty(municipality_insee_code: Municipality['COM']) {
