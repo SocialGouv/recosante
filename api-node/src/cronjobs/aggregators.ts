@@ -5,7 +5,7 @@ import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
 import { getWeatherAlert } from '~/aggregators/weather_alert';
 import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
-import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
+// import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
 
 /*
 *
@@ -22,18 +22,18 @@ Test it: run `npm run dev-cronjobs` and check the logs
 
 export async function initAggregators() {
   await Promise.resolve()
-    .then(() => {
-      console.log('Inside aggregators cronjobs');
-    })
-    .then(
-      async () =>
-        await setupCronJob({
-          name: 'Drinking Water',
-          cronTime: '10 10,22 * * *', // every day at 10:10am and 10:10pm
-          job: getDrinkingWaterIndicator,
-          runOnInit: true,
-        }),
-    )
+    // .then(() => {
+    //   console.log('Inside aggregators cronjobs');
+    // })
+    // .then(
+    //   async () =>
+    //     await setupCronJob({
+    //       name: 'Drinking Water',
+    //       cronTime: '10 10,22 * * *', // every day at 10:10am and 10:10pm
+    //       job: getDrinkingWaterIndicator,
+    //       runOnInit: true,
+    //     }),
+    // )
     .then(
       async () =>
         await setupCronJob({
