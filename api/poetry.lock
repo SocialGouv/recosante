@@ -1741,14 +1741,14 @@ testing = ["argcomplete", "attrs (>=19.2.0)", "hypothesis (>=3.56)", "mock", "no
 
 [[package]]
 name = "pytest-alembic"
-version = "0.10.5"
+version = "0.11.0"
 description = "A pytest plugin for verifying alembic migrations."
 category = "dev"
 optional = false
 python-versions = ">=3.6,<4"
 files = [
-    {file = "pytest_alembic-0.10.5-py3-none-any.whl", hash = "sha256:b273eedc46d521e02ea8ee6481353af072b533dd2aa93ade1113d87f57a3dd94"},
-    {file = "pytest_alembic-0.10.5.tar.gz", hash = "sha256:69f96a6e1cd3217e46e4df9f797e08e17a162c4a071e027bef43ebab961e7a53"},
+    {file = "pytest_alembic-0.11.0-py3-none-any.whl", hash = "sha256:bce543dae00eec8b69b283105d48e0b3e1cc31ca721b0a8c46cb4710e7aa0ec8"},
+    {file = "pytest_alembic-0.11.0.tar.gz", hash = "sha256:4f4237c06598226b2bc58df8154a8aed29f7efadd7157ee3a946f81585532627"},
 ]
 
 [package.dependencies]
@@ -2473,4 +2473,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "e99c40ef093cc91c37d022afc99e18cc0a3d4958b4a22e4405fb5cae2dd1d94a"
+content-hash = "ecdd0f45bbd796afe349588eebd9be0a4c2153f590c9409ae4a1d841eb0e7251"
