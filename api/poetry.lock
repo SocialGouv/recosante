@@ -1798,14 +1798,14 @@ dev = ["pre-commit", "pytest-asyncio", "tox"]
 
 [[package]]
 name = "pytest-postgresql"
-version = "5.0.0"
+version = "5.1.1"
 description = "Postgresql fixtures and fixture factories for Pytest."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-postgresql-5.0.0.tar.gz", hash = "sha256:22edcbafab8995ee85b8d948ddfaad4f70c2c7462303d7477ecd2f77fc9d15bd"},
-    {file = "pytest_postgresql-5.0.0-py3-none-any.whl", hash = "sha256:6e8f0773b57c9b8975b6392c241b7b81b7018f32079a533f368f2fbda732ecd3"},
+    {file = "pytest-postgresql-5.1.1.tar.gz", hash = "sha256:edc1e83f65e9276bf465a983bfee98799866ee067defcee586ef6f889218e91f"},
+    {file = "pytest_postgresql-5.1.1-py3-none-any.whl", hash = "sha256:8e737e3e74a487717bc515605c2ea577aaf639548af7919f1086546e341acc7b"},
 ]
 
 [package.dependencies]
@@ -2473,4 +2473,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "e99c40ef093cc91c37d022afc99e18cc0a3d4958b4a22e4405fb5cae2dd1d94a"
+content-hash = "b580d6859d3dbcf832ccdc98910250d15848e73caa1a790c90b8ebee85192c20"
