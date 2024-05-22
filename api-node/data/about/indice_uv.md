@@ -26,9 +26,7 @@ L'indice d'action érythémateux vaut 1 pour les longueurs d'onde inférieures �
 
 Exemple : un indice UV de 10 correspond à une puissance pondérée de 0,25 watt/m2 de rayonnement UV de longueur d'onde inférieure à 300 nm, ou à une puissance supérieure de rayonnement UV dont la longueur d'onde possède une action érythémateuse (= faculté à provoquer des coups de soleil) moindre.
 
-## A quoi correspondent les différents niveaux (ou qualificatifs) d'indice ATMO ?
-
-À partir de la modélisation régionale de la qualité de l’air, un qualificatif est donné pour chaque polluant en fonction des concentrations prévues (voir tableau ci-dessous). Le qualificatif de l’indice ATMO retenu correspond au qualificatif le plus pénalisant des 5 polluants considérés (pour le jour donné et la zone géographique considérée).
+## A quoi correspondent les différents niveaux d'UV ?
 
 ![Échelle des indices UV: 1-2/vert/faible - 3-5/orange/modéré - 6-7/corail/fort - 8-10/rouge/très fort - 11+/violet/extrême](https://www.tendances-saisonnieres-et-solaires.fr/wp-content/uploads/2022/01/indice-uv.jpeg)
 
