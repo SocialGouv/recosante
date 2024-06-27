@@ -263,24 +263,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:5.6.0":
-  version: 5.6.0
-  resolution: "@prisma/client@npm:5.6.0"
-  dependencies:
-    "@prisma/engines-version": "npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee"
+"@prisma/client@npm:5.16.1":
+  version: 5.16.1
+  resolution: "@prisma/client@npm:5.16.1"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: eb784095ed27921bf859cd4b72b1a7e8d8f98dac0ebc782d94eecb4f4abaaa5de26d99bf9ef4e4d7b620d6f449d806884a315332766b3c040a97ef06150ba8f4
-  languageName: node
-  linkType: hard
-
-"@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee":
-  version: 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
-  resolution: "@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee"
-  checksum: 0a6248f702855775fab9fe277a98acdc558c3929101c8d56010f8dba708e35c42eb9879af3bd2e2a9446a68776a3e8b609ffb0e1835de083334cb492d236f101
+  checksum: cde22e7b26607ed4de23a7822b7c83dc7995ca856469e576080bd6f76dc69c06e912639f4426e362c8a5d0aa7039b10efe341c723efa6af7221becaa8d426b2e
   languageName: node
   linkType: hard
 
@@ -636,7 +627,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api_node@workspace:."
   dependencies:
-    "@prisma/client": "npm:5.6.0"
+    "@prisma/client": "npm:5.16.1"
     "@sentry/node": "npm:^7.84.0"
     "@sentry/tracing": "npm:^7.84.0"
     "@types/cors": "npm:^2.8.17"
