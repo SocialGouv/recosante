@@ -36,7 +36,7 @@ pg:
 pg-api-node:
   cnpg-cluster:
     persistence:
-      size: "20Gi"
+      size: "50Gi"
 
 flower:
   replicas: 1
