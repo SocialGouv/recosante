@@ -42,7 +42,7 @@ uwsgi = "2.0.22"
 werkzeug = "2.3.4"
 wtforms = "3.0.1"
 typing-extensions = "4.6.2"
-setuptools = "67.8.0"
+setuptools = "70.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "7.3.1"
