@@ -52,6 +52,24 @@ redis:
 api:
   replicas: 1
 
+api-node:
+  resources:
+    requests:
+      cpu: 300m
+      memory: 600Mi
+    limits:
+      cpu: 400m
+      memory: 800Mi
+
+frontend:
+  resources:
+    requests:
+      cpu: 200m
+      memory: 400Mi
+    limits:
+      cpu: 300m
+      memory: 600Mi
+
 frontend-next:
   certSecretName: frontend-beta
 

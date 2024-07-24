@@ -54,11 +54,11 @@ api-node:
         name: api-node-sealed-secret
   resources:
     requests:
-      cpu: 0.1
-      memory: 128Mi
+      cpu: 100m
+      memory: 200Mi
     limits:
-      cpu: 1
-      memory: 1Gi
+      cpu: 150m
+      memory: 300Mi
 
 frontend:
   ~chart: app
@@ -70,11 +70,11 @@ frontend:
     enabled: false
   resources:
     requests:
-      cpu: 0.1
-      memory: 128Mi
+      cpu: 100m
+      memory: 200Mi
     limits:
-      cpu: 1
-      memory: 1Gi
+      cpu: 150m
+      memory: 300Mi
   env:
     - name: GATSBY_API_BASE_URL
       value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
