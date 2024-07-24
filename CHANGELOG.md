@@ -1,3 +1,10 @@
+## [1.37.1](https://github.com/SocialGouv/recosante/compare/v1.37.0...v1.37.1) (2024-07-24)
+
+
+### Bug Fixes
+
+* redis rollout strategy ([be78613](https://github.com/SocialGouv/recosante/commit/be7861373f10c78a70b15dc8b7a3bcc0995731b2))
+
 # [1.37.0](https://github.com/SocialGouv/recosante/compare/v1.36.4...v1.37.0) (2024-07-24)
 
 
