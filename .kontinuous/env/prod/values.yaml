@@ -43,6 +43,7 @@ flower:
   host: "flower-recosante.fabrique.social.gouv.fr"
 
 redis:
+  strategyType: Recreate # mandatory because volume is RWO
   addVolumes:
     - redis
   volumeMounts:
