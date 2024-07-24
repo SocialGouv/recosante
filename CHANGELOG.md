@@ -1,3 +1,20 @@
+# [1.37.0](https://github.com/SocialGouv/recosante/compare/v1.36.4...v1.37.0) (2024-07-24)
+
+
+### Bug Fixes
+
+* **deps:** update dependency uwsgi to v2.0.22 [security] ([#528](https://github.com/SocialGouv/recosante/issues/528)) ([10d6b7b](https://github.com/SocialGouv/recosante/commit/10d6b7ba0da773267c109976cfd65a15e9042bb5))
+* in app rating asked from backend ([#516](https://github.com/SocialGouv/recosante/issues/516)) ([eb9b59b](https://github.com/SocialGouv/recosante/commit/eb9b59ba8586c4e9f62a45441df66b7b1df1fe23))
+* pg-api-node volume size ([62b4591](https://github.com/SocialGouv/recosante/commit/62b4591524e4211fc969f71da6fe89dbfc396a8e))
+* remove drinking water logic ([#527](https://github.com/SocialGouv/recosante/issues/527)) ([ef8a4c8](https://github.com/SocialGouv/recosante/commit/ef8a4c8f58b2dff50a07e5db0f86ffa6e0b43ba7))
+* resources ([8eeb248](https://github.com/SocialGouv/recosante/commit/8eeb24873c31b8c095b23dfafbaf2200441530ab))
+
+
+### Features
+
+* add helpful value in feedback ([#517](https://github.com/SocialGouv/recosante/issues/517)) ([00f382e](https://github.com/SocialGouv/recosante/commit/00f382ed8d7e84079c1bea47086aed038e27875e))
+* **udi:** add logic for multiple udi ([#525](https://github.com/SocialGouv/recosante/issues/525)) ([cd259d3](https://github.com/SocialGouv/recosante/commit/cd259d30acbd29b0951165184fbc8944df1fbb46))
+
 ## [1.36.4](https://github.com/SocialGouv/recosante/compare/v1.36.3...v1.36.4) (2024-04-05)
 
 
