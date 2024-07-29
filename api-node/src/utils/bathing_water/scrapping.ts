@@ -5,8 +5,13 @@ import {
 } from '@prisma/client';
 import { type ScrapingResult } from '~/types/api/bathing_water';
 import * as cheerio from 'cheerio';
-import dayjs from 'dayjs';
 import { capture } from '~/third-parties/sentry';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(utc);
 
 const fetch = fetchRetry(global.fetch);
 // Regular expression to match the date in dd/mm/yyyy format
@@ -129,6 +134,7 @@ export async function scrapeHtmlBaignadesSitePage(
         return BathingWaterResultEnum.GOOD;
     }
   }
+
   return {
     result_date: dayjs(date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
     result_value: transformLabelToEnum(label),
