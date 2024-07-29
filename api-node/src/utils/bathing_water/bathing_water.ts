@@ -249,10 +249,10 @@ function getBathingWaterLatestResultDate(
   return latestResultDate;
 }
 
-const consultSiteUrl = new URL(
-  'https://baignades.sante.gouv.fr/baignades/consultSite.do',
-);
 function buildBathingWaterUrl(bathingWater: BathingWater): string {
+  const consultSiteUrl = new URL(
+    'https://baignades.sante.gouv.fr/baignades/consultSite.do',
+  );
   const consultSiteQuery: any = {
     dptddass: bathingWater.dptddass,
     site: bathingWater.id_site,
