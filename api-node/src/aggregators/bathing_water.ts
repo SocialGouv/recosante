@@ -164,7 +164,7 @@ export async function getBathingWaterIndicator() {
               id_carte: idCarte,
               isite: site.isite,
               name: site.nom,
-              result_date: scrapingResult.result_date,
+              result_date: dayjs(scrapingResult.result_date).toISOString(),
               result_value: scrapingResult.result_value,
               swimming_season_start: scrapingResult.swimming_season_start,
               swimming_season_end: scrapingResult.swimming_season_end,
