@@ -41,7 +41,6 @@ export async function getBathingWaterIndicator() {
     const municipalities = await prisma.municipality.findMany({
       where: {
         bathing_water_sites: { gt: 0 },
-        COM: String(76637),
       },
       orderBy: {
         DEP: 'desc',

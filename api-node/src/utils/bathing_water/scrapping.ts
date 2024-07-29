@@ -118,6 +118,9 @@ export async function scrapeHtmlBaignadesSitePage(
         return BathingWaterResultEnum.GOOD;
       default:
         // if there is no test result, the parsing fails and the value is 'communiqué'
+        if (lastTest.includes('Non renseign')) {
+          return BathingWaterResultEnum.NO_RESULT_FOUND;
+        }
         if (value !== 'communiqué' && !!value) {
           capture(`Unknown bathing water label ${value}`, {
             extra: {
@@ -131,7 +134,7 @@ export async function scrapeHtmlBaignadesSitePage(
           });
         }
         // TODO FIXME: we should return BathingWaterResultEnum.NO_RESULT_FOUND
-        return BathingWaterResultEnum.GOOD;
+        return BathingWaterResultEnum.NO_RESULT_FOUND;
     }
   }
 
