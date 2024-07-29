@@ -1,3 +1,10 @@
+## [1.37.3](https://github.com/SocialGouv/recosante/compare/v1.37.2...v1.37.3) (2024-07-29)
+
+
+### Bug Fixes
+
+* activate bathing logs ([139ab7a](https://github.com/SocialGouv/recosante/commit/139ab7adf19ce4339ef9905824f54996948bdb03))
+
 ## [1.37.2](https://github.com/SocialGouv/recosante/compare/v1.37.1...v1.37.2) (2024-07-24)
 
 
