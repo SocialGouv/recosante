@@ -1,3 +1,10 @@
+## [1.37.6](https://github.com/SocialGouv/recosante/compare/v1.37.5...v1.37.6) (2024-07-29)
+
+
+### Bug Fixes
+
+* consultSiteUrl ([#554](https://github.com/SocialGouv/recosante/issues/554)) ([1fb1014](https://github.com/SocialGouv/recosante/commit/1fb10142b488fa03a3e1f27e7c20961efc170033))
+
 ## [1.37.5](https://github.com/SocialGouv/recosante/compare/v1.37.4...v1.37.5) (2024-07-29)
 
 
