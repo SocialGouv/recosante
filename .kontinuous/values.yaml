@@ -52,13 +52,9 @@ api-node:
         name: "{{ .Values.global.pgApiNodeSecretName }}"
     - secretRef:
         name: api-node-sealed-secret
-  resources:
-    requests:
-      cpu: 100m
-      memory: 200Mi
-    limits:
-      cpu: 150m
-      memory: 300Mi
+  annotations:
+    oblik.socialgouv.io/min-request-cpu: 300m
+    oblik.socialgouv.io/min-limit-cpu: 300m
 
 frontend:
   ~chart: app
