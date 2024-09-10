@@ -64,13 +64,15 @@ frontend:
   probesPath: /healthz/
   ingress:
     enabled: false
-  resources:
-    requests:
-      cpu: 100m
-      memory: 200Mi
-    limits:
-      cpu: 150m
-      memory: 300Mi
+  annotations:
+    oblik.socialgouv.io/min-request-cpu: 500m
+    oblik.socialgouv.io/min-limit-cpu: 500m
+    oblik.socialgouv.io/min-request-memory: 1Gi
+    oblik.socialgouv.io/min-limit-memory: 1Gi
+  startupProbe:
+    initialDelaySeconds: 60
+    failureThreshold: 5
+    periodSeconds: 10
   env:
     - name: GATSBY_API_BASE_URL
       value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
