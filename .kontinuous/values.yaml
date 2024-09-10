@@ -54,6 +54,7 @@ api-node:
         name: api-node-sealed-secret
   annotations:
     oblik.socialgouv.io/min-request-cpu: 300m
+    oblik.socialgouv.io/min-limit-cpu: 300m
 
 frontend:
   ~chart: app
