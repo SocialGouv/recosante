@@ -18,11 +18,11 @@ api:
   containerPort: 8080
   resources:
     requests:
-      cpu: 0.1
-      memory: 128Mi
-    limits:
-      cpu: 2
+      cpu: 100m
       memory: 4Gi
+    limits:
+      cpu: 300m
+      memory: 6Gi
   envFrom:
     - secretRef:
         name: "pg-app"
@@ -55,10 +55,10 @@ api-node:
   resources:
     requests:
       cpu: 100m
-      memory: 200Mi
+      memory: 768Mi
     limits:
-      cpu: 150m
-      memory: 300Mi
+      cpu: 300m
+      memory: 1Gi
 
 frontend:
   ~chart: app
@@ -70,11 +70,11 @@ frontend:
     enabled: false
   resources:
     requests:
-      cpu: 100m
-      memory: 200Mi
+      cpu: 300m
+      memory: 1280Mi
     limits:
-      cpu: 150m
-      memory: 300Mi
+      cpu: 400m
+      memory: 1536Mi
   env:
     - name: GATSBY_API_BASE_URL
       value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
@@ -91,6 +91,13 @@ frontend-next:
   probesPath: /healthz
   imagePackage: frontend-next
   host: "{{ .Values.global.host }}"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 786Mi
 
 indice:
   ~chart: app
@@ -100,11 +107,11 @@ indice:
   containerPort: 8080
   resources:
     requests:
-      cpu: 0.1
-      memory: 128Mi
+      cpu: 100m
+      memory: 1Gi
     limits:
-      cpu: 2
-      memory: 4Gi
+      cpu: 200m
+      memory: 2Gi
   startupProbe:
     initialDelaySeconds: 30
     failureThreshold: 500 # for very long migrations
@@ -143,6 +150,13 @@ redis:
   ingress:
     enabled: false
   ~forceRestart: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
 
 flower:
   ~needs: [redis]
@@ -166,9 +180,23 @@ flower:
       value: "5555"
     - name: FLOWER_PERSISTENT
       value: "True"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 768Mi
+    limits:
+      cpu: 300m
+      memory: 1Gi
 
 pg-api-node:
-  ~chart: pg
+  cnpg-cluster:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 2Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
 
 cronjobs:
   ~chart: daemon
