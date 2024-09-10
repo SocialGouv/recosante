@@ -29,19 +29,35 @@ pg:
       size: "50Gi"
     resources:
       requests:
+        cpu: 200m
         memory: 3Gi
       limits:
+        cpu: 1
         memory: 3Gi
 
 pg-api-node:
   cnpg-cluster:
     persistence:
       size: "50Gi"
+    resources:
+      requests:
+        cpu: 500m
+        memory: 2Gi
+      limits:
+        cpu: 1
+        memory: 2Gi
 
 flower:
   replicas: 1
   host: "flower-recosante.fabrique.social.gouv.fr"
-
+  resources:
+    requests:
+      cpu: 100m
+      memory: 768Mi
+    limits:
+      cpu: 300m
+      memory: 1Gi
+      
 redis:
   strategyType: Recreate # mandatory because volume is RWO
   addVolumes:
@@ -49,30 +65,58 @@ redis:
   volumeMounts:
     - name: redis
       mountPath: /data
-
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 256Mi
+      
 api:
   replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 4Gi
+    limits:
+      cpu: 300m
+      memory: 6Gi
 
 api-node:
   resources:
     requests:
-      cpu: 300m
-      memory: 600Mi
+      cpu: 100m
+      memory: 768Mi
     limits:
-      cpu: 400m
-      memory: 800Mi
+      cpu: 300m
+      memory: 1Gi
 
 frontend:
   resources:
     requests:
-      cpu: 500m
-      memory: 1Gi
+      cpu: 300m
+      memory: 1280Mi
     limits:
-      cpu: 750m
-      memory: 1.5Gi
+      cpu: 400m
+      memory: 1536Mi
 
 frontend-next:
   certSecretName: frontend-beta
-
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 786Mi
+      
 indice:
   replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 1Gi
+    limits:
+      cpu: 200m
+      memory: 2Gi
