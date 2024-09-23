@@ -1,3 +1,11 @@
+## [1.37.7](https://github.com/SocialGouv/recosante/compare/v1.37.6...v1.37.7) (2024-09-23)
+
+
+### Bug Fixes
+
+* **frontend:** resources ([5a1e93a](https://github.com/SocialGouv/recosante/commit/5a1e93aed6a537098ef377569c8856e62103a1c8))
+* recosante-resources ([#559](https://github.com/SocialGouv/recosante/issues/559)) ([f44b082](https://github.com/SocialGouv/recosante/commit/f44b0824aeb22d81da70b3bcefe2f4154569bdcc))
+
 ## [1.37.6](https://github.com/SocialGouv/recosante/compare/v1.37.5...v1.37.6) (2024-07-29)
 
 
