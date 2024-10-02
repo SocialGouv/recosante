@@ -1,3 +1,10 @@
+## [1.37.8](https://github.com/SocialGouv/recosante/compare/v1.37.7...v1.37.8) (2024-10-02)
+
+
+### Bug Fixes
+
+* liveness probe ([#563](https://github.com/SocialGouv/recosante/issues/563)) ([2ae65e9](https://github.com/SocialGouv/recosante/commit/2ae65e9c35b3a254ae4bc8d17fb0a1bcc8faf7d5))
+
 ## [1.37.7](https://github.com/SocialGouv/recosante/compare/v1.37.6...v1.37.7) (2024-09-23)
 
 
