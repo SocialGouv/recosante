@@ -225,4 +225,3 @@ jobs:
         imagePackage: frontend-next
         dockerfile: frontend-next/Dockerfile
         context: "."
-        
