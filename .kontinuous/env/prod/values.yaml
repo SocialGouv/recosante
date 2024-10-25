@@ -118,5 +118,5 @@ indice:
       cpu: 100m
       memory: 1Gi
     limits:
-      cpu: 200m
+      cpu: 500m
       memory: 2Gi
