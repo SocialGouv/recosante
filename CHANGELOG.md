@@ -1,3 +1,10 @@
+## [1.37.10](https://github.com/SocialGouv/recosante/compare/v1.37.9...v1.37.10) (2024-10-25)
+
+
+### Bug Fixes
+
+* startup probe handler ([9210506](https://github.com/SocialGouv/recosante/commit/92105065accae3cb5cc5af2b5112af6f4f829c15))
+
 ## [1.37.9](https://github.com/SocialGouv/recosante/compare/v1.37.8...v1.37.9) (2024-10-25)
 
 
