@@ -80,6 +80,10 @@ frontend:
     oblik.socialgouv.io/min-request-memory: 1Gi
     oblik.socialgouv.io/min-limit-memory: 1Gi
   startupProbe:
+    httpGet:
+      path: /healthz/
+      port: http
+      scheme: HTTP
     initialDelaySeconds: 60
     failureThreshold: 5
     periodSeconds: 10
@@ -114,6 +118,10 @@ indice:
       cpu: 2
       memory: 4Gi
   startupProbe:
+    httpGet:
+      path: /
+      port: http
+      scheme: HTTP
     initialDelaySeconds: 30
     failureThreshold: 500 # for very long migrations
     periodSeconds: 10
