@@ -1,3 +1,10 @@
+## [1.37.9](https://github.com/SocialGouv/recosante/compare/v1.37.8...v1.37.9) (2024-10-25)
+
+
+### Bug Fixes
+
+* increase indice service CPU limit to decrease cpu throttling alerts ([5f73e1a](https://github.com/SocialGouv/recosante/commit/5f73e1a2ac72f326dcc3a9a0ddddbc85be03816f))
+
 ## [1.37.8](https://github.com/SocialGouv/recosante/compare/v1.37.7...v1.37.8) (2024-10-02)
 
 
