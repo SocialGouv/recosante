@@ -2,6 +2,8 @@
 
 Recosante : Un service public numérique de recommandations d'actions pour réduire l'impact de l'environnement sur sa santé.
 
+test
+
 Accessible sur https://recosante.beta.gouv.fr/
 
 Ce dépôt est un monorepo créé pour faciliter le déploiement sur l'infrastructure de la [Fabrique numérique des ministères sociaux](https://fabrique.social.gouv.fr).
