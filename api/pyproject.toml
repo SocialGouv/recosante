@@ -54,6 +54,7 @@ requests-mock = "1.10.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^2.17.4"
+python-dotenv = "^1.0.1"
 
 [tool.pytest]
 testpaths = "tests"

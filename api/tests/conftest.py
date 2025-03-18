@@ -1,5 +1,10 @@
 import os
+import psycopg2
 from datetime import date, datetime, timedelta
+
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 import pytest
 import sqlalchemy as sa
@@ -72,16 +77,24 @@ def _db(app):
 
 
 @pytest.fixture(scope='function')
-# pylint: disable-next=redefined-outer-name
 def db_session(_db):
     session = _db.session
+    
+    # S'assurer que les tables existent
+    _db.create_all()
+    db_indice_pollution.metadata.create_all(bind=_db.engine)
+    
+    # Puis vider les tables
     api_tables = [table.name for table in reversed(_db.metadata.sorted_tables)]
     indice_pollution_tables = [f'{table.schema}."{table.name}"' for table in reversed(
         db_indice_pollution.metadata.sorted_tables)]
     tables = ','.join(api_tables + indice_pollution_tables)
-    command = f'TRUNCATE {tables} RESTART IDENTITY;'
-    session.execute(command)
-    session.commit()
+    
+    if tables:  # Exécuter TRUNCATE seulement s'il y a des tables
+        command = f'TRUNCATE {tables} RESTART IDENTITY CASCADE;'
+        session.execute(command)
+        session.commit()
+    
     yield session
     session.close()
 
@@ -244,6 +257,32 @@ def episode_ozone(commune_commited):
 def episode_azote(commune_commited):
     return make_episode_tomorrow(8, commune_commited)
 
+@pytest.fixture(scope="session")
+def app():
+    _app = create_app()
+    _app.config['WTF_CSRF_ENABLED'] = False
+    _app.config['SQLALCHEMY_DATABASE_URI'] = DB_CONN
+    
+    with _app.app_context():
+        _db = _app.extensions['sqlalchemy'].db
+        
+        # Forcer la création des tables dans le schéma public
+        for table in _db.metadata.sorted_tables:
+            if table.schema is None:  # Tables du schéma public
+                table.schema = 'public'
+                _db.engine.execute(f'CREATE SCHEMA IF NOT EXISTS {table.schema}')
+                table.create(bind=_db.engine, checkfirst=True)
+        
+        # Initialiser indice_pollution après
+        init_app_indice_pollution(_app)
+        db_indice_pollution.engine.execute('CREATE SCHEMA IF NOT EXISTS indice_schema')
+        db_indice_pollution.metadata.create_all()
+        
+        with open("migrations/data/generate-random-short-id.sql", encoding="utf-8") as file:
+            query = text(file.read())
+            _db.engine.execute(query)
+            
+        yield _app
 
 def make_raep(_commune, raep):
     # pylint: disable-next=unexpected-keyword-arg
