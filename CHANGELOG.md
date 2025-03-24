@@ -1,3 +1,12 @@
+## [1.37.12](https://github.com/SocialGouv/recosante/compare/v1.37.11...v1.37.12) (2025-03-24)
+
+
+### Bug Fixes
+
+* pg size ([af86cb1](https://github.com/SocialGouv/recosante/commit/af86cb1dbaa60ab9ec3cbb5b99f7cede40cccd25))
+* pg ssl wip ([dbd3356](https://github.com/SocialGouv/recosante/commit/dbd33561607ad3efca53d987a7971c0a06c732d9))
+* pg ssl wip ([2604272](https://github.com/SocialGouv/recosante/commit/26042728d9b410f4e640d22288fc9922540f8426))
+
 ## [1.37.11](https://github.com/SocialGouv/recosante/compare/v1.37.10...v1.37.11) (2025-03-24)
 
 
