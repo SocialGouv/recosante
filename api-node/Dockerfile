@@ -1,9 +1,6 @@
 FROM node:20-alpine
 
-RUN apk update \
-	&& apk add --no-cache openssl\
-	&& rm -rf /var/lib/apt/lists/* \
-	&& rm -rf /var/cache/apk/*
+RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 # see https://github.com/prisma/prisma/issues/25817
 
 RUN mkdir /app-node && chown 1000:1000 /app-node \
   && chown 1000:1000 /tmp && \
