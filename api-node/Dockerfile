@@ -1,5 +1,10 @@
 FROM node:20-alpine
 
+RUN apk update \
+	&& apk add --no-cache openssl\
+	&& rm -rf /var/lib/apt/lists/* \
+	&& rm -rf /var/cache/apk/*
+
 RUN mkdir /app-node && chown 1000:1000 /app-node \
   && chown 1000:1000 /tmp && \
   mkdir /home/node/.yarn && chown 1000:1000 /home/node/.yarn
