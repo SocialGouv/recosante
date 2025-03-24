@@ -1,3 +1,11 @@
+## [1.37.11](https://github.com/SocialGouv/recosante/compare/v1.37.10...v1.37.11) (2025-03-24)
+
+
+### Bug Fixes
+
+* **ci-cd:** use token-bureau ([#564](https://github.com/SocialGouv/recosante/issues/564)) ([aca4619](https://github.com/SocialGouv/recosante/commit/aca461913658f94eace9efa3392b3934867a0a85))
+* up next ([492519c](https://github.com/SocialGouv/recosante/commit/492519cedf6d9804623c29ef03aa756d27063a58))
+
 ## [1.37.10](https://github.com/SocialGouv/recosante/compare/v1.37.9...v1.37.10) (2024-10-25)
 
 
