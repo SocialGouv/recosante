@@ -5,6 +5,7 @@ from celery.signals import after_setup_logger, after_setup_task_logger
 from flask import Flask, g
 from kombu import Queue
 from werkzeug.urls import url_encode
+from indice_pollution import test_task
 
 from .extensions import (assets_env, cache, celery, cors, db, migrate, rebar,
                          sib)
@@ -156,5 +157,12 @@ def create_app(testing=False):
         indice_pollution.db.engine = db.engine
 
     rebar.init_app(app)
+
+    @app.route('/test_task')
+    def test_task_http():
+        test_task.apply_async(queue='save_indices',
+                         routing_key='save_indices.save_all')
+        return "test_task"
+
 
     return app

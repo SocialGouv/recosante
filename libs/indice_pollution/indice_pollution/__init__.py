@@ -9,6 +9,7 @@ from flask import Flask
 from kombu import Queue
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from celery import shared_task
 
 from . import db
 from .extensions import celery, logger
@@ -79,27 +80,60 @@ def configure_celery(flask_app=None):
 
     celery.Task = SqlAlchemyTask
 
-
 @celery.task(bind=True)
-def save_all_indices(self, module_name, class_name, scheduled_datetime=None):
-    self.update_state(f"Saving {module_name}.{class_name}")
+def test_task(self):
+    print("test_task")
+    self.update_state("test_task")
+    return "test_task"
+
+@shared_task(rate_limit='10/m')
+def save_indicator(module_name, class_name, indicator_name, scheduled_datetime=None):
+    print(f"Saving {module_name}.{class_name}.{indicator_name}")
     module = import_module(module_name)
-    if hasattr(module, "Service") and hasattr(module.Service, "is_active") and not module.Service.is_active:
-        self.update_state(f"{module_name} is not active")
-        return f"{module_name} is not active"
     if not hasattr(module, class_name):
-        self.update_state(f"No class {class_name} in {module_name}")
+        print(f"No class {class_name} in {module_name}")
         return f"No class {class_name} in {module_name}"
+    
     cls_ = getattr(module, class_name)
     launch_datetime = datetime.now()
     ping(cls_, "start", scheduled_datetime, launch_datetime)
+    
     try:
-        cls_.save_all()
-    except Exception:
-        logger.exception("Error while running %r.save_all()", cls_)
-    self.update_state(f"{module_name}.{class_name} saved")
+        indicator = cls_.get_indicator(indicator_name)
+        indicator.save()
+        print(f"Indicator {indicator_name} saved")
+    except Exception as e:
+        logger.exception("Error while saving indicator %r", indicator_name, e)
+    
     ping(cls_, "success", scheduled_datetime, launch_datetime)
-    return f"{module_name}.{class_name} saved"
+    return f"{module_name}.{class_name}.{indicator_name} saved"
+
+@shared_task(rate_limit='10/m')
+def save_all_indices(module_name, class_name, scheduled_datetime=None):
+    print(f"Starting to save all indices for {module_name}.{class_name}")
+    module = import_module(module_name)
+    if hasattr(module, "Service") and hasattr(module.Service, "is_active") and not module.Service.is_active:
+        print(f"{module_name} is not active")
+        return f"{module_name} is not active"
+    
+    if not hasattr(module, class_name):
+        print(f"No class {class_name} in {module_name}")
+        return f"No class {class_name} in {module_name}"
+    
+    cls_ = getattr(module, class_name)
+    indicators = cls_.get_indicators()
+    
+    task_ids = []
+    for indicator in indicators:
+        task = save_indicator.apply_async(
+            args=[module_name, class_name, indicator.name, scheduled_datetime],
+            queue='save_indices',
+            routing_key='save_indices.save_indicator'
+        )
+        task_ids.append(task.id)
+        print(f"Task for {indicator.name} created with ID: {task.id}")
+    
+    return f"Tasks for {module_name}.{class_name} indicators have been dispatched: {task_ids}"
 
 
 @celery.on_after_configure.connect
@@ -189,6 +223,12 @@ def create_app():
         'CELERY_REDBEAT_REDIS_URL')
 
     init_app(app)
+
+    @app.route('/test_task')
+    def test_task_http():
+        test_task.apply_async(queue='save_indices',
+                         routing_key='save_indices.save_all')
+        return "test_task"
 
     return app
 

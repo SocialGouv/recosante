@@ -1,5 +1,4 @@
-version: "3.8"
-
+version: "3.9"
 services:
   db:
     environment:
@@ -50,7 +49,7 @@ services:
 
   redis:
     image: redis:7.0.11
-    ports:
+    ports:  
       - 6379:6379
     restart: always
     healthcheck:
