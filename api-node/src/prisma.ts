@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
+  console.log("📦 DATABASE_URL (from prisma.ts):", process.env.DATABASE_URL)
   prisma = new PrismaClient();
 } else {
   const globalWithPrisma = global as typeof globalThis & {

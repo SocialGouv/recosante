@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import '~/prisma';
 
 import * as Sentry from '@sentry/node';
 import express from 'express';
@@ -24,6 +23,7 @@ import hubeauPrelevementRouter from './controllers/hubeau-prelevement.ts';
 import callToActionRouter from './controllers/call-to-action.ts';
 
 import packageJson from '../package.json';
+import prisma from '~/prisma';
 
 // Put together a schema
 const app = express();
@@ -120,6 +120,25 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`RUN ON PORT ${PORT}`);
-});
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+(async () => {
+  const delayMs = Number(process.env.DELAY_BEFORE_START || '0');
+  if (delayMs > 0) {
+    console.log(`Waiting ${delayMs}ms before starting server...`);
+    await delay(delayMs);
+  }
+
+  try {
+    console.log(' Connecting to database...');
+    await prisma.$connect();
+    console.log('✅ Successfully connected to database');
+
+    app.listen(PORT, () => {
+      console.log(` Server is running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ Failed to connect to database:', err);
+    process.exit(1);
+  }
+})();
