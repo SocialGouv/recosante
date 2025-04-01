@@ -17,6 +17,10 @@ RUN yarn fetch
 # Copy application code
 COPY --chown=1000:1000 . .
 
+ENV DELAY_BEFORE_START=10000
+
+RUN echo "DATABASE_URL=$DATABASE_URL"
+
 RUN yarn prisma generate
 
 ENV NODE_ENV=production
