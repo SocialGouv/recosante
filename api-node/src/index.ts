@@ -120,10 +120,10 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);
 
 // Start the server
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 (async () => {
-  const delayMs = Number(process.env.DELAY_BEFORE_START || '0');
+  const delayMs = Number(process.env.DELAY_BEFORE_START ?? '0');
   if (delayMs > 0) {
     console.log(`Waiting ${delayMs}ms before starting server...`);
     await delay(delayMs);
