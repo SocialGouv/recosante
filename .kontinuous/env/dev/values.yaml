@@ -1,5 +1,10 @@
 pg:
   ~chart: pg
+  cnpg-cluster:
+    annotations:
+      oblik.socialgouv.io/min-request-cpu: 200m
+      oblik.socialgouv.io/min-limit-cpu: "1"
+      oblik.socialgouv.io/min-request-memory: 2Gi
 
 api:
   ~needs: [build-api, seed-db]
