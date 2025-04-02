@@ -1,3 +1,10 @@
+## [1.37.13](https://github.com/SocialGouv/recosante/compare/v1.37.12...v1.37.13) (2025-04-02)
+
+
+### Bug Fixes
+
+* Update README.md ([7008d4e](https://github.com/SocialGouv/recosante/commit/7008d4ec6ba3efa052676e32c739eb432c3453d0))
+
 ## [1.37.12](https://github.com/SocialGouv/recosante/compare/v1.37.11...v1.37.12) (2025-03-24)
 
 
