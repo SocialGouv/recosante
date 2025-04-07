@@ -32,7 +32,7 @@ const isLocalDevelopment = process.env.NODE_ENV === 'development';
 //const isReviewBranch = ENVIRONMENT === 'development';
 
 //TODO: rollback isReviewBranch
-if (isLocalDevelopment) {
+if (!isLocalDevelopment) {
   Promise.resolve()
     .then(initIndicatorsCleaning) //
     .then(initMunicipalities) //
