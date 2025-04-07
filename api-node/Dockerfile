@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:18-alpine
 
 RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 # see https://github.com/prisma/prisma/issues/25817
  
