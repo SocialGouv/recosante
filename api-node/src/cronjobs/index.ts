@@ -29,9 +29,10 @@ if (sentryEnabled) {
 }
 
 const isLocalDevelopment = process.env.NODE_ENV === 'development';
-const isReviewBranch = ENVIRONMENT === 'development';
+//const isReviewBranch = ENVIRONMENT === 'development';
 
-if (isLocalDevelopment || !isReviewBranch) {
+//TODO: rollback isReviewBranch
+if (isLocalDevelopment) {
   Promise.resolve()
     .then(initIndicatorsCleaning) //
     .then(initMunicipalities) //

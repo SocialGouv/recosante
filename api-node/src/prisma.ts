@@ -3,8 +3,25 @@ import { PrismaClient } from '@prisma/client';
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
-  console.log("📦 DATABASE_URL (from prisma.ts):", process.env.DATABASE_URL)
-  prisma = new PrismaClient();
+  console.log('📦 DATABASE_URL (from prisma.ts):', process.env.DATABASE_URL);
+  
+  try {
+    prisma = new PrismaClient({
+      log: ['error', 'warn'],
+      errorFormat: 'pretty',
+    });
+    
+    prisma.$connect()
+      .then(() => console.log('Successfully connected to database'))
+      .catch((e) => {
+        console.error('Failed to connect to database:', e);
+        process.exit(1); 
+      });
+      
+  } catch (e) {
+    console.error('Failed to initialize Prisma Client:', e);
+    process.exit(1);
+  }
 } else {
   const globalWithPrisma = global as typeof globalThis & {
     prisma: PrismaClient;
