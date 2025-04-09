@@ -25,9 +25,7 @@ router.get(
     if (Number(req.user.appbuild) < 62) {
       res.status(200).send({
         ok: true,
-        data: indicatorsList.filter(
-          (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
-        ),
+        data: indicatorsList
       });
     } else {
       res.status(200).send({ ok: true, data: indicatorsList });
