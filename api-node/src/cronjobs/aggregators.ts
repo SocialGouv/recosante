@@ -5,6 +5,7 @@ import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
 import { getWeatherAlert } from '~/aggregators/weather_alert';
 import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
+import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
 // import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
 
 /*
@@ -25,15 +26,15 @@ export async function initAggregators() {
     // .then(() => {
     //   console.log('Inside aggregators cronjobs');
     // })
-    // .then(
-    //   async () =>
-    //     await setupCronJob({
-    //       name: 'Drinking Water',
-    //       cronTime: '10 10,22 * * *', // every day at 10:10am and 10:10pm
-    //       job: getDrinkingWaterIndicator,
-    //       runOnInit: true,
-    //     }),
-    // )
+     .then(
+       async () =>
+         await setupCronJob({
+           name: 'Drinking Water',
+           cronTime: '0 */3 * * *', // Tous les jours à 0h, 3h, 6h, 9h, 12h, 15h, 18h, 21h
+           job: getDrinkingWaterIndicator,
+           runOnInit: true,
+         }),
+     )
     .then(
       async () =>
         await setupCronJob({
