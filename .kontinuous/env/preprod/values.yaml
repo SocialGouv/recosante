@@ -5,6 +5,15 @@ pg:
   cnpg-cluster:
     persistence:
       size: "40Gi"
+    annotations:
+      oblik.socialgouv.io/min-request-cpu: "1"
+      
+      oblik.socialgouv.io/memory-request-from-cpu-enabled: "true"
+      oblik.socialgouv.io/memory-request-from-cpu-algo: "ratio"
+      oblik.socialgouv.io/memory-request-from-cpu-value: "3"
+
+      oblik.socialgouv.io/limit-cpu-calculator-algo: ratio
+      oblik.socialgouv.io/limit-cpu-calculator-value: "2"
 
 pg-api-node:
   ~chart: pg
