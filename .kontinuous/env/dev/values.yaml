@@ -11,6 +11,9 @@ api:
 
 indice:
   ~needs: [build-indice, api]
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi 
 
 api-node:
   env:
