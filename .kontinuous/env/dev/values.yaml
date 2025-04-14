@@ -16,10 +16,9 @@ api-node:
   env:
     - name: ENVIRONMENT
       value: "development"
-  resources:
-    limits:
-      cpu: 300m
-      memory: 1Gi
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi    
 
 cronjobs:
   env:
