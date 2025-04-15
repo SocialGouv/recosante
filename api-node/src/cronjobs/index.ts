@@ -38,4 +38,8 @@ if (isLocalDevelopment || !isReviewBranch) {
     .then(initRecommandations) //
     .then(initAggregators) //
     .then(initNotifications); //
+} else {
+  setInterval(() => {
+    // This empty function is called every second.
+  }, 1000);
 }
