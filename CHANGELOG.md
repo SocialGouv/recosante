@@ -1,3 +1,11 @@
+## [1.37.14](https://github.com/SocialGouv/recosante/compare/v1.37.13...v1.37.14) (2025-04-15)
+
+
+### Bug Fixes
+
+* **node-api:** add ressources and change image to fix prisma errors ([#631](https://github.com/SocialGouv/recosante/issues/631)) ([97c333b](https://github.com/SocialGouv/recosante/commit/97c333bed27659b83f97feede4a181eeb9f824d9))
+* pg preprod resources ([3f8857d](https://github.com/SocialGouv/recosante/commit/3f8857daed2f97c626cdef48fdf9afb632720622))
+
 ## [1.37.13](https://github.com/SocialGouv/recosante/compare/v1.37.12...v1.37.13) (2025-04-02)
 
 
