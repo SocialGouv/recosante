@@ -27,6 +27,9 @@ cronjobs:
   env:
     - name: ENVIRONMENT
       value: "development"
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi    
 
 jobs:
   runs:
