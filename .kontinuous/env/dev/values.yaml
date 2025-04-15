@@ -1,21 +1,35 @@
 pg:
   ~chart: pg
+  cnpg-cluster:
+    annotations:
+      oblik.socialgouv.io/min-request-cpu: 500m
+      oblik.socialgouv.io/min-limit-cpu: "1"
+      oblik.socialgouv.io/min-request-memory: 2Gi
 
 api:
   ~needs: [build-api, seed-db]
 
 indice:
   ~needs: [build-indice, api]
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi 
 
 api-node:
   env:
     - name: ENVIRONMENT
       value: "development"
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi    
 
 cronjobs:
   env:
     - name: ENVIRONMENT
       value: "development"
+  annotations:
+    oblik.socialgouv.io/min-limit-cpu: "3"
+    oblik.socialgouv.io/min-limit-memory: 3Gi    
 
 jobs:
   runs:

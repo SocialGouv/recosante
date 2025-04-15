@@ -1,6 +1,4 @@
-FROM node:20-alpine
-
-RUN ln -s /usr/lib/libssl.so.3 /lib/libssl.so.3 # see https://github.com/prisma/prisma/issues/25817
+FROM node:19-alpine
 
 RUN mkdir /app-node && chown 1000:1000 /app-node \
   && chown 1000:1000 /tmp && \
