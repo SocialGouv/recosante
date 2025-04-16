@@ -65,6 +65,7 @@ jobs:
       ~needs: [api-node]
       checkout: true
       image: node:19
+      memoryLimit: 2Gi
       workingDir: /workspace/api-node
       run: |
         echo "🧪 tests unitaires - api-node"
@@ -75,6 +76,7 @@ jobs:
       ~needs: [api-node, pg, run-unit-tests]
       checkout: true
       image: node:19
+      memoryLimit: 2Gi
       workingDir: /workspace/api-node
       envFrom:
         - secretRef:
