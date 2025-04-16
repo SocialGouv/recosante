@@ -19,7 +19,7 @@
     "stop": "docker-compose stop",
     "test": "yarn workspaces foreach -A run test",
     "up": "docker-compose up -d --remove-orphans db dbtest flower pgadmin redis",
-    "prepare": "husky install",
+    "prepare": "[ ! -d \"/node_modules/husky/\" ] || husky install",
     "lint": "eslint  --fix \"./api-node/src/**/*.ts*\" ",
     "lint-check": "eslint \"./api-node/src/**/*.ts*\" --no-fix --max-warnings 0",
     "format": "prettier  --write . --ignore-unknown",
