@@ -60,3 +60,29 @@ jobs:
       run: |
         indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
         kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
+        
+    run-unit-tests:
+      ~needs: [api-node]
+      checkout: true
+      image: node:19
+      workingDir: /workspace/api-node
+      run: |
+        echo "🧪 tests unitaires - api-node"
+        npm install
+        npm run test:unit
+        
+    run-integration-tests:
+      ~needs: [api-node, pg, run-unit-tests]
+      checkout: true
+      image: node:19
+      workingDir: /workspace/api-node
+      envFrom:
+        - secretRef:
+            name: "pg-app"
+      run: |
+        echo "🧪 tests d'intégration - api-node"
+        npm install
+        echo "DATABASE_URL=$DATABASE_URL" > .env.test
+        echo "NODE_ENV=test" >> .env.test
+        npm run prisma-setup-test
+        npm run test:integration
