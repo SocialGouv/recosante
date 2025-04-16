@@ -155,7 +155,7 @@ describe('Fonctions de traitement des données de pollens', () => {
             aasqa: 'ATMO',
             date_maj: '2023-06-01',
             alerte: false,
-            code_zone: '',  // Code vide
+            code_zone: '', // Code vide
             type_zone: 'commune',
             date_dif: '2023-06-01',
             date_ech: '2023-06-01',
@@ -203,8 +203,8 @@ describe('Fonctions de traitement des données de pollens', () => {
       },
     ] as Municipality[];
 
-    const mockPollensByInseeCode = {
-      '75056': {
+    const mockPollensByInseeCode: Record<string, PollensByCodeZone> = {
+      75056: {
         aasqa: 'ATMO',
         date_maj: '2023-06-01',
         alerte: false,
@@ -219,7 +219,7 @@ describe('Fonctions de traitement des données de pollens', () => {
         code_gram: 3,
         pollen_resp: 'GRAMINEES',
       },
-      '69123': {
+      69123: {
         aasqa: 'ATMO',
         date_maj: '2023-06-01',
         alerte: false,
@@ -234,7 +234,7 @@ describe('Fonctions de traitement des données de pollens', () => {
         code_gram: 2,
         pollen_resp: 'GRAMINEES',
       },
-    } as Record<string, PollensByCodeZone>;
+    };
 
     it('Création correcte des objets pour toutes les communes', () => {
       const diffusionDate = new Date('2023-06-01');
@@ -289,7 +289,7 @@ describe('Fonctions de traitement des données de pollens', () => {
 
       expect(result.pollensRows.length).toBe(1);
       expect(result.missingData).toBe(0);
-      
+
       const communeAvecParent = result.pollensRows[0];
       expect(communeAvecParent.data_availability).toBe(DataAvailabilityEnum.AVAILABLE);
       expect(communeAvecParent.municipality_insee_code).toBe('75100');
@@ -299,14 +299,25 @@ describe('Fonctions de traitement des données de pollens', () => {
 
   describe('createUnavailablePollenRow', () => {
     it('Création correcte d\'un objet pour données non disponibles', () => {
-      const mockMunicipality = {
-        COM: '13055',
-        COMPARENT: null,
-        DEP: '13',
-        REG: '93',
-        EPCI: 'EPCI13',
-        NCC: 'MARSEILLE',
-      } as Municipality;
+      const mockMunicipality: Municipality = {
+          COM: '13055',
+          COMPARENT: null,
+          DEP: '13',
+          REG: '93',
+          EPCI: 'EPCI13',
+          NCC: 'MARSEILLE',
+          TYPECOM: '',
+          CTCD: null,
+          ARR: null,
+          CAN: null,
+          LIBEPCI: null,
+          TNCC: null,
+          NCCENR: null,
+          LIBELLE: null,
+          bathing_water_sites: 0,
+          created_at: new Date(),
+          updated_at: new Date(),
+      };
 
       const diffusionDate = new Date('2023-06-01');
       const validityEnd = new Date('2023-06-08');
@@ -328,16 +339,27 @@ describe('Fonctions de traitement des données de pollens', () => {
 
   describe('createAvailablePollenRow', () => {
     it('Création correcte d\'un objet pour données disponibles SANS alerte', () => {
-      const mockMunicipality = {
-        COM: '75056',
-        COMPARENT: null,
-        DEP: '75',
-        REG: '11',
-        EPCI: 'EPCI75',
-        NCC: 'PARIS',
-      } as Municipality;
+      const mockMunicipality: Municipality = {
+          COM: '75056',
+          COMPARENT: null,
+          DEP: '75',
+          REG: '11',
+          EPCI: 'EPCI75',
+          NCC: 'PARIS',
+          TYPECOM: '',
+          CTCD: null,
+          ARR: null,
+          CAN: null,
+          LIBEPCI: null,
+          TNCC: null,
+          NCCENR: null,
+          LIBELLE: null,
+          bathing_water_sites: 0,
+          created_at:  new Date(),
+          updated_at: new Date()
+      }
 
-      const mockPollenData = {
+      const mockPollenData: PollensByCodeZone = {
         aasqa: 'ATMO',
         date_maj: '2023-06-01',
         alerte: false,
@@ -351,7 +373,7 @@ describe('Fonctions de traitement des données de pollens', () => {
         code_qual: 3, // En-dessous du seuil d'alerte
         code_gram: 3,
         pollen_resp: 'GRAMINEES',
-      } as PollensByCodeZone;
+      };
 
       const diffusionDate = new Date('2023-06-01');
       const validityEnd = new Date('2023-06-08');
@@ -373,16 +395,27 @@ describe('Fonctions de traitement des données de pollens', () => {
     });
 
     it('Création correcte d\'un objet pour données disponibles AVEC alerte', () => {
-      const mockMunicipality = {
+      const mockMunicipality: Municipality = {
         COM: '75056',
         COMPARENT: null,
         DEP: '75',
         REG: '11',
         EPCI: 'EPCI75',
         NCC: 'PARIS',
-      } as Municipality;
+        TYPECOM: '',
+        CTCD: null,
+        ARR: null,
+        CAN: null,
+        LIBEPCI: null,
+        TNCC: null,
+        NCCENR: null,
+        LIBELLE: null,
+        bathing_water_sites: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
 
-      const mockPollenData = {
+      const mockPollenData: PollensByCodeZone = {
         aasqa: 'ATMO',
         date_maj: '2023-06-01',
         alerte: true,
@@ -397,7 +430,7 @@ describe('Fonctions de traitement des données de pollens', () => {
         code_gram: 4,
         code_cyp: 5,
         pollen_resp: 'GRAMINEES',
-      } as PollensByCodeZone;
+      };
 
       const diffusionDate = new Date('2023-06-01');
       const validityEnd = new Date('2023-06-08');

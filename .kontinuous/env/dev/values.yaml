@@ -68,8 +68,8 @@ jobs:
       workingDir: /workspace/api-node
       run: |
         echo "🧪 tests unitaires - api-node"
-        npm install
-        npm run test:unit
+        yarn 
+        yarn test:unit
         
     run-integration-tests:
       ~needs: [api-node, pg, run-unit-tests]
@@ -81,8 +81,8 @@ jobs:
             name: "pg-app"
       run: |
         echo "🧪 tests d'intégration - api-node"
-        npm install
+        yarn 
         echo "DATABASE_URL=$DATABASE_URL" > .env.test
         echo "NODE_ENV=test" >> .env.test
-        npm run prisma-setup-test
-        npm run test:integration
+        yarn prisma-setup-test
+        yarn test:integration
