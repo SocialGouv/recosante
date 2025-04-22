@@ -20,7 +20,7 @@
     "format": "prettier --write . --ignore-unknown",
     "test-notifications-texts": "cross-env NODE_ENV=development && tsx watch ./src/tests/notifications.ts",
     "test:unit": "jest --config=jest.unit.config.cjs --coverage --verbose",
-    "test:integration": "npm run check-env && cp .env.test .env.temp && DATABASE_URL=$(grep DATABASE_URL .env.test | cut -d '=' -f2- | tr -d '\"') jest --config=jest.integration.config.cjs --detectOpenHandles && rm -f .env.temp",
+    "test:integration": "npm run check-env && cp .env.test .env.temp && DATABASE_URL=$(grep DATABASE_URL .env.test | cut -d '=' -f2- | tr -d '\"') npx prisma db push && DATABASE_URL=$(grep DATABASE_URL .env.test | cut -d '=' -f2- | tr -d '\"') jest --config=jest.integration.config.cjs --detectOpenHandles && rm -f .env.temp",
     "check-env": "tsx ./check-env.js"
   },
   "dependencies": {
