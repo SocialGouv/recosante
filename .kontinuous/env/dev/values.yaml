@@ -74,14 +74,14 @@ jobs:
         yarn test:unit
         
     run-integration-tests:
-      ~needs: [api-node, pg, run-unit-tests]
+      ~needs: [pg-api-node,api-node, pg, run-unit-tests]
       checkout: true
       image: node:19-bullseye
       memoryLimit: 2Gi
       workingDir: /workspace/api-node
       envFrom:
         - secretRef:
-            name: "pg-app"
+            name: "pg-api-node-app"
       run: |
         apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests d'intégration - api-node"
