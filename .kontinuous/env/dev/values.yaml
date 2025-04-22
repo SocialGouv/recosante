@@ -70,7 +70,7 @@ jobs:
       run: |
         apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests unitaires - api-node"
-        yarn prisma-setup-test
+        yarn install --immutable || (echo "yarn install failed for unit tests" && exit 1)
         yarn test:unit
         
     run-integration-tests:
@@ -85,7 +85,7 @@ jobs:
       run: |
         apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests d'intégration - api-node"
-        yarn 
+        yarn install --immutable || (echo "yarn install failed for integration tests" && exit 1)
         echo "DATABASE_URL=$DATABASE_URL" > .env.test
         echo "NODE_ENV=test" >> .env.test
         yarn test:integration
