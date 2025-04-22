@@ -64,24 +64,26 @@ jobs:
     run-unit-tests:
       ~needs: [api-node]
       checkout: true
-      image: node:19
+      image: node:19-bullseye
       memoryLimit: 2Gi
       workingDir: /workspace/api-node
       run: |
+        apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests unitaires - api-node"
-        yarn 
+        yarn prisma-setup-test
         yarn test:unit
         
     run-integration-tests:
       ~needs: [api-node, pg, run-unit-tests]
       checkout: true
-      image: node:19
+      image: node:19-bullseye
       memoryLimit: 2Gi
       workingDir: /workspace/api-node
       envFrom:
         - secretRef:
             name: "pg-app"
       run: |
+        apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests d'intégration - api-node"
         yarn 
         echo "DATABASE_URL=$DATABASE_URL" > .env.test
