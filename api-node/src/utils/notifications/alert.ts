@@ -147,7 +147,7 @@ export async function sendAlertNotification(
           break;
       }
       rawBody.push(weatherAlertText);
-      // I know data won't have all the phenomenons, but I don't care
+      
       data.weather_alert.text = weatherAlertText;
 
       const recommandation = await prisma.recommandation.findFirst({

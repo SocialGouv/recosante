@@ -1,11 +1,32 @@
 import { getAtmoIndicator } from '~/aggregators/indice_atmo.ts';
-import { getPollensIndicator } from '~/aggregators/pollens.ts';
 import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
 import { getWeatherAlert } from '~/aggregators/weather_alert';
 import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
-// import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
+import { getPollensIndicator } from '~/aggregators/pollens/index';
+import {
+  type LoggerUtils,
+  type ApiService,
+} from '~/aggregators/pollens/index';
+import { logStep, calculateValidityEndDate } from '~/aggregators/pollens/utils';
+import {
+  fetchAtmoJWTToken,
+  fetchPollensDataFromAtmoAPI,
+} from '~/aggregators/pollens/api';
+
+
+
+// Dependencies for the pollens aggregator
+const pollensLoggerUtils: LoggerUtils = {
+  logStep,
+  calculateValidityEndDate,
+};
+
+const pollensApiService: ApiService = {
+  fetchAtmoJWTToken,
+  fetchPollensDataFromAtmoAPI,
+};
 
 /*
 *
@@ -56,7 +77,11 @@ export async function initAggregators() {
           // There is no known rule for the update of the data. It is updated when the data is available.
           // Data is valid from the day of issue until 7 days later
           cronTime: '5 0/4 * * *', // every day starting at 00:05 every 4 hours
-          job: getPollensIndicator,
+          job: async () =>
+            await getPollensIndicator({
+              loggerUtils: pollensLoggerUtils,
+              apiService: pollensApiService,
+            }),
           runOnInit: true,
         }),
     )

@@ -60,3 +60,32 @@ jobs:
       run: |
         indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
         kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
+        
+    run-unit-tests:
+      ~needs: [api-node]
+      checkout: true
+      image: node:19-bullseye
+      memoryLimit: 2Gi
+      workingDir: /workspace/api-node
+      run: |
+        apt-get update && apt-get install -y python3 build-essential
+        echo "🧪 tests unitaires - api-node"
+        yarn install --immutable || (echo "yarn install failed for unit tests" && exit 1)
+        yarn test:unit
+        
+    run-integration-tests:
+      ~needs: [pg-api-node,api-node, pg, run-unit-tests]
+      checkout: true
+      image: node:19-bullseye
+      memoryLimit: 2Gi
+      workingDir: /workspace/api-node
+      envFrom:
+        - secretRef:
+            name: "pg-api-node-app"
+      run: |
+        apt-get update && apt-get install -y python3 build-essential
+        echo "🧪 tests d'intégration - api-node"
+        yarn install --immutable || (echo "yarn install failed for integration tests" && exit 1)
+        echo "DATABASE_URL=$DATABASE_URL" > .env.test
+        echo "NODE_ENV=test" >> .env.test
+        yarn test:integration
