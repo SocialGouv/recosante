@@ -1,3 +1,10 @@
+## [1.38.1](https://github.com/SocialGouv/recosante/compare/v1.38.0...v1.38.1) (2025-04-30)
+
+
+### Bug Fixes
+
+* **pollens:** update REAP description to reflect the transition from RNSA to Atmo France and correct source information ([#633](https://github.com/SocialGouv/recosante/issues/633)) ([b586d2e](https://github.com/SocialGouv/recosante/commit/b586d2e405e8f146bfcf6eb29f6225f472a1af34))
+
 ## [1.37.14](https://github.com/SocialGouv/recosante/compare/v1.37.13...v1.37.14) (2025-04-15)
 
 
