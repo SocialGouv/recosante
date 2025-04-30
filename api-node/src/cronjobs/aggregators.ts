@@ -5,6 +5,7 @@ import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
 import { getWeatherAlert } from '~/aggregators/weather_alert';
 import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
+import { getUVIndicator } from '~/aggregators/uv';
 // import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
 
 /*
@@ -39,10 +40,10 @@ export async function initAggregators() {
         await setupCronJob({
           name: 'Indice atmo',
           // https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
-          // QUELLES SONT LES BONNES PRATIQUES POUR UTILISER L’API ?
-          // Les flux sont mis à jour quotidiennement (c’est-à-dire 1 fois par jour), à partir de 13h00
-          // (heure de Paris) jusqu’à 15h00 pour la métropole et à partir de 18h00 pour les outre-mer
-          // Les serveurs d’Atmo Data connaissent donc un pic d’activité entre 13h et 15h. Les requêtes
+          // QUELLES SONT LES BONNES PRATIQUES POUR UTILISER L'API ?
+          // Les flux sont mis à jour quotidiennement (c'est-à-dire 1 fois par jour), à partir de 13h00
+          // (heure de Paris) jusqu'à 15h00 pour la métropole et à partir de 18h00 pour les outre-mer
+          // Les serveurs d'Atmo Data connaissent donc un pic d'activité entre 13h et 15h. Les requêtes
           // sont à effectuer 1 à 2 fois par jour, en dehors de ces horaires.
           cronTime: '15 15,20 * * *', // every day at 3:15pm and 8:15pm
           job: getAtmoIndicator,
@@ -60,17 +61,18 @@ export async function initAggregators() {
           runOnInit: true,
         }),
     )
-    .then(
-      async () =>
-        await setupCronJob({
-          name: 'Indice UV',
-          // The data is a CSV issued every day at 6am or 7am
-          // Data is available for the current day, J+1 and J+2
-          cronTime: '10 7 * * *', // every day at 7:10am
-          job: getIndiceUVIndicator,
-          runOnInit: true,
-        }),
-    )
+    // LEGACY: The ftp source of UV data is now deprecated
+    // .then(
+    //   async () =>
+    //     await setupCronJob({
+    //       name: 'Indice UV',
+    //       // The data is a CSV issued every day at 6am or 7am
+    //       // Data is available for the current day, J+1 and J+2
+    //       cronTime: '10 7 * * *', // every day at 7:10am
+    //       job: getIndiceUVIndicator,
+    //       runOnInit: true,
+    //     }),
+    // )
     .then(
       async () =>
         await setupCronJob({
@@ -88,6 +90,15 @@ export async function initAggregators() {
           // The data is scraped from a website with no emission rule
           cronTime: '11 11,23 * * *', // every day at 11:11am and 11:11pm
           job: getBathingWaterIndicator,
+          runOnInit: true,
+        }),
+    )
+    .then(
+      async () =>
+        await setupCronJob({
+          name: 'Indice UV',
+          cronTime: '0 8 * * *', // Tous les jours à 8h00
+          job: getUVIndicator,
           runOnInit: true,
         }),
     )

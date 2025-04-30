@@ -8,6 +8,8 @@ import { initAggregators } from './aggregators';
 import { initNotifications } from './notifications';
 import { ENVIRONMENT, SENTRY_KEY, VERSION } from '~/config';
 import { initIndicatorsCleaning } from './cleaning';
+import { getUVIndicator } from '~/aggregators/uv/main';
+import { setupCronJob } from './utils';
 
 const sentryEnabled = process.env.NODE_ENV !== 'development';
 
@@ -31,15 +33,16 @@ if (sentryEnabled) {
 const isLocalDevelopment = process.env.NODE_ENV === 'development';
 const isReviewBranch = ENVIRONMENT === 'development';
 
-if (isLocalDevelopment || !isReviewBranch) {
-  Promise.resolve()
-    .then(initIndicatorsCleaning) //
-    .then(initMunicipalities) //
-    .then(initRecommandations) //
-    .then(initAggregators) //
-    .then(initNotifications); //
-} else {
-  setInterval(() => {
-    // This empty function is called every second.
-  }, 1000);
-}
+// if (isLocalDevelopment || !isReviewBranch) {
+//   Promise.resolve()
+//     .then(initIndicatorsCleaning) //
+//     .then(initMunicipalities) //
+//     .then(initRecommandations) //
+//     .then(initAggregators) //
+//     .then(initNotifications); //
+// } else {
+// setInterval(() => {
+// This empty function is called every second.
+// }, 1000);
+// }
+getUVIndicator();
