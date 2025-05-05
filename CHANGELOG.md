@@ -1,3 +1,10 @@
+## [1.38.2](https://github.com/SocialGouv/recosante/compare/v1.38.1...v1.38.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* pollens-typo ([#634](https://github.com/SocialGouv/recosante/issues/634)) ([22fea88](https://github.com/SocialGouv/recosante/commit/22fea88b8a4f373161606e93de6175a81d3b7531))
+
 ## [1.38.1](https://github.com/SocialGouv/recosante/compare/v1.38.0...v1.38.1) (2025-04-30)
 
 
