@@ -1,3 +1,10 @@
+# [1.39.0](https://github.com/SocialGouv/recosante/compare/v1.38.2...v1.39.0) (2025-05-05)
+
+
+### Features
+
+* enhance data cleaning process with detailed logging and summary ([#635](https://github.com/SocialGouv/recosante/issues/635)) ([abe2dd5](https://github.com/SocialGouv/recosante/commit/abe2dd55bfdf599791cde7ded147dd8140011b05))
+
 ## [1.38.2](https://github.com/SocialGouv/recosante/compare/v1.38.1...v1.38.2) (2025-05-05)
 
 
