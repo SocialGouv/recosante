@@ -1,4 +1,4 @@
-Le **Risque d'Exposition aux Allergènes Polliniques (REAP)** est un indice qui permet de prévoir comment va évoluer le risque allergénique dans les jours à venir. Sa valeur varie de 1 (risque faible) à 5 (risque élevé). Il est calculé à partir des concentrations polliniques passées, d’informations phénologiques (observations des végétaux), des prévisions météorologiques et du réseau de médecins sentinelles qui coopèrent avec le Atmo France, en remplacement du RNSA depuis le mois d'avril 2025.
+Le **Risque d’Allergie lié à l’Exposition aux Pollens (RAEP)** est un indice qui permet de prévoir comment va évoluer le risque allergénique dans les jours à venir. Sa valeur varie de 1 (risque faible) à 5 (risque élevé). Il est calculé à partir des concentrations polliniques passées, d’informations phénologiques (observations des végétaux), des prévisions météorologiques et du réseau de médecins sentinelles qui coopèrent avec le Atmo France, en remplacement du RNSA depuis le mois d'avril 2025.
 
 ## Comment est calculé notre RAEP
 
