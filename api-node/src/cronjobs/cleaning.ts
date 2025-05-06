@@ -28,7 +28,6 @@ async function cleanIndicatorsData() {
     );
     console.log(`📋 Municipalités utilisées: ${inseeCodes.length}`);
     
-    // Correction du calcul de la date - s'assurer qu'on utilise bien une date dans le passé
     const now = dayjs();
     const olderThan = now.subtract(1, 'week').toDate();
     const nowStr = now.format('YYYY-MM-DD HH:mm:ss');
@@ -44,14 +43,12 @@ async function cleanIndicatorsData() {
       uv: 0,
       weatherAlert: 0,
       pollen: 0,
+      notifications: 0,
     };
 
     try {
       const bathingResult = await prisma.bathingWater.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
@@ -67,9 +64,6 @@ async function cleanIndicatorsData() {
     try {
       const atmosphericResult = await prisma.indiceAtmospheric.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
@@ -85,9 +79,6 @@ async function cleanIndicatorsData() {
     try {
       const uvResult = await prisma.indiceUv.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
@@ -103,9 +94,6 @@ async function cleanIndicatorsData() {
     try {
       const weatherResult = await prisma.weatherAlert.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
@@ -121,9 +109,6 @@ async function cleanIndicatorsData() {
     try {
       const pollenResult = await prisma.pollenAllergyRisk.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
@@ -134,6 +119,22 @@ async function cleanIndicatorsData() {
     } catch (error: any) {
       console.error("❌ Erreur lors du nettoyage des données Pollen:", error);
       capture(error, { extra: { functionCall: 'cleanIndicatorsData - pollen' } });
+    }
+    
+    try {
+      const threeMonthsAgo = dayjs().subtract(3, 'months').toDate();
+      const notificationsResult = await prisma.notification.deleteMany({
+        where: {
+          created_at: {
+            lt: threeMonthsAgo,
+          },
+        },
+      });
+      stats.notifications = notificationsResult.count;
+      console.log(`🧹 Notifications: ${notificationsResult.count} entrées supprimées (> 3 mois)`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des notifications:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - notifications' } });
     }
     
     const totalDeleted = Object.values(stats).reduce((a, b) => a + b, 0);
