@@ -1,3 +1,10 @@
+## [1.39.2](https://github.com/SocialGouv/recosante/compare/v1.39.1...v1.39.2) (2025-05-06)
+
+
+### Bug Fixes
+
+* up pg-api-node size ([537e04a](https://github.com/SocialGouv/recosante/commit/537e04a223f5d8406bd8483a93f94a5ff45ce026))
+
 # [1.39.0](https://github.com/SocialGouv/recosante/compare/v1.38.2...v1.39.0) (2025-05-05)
 
 
