@@ -26,103 +26,116 @@ async function cleanIndicatorsData() {
     const inseeCodes = municipalitiesByUser.map(
       (row) => row.municipality_insee_code,
     );
-    console.log(` Municipalités utilisées: ${inseeCodes.length}`);
+    console.log(`📋 Municipalités utilisées: ${inseeCodes.length}`);
     
-    const olderThan = dayjs().add(-1, 'weeks').toDate();
-    console.log(`Suppression des données antérieures à: ${olderThan.toISOString()}`);
+    const now = dayjs();
+    const olderThan = now.subtract(1, 'week').toDate();
+    const nowStr = now.format('YYYY-MM-DD HH:mm:ss');
+    const olderThanStr = dayjs(olderThan).format('YYYY-MM-DD HH:mm:ss');
     
+    console.log(`🗓️ Date actuelle: ${nowStr}`);
+    console.log(`🗓️ Suppression des données antérieures à: ${olderThanStr}`);
+    
+    // Statistiques de nettoyage
     const stats = {
       bathingWater: 0,
       atmospheric: 0,
       uv: 0,
       weatherAlert: 0,
       pollen: 0,
+      notifications: 0,
     };
 
-    await prisma.bathingWater
-      .deleteMany({
+    try {
+      const bathingResult = await prisma.bathingWater.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
         },
-      })
-      .then((result) => {
-        stats.bathingWater = result.count;
-        console.log(`🧹 Bathing water: ${result.count} données supprimées`);
-      })
-      .catch(capture);
+      });
+      stats.bathingWater = bathingResult.count;
+      console.log(`🧹 Bathing water: ${bathingResult.count} données supprimées`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des données Bathing water:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - bathingWater' } });
+    }
     
-    await prisma.indiceAtmospheric
-      .deleteMany({
+    try {
+      const atmosphericResult = await prisma.indiceAtmospheric.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
         },
-      })
-      .then((result) => {
-        stats.atmospheric = result.count;
-        console.log(`🧹 Atmospheric data: ${result.count} données supprimées`);
-      })
-      .catch(capture);
+      });
+      stats.atmospheric = atmosphericResult.count;
+      console.log(`🧹 Atmospheric data: ${atmosphericResult.count} données supprimées`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des données Atmospheric:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - atmospheric' } });
+    }
     
-    await prisma.indiceUv
-      .deleteMany({
+    try {
+      const uvResult = await prisma.indiceUv.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
         },
-      })
-      .then((result) => {
-        stats.uv = result.count;
-        console.log(`🧹 UV data: ${result.count} données supprimées`);
-      })
-      .catch(capture);
+      });
+      stats.uv = uvResult.count;
+      console.log(`🧹 UV data: ${uvResult.count} données supprimées`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des données UV:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - uv' } });
+    }
     
-    await prisma.weatherAlert
-      .deleteMany({
+    try {
+      const weatherResult = await prisma.weatherAlert.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
         },
-      })
-      .then((result) => {
-        stats.weatherAlert = result.count;
-        console.log(`🧹 Weather alert data: ${result.count} données supprimées`);
-      })
-      .catch(capture);
+      });
+      stats.weatherAlert = weatherResult.count;
+      console.log(`🧹 Weather alert data: ${weatherResult.count} données supprimées`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des données Weather alert:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - weatherAlert' } });
+    }
     
-    await prisma.pollenAllergyRisk
-      .deleteMany({
+    try {
+      const pollenResult = await prisma.pollenAllergyRisk.deleteMany({
         where: {
-          municipality_insee_code: {
-            notIn: inseeCodes,
-          },
           validity_end: {
             lt: olderThan,
           },
         },
-      })
-      .then((result) => {
-        stats.pollen = result.count;
-        console.log(`🧹 Pollen data: ${result.count} données supprimées`);
-      })
-      .catch(capture);
+      });
+      stats.pollen = pollenResult.count;
+      console.log(`🧹 Pollen data: ${pollenResult.count} données supprimées`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des données Pollen:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - pollen' } });
+    }
+    
+    try {
+      const threeMonthsAgo = dayjs().subtract(3, 'months').toDate();
+      const notificationsResult = await prisma.notification.deleteMany({
+        where: {
+          created_at: {
+            lt: threeMonthsAgo,
+          },
+        },
+      });
+      stats.notifications = notificationsResult.count;
+      console.log(`🧹 Notifications: ${notificationsResult.count} entrées supprimées (> 3 mois)`);
+    } catch (error: any) {
+      console.error("❌ Erreur lors du nettoyage des notifications:", error);
+      capture(error, { extra: { functionCall: 'cleanIndicatorsData - notifications' } });
+    }
     
     const totalDeleted = Object.values(stats).reduce((a, b) => a + b, 0);
     const duration = (Date.now() - startTime) / 1000;
@@ -132,8 +145,8 @@ async function cleanIndicatorsData() {
     
     console.log('✅ Nettoyage des données terminé\n');
   } catch (error: any) {
-    console.error('❌ Erreur lors du nettoyage des données:', error);
-    capture(error, { level: 'error' });
+    console.error('❌ Erreur générale lors du nettoyage des données:', error);
+    capture(error, { level: 'error', extra: { functionCall: 'cleanIndicatorsData' } });
   }
 }
 
@@ -154,5 +167,8 @@ export async function initIndicatorsCleaning() {
     .then(() => {
       console.log('✅ Cronjob de nettoyage des données configuré (exécution quotidienne à 3:03)\n');
     })
-    .catch(capture);
+    .catch((error: any) => {
+      console.error('❌ Erreur lors de l\'initialisation du cronjob de nettoyage:', error);
+      capture(error);
+    });
 }
