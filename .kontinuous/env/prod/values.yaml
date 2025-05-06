@@ -38,7 +38,7 @@ pg:
 pg-api-node:
   cnpg-cluster:
     persistence:
-      size: "50Gi"
+      size: "100Gi"
     resources:
       requests:
         cpu: 500m
