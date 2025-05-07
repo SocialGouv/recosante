@@ -8817,7 +8817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.21.4, axios@npm:^0.21.1":
+"axios@npm:^0.21.1":
   version: 0.21.4
   resolution: "axios@npm:0.21.4"
   dependencies:
@@ -10154,20 +10154,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browser-sync-client@npm:^2.29.3":
-  version: 2.29.3
-  resolution: "browser-sync-client@npm:2.29.3"
+"browser-sync-client@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "browser-sync-client@npm:3.0.2"
   dependencies:
     etag: "npm:1.8.1"
     fresh: "npm:0.5.2"
     mitt: "npm:^1.1.3"
-  checksum: 10c0/622b4e2ceb47d10c6d8af627e7924db888632d3603630fccf3cedf4f5fd927008f9a2c223d6325fc12eb73b33d08ac67b916884ad7ece7d4de5d9da4003537e1
+  checksum: 10c0/b92204b82a6a2016b977971acbc34fac5d6e93278a1c5da6bb15b975e45e0c7bc04cb21efb020d48bcc604c5d484214df121aae8093739b8282543c4e60a31a0
   languageName: node
   linkType: hard
 
-"browser-sync-ui@npm:^2.29.3":
-  version: 2.29.3
-  resolution: "browser-sync-ui@npm:2.29.3"
+"browser-sync-ui@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "browser-sync-ui@npm:3.0.2"
   dependencies:
     async-each-series: "npm:0.1.1"
     chalk: "npm:4.1.2"
@@ -10176,16 +10176,16 @@ __metadata:
     server-destroy: "npm:1.0.1"
     socket.io-client: "npm:^4.4.1"
     stream-throttle: "npm:^0.1.3"
-  checksum: 10c0/5de1b7d2c8d003d984f5d6de976407783e3159f7ea9997a60dee5fa1589b7b30ad67d93e344a8d4d11f6b98bf961d49cceb96f2bf5d97e7f75b2a4aa3c66db98
+  checksum: 10c0/b4f9571b37f4a0e7614c9402baac0cc44efcebfb68c09851cd663d6233923db48535bea3ca6a6f3aa69fc7e2395069da1f3798af92213902d02f60e485feac95
   languageName: node
   linkType: hard
 
-"browser-sync@npm:^2.29.3":
-  version: 2.29.3
-  resolution: "browser-sync@npm:2.29.3"
+"browser-sync@npm:^3.0.0":
+  version: 3.0.2
+  resolution: "browser-sync@npm:3.0.2"
   dependencies:
-    browser-sync-client: "npm:^2.29.3"
-    browser-sync-ui: "npm:^2.29.3"
+    browser-sync-client: "npm:^3.0.2"
+    browser-sync-ui: "npm:^3.0.2"
     bs-recipes: "npm:1.3.4"
     chalk: "npm:4.1.2"
     chokidar: "npm:^3.5.1"
@@ -10199,7 +10199,6 @@ __metadata:
     fs-extra: "npm:3.0.1"
     http-proxy: "npm:^1.18.1"
     immutable: "npm:^3"
-    localtunnel: "npm:^2.0.1"
     micromatch: "npm:^4.0.2"
     opn: "npm:5.3.0"
     portscanner: "npm:2.2.0"
@@ -10215,7 +10214,7 @@ __metadata:
     yargs: "npm:^17.3.1"
   bin:
     browser-sync: dist/bin.js
-  checksum: 10c0/d89acca8552f3f77796488d7a8b9ee0126140a50ffec952fa5e9adfa12fe4c27ab64ee1426ee255e12381df0f94f3f3c4a29db081d631168826ce9937e568563
+  checksum: 10c0/b840a50763235c0f9df4eb77bfbe2bf1031ce9e9f58f74a664174a0b6c2c0e7c701bfe920ef2d2e30e5c173a87f0406e79d120ad9dd247f4d2bbfbabba3d5454
   languageName: node
   linkType: hard
 
@@ -11266,17 +11265,6 @@ __metadata:
     strip-ansi: "npm:^6.0.0"
     wrap-ansi: "npm:^6.2.0"
   checksum: 10c0/35229b1bb48647e882104cac374c9a18e34bbf0bace0e2cf03000326b6ca3050d6b59545d91e17bfe3705f4a0e2988787aa5cde6331bf5cbbf0164732cef6492
-  languageName: node
-  linkType: hard
-
-"cliui@npm:^7.0.2":
-  version: 7.0.4
-  resolution: "cliui@npm:7.0.4"
-  dependencies:
-    string-width: "npm:^4.2.0"
-    strip-ansi: "npm:^6.0.0"
-    wrap-ansi: "npm:^7.0.0"
-  checksum: 10c0/6035f5daf7383470cef82b3d3db00bec70afb3423538c50394386ffbbab135e26c3689c41791f911fa71b62d13d3863c712fdd70f0fbdffd938a1e6fd09aac00
   languageName: node
   linkType: hard
 
@@ -12799,18 +12787,6 @@ __metadata:
     supports-color:
       optional: true
   checksum: 10c0/cedbec45298dd5c501d01b92b119cd3faebe5438c3917ff11ae1bff86a6c722930ac9c8659792824013168ba6db7c4668225d845c633fbdafbbf902a6389f736
-  languageName: node
-  linkType: hard
-
-"debug@npm:4.3.2":
-  version: 4.3.2
-  resolution: "debug@npm:4.3.2"
-  dependencies:
-    ms: "npm:2.1.2"
-  peerDependenciesMeta:
-    supports-color:
-      optional: true
-  checksum: 10c0/3cc408070bcee066ee9b2a4f3a9c40f53728919ec7c7ff568f7c3a75b0723cb5a8407191a63495be4e10669e99b0ff7f26ec70e10b025da1898cdce4876d96ca
   languageName: node
   linkType: hard
 
@@ -22225,20 +22201,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"localtunnel@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "localtunnel@npm:2.0.2"
-  dependencies:
-    axios: "npm:0.21.4"
-    debug: "npm:4.3.2"
-    openurl: "npm:1.1.1"
-    yargs: "npm:17.1.1"
-  bin:
-    lt: bin/lt.js
-  checksum: 10c0/5021fc192e1e4bda9cd9179acffbe82cac1fe401dd4d95bb808d3077e9c74dbd99944ed55d56f9e595894e43962752d89229afada753a821835ca452cb214383
-  languageName: node
-  linkType: hard
-
 "locate-path@npm:^2.0.0":
   version: 2.0.0
   resolution: "locate-path@npm:2.0.0"
@@ -25766,13 +25728,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openurl@npm:1.1.1":
-  version: 1.1.1
-  resolution: "openurl@npm:1.1.1"
-  checksum: 10c0/4899895f78e54ff5c7cc5c90565646bb2d0fd0ac6bc4b1028c77596f606f39cd80e63e161f24d631ce98abda8b4e99433a2ed50b0495a7dc95e11370264c9e19
-  languageName: node
-  linkType: hard
-
 "opn@npm:5.3.0":
   version: 5.3.0
   resolution: "opn@npm:5.3.0"
@@ -28721,7 +28676,7 @@ __metadata:
     babel-preset-es2015: "npm:^6.24.1"
     babel-register: "npm:^6.26.0"
     beepbeep: "npm:^1.3.0"
-    browser-sync: "npm:^2.29.3"
+    browser-sync: "npm:^3.0.0"
     foundation-emails: "npm:2.3.1"
     gulp: "npm:^4.0.2"
     gulp-awspublish: "npm:^7.1.0"
@@ -35011,7 +34966,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yargs-parser@npm:^20.2.2, yargs-parser@npm:^20.2.3, yargs-parser@npm:^20.2.9":
+"yargs-parser@npm:^20.2.3, yargs-parser@npm:^20.2.9":
   version: 20.2.9
   resolution: "yargs-parser@npm:20.2.9"
   checksum: 10c0/0685a8e58bbfb57fab6aefe03c6da904a59769bd803a722bb098bd5b0f29d274a1357762c7258fb487512811b8063fb5d2824a3415a0a4540598335b3b086c72
@@ -35025,21 +34980,6 @@ __metadata:
     camelcase: "npm:^3.0.0"
     object.assign: "npm:^4.1.0"
   checksum: 10c0/94f24930da4eb80c6ba1c308e1d187a6cab6206f08cda8654b3ebbd0d20f689c113a5111898e90c5885fdc39ce68de5a59aca703f2578335af644ba8f239166f
-  languageName: node
-  linkType: hard
-
-"yargs@npm:17.1.1":
-  version: 17.1.1
-  resolution: "yargs@npm:17.1.1"
-  dependencies:
-    cliui: "npm:^7.0.2"
-    escalade: "npm:^3.1.1"
-    get-caller-file: "npm:^2.0.5"
-    require-directory: "npm:^2.1.1"
-    string-width: "npm:^4.2.0"
-    y18n: "npm:^5.0.5"
-    yargs-parser: "npm:^20.2.2"
-  checksum: 10c0/2042e57047af784bb900cbc715f32fee2bfeab7c4b30dd4b83bf4d57f7f228ada084ba367a588f311803e0db65c9e9b97962c02e7daf88ba08f08864f4f615a2
   languageName: node
   linkType: hard
 
