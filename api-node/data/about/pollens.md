@@ -13,7 +13,10 @@ Avec :
 - P est l’index phénologique ; ce coefficient s’appuie sur les observations réalisées sur la croissance et la floraison des espèces
 - M est l’index de prévision météorologique ; ce coefficient s’appuie sur les données Météo France.
 
-![Échelle du risque d'allergie aux pollens: bleu/0/nul - vert/1/faible - jaune/2/moyen - rouge/3/élevé](https://www.atmo-hdf.fr/sites/hdf/files/medias/images/2022-03/echelle_pollens_2022.jpg)
+
+
+![Échelle du risque d'allergie aux pollens: vert/1/faible - jaune/2/moyen - rouge/3/élevé - rouge/4/très élevé - rouge/5/extrêmement élevé](https://www.atmo-france.org/sites/federation/files/styles/moyen_w750/public/medias/images/2025-04/friseweb__indice_pollen_avec_qualificatif.png)
+_Échelle de l'indice pollen_
 
 _Source des informations : ATMO France_
 
