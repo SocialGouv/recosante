@@ -33,6 +33,7 @@ import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
 } from '~/utils/indice_atmo';
+import { formatPollenNotification } from './pollen-formatter';
 
 dayjs.extend(utc);
 
@@ -192,16 +193,15 @@ export async function sendEveningNotification() {
         });
       }
     } else {
-      data.pollen_allergy = {
-        id: pollensJ1.id,
-      };
-      const pollensValue = pollensJ1.total ?? 0;
-      const pollensStatus = getPollensStatus(pollensValue);
-      const pollensDotColor = getPollensDotColor(pollensValue);
-      if (pollensDotColor) {
-        const pollensText = `🌿 Risque pollens : ${pollensStatus} ${pollensDotColor}`;
-        body[indicatorSlug === 'pollen_allergy' ? 0 : 3] = pollensText;
-        data.pollen_allergy.text = pollensText;
+      const { pollenData, notificationText, position } =
+        formatPollenNotification(pollensJ1, indicatorSlug === 'pollen_allergy');
+
+      if (pollenData) {
+        data.pollen_allergy = pollenData;
+
+        if (notificationText) {
+          body[position || 3] = notificationText;
+        }
       }
     }
 

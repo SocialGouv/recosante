@@ -1,20 +1,20 @@
 export enum PollensRiskNumberEnum {
-  NO_RISK = 0,
   VERY_LOW = 1,
   LOW = 2,
   MODERATE = 3,
   HIGH = 4,
   VERY_HIGH = 5,
+  EXTREMEMLY_HIGH = 6,
 }
 
 export enum PollensRiskStatusEnum {
   NO_DATA = 'Aucune donnée',
-  NO_RISK = 'Risque nul',
   VERY_LOW = 'Très faible',
   LOW = 'Faible',
-  MODERATE = 'Moyen',
+  MODERATE = 'Modéré',
   HIGH = 'Élevé',
   VERY_HIGH = 'Très élevé',
+  EXTREMEMLY_HIGH = 'Extrêmement élevé',
 }
 
 // Énum pour les identifiants des données de pollens dans l'API Atmo
