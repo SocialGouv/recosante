@@ -28,7 +28,6 @@ import {
 import type { IndiceUVNumber } from '~/types/api/indice_uv';
 import { WeatherAlertPhenomenonEnum } from '~/types/api/weather_alert';
 import { getIndiceUVDotColor, getIndiceUVStatus } from '~/utils/indice_uv';
-import { getPollensDotColor, getPollensStatus } from '~/utils/pollens';
 import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
@@ -200,7 +199,7 @@ export async function sendEveningNotification() {
         data.pollen_allergy = pollenData;
 
         if (notificationText) {
-          body[position || 3] = notificationText;
+          body[position ?? 3] = notificationText;
         }
       }
     }
