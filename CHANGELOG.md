@@ -1,3 +1,10 @@
+## [1.39.3](https://github.com/SocialGouv/recosante/compare/v1.39.2...v1.39.3) (2025-05-13)
+
+
+### Bug Fixes
+
+* **pollens:** update pollen risk scale and adjust alert threshold ([#639](https://github.com/SocialGouv/recosante/issues/639)) ([f496b66](https://github.com/SocialGouv/recosante/commit/f496b66e459280b4ab13389693ee793261628a76))
+
 ## [1.39.2](https://github.com/SocialGouv/recosante/compare/v1.39.1...v1.39.2) (2025-05-06)
 
 
