@@ -28,11 +28,11 @@ import {
 import type { IndiceUVNumber } from '~/types/api/indice_uv';
 import { WeatherAlertPhenomenonEnum } from '~/types/api/weather_alert';
 import { getIndiceUVDotColor, getIndiceUVStatus } from '~/utils/indice_uv';
-import { getPollensDotColor, getPollensStatus } from '~/utils/pollens';
 import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
 } from '~/utils/indice_atmo';
+import { formatPollenNotification } from '../notifications/pollen-formatter';
 
 dayjs.extend(utc);
 
@@ -175,6 +175,11 @@ export async function sendMorningNotification() {
       date_UTC_ISO: dayjs().toISOString(),
     });
 
+    const { pollenData, notificationText, position } = formatPollenNotification(
+      pollensJ0,
+      indicatorSlug === 'pollen_allergy',
+    );
+
     if (!pollensJ0) {
       if (
         !knownMissingMunicipalitiesForPollens.includes(municipality_insee_code)
@@ -191,17 +196,11 @@ export async function sendMorningNotification() {
           user: municipality_insee_code, // to be able to "ignore until one more user is affected" in sentry
         });
       }
-    } else {
-      data.pollen_allergy = {
-        id: pollensJ0.id,
-      };
-      const pollensValue = pollensJ0.total ?? 0;
-      const pollensStatus = getPollensStatus(pollensValue);
-      const pollensDotColor = getPollensDotColor(pollensValue);
-      if (pollensDotColor) {
-        const pollensText = `🌿 Risque pollens : ${pollensStatus} ${pollensDotColor}`;
-        body[indicatorSlug === 'pollen_allergy' ? 0 : 3] = pollensText;
-        data.pollen_allergy.text = pollensText;
+    } else if (pollenData) {
+      data.pollen_allergy = pollenData;
+
+      if (notificationText && position !== undefined) {
+        body[position] = notificationText;
       }
     }
 

@@ -23,9 +23,10 @@ export function getPollensStatus(
       return PollensRiskStatusEnum.HIGH;
     case PollensRiskNumberEnum.VERY_HIGH:
       return PollensRiskStatusEnum.VERY_HIGH;
-    case PollensRiskNumberEnum.NO_RISK:
+    case PollensRiskNumberEnum.EXTREMEMLY_HIGH:
+      return PollensRiskStatusEnum.EXTREMEMLY_HIGH;
     default:
-      return PollensRiskStatusEnum.NO_RISK;
+      return PollensRiskStatusEnum.NO_DATA;
   }
 }
 
@@ -43,9 +44,9 @@ export function getPollensDotColor(
     case PollensRiskNumberEnum.HIGH:
       return NotificationDotColor.VERY_POOR;
     case PollensRiskNumberEnum.VERY_HIGH:
+      return NotificationDotColor.VERY_HIGH;
+    case PollensRiskNumberEnum.EXTREMEMLY_HIGH:
       return NotificationDotColor.EXTREMELY_POOR;
-    case PollensRiskNumberEnum.NO_RISK:
-      return NotificationDotColor.GOOD;
     default:
       return null;
   }
