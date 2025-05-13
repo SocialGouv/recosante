@@ -6,7 +6,7 @@ import { BathingWaterCurrentYearGradingEnum } from '@prisma/client';
 
 export namespace $AlertStatus {
   export const AlertStatusThresholdEnum = {
-    POLLENS: 4,
+    POLLENS: 3,
     INDICE_ATMO: 6,
     WEATHER_ALERT: 3,
     INDICE_UV: 8,
