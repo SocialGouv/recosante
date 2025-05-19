@@ -12,27 +12,70 @@ import { logStep } from './utils';
 
 const fetch = fetchRetry(global.fetch);
 
-export async function fetchAtmoJWTToken(): Promise<string> {
-  const loginRes = await fetch('https://admindata.atmo-france.org/api/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username: ATMODATA_USERNAME,
-      password: ATMODATA_PASSWORD,
-    }),
-    retries: 3,
-    retryDelay: 1000,
-  }).then(async (response) => await response.json())
-    .catch((error) => {
-      capture(error, {
-        extra: { functionCall: 'fetchAtmoJWTToken', architectureLevel:"api" },
-      });
-      return null;
-    });
+export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
+  let retryCount = 0;
+  let lastError: Error = new Error('Erreur inconnue lors de l\'authentification');
 
-  return loginRes.token;
+  while (retryCount < maxRetries) {
+    try {
+      console.log(`[POLLENS] Tentative de connexion à l'API Atmo (tentative ${retryCount + 1}/${maxRetries})`);
+      
+      const response = await fetch('https://admindata.atmo-france.org/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: ATMODATA_USERNAME,
+          password: ATMODATA_PASSWORD,
+        }),
+        retries: 5, 
+        retryDelay: (attempt) => Math.pow(2, attempt) * 1000, // Backoff exponentiel: 2s, 4s, 8s...
+      });
+
+      if (!response.ok) {
+        throw new Error(`Réponse API non valide: ${response.status} ${response.statusText}`);
+      }
+
+      const loginRes = await response.json();
+      
+    
+      if (!loginRes || typeof loginRes.token !== 'string' || !loginRes.token.trim()) {
+        throw new Error('Token manquant ou invalide dans la réponse API');
+      }
+
+      console.log(`[POLLENS] Authentification réussie à l'API Atmo`);
+      return loginRes.token;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        lastError = error;
+      } else {
+        lastError = new Error(String(error));
+      }
+      
+      retryCount++;
+      
+      const waitTime = Math.pow(2, retryCount) * 1500;
+      console.error(`[POLLENS] Échec d'authentification (tentative ${retryCount}/${maxRetries}): ${lastError.message}`);
+      
+      if (retryCount < maxRetries) {
+        console.log(`[POLLENS] Nouvelle tentative dans ${waitTime/1000} secondes...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+
+  // Si toutes les tentatives ont échoué
+  capture(lastError, {
+    extra: { 
+      functionCall: 'fetchAtmoJWTToken', 
+      architectureLevel: "api",
+      maxRetries,
+      username: ATMODATA_USERNAME ? 'défini' : 'non défini',
+    },
+  });
+  
+  throw lastError;
 }
 
 /**
@@ -62,23 +105,36 @@ export async function fetchPollensDataFromAtmoAPI(
   const query = JSON.stringify(rawQuery);
   const url = `https://admindata.atmo-france.org/api/data/${indiceDataId}/${query}?withGeom=false`;
 
-  const pollensRes: PollensAPIResponse = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${atmoJWTToken}`,
-    },
-  })
-    .then(async (response) => await response.json())
-    .catch((error) => {
-      capture(error, {
-        extra: { functionCall: 'fetchPollensDataFromAtmoAPI', url, query, architectureLevel:"api" },
-      });
-      return null;
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${atmoJWTToken}`,
+      },
+      retries: 3,
+      retryDelay: (attempt) => Math.pow(2, attempt) * 1000,
     });
-
-  logStep(
-    `Fetched Pollens data for ${indiceForDate.format('YYYY-MM-DD dddd')}`,
-  );
-
-  return pollensRes?.features;
+    
+    if (!response.ok) {
+      throw new Error(`Réponse API non valide: ${response.status} ${response.statusText}`);
+    }
+    
+    const pollensRes: PollensAPIResponse = await response.json();
+    
+    if (!pollensRes || !Array.isArray(pollensRes.features)) {
+      throw new Error('Format de réponse invalide: features manquants ou non dans un format tableau');
+    }
+    
+    logStep(`Fetched Pollens data for ${indiceForDate.format('YYYY-MM-DD dddd')}`);
+    return pollensRes?.features;
+  } catch (error: unknown) {
+    // Conversion de l'erreur pour Sentry
+    const errorToCapture = error instanceof Error ? error : new Error(String(error));
+    
+    capture(errorToCapture, {
+      extra: { functionCall: 'fetchPollensDataFromAtmoAPI', url, query, architectureLevel:"api" },
+    });
+    console.error(`[POLLENS] Erreur lors de la récupération des données: ${errorToCapture.message}`);
+    return undefined;
+  }
 }
