@@ -60,10 +60,10 @@ export async function initAggregators() {
         await setupCronJob({
           name: 'Indice atmo',
           // https://www.atmo-france.org/sites/federation/files/medias/documents/2023-10/FAQ_API_Atmo_Data_20231010_0.pdf
-          // QUELLES SONT LES BONNES PRATIQUES POUR UTILISER L’API ?
-          // Les flux sont mis à jour quotidiennement (c’est-à-dire 1 fois par jour), à partir de 13h00
-          // (heure de Paris) jusqu’à 15h00 pour la métropole et à partir de 18h00 pour les outre-mer
-          // Les serveurs d’Atmo Data connaissent donc un pic d’activité entre 13h et 15h. Les requêtes
+          // QUELLES SONT LES BONNES PRATIQUES POUR UTILISER L'API ?
+          // Les flux sont mis à jour quotidiennement (c'est-à-dire 1 fois par jour), à partir de 13h00
+          // (heure de Paris) jusqu'à 15h00 pour la métropole et à partir de 18h00 pour les outre-mer
+          // Les serveurs d'Atmo Data connaissent donc un pic d'activité entre 13h et 15h. Les requêtes
           // sont à effectuer 1 à 2 fois par jour, en dehors de ces horaires.
           cronTime: '15 15,20 * * *', // every day at 3:15pm and 8:15pm
           job: getAtmoIndicator,
@@ -74,14 +74,28 @@ export async function initAggregators() {
       async () =>
         await setupCronJob({
           name: 'Pollens',
-          // There is no known rule for the update of the data. It is updated when the data is available.
-          // Data is valid from the day of issue until 7 days later
-          cronTime: '5 0/4 * * *', // every day starting at 00:05 every 4 hours
-          job: async () =>
-            await getPollensIndicator({
+          // L'API ATMO met à jour ses données principalement entre 12h et 14h
+          // On utilise un pattern personnalisé pour:
+          // - Vérifier toutes les 15 minutes entre 12h et 14h pour capturer rapidement les mises à jour
+          // - Vérifier toutes les 6h le reste du temps
+          cronTime: '5 0,6,12,12/1,18 * * *', // 00:05, 06:05, 12:05, 13:05, 18:05 + vérifications supplémentaires à 12:20, 12:35, 12:50, 13:20, 13:35, 13:50
+          job: async () => {
+          
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            
+            if (hour >= 12 && hour < 14) {
+              console.log(`[POLLENS] Exécution en période prioritaire (${hour}:${minute.toString().padStart(2, '0')}) - L'API ATMO met généralement à jour ses données à cette période`);
+            } else {
+              console.log(`[POLLENS] Exécution en période standard (${hour}:${minute.toString().padStart(2, '0')})`);
+            }
+            
+            return await getPollensIndicator({
               loggerUtils: pollensLoggerUtils,
               apiService: pollensApiService,
-            }),
+            });
+          },
           runOnInit: true,
         }),
     )
