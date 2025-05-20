@@ -16,11 +16,13 @@ api:
   host: "{{ tpl .Values.global.apiHost . }}"
   probesPath: /healthz
   containerPort: 8080
-  annotations:
-    oblik.socialgouv.io/min-request-cpu: 100m
-    oblik.socialgouv.io/min-request-memory: 128Mi
-    oblik.socialgouv.io/min-limit-cpu: "2"
-    oblik.socialgouv.io/min-limit-memory: 4Gi
+  resources:
+    requests:
+      cpu: 0.1
+      memory: 128Mi
+    limits:
+      cpu: 2
+      memory: 4Gi
   envFrom:
     - secretRef:
         name: "pg-app"
@@ -52,8 +54,7 @@ api-node:
         name: api-node-sealed-secret
   annotations:
     oblik.socialgouv.io/min-request-cpu: 300m
-    oblik.socialgouv.io/min-limit-cpu: "1"
-    oblik.socialgouv.io/min-request-memory: 512Mi
+    oblik.socialgouv.io/min-limit-cpu: 300m
 
 frontend:
   ~chart: app
@@ -109,11 +110,13 @@ indice:
   imagePackage: indice
   probesPath: /
   containerPort: 8080
-  annotations:
-    oblik.socialgouv.io/min-request-cpu: 100m
-    oblik.socialgouv.io/min-request-memory: 128Mi
-    oblik.socialgouv.io/min-limit-cpu: "2"
-    oblik.socialgouv.io/min-limit-memory: 4Gi
+  resources:
+    requests:
+      cpu: 0.1
+      memory: 128Mi
+    limits:
+      cpu: 2
+      memory: 4Gi
   startupProbe:
     httpGet:
       path: /
@@ -194,11 +197,6 @@ cronjobs:
         name: "pg-api-node-app"
     - secretRef:
         name: api-node-sealed-secret
-  annotations:
-    oblik.socialgouv.io/min-request-cpu: 100m
-    oblik.socialgouv.io/min-request-memory: 128Mi
-    oblik.socialgouv.io/min-limit-cpu: "2"
-    oblik.socialgouv.io/min-limit-memory: 4Gi
 
 jobs:
   runs:
