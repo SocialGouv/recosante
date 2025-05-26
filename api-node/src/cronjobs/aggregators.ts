@@ -1,33 +1,7 @@
-import { getAtmoIndicator } from '~/aggregators/indice_atmo.ts';
-import { getIndiceUVIndicator } from '~/aggregators/indice_uv.ts';
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { getWeatherAlert } from '~/aggregators/weather_alert';
 import { getBathingWaterIndicator } from '~/aggregators/bathing_water';
 import { getDrinkingWaterIndicator } from '~/aggregators/drinking_water';
-import { getPollensIndicator } from '~/aggregators/pollens/index';
-import {
-  type LoggerUtils,
-  type ApiService,
-} from '~/aggregators/pollens/index';
-import { logStep, calculateValidityEndDate } from '~/aggregators/pollens/utils';
-import {
-  fetchAtmoJWTToken,
-  fetchPollensDataFromAtmoAPI,
-} from '~/aggregators/pollens/api';
-
-
-
-// Dependencies for the pollens aggregator
-const pollensLoggerUtils: LoggerUtils = {
-  logStep,
-  calculateValidityEndDate,
-};
-
-const pollensApiService: ApiService = {
-  fetchAtmoJWTToken,
-  fetchPollensDataFromAtmoAPI,
-};
 
 /*
 *
