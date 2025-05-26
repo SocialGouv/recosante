@@ -130,7 +130,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   try {
-    console.log(' Connecting to database...');
+    console.log('Connecting to database...');
     await prisma.$connect();
     console.log('✅ Successfully connected to database');
 
