@@ -1,3 +1,10 @@
+## [1.39.4](https://github.com/SocialGouv/recosante/compare/v1.39.3...v1.39.4) (2025-06-02)
+
+
+### Bug Fixes
+
+* **bathing_water:** update logic for existing results and use updated… ([#645](https://github.com/SocialGouv/recosante/issues/645)) ([c044c61](https://github.com/SocialGouv/recosante/commit/c044c6190e692b32aeaac0a6f1802ef361f365fd))
+
 ## [1.39.3](https://github.com/SocialGouv/recosante/compare/v1.39.2...v1.39.3) (2025-05-13)
 
 
