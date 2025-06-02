@@ -240,7 +240,7 @@ function getBathingWaterLatestResultDate(
 ): string {
   let latestResultDate = '';
   for (const site of bathingWaterSites) {
-    const resultDate = dayjs(site.result_date).utc().format('YYYY-MM-DD');
+    const resultDate = dayjs(site.updated_at).utc().format('YYYY-MM-DD');
     if (!resultDate) continue;
     if (resultDate > latestResultDate) {
       latestResultDate = resultDate;

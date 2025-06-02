@@ -137,14 +137,22 @@ export async function getBathingWaterIndicator() {
         const diffusionDate = scrapingResult.result_date
           ? scrapingResult.result_date
           : dayjs().utc().startOf('year');
-        const existingResults = await prisma.bathingWater.count({
+        const existingResults = await prisma.bathingWater.findFirst({
           where: {
             diffusion_date: dayjs(diffusionDate).utc().toDate(),
             municipality_insee_code: municipality.COM,
             id_site: idSite,
           },
         });
-        if (existingResults > 0) {
+        if (existingResults) {
+          await prisma.bathingWater.update({
+            where: {
+              id: existingResults.id,
+            },
+            data: {
+              updated_at: dayjs().utc().toDate(),
+            },
+          });
           continue;
         }
 
@@ -166,7 +174,11 @@ export async function getBathingWaterIndicator() {
               id_carte: idCarte,
               isite: site.isite,
               name: site.nom,
-              result_date: dayjs(scrapingResult.result_date).toDate(),
+              result_date:
+                scrapingResult.result_date &&
+                dayjs(scrapingResult.result_date).isValid()
+                  ? dayjs(scrapingResult.result_date).toDate()
+                  : dayjs(diffusionDate).utc().toDate(),
               result_value: scrapingResult.result_value,
               swimming_season_start: scrapingResult.swimming_season_start,
               swimming_season_end: scrapingResult.swimming_season_end,
@@ -192,6 +204,7 @@ export async function getBathingWaterIndicator() {
                   alert_status: alertSent
                     ? AlertStatusEnum.ALERT_NOTIFICATION_SENT
                     : AlertStatusEnum.ALERT_NOTIFICATION_ERROR,
+                  updated_at: dayjs().utc().toDate(),
                 },
               });
             }
