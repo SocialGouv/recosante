@@ -117,7 +117,7 @@ async function getBathingWaterFromMunicipalityAndDate({
   });
 
 
-  const { value: validValue, status: validStatus } = getBathingWaterSummaryValue(
+  const { value: validValue } = getBathingWaterSummaryValue(
     validBathingWaters.length > 0 ? validBathingWaters : bathingWaters
   );
 
