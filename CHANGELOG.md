@@ -1,3 +1,10 @@
+## [1.39.5](https://github.com/SocialGouv/recosante/compare/v1.39.4...v1.39.5) (2025-06-04)
+
+
+### Bug Fixes
+
+* **bathing_water:** amélioration de la logique de traitement des reco… ([#646](https://github.com/SocialGouv/recosante/issues/646)) ([ffd0b52](https://github.com/SocialGouv/recosante/commit/ffd0b5212e626e2247d7eb94432f05ebd0c562ed))
+
 ## [1.39.4](https://github.com/SocialGouv/recosante/compare/v1.39.3...v1.39.4) (2025-06-02)
 
 
