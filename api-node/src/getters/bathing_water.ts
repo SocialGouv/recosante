@@ -1,5 +1,5 @@
 import { type CustomError } from '~/types/error';
-import fs from 'fs';
+import fs from 'node:fs';
 import { z } from 'zod';
 import prisma from '~/prisma';
 import dayjs from 'dayjs';
@@ -18,7 +18,7 @@ import {
   getBathingWaterSiteValueDerivedFromBathingWaterRow,
   getBathingWaterSummaryValue,
 } from '~/utils/bathing_water/bathing_water';
-import { BathingWaterStatusEnum } from '~/types/api/bathing_water';
+import { BathingWaterStatusEnum, BathingWaterNumberValueEnum } from '~/types/api/bathing_water';
 dayjs.extend(quarterOfYear);
 dayjs.extend(utc);
 
@@ -67,7 +67,7 @@ async function getBathingWaterFromMunicipalityAndDate({
       short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
       long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
       municipality_insee_code,
-      about_title: 'à propos de la qualité de l’eau de baignade',
+      about_title: 'à propos de la qualité de l\'eau de baignade',
       about_description,
       j0: {
         id: 'empty',
@@ -75,11 +75,11 @@ async function getBathingWaterFromMunicipalityAndDate({
           value: null,
           status: BathingWaterStatusEnum.NO_DATA,
           recommendations: [
-            "Aucune donnée disponible pour cet indicateur dans cette zone aujourd'hui",
+            'Aucune donnée disponible pour cet indicateur dans cette zone aujourd\'hui',
           ],
         },
         help_text:
-          'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
+          'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
         validity_start: 'NA',
         validity_end: 'NA',
         diffusion_date: dayjs().toISOString(),
@@ -96,7 +96,7 @@ async function getBathingWaterFromMunicipalityAndDate({
           ],
         },
         help_text:
-          'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
+          'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
         validity_start: 'NA',
         validity_end: 'NA',
         diffusion_date: dayjs().toISOString(),
@@ -107,30 +107,73 @@ async function getBathingWaterFromMunicipalityAndDate({
     return bathingWaterEmpty;
   }
 
-  const { value, status } = getBathingWaterSummaryValue(bathingWaters);
+  const validBathingWaters = bathingWaters.filter(site => {
+    const siteValue = getBathingWaterSiteValueDerivedFromBathingWaterRow(site);
+    return ![
+      BathingWaterNumberValueEnum.OFF_SEASON,
+      BathingWaterNumberValueEnum.UNRANKED_SITE,
+      BathingWaterNumberValueEnum.PROHIBITION
+    ].includes(siteValue);
+  });
 
-  const recommandations = await prisma.recommandation
+
+  const { value: validValue } = getBathingWaterSummaryValue(
+    validBathingWaters.length > 0 ? validBathingWaters : bathingWaters
+  );
+
+  const { value: worstValue, status: worstStatus } = getBathingWaterSummaryValue(bathingWaters);
+
+
+  const shouldCombineRecommendations = worstValue !== validValue && 
+    [BathingWaterNumberValueEnum.OFF_SEASON,
+     BathingWaterNumberValueEnum.UNRANKED_SITE,
+     BathingWaterNumberValueEnum.PROHIBITION].includes(worstValue);
+
+  const worstRecommandations = await prisma.recommandation
     .findMany({
       where: {
         indicator: IndicatorsSlugEnum.bathing_water,
-        indicator_value: value,
+        indicator_value: worstValue,
       },
       select: {
         recommandation_content: true,
       },
-      take: 2,
+      take: 1,
     })
-    .then((recommandations) =>
+    .then((recommandations: Array<{ recommandation_content: string }>) =>
       recommandations.map(
         (recommandation) => recommandation.recommandation_content,
       ),
     );
 
+  const validRecommandations = shouldCombineRecommendations ? 
+    await prisma.recommandation
+      .findMany({
+        where: {
+          indicator: IndicatorsSlugEnum.bathing_water,
+          indicator_value: validValue,
+        },
+        select: {
+          recommandation_content: true,
+        },
+        take: 1,
+      })
+      .then((recommandations: Array<{ recommandation_content: string }>) =>
+        recommandations.map(
+          (recommandation) => recommandation.recommandation_content,
+        ),
+      )
+    : [];
+
+  const recommandations = shouldCombineRecommendations ? 
+    [...worstRecommandations, ...validRecommandations] :
+    worstRecommandations;
+
   const bathingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: 'no id',
     summary: {
-      value,
-      status,
+      value: worstValue,
+      status: worstStatus,
       recommendations: recommandations,
     },
     values: bathingWaters.map((bathingWater) => ({
@@ -140,7 +183,7 @@ async function getBathingWaterFromMunicipalityAndDate({
       link: buildBathingWaterUrl(bathingWater),
     })),
     help_text:
-      'La saison de la collecte des données des eaux de baignades n’a pas encore commencée.',
+      'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
     diffusion_date: getBathingWaterLatestResultDate(bathingWaters),
     validity_start: 'N/A',
     validity_end: 'N/A',
@@ -154,7 +197,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
     long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
     municipality_insee_code,
-    about_title: 'à propos de la qualité de l’eau de baignade',
+    about_title: 'à propos de la qualité de l\'eau de baignade',
     about_description,
     j0: bathingWaterIndicatorJ0AndJ1,
     j1: bathingWaterIndicatorJ0AndJ1,
