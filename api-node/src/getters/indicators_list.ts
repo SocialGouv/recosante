@@ -41,7 +41,7 @@ const indicatorsObject: Record<IndicatorsSlugEnum, IndicatorItem> = {
     long_name: "La qualité de l'eau du robinet",
     short_name: 'Eau du robinet',
     slug: IndicatorsSlugEnum.drinking_water,
-    active: false,
+    active: true,
   },
 };
 

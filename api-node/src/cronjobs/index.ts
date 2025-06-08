@@ -7,7 +7,6 @@ import { initRecommandations } from './recommandations';
 import { initAggregators } from './aggregators';
 import { initNotifications } from './notifications';
 import { ENVIRONMENT, SENTRY_KEY, VERSION } from '~/config';
-import { initIndicatorsCleaning } from './cleaning';
 
 const sentryEnabled = process.env.NODE_ENV !== 'development';
 
@@ -29,11 +28,11 @@ if (sentryEnabled) {
 }
 
 const isLocalDevelopment = process.env.NODE_ENV === 'development';
-const isReviewBranch = ENVIRONMENT === 'development';
+// const isReviewBranch = ENVIRONMENT === 'development';
 
-if (isLocalDevelopment || !isReviewBranch) {
+// TODO: rollback isReviewBranch
+if (!isLocalDevelopment) {
   Promise.resolve()
-    .then(initIndicatorsCleaning) //
     .then(initMunicipalities) //
     .then(initRecommandations) //
     .then(initAggregators) //

@@ -3,9 +3,10 @@ import { z } from 'zod';
 import { catchErrors } from '../middlewares/errors';
 import prisma from '../prisma.js';
 import { type CustomError } from '~/types/error';
-import { type User } from '@prisma/client';
+import { GranularityEnum, type User } from '@prisma/client';
 import { withUser } from '~/middlewares/auth.js';
 import type { RequestWithUser } from '~/types/request';
+import { UdiService } from '~/service/udi.js';
 const router = express.Router();
 
 router.post(
@@ -103,44 +104,41 @@ router.put(
       if (bodyHasProperty('granularity')) {
         updatedUser.granularity = req.body.granularity;
       }
-      // if (bodyHasProperty('coordinates')) {
-      // let userUdis: UdiType[] = [];
-      // if (req.body.coordinates.lat && req.body.coordinates.lon) {
-      //   const longitude = parseFloat(req.body.coordinates.lon);
-      //   const latitude = parseFloat(req.body.coordinates.lat);
-      //   if (req.body.granularity === GranularityEnum.street) {
-      //     userUdis = await UdiService.findUdiByCoordinates(
-      //       latitude,
-      //       longitude,
-      //     );
-      //     if (userUdis?.length) {
-      //       updatedUser.udi = userUdis[0].code_udi;
-      //     }
-      //   }
-      //   if (req.body.granularity === GranularityEnum.city) {
-      //     // Some cities have multiple UDI, we need to check if we have multiple UDI for the city
-      //     const udisCount = await UdiService.countUdisByMunicipalityInseeCode(
-      //       req.body.municipality_insee_code,
-      //     );
-      //     if (udisCount === 0) {
-      //       updatedUser.udi = null;
-      //     }
-      //     if (udisCount === 1) {
-      //       userUdis = await UdiService.findUdiByCoordinates(
-      //         latitude,
-      //         longitude,
-      //       );
-      //       // If we have a single UDI for the city, we can set it directly and send data to the user
-      //       if (userUdis?.length) {
-      //         updatedUser.udi = userUdis[0].code_udi;
-      //       }
-      //     }
-      //     if (udisCount > 1) {
-      //       updatedUser.udi = 'multiple';
-      //     }
-      //   }
-      // }
-      // }
+      if (bodyHasProperty('coordinates')) {
+        const longitude = parseFloat(req.body.coordinates.lon);
+        const latitude = parseFloat(req.body.coordinates.lat);
+        if (req.body.granularity === GranularityEnum.street) {
+          const userUdis = await UdiService.findUdiByCoordinates(
+            latitude,
+            longitude,
+          );
+          if (userUdis?.length) {
+            updatedUser.udi = userUdis[0].code_udi;
+          }
+        }
+        if (req.body.granularity === GranularityEnum.city) {
+          // Some cities have multiple UDI, we need to check if we have multiple UDI for the city
+          const udisCount = await UdiService.countUdisByMunicipalityInseeCode(
+            req.body.municipality_insee_code,
+          );
+          if (udisCount === 0) {
+            updatedUser.udi = null;
+          }
+          if (udisCount === 1) {
+            const userUdis = await UdiService.findUdiByCoordinates(
+              latitude,
+              longitude,
+            );
+            // If we have a single UDI for the city, we can set it directly and send data to the user
+            if (userUdis?.length) {
+              updatedUser.udi = userUdis[0].code_udi;
+            }
+          }
+          if (udisCount > 1) {
+            updatedUser.udi = 'multiple';
+          }
+        }
+      }
       if (bodyHasProperty('push_notif_token')) {
         updatedUser.push_notif_token = req.body.push_notif_token;
       }
