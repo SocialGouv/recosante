@@ -22,6 +22,7 @@ import notificationRouter from './controllers/notification.ts';
 import udiRouter from './controllers/udi.ts';
 import hubeauPrelevementRouter from './controllers/hubeau-prelevement.ts';
 import callToActionRouter from './controllers/call-to-action.ts';
+import feedbackIndicatorRouter from './controllers/feedback-indicator.ts';
 
 import packageJson from '../package.json';
 
@@ -115,6 +116,7 @@ app.use('/notification', versionCheck, notificationRouter);
 app.use('/call-to-action', versionCheck, callToActionRouter);
 app.use('/udi', udiRouter);
 app.use('/hubeau-prelevement', hubeauPrelevementRouter);
+app.use('/feedback-indicator', feedbackIndicatorRouter);
 
 app.use(Sentry.Handlers.errorHandler());
 app.use(sendError);

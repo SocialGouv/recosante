@@ -264,7 +264,7 @@ model BathingWater {
   @@index([municipality_insee_code, id_site, diffusion_date], name: "bathing_water_insee_code_id_site_diffusion_date")
 }
 
-// L’unité de distribution (UDI) correspond à un ensemble de canalisations de distribution de l’eau potable au sein duquel la qualité de l’eau délivrée est considérée comme homogène.
+// L'unité de distribution (UDI) correspond à un ensemble de canalisations de distribution de l'eau potable au sein duquel la qualité de l'eau délivrée est considérée comme homogène.
 model udis {
   ogc_fid      Int                                         @id @default(autoincrement())
   wkb_geometry Unsupported("geometry(MultiPolygon,4326)")?
@@ -394,4 +394,16 @@ model Feedback {
   user_id    String
   user       User     @relation(fields: [user_id], references: [id])
   created_at DateTime @default(now())
+}
+
+model FeedbackIndicator {
+  id             String   @id @default(uuid())
+  indicator      IndicatorsSlugEnum
+  helpful        Boolean
+  message        String?
+  matomo_user_id String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now()) @updatedAt
+
+  @@index([matomo_user_id])
 }
