@@ -51,7 +51,7 @@ pytest-alembic = "0.10.5"
 pytest-flask-sqlalchemy = "1.1.0"
 pytest-mock = "3.10.0"
 pytest-postgresql = "5.0.0"
-requests-mock = "1.10.0"
+requests-mock = "1.12.1"
 
 [tool.pytest]
 testpaths = "tests"
