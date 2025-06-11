@@ -3,6 +3,7 @@ name = "ecosante"
 version = "0.1.0"
 description = "recosante.beta.gouv.fr"
 authors = ["Fabrique des ministères sociaux"]
+package-mode = false 
 
 [tool.poetry.dependencies]
 python = "^3.9"
