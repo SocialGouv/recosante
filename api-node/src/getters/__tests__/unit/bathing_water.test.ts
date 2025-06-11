@@ -1,4 +1,4 @@
-import { DataAvailabilityEnum, AlertStatusEnum, IndicatorsSlugEnum, type BathingWater, type Municipality, BathgWaterIdCarteEnum } from '@prisma/client';
+import { DataAvailabilityEnum, AlertStatusEnum, IndicatorsSlugEnum, type BathingWater, BathgWaterIdCarteEnum } from '@prisma/client';
 import prisma from '~/prisma';
 import { getBathingWaterFromMunicipalityAndDate, getBathingWaters } from '../../bathing_water';
 import { BathingWaterNumberValueEnum, BathingWaterStatusEnum } from '~/types/api/bathing_water';
