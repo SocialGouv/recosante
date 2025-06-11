@@ -1,3 +1,10 @@
+# [1.40.0](https://github.com/SocialGouv/recosante/compare/v1.39.5...v1.40.0) (2025-06-11)
+
+
+### Features
+
+* **bathing_water:** ajout de la logique de filtrage et de résumé des… ([#647](https://github.com/SocialGouv/recosante/issues/647)) ([db0190b](https://github.com/SocialGouv/recosante/commit/db0190b34fdb863e81c910092d1cc58d1a9f6778))
+
 ## [1.39.5](https://github.com/SocialGouv/recosante/compare/v1.39.4...v1.39.5) (2025-06-04)
 
 
