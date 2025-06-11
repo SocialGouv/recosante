@@ -24,6 +24,82 @@ dayjs.extend(utc);
 
 const about_description = fs.readFileSync('./data/about/baignades.md', 'utf8');
 
+const EXCLUDED_BATHING_VALUES = [
+  BathingWaterNumberValueEnum.OFF_SEASON,
+  BathingWaterNumberValueEnum.UNRANKED_SITE,
+  BathingWaterNumberValueEnum.PROHIBITION
+] as const;
+
+type ExcludedBathingValue = typeof EXCLUDED_BATHING_VALUES[number];
+
+function isValidBathingWater(site: BathingWater): boolean {
+  const siteValue = getBathingWaterSiteValueDerivedFromBathingWaterRow(site);
+  return !EXCLUDED_BATHING_VALUES.includes(siteValue as ExcludedBathingValue);
+}
+
+async function getRecommendationsForValue(value: BathingWaterNumberValueEnum): Promise<string[]> {
+  return await prisma.recommandation
+    .findMany({
+      where: {
+        indicator: IndicatorsSlugEnum.bathing_water,
+        indicator_value: value,
+      },
+      select: {
+        recommandation_content: true,
+      },
+      take: 1,
+    })
+    .then((recommandations: Array<{ recommandation_content: string }>) =>
+      recommandations.map(
+        (recommandation) => recommandation.recommandation_content,
+      ),
+    );
+}
+
+function buildBathingWaterValues(bathingWaters: BathingWater[]): Array<{
+  slug: string;
+  name: string;
+  value: BathingWaterNumberValueEnum;
+  link: string;
+}> {
+  return bathingWaters.map((bathingWater) => ({
+    slug: bathingWater.id_site ?? '',
+    name: bathingWater.name ?? '',
+    value: getBathingWaterSiteValueDerivedFromBathingWaterRow(bathingWater),
+    link: buildBathingWaterUrl(bathingWater),
+  }));
+}
+
+async function buildBathingWaterSummary(bathingWaters: BathingWater[]): Promise<{
+  value: BathingWaterNumberValueEnum;
+  status: BathingWaterStatusEnum;
+  recommendations: string[];
+}> {
+  // Filtrer les sites valides
+  const validBathingWaters = bathingWaters.filter(isValidBathingWater);
+
+  // Calculer les valeurs pour tous les sites et les sites valides
+  const { value: worstValue, status: worstStatus } = getBathingWaterSummaryValue(validBathingWaters);
+  const { value: totalValue } = getBathingWaterSummaryValue(bathingWaters);
+
+  // Déterminer si on doit combiner les recommandations
+  const shouldCombineRecommendations = EXCLUDED_BATHING_VALUES.includes(totalValue as ExcludedBathingValue);
+
+  // Récupérer les recommandations
+  const totalRecommendations = await getRecommendationsForValue(totalValue);
+  const validRecommendations = shouldCombineRecommendations 
+    ? await getRecommendationsForValue(worstValue)
+    : [];
+
+  return {
+    value: worstValue,
+    status: worstStatus,
+    recommendations: shouldCombineRecommendations 
+      ? [...totalRecommendations, ...validRecommendations]
+      : totalRecommendations,
+  };
+}
+
 async function getBathingWaterFromMunicipalityAndDate({
   municipality_insee_code,
   date_UTC_ISO,
@@ -35,7 +111,6 @@ async function getBathingWaterFromMunicipalityAndDate({
     z.object({
       municipality_insee_code: z.string().length(5),
       date_UTC_ISO: z.string().length(24),
-      // matomo_id: z.string().length(16), // at least for auth
     }).parse({
       municipality_insee_code,
       date_UTC_ISO,
@@ -54,6 +129,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     municipality_insee_code,
     date_UTC_ISO,
   });
+  
   if (!bathingWaters.length) {
     const municipality = await prisma.municipality.findUnique({
       where: { COM: municipality_insee_code },
@@ -61,127 +137,16 @@ async function getBathingWaterFromMunicipalityAndDate({
     if (!municipality?.bathing_water_sites) {
       return null;
     }
-    const bathingWaterEmpty: Indicator = {
-      slug: IndicatorsSlugEnum.bathing_water,
-      name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
-      short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
-      long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
-      municipality_insee_code,
-      about_title: 'à propos de la qualité de l\'eau de baignade',
-      about_description,
-      j0: {
-        id: 'empty',
-        summary: {
-          value: null,
-          status: BathingWaterStatusEnum.NO_DATA,
-          recommendations: [
-            'Aucune donnée disponible pour cet indicateur dans cette zone aujourd\'hui',
-          ],
-        },
-        help_text:
-          'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
-        validity_start: 'NA',
-        validity_end: 'NA',
-        diffusion_date: dayjs().toISOString(),
-        created_at: 'NA',
-        updated_at: 'NA',
-      },
-      j1: {
-        id: 'empty',
-        summary: {
-          value: null,
-          status: BathingWaterStatusEnum.NO_DATA,
-          recommendations: [
-            'Aucune donnée disponible pour cet indicateur dans cette zone demain',
-          ],
-        },
-        help_text:
-          'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
-        validity_start: 'NA',
-        validity_end: 'NA',
-        diffusion_date: dayjs().toISOString(),
-        created_at: 'NA',
-        updated_at: 'NA',
-      },
-    };
-    return bathingWaterEmpty;
+    return buildEmptyBathingWaterIndicator(municipality_insee_code);
   }
 
-  const validBathingWaters = bathingWaters.filter(site => {
-    const siteValue = getBathingWaterSiteValueDerivedFromBathingWaterRow(site);
-    return ![
-      BathingWaterNumberValueEnum.OFF_SEASON,
-      BathingWaterNumberValueEnum.UNRANKED_SITE,
-      BathingWaterNumberValueEnum.PROHIBITION
-    ].includes(siteValue);
-  });
-
-
-  const { value: validValue } = getBathingWaterSummaryValue(
-    validBathingWaters.length > 0 ? validBathingWaters : bathingWaters
-  );
-
-  const { value: worstValue, status: worstStatus } = getBathingWaterSummaryValue(bathingWaters);
-
-
-  const shouldCombineRecommendations = worstValue !== validValue && 
-    [BathingWaterNumberValueEnum.OFF_SEASON,
-     BathingWaterNumberValueEnum.UNRANKED_SITE,
-     BathingWaterNumberValueEnum.PROHIBITION].includes(worstValue);
-
-  const worstRecommandations = await prisma.recommandation
-    .findMany({
-      where: {
-        indicator: IndicatorsSlugEnum.bathing_water,
-        indicator_value: worstValue,
-      },
-      select: {
-        recommandation_content: true,
-      },
-      take: 1,
-    })
-    .then((recommandations: Array<{ recommandation_content: string }>) =>
-      recommandations.map(
-        (recommandation) => recommandation.recommandation_content,
-      ),
-    );
-
-  const validRecommandations = shouldCombineRecommendations ? 
-    await prisma.recommandation
-      .findMany({
-        where: {
-          indicator: IndicatorsSlugEnum.bathing_water,
-          indicator_value: validValue,
-        },
-        select: {
-          recommandation_content: true,
-        },
-        take: 1,
-      })
-      .then((recommandations: Array<{ recommandation_content: string }>) =>
-        recommandations.map(
-          (recommandation) => recommandation.recommandation_content,
-        ),
-      )
-    : [];
-
-  const recommandations = shouldCombineRecommendations ? 
-    [...worstRecommandations, ...validRecommandations] :
-    worstRecommandations;
+  const summary = await buildBathingWaterSummary(bathingWaters);
+  const values = buildBathingWaterValues(bathingWaters);
 
   const bathingWaterIndicatorJ0AndJ1: IndicatorByPeriod = {
     id: 'no id',
-    summary: {
-      value: worstValue,
-      status: worstStatus,
-      recommendations: recommandations,
-    },
-    values: bathingWaters.map((bathingWater) => ({
-      slug: bathingWater.id_site ?? '',
-      name: bathingWater.name ?? '',
-      value: getBathingWaterSiteValueDerivedFromBathingWaterRow(bathingWater),
-      link: buildBathingWaterUrl(bathingWater),
-    })),
+    summary,
+    values,
     help_text:
       'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
     diffusion_date: getBathingWaterLatestResultDate(bathingWaters),
@@ -191,7 +156,7 @@ async function getBathingWaterFromMunicipalityAndDate({
     updated_at: 'N/A',
   };
 
-  const bathingWaterIndicator: Indicator = {
+  return {
     slug: IndicatorsSlugEnum.bathing_water,
     name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
     short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
@@ -202,18 +167,46 @@ async function getBathingWaterFromMunicipalityAndDate({
     j0: bathingWaterIndicatorJ0AndJ1,
     j1: bathingWaterIndicatorJ0AndJ1,
   };
-
-  return bathingWaterIndicator;
 }
 
-async function getBathingWaters({
-  municipality_insee_code,
-  date_UTC_ISO,
-}: {
-  municipality_insee_code: Municipality['COM'];
-  date_UTC_ISO: string;
-}): Promise<Array<BathingWater>> {
-  const result: Array<BathingWater> = await prisma.$queryRaw`
+function buildEmptyBathingWaterIndicator(municipality_insee_code: string): Indicator {
+  return {
+    slug: IndicatorsSlugEnum.bathing_water,
+    name: indicatorsObject[IndicatorsSlugEnum.bathing_water].name,
+    short_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].short_name,
+    long_name: indicatorsObject[IndicatorsSlugEnum.bathing_water].long_name,
+    municipality_insee_code,
+    about_title: 'à propos de la qualité de l\'eau de baignade',
+    about_description,
+    j0: buildEmptyBathingWaterPeriod(),
+    j1: buildEmptyBathingWaterPeriod(),
+  };
+}
+
+function buildEmptyBathingWaterPeriod(): IndicatorByPeriod {
+  return {
+    id: 'empty',
+    summary: {
+      value: null,
+      status: BathingWaterStatusEnum.NO_DATA,
+      recommendations: [
+        'Aucune donnée disponible pour cet indicateur dans cette zone aujourd\'hui',
+      ],
+    },
+    help_text:
+      'La saison de la collecte des données des eaux de baignades n\'a pas encore commencée.',
+    validity_start: 'NA',
+    validity_end: 'NA',
+    diffusion_date: dayjs().toISOString(),
+    created_at: 'NA',
+    updated_at: 'NA',
+  };
+}
+
+async function getLatestBathingWaterDataForMunicipality(
+  municipality_insee_code: Municipality['COM']
+): Promise<Array<BathingWater>> {
+  return await prisma.$queryRaw`
   SELECT bw.*
   FROM (
     SELECT
@@ -226,10 +219,31 @@ async function getBathingWaters({
   ) bw
   WHERE
     bw.row_number = 1`;
-  if (result?.length) return result;
-  const municipality = await prisma.municipality.findUnique({
+}
+
+async function getParentMunicipality(
+  municipality_insee_code: Municipality['COM']
+): Promise<Municipality | null> {
+  return await prisma.municipality.findUnique({
     where: { COM: municipality_insee_code },
   });
+}
+
+async function getBathingWaters({
+  municipality_insee_code,
+  date_UTC_ISO,
+}: {
+  municipality_insee_code: Municipality['COM'];
+  date_UTC_ISO: string;
+}): Promise<Array<BathingWater>> {
+  // Récupération des données de baignade pour la municipalité
+  const result = await getLatestBathingWaterDataForMunicipality(municipality_insee_code);
+  if (result?.length) return result;
+
+  // Si pas de données, on vérifie la municipalité parente
+  const municipality = await getParentMunicipality(municipality_insee_code);
+  
+  // Si une municipalité parente existe et est différente, on relance la recherche
   if (
     municipality?.COMPARENT &&
     municipality.COMPARENT !== municipality_insee_code
@@ -239,6 +253,7 @@ async function getBathingWaters({
       date_UTC_ISO,
     });
   }
+
   return [];
 }
 
