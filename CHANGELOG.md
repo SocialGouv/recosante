@@ -1,3 +1,10 @@
+# [1.41.0](https://github.com/SocialGouv/recosante/compare/v1.40.0...v1.41.0) (2025-06-12)
+
+
+### Features
+
+* **feedback_indicator:** ajout du modèle FeedbackIndicator et du rou… ([#649](https://github.com/SocialGouv/recosante/issues/649)) ([86a6b22](https://github.com/SocialGouv/recosante/commit/86a6b22f9bfb192677e45c1c583c20eaa7448591))
+
 # [1.40.0](https://github.com/SocialGouv/recosante/compare/v1.39.5...v1.40.0) (2025-06-11)
 
 
