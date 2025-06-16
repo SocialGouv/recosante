@@ -36,6 +36,21 @@ notificationRouter.post(
         return;
       }
 
+      const notification = await prisma.notification.findUnique({
+        where: {
+          expo_id: req.body.id,
+        },
+      });
+
+      if (!notification) {
+        const customError = new Error(
+          `Notification with expo_id ${req.body.id} not found`,
+        ) as CustomError;
+        customError.status = 404;
+        next(customError);
+        return;
+      }
+
       await prisma.notification.update({
         where: {
           expo_id: req.body.id,
