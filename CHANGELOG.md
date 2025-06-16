@@ -1,3 +1,10 @@
+# [1.42.0](https://github.com/SocialGouv/recosante/compare/v1.41.0...v1.42.0) (2025-06-16)
+
+
+### Features
+
+* **notification:** ajout de la vérification de l'existence de la not… ([#650](https://github.com/SocialGouv/recosante/issues/650)) ([64f7c8f](https://github.com/SocialGouv/recosante/commit/64f7c8f96c5da03ecba62399cfeaca43d549e332))
+
 # [1.41.0](https://github.com/SocialGouv/recosante/compare/v1.40.0...v1.41.0) (2025-06-12)
 
 
