@@ -1,5 +1,3 @@
-# À propos de l’indice pollen
-
 L'indice pollen d'Atmo France et des Association agréées de surveillance de la qualité de l’air (AASQA) est un indicateur journalier synthétique qui fournit une prévision des événements polliniques, à l’échelle communale pour la France métropolitaine et Corse et sur trois jours (aujourd’hui, demain et après-demain).
 
 Aujourd’hui, près d’un Français sur 3 est concerné par les allergies aux pollens.
