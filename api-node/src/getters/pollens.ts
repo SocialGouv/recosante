@@ -114,6 +114,7 @@ async function getPollensFromMunicipalityAndDate({
       select: {
         recommandation_content: true,
       },
+      distinct: ['recommandation_content'],
       take: 2,
     })
     .then((recommandations) =>
@@ -170,6 +171,7 @@ async function getPollensFromMunicipalityAndDate({
           select: {
             recommandation_content: true,
           },
+          distinct: ['recommandation_content'],
           take: 2,
         })
         .then((recommandations) =>
