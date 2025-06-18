@@ -6,7 +6,7 @@ import type { CustomError } from '~/types/error';
 import type { RequestWithUser } from '~/types/request';
 import { getIndiceUvFromMunicipalityAndDate } from '~/getters/indice_uv';
 import { getIndiceAtmoFromMunicipalityAndDate } from '~/getters/indice_atmo';
-import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
+// import { getPollensFromMunicipalityAndDate } from '~/getters/pollens';
 import { getWeatherAlertFromMunicipalityAndDate } from '~/getters/weather_alert';
 import { indicatorsList } from '~/getters/indicators_list';
 import { withUser } from '~/middlewares/auth';
@@ -77,7 +77,7 @@ router.get(
       }
       if (indice_atmo) indicators.push(indice_atmo);
 
-// TODO: temporairement desactivé à la demande du client
+// TODO: temporairement desactivé à la demande du commanditaire
 
 //      const pollens = await getPollensFromMunicipalityAndDate({
 //        municipality_insee_code,
