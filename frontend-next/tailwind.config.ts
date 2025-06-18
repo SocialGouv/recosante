@@ -3,7 +3,11 @@ import formsPlugin from '@tailwindcss/forms';
 import headlessuiPlugin from '@headlessui/tailwindcss';
 
 export default {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     fontFamily: {
       app: ['var(--font-marianne)'],
@@ -63,6 +67,33 @@ export default {
           900: '#0c06ac',
           950: '#000091', // this is the main color
         },
+        'raep-1': '#A1D05D',
+        'raep-2': '#E3B23C',
+        'raep-3': '#E18B46',
+        'raep-4': '#E1644A',
+        'raep-5': '#D44A4A',
+        'vigilancemeteo-0': '#00B050',
+        'vigilancemeteo-1': '#FFCC00',
+        'vigilancemeteo-2': '#FF6600',
+        'vigilancemeteo-3': '#CC0000',
+        'indiceuv-0': '#4FCBAD',
+        'indiceuv-1': '#4FCBAD',
+        'indiceuv-2': '#4FCBAD',
+        'indiceuv-3': '#F2D072',
+        'indiceuv-4': '#F2D072',
+        'indiceuv-5': '#F2D072',
+        'indiceuv-6': '#E18B46',
+        'indiceuv-7': '#E18B46',
+        'indiceuv-8': '#E1644A',
+        'indiceuv-9': '#E1644A',
+        'indiceuv-10': '#E1644A',
+        'indiceuv-11': '#D44A4A',
+        'baignades-0': '#4FCBAD',
+        'baignades-1': '#F2D072',
+        'baignades-2': '#E1644A',
+        'radon-1': '#4FCBAD',
+        'radon-2': '#F2D072',
+        'radon-3': '#E1644A',
       },
       fontFamily: {
         sans: 'var(--font-inter)',
@@ -94,6 +125,11 @@ export default {
       },
       maxWidth: {
         '2xl': '40rem',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },

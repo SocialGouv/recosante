@@ -4,6 +4,8 @@ import { PrimaryFeatures } from '@/components/primary-features';
 import { Notification } from '@/components/notifications';
 import { Incentive } from '@/components/incentive';
 import BlogPreview from '@/components/blog-preview';
+import Indicators from '@/components/Indicators';
+import Search from '@/components/Search';
 import { Metadata } from 'next';
 import { MetadataService } from '@/services/metadatas';
 
@@ -26,6 +28,8 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Hero />
+      <Search />
+      <Indicators />
       <PrimaryFeatures />
       <Notification />
       <CallToAction />
