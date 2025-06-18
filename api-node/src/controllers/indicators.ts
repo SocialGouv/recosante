@@ -77,15 +77,17 @@ router.get(
       }
       if (indice_atmo) indicators.push(indice_atmo);
 
-      const pollens = await getPollensFromMunicipalityAndDate({
-        municipality_insee_code,
-        date_UTC_ISO: dayjs().utc().toISOString(),
-      });
-      if (pollens instanceof Error) {
-        next(pollens);
-        return;
-      }
-      if (pollens) indicators.push(pollens);
+// TODO: temporairement desactivé à la demande du client
+
+//      const pollens = await getPollensFromMunicipalityAndDate({
+//        municipality_insee_code,
+//        date_UTC_ISO: dayjs().utc().toISOString(),
+//      });
+//      if (pollens instanceof Error) {
+//        next(pollens);
+//        return;
+//      }
+//      if (pollens) indicators.push(pollens);
 
       const weatherAlert = await getWeatherAlertFromMunicipalityAndDate({
         municipality_insee_code,
