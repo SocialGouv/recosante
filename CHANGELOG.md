@@ -1,3 +1,10 @@
+## [1.45.1](https://github.com/SocialGouv/recosante/compare/v1.45.0...v1.45.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* **api:** increase cpu ([1fc6f17](https://github.com/SocialGouv/recosante/commit/1fc6f17d40fdbf2f04f188f241f52891f8ec0222))
+
 # [1.42.0](https://github.com/SocialGouv/recosante/compare/v1.41.0...v1.42.0) (2025-06-16)
 
 
