@@ -4,57 +4,49 @@ import React, { useState, useRef, useCallback } from "react";
 import Chart from "./Chart";
 import SubscribeButton from "../SubscribeButton";
 import { useModalContext } from "../../app/providers/ModalProvider";
+import { type Indicator } from '@/services/indicator';
 
 interface VigilanceMeteoProps {
-  place: {
+  place?: {
     code: string;
     nom: string;
   };
   date?: string;
+  data?: any; // Changé pour accepter la structure réelle de l'API
 }
 
-interface VigilanceMeteoData {
-  vigilance_meteo: {
-    indice: {
-      value: number;
-      color: string;
-      label: string;
-    };
-    advice: {
-      main: string;
-    };
+export default function VigilanceMeteo({ place, date, data }: VigilanceMeteoProps) {
+  // Extraire les données de l'API
+  const j0Data = data?.j0;
+  const j1Data = data?.j1;
+  
+  // Utiliser les données d'aujourd'hui (j0) par défaut
+  const currentData = j0Data || j1Data;
+  
+  // Vérifier si on a des données
+  const hasData = currentData && currentData.summary && currentData.summary.value !== null;
+  
+  // Utiliser les données de l'API si disponibles
+  const indicatorData = hasData ? {
+    slug: 'alerte-meteo',
+    label: currentData.summary.status,
+    value: currentData.summary.value,
+    unit: 'sur 4',
     validity: {
-      start: string;
-      area: string;
-    };
-    sources: Array<{
-      url: string;
-      label: string;
-    }>;
-  };
-}
-
-export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
-  // TODO: Remplacer par les vraies données de l'API
-  const mockData: VigilanceMeteoData = {
-    vigilance_meteo: {
-      indice: {
-        value: 1,
-        color: "Jaune",
-        label: "Attentif"
-      },
-      advice: {
-        main: "Soyez attentif si vous pratiquez des activités sensibles au risque météorologique. Des phénomènes habituels dans la région mais occasionnellement et localement dangereux sont en effet prévus."
-      },
-      validity: {
-        start: "2024-04-15",
-        area: "votre région"
-      },
-      sources: [{
-        url: "https://vigilance.meteofrance.com",
-        label: "Météo-France"
-      }]
-    }
+      start: currentData.diffusion_date || new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: currentData.help_text || 'Pas de vigilance particulière. Conditions météorologiques normales.',
+  } : {
+    slug: 'alerte-meteo',
+    label: 'Vigilance météo',
+    value: 1,
+    unit: 'sur 4',
+    validity: {
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: 'Pas de vigilance particulière. Conditions météorologiques normales.',
   };
 
   const { setModal } = useModalContext();
@@ -85,7 +77,7 @@ export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
   ];
 
   const vigilanceValue = ["Vert", "Jaune", "Orange", "Rouge"].indexOf(
-    mockData?.vigilance_meteo?.indice?.color
+    indicatorData?.value.toString()
   );
 
   return (
@@ -130,17 +122,17 @@ export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
           {!isLoading && !isError && (
             <>
               <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                {!mockData?.vigilance_meteo?.advice?.main ? (
+                {!indicatorData?.advice ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
                   <>
                     <div className="flex flex-col items-center">
                       <Chart
                         value={vigilanceValue}
-                        visible={!!mockData?.vigilance_meteo?.indice}
+                        visible={!!indicatorData?.value}
                       />
                       <p className="text-center font-medium text-green-600">
-                        {mockData.vigilance_meteo.indice?.label}
+                        {indicatorData.label}
                       </p>
                     </div>
                     <div className="flex flex-col">
@@ -151,7 +143,7 @@ export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
                         ].join(" ")}
                         ref={onRefChange}
                         dangerouslySetInnerHTML={{
-                          __html: mockData.vigilance_meteo.advice.main,
+                          __html: indicatorData.advice,
                         }}
                       />
                       {!!showSeeMoreAdvice && (
@@ -209,10 +201,10 @@ export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
         <SubscribeButton place={place} indicator="vigilance_meteo" />
       </div>
 
-      {!!mockData?.vigilance_meteo?.validity?.start && (
+      {!!indicatorData?.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
           Prévision pour le{" "}
-          {new Date(mockData.vigilance_meteo.validity.start).toLocaleDateString(
+          {new Date(indicatorData.validity.start).toLocaleDateString(
             "fr",
             {
               year: "numeric",
@@ -220,16 +212,7 @@ export default function VigilanceMeteo({ place, date }: VigilanceMeteoProps) {
               day: "numeric",
             }
           )}{" "}
-          dans {mockData.vigilance_meteo.validity.area}. Données fournies par{" "}
-          {mockData.vigilance_meteo.sources && (
-            <a
-              href={mockData.vigilance_meteo.sources[0].url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {mockData.vigilance_meteo.sources[0].label}
-            </a>
-          )}
+          dans votre région.
         </p>
       )}
     </article>

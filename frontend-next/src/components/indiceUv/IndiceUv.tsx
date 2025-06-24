@@ -2,62 +2,50 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Chart from "./Chart";
-import SubscribeButton from "../SubscribeButton";
-import { useModalContext } from "../../app/providers/ModalProvider";
+import { type Indicator } from '@/services/indicator';
 
 interface IndiceUvProps {
-  place: {
+  place?: {
     code: string;
     nom: string;
   };
   date?: string;
-}
-
-interface IndiceUvData {
-  indice_uv: {
-    indice: {
-      value: number;
-      label: string;
-    };
-    advice: {
-      main: string;
-    };
-    validity: {
-      start: string;
-      area: string;
-    };
-    sources: Array<{
-      url: string;
-      label: string;
-    }>;
-  };
+  data?: any; // Changé pour accepter la structure réelle de l'API
 }
 
 const maxValue = 11;
 
-export default function IndiceUv({ place, date }: IndiceUvProps) {
-  // TODO: Remplacer par les vraies données de l'API
-  const mockData: IndiceUvData = {
-    indice_uv: {
-      indice: {
-        value: 5,
-        label: "Modéré"
-      },
-      advice: {
-        main: "Protection nécessaire. Évitez l'exposition entre 12h et 16h. Recherchez l'ombre. Portez des vêtements de protection, un chapeau à larges bords et des lunettes de soleil. Appliquez un écran solaire d'indice de protection 30+ sur les zones exposées."
-      },
-      validity: {
-        start: "2024-04-15",
-        area: "votre région"
-      },
-      sources: [{
-        url: "https://www.meteofrance.com",
-        label: "Météo-France"
-      }]
-    }
+export default function IndiceUv({ place, date, data }: IndiceUvProps) {
+  const j0Data = data?.j0;
+  const j1Data = data?.j1;
+  
+  // Utiliser les données d'aujourd'hui (j0) par défaut
+  const currentData = j0Data || j1Data;
+  
+  const hasData = currentData && currentData.summary && currentData.summary.value !== null;
+  
+  const indicatorData = hasData ? {
+    slug: 'indice-uv',
+    label: currentData.summary.status,
+    value: currentData.summary.value,
+    unit: 'sur 11',
+    validity: {
+      start: currentData.diffusion_date || new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: currentData.help_text || 'Protection nécessaire. Évitez l\'exposition entre 12h et 16h. Recherchez l\'ombre et portez des vêtements protecteurs.',
+  } : {
+    slug: 'indice-uv',
+    label: 'Modéré',
+    value: 5,
+    unit: 'sur 11',
+    validity: {
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: 'Protection nécessaire. Évitez l\'exposition entre 12h et 16h. Recherchez l\'ombre et portez des vêtements protecteurs.',
   };
 
-  const { setModal } = useModalContext();
   const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
   const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
 
@@ -88,25 +76,14 @@ export default function IndiceUv({ place, date }: IndiceUvProps) {
   return (
     <article className="relative">
       <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
-        <button
-          type="button"
-          className={[
-            "flex w-full cursor-pointer items-baseline justify-between bg-orange-600/5 px-2 py-4 text-base font-medium text-orange-600",
-            "after:absolute after:left-0 after:top-0 after:h-full after:w-full after:scale-x-0 after:transform after:bg-background after:opacity-70",
-            isLoading ? "after:animate-fetching" : "",
-          ].join(" ")}
-          onClick={() => setModal("indice_uv")}
-        >
+        <div className="flex w-full cursor-pointer items-baseline justify-between bg-orange-600/5 px-2 py-4 text-base font-medium text-orange-600">
           <h2 className="m-0 basis-3/4 text-left text-base font-medium text-orange-600">
             Indice UV (de&nbsp;1&nbsp;à&nbsp;{maxValue})
           </h2>
-          <span
-            aria-label="Plus d'informations sur l'indice UV"
-            className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-orange-600 text-xs"
-          >
+          <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-orange-600 text-xs">
             ?
           </span>
-        </button>
+        </div>
 
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
           {!!isLoading && (
@@ -127,14 +104,14 @@ export default function IndiceUv({ place, date }: IndiceUvProps) {
           {!isLoading && !isError && (
             <>
               <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                {!mockData?.indice_uv?.advice?.main ? (
+                {!indicatorData?.advice ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
                   <>
                     <div className="flex flex-col items-center">
-                      <Chart value={mockData.indice_uv.indice?.value} />
+                      <Chart value={indicatorData.value} />
                       <p className="text-center font-medium text-orange-600">
-                        {mockData.indice_uv.indice?.label}
+                        {indicatorData.label}
                       </p>
                     </div>
                     <div className="flex flex-col">
@@ -145,7 +122,7 @@ export default function IndiceUv({ place, date }: IndiceUvProps) {
                         ].join(" ")}
                         ref={onRefChange}
                         dangerouslySetInnerHTML={{
-                          __html: mockData.indice_uv.advice.main,
+                          __html: indicatorData.advice,
                         }}
                       />
                       {!!showSeeMoreAdvice && (
@@ -176,7 +153,6 @@ export default function IndiceUv({ place, date }: IndiceUvProps) {
                     <button
                       type="button"
                       className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
-                      onClick={() => setModal("indice_uv")}
                     >
                       <div
                         className={`h-4 w-4 rounded-sm bg-indiceuv-${level.value} transition-colors`}
@@ -190,28 +166,17 @@ export default function IndiceUv({ place, date }: IndiceUvProps) {
             </>
           )}
         </div>
-
-        <SubscribeButton place={place} indicator="indice_uv" />
       </div>
 
-      {!!mockData?.indice_uv?.validity?.start && (
+      {indicatorData.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
           Prévision pour le{" "}
-          {new Date(mockData.indice_uv.validity.start).toLocaleDateString("fr", {
+          {new Date(indicatorData.validity.start).toLocaleDateString("fr", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}{" "}
-          dans {mockData.indice_uv.validity.area}. Données fournies par{" "}
-          {mockData.indice_uv.sources && (
-            <a
-              href={mockData.indice_uv.sources[0].url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {mockData.indice_uv.sources[0].label}
-            </a>
-          )}
+          dans votre région.
         </p>
       )}
     </article>

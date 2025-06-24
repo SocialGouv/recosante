@@ -3,6 +3,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import Chart from "./indiceAtmo/Chart";
 import SubscribeButton from "./SubscribeButton";
+import { type Indicator } from "@/services/indicator";
 
 interface IndiceAtmoProps {
   place?: {
@@ -10,6 +11,7 @@ interface IndiceAtmoProps {
     nom: string;
   };
   date?: string;
+  data?: any; 
 }
 
 // Données mockées pour l'exemple - à remplacer par de vraies données d'API
@@ -41,9 +43,34 @@ const mockData = {
   }
 };
 
-export default function IndiceAtmo({ place, date }: IndiceAtmoProps) {
-  // TODO: Remplacer par de vraies données d'API
-  const data = mockData;
+export default function IndiceAtmo({ place, date, data }: IndiceAtmoProps) {
+
+  const j0Data = data?.j0;
+  const j1Data = data?.j1;
+  
+  // Utiliser les données d'aujourd'hui (j0) par défaut
+  const currentData = j0Data || j1Data;
+  
+  const hasData = currentData && currentData.summary && currentData.summary.value !== null;
+  
+  const indicatorData = hasData ? {
+    indice_atmo: {
+      indice: {
+        value: currentData.summary.value,
+        label: currentData.summary.status,
+        details: currentData.details?.details || mockData.indice_atmo.indice.details
+      },
+      advice: {
+        main: currentData.help_text || mockData.indice_atmo.advice.main
+      },
+      validity: {
+        start: currentData.diffusion_date || new Date().toISOString(),
+        area: "la commune"
+      },
+      sources: currentData.details?.sources || mockData.indice_atmo.sources
+    }
+  } : mockData;
+  
   const isLoading = false;
   const isError = false;
   
@@ -108,14 +135,14 @@ export default function IndiceAtmo({ place, date }: IndiceAtmoProps) {
           {!isLoading && !isError && (
             <>
               <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                {!data?.indice_atmo?.advice?.main ? (
+                {!indicatorData?.indice_atmo?.advice?.main ? (
                   <p>Les données ne sont pas disponibles pour cette commune.</p>
                 ) : (
                   <>
                     <div className="flex flex-col items-center">
-                      <Chart value={data.indice_atmo.indice?.value} />
+                      <Chart value={indicatorData.indice_atmo.indice?.value} />
                       <p className="-mt-4 text-center font-medium text-blue-600">
-                        {data.indice_atmo.indice?.label}
+                        {indicatorData.indice_atmo.indice?.label}
                       </p>
                     </div>
                     <div className="flex flex-col">
@@ -126,7 +153,7 @@ export default function IndiceAtmo({ place, date }: IndiceAtmoProps) {
                         ].join(" ")}
                         ref={onRefChange}
                         dangerouslySetInnerHTML={{
-                          __html: data.indice_atmo.advice.main,
+                          __html: indicatorData.indice_atmo.advice.main,
                         }}
                       />
                       {!!showSeeMoreAdvice && (
@@ -151,7 +178,7 @@ export default function IndiceAtmo({ place, date }: IndiceAtmoProps) {
                 )}
               </div>
               <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
-                {data?.indice_atmo?.indice?.details?.map((element) => (
+                {indicatorData?.indice_atmo?.indice?.details?.map((element: any) => (
                   <li
                     key={element?.label}
                     className="flex shrink-0 grow basis-0"
@@ -181,23 +208,23 @@ export default function IndiceAtmo({ place, date }: IndiceAtmoProps) {
         </div>
         <SubscribeButton place={place} indicator="indice_atmo" />
       </div>
-      {!!data?.indice_atmo?.validity?.start && (
+      {!!indicatorData?.indice_atmo?.validity?.start && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
           Prévision pour le{" "}
-          {new Date(data.indice_atmo.validity.start).toLocaleDateString("fr", {
+          {new Date(indicatorData.indice_atmo.validity.start).toLocaleDateString("fr", {
             year: "numeric",
             month: "long",
             day: "numeric",
           })}{" "}
-          dans {data.indice_atmo.validity.area}. Données fournies par{" "}
-          {data.indice_atmo.sources && (
+          dans {indicatorData.indice_atmo.validity.area}. Données fournies par{" "}
+          {indicatorData.indice_atmo.sources && (
             <a
-              href={data.indice_atmo.sources[0].url}
+              href={indicatorData.indice_atmo.sources[0].url}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline"
             >
-              {data.indice_atmo.sources[0].label}
+              {indicatorData.indice_atmo.sources[0].label}
             </a>
           )}
         </p>
