@@ -13,7 +13,7 @@ RUN chmod 1777 /tmp
 RUN apt-get update && apt-get install -y --no-install-recommends gcc libc6-dev \
     && rm -rf /var/lib/apt/lists/*
 ADD pyproject.toml poetry.toml poetry.lock ./
-RUN poetry install --without dev
+RUN poetry install --without dev --no-root
 
 ########
 # Runner
@@ -21,6 +21,9 @@ FROM base AS runner
 RUN groupadd --gid 1000 pn && useradd --uid 1000 --gid pn --shell /bin/bash --create-home pn
 ADD . .
 COPY --from=installer /code/.venv ./.venv
+
+# Install the local package now that all files are available
+RUN ./.venv/bin/poetry install --without dev --only-root
 
 RUN chown -R 1000:1000 .
 
