@@ -7,10 +7,10 @@ pg:
       oblik.socialgouv.io/min-request-memory: 2Gi
 
 api:
-  ~needs: [build-api, seed-db]
+  ~needs: [seed-db]
 
 indice:
-  ~needs: [build-indice, api]
+  ~needs: [api]
   annotations:
     oblik.socialgouv.io/min-limit-cpu: "3"
     oblik.socialgouv.io/min-limit-memory: 3Gi 
@@ -66,8 +66,8 @@ jobs:
       checkout: true
       image: node:19-bullseye
       memoryLimit: 2Gi
-      workingDir: /workspace/api-node
       run: |
+        cd /workspace/api-node
         apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests unitaires - api-node"
         yarn install --immutable || (echo "yarn install failed for unit tests" && exit 1)
@@ -78,11 +78,11 @@ jobs:
       checkout: true
       image: node:19-bullseye
       memoryLimit: 2Gi
-      workingDir: /workspace/api-node
       envFrom:
         - secretRef:
             name: "pg-api-node-app"
       run: |
+        cd /workspace/api-node
         apt-get update && apt-get install -y python3 build-essential
         echo "🧪 tests d'intégration - api-node"
         yarn install --immutable || (echo "yarn install failed for integration tests" && exit 1)
