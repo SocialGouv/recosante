@@ -23,7 +23,7 @@ ADD . .
 COPY --from=installer /code/.venv ./.venv
 
 # Install the local package now that all files are available
-RUN poetry install --without dev --only-root
+RUN poetry install --only-root
 
 RUN chown -R 1000:1000 .
 
