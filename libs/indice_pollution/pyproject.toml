@@ -3,6 +3,7 @@ name = "indice_pollution"
 version = "1.0"
 description = "API giving air pollution level in France"
 authors = ["Fabrique des ministères sociaux"]
+packages = [{include = "indice_pollution"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

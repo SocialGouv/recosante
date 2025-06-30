@@ -7,10 +7,10 @@ pg:
       oblik.socialgouv.io/min-request-memory: 2Gi
 
 api:
-  ~needs: [build-api, seed-db]
+  ~needs: [seed-db]
 
 indice:
-  ~needs: [build-indice, api]
+  ~needs: [api]
   annotations:
     oblik.socialgouv.io/min-limit-cpu: "3"
     oblik.socialgouv.io/min-limit-memory: 3Gi 
