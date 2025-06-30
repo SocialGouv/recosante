@@ -6,10 +6,16 @@ module.exports = {
   siteMetadata: {
     title: `Recosanté - Voyez l'impact de l'environnement sur votre santé, et agissez.`,
     author: `Recosante`,
-    description: `Télécharger l’application Recosanté.`,
+    description: `Télécharger l'application Recosanté.`,
     siteUrl: `https://recosante.beta.gouv.fr`,
     image: "app-og-image.png",
     twitterUsername: "recosante",
+  },
+  flags: {
+    PRESERVE_WEBPACK_CACHE: true,
+    PRESERVE_FILE_DOWNLOAD_CACHE: true,
+    FAST_DEV: true,
+    DEV_SSR: false,
   },
   plugins: [
     // {

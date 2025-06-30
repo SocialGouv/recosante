@@ -15,6 +15,7 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },
   "dependencies": {
+    "@babel/core": "^7.27.4",
     "@mdx-js/react": "^2.3.0",
     "@tanstack/react-query": "^4.0.5",
     "axios": "^1.4.0",
@@ -41,12 +42,14 @@
     "gatsby-transformer-json": "^5.10.0",
     "gatsby-transformer-sharp": "^5.10.0",
     "iframe-resizer-react": "^1.1.0",
+    "prop-types": "^15.8.1",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-animate-height": "^3.1.1",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-highlight-words": "^0.20.0",
+    "react-is": "^19.1.0",
     "react-markdown": "^8.0.7",
     "react-masonry-css": "^1.0.16",
     "react-share": "^4.4.1",
@@ -56,7 +59,8 @@
     "rehype-raw": "^6.1.1",
     "styled-components": "^5.3.11",
     "styled-normalize": "^8.0.7",
-    "use-query-params": "^2.2.1"
+    "use-query-params": "^2.2.1",
+    "webpack": "^5.99.9"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

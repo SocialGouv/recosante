@@ -5,6 +5,9 @@
 const nextConfig = {
   output: 'standalone',
   trailingSlash: true,
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  },
 
   rewrites: async () => {
     return {
@@ -62,7 +65,6 @@ const nextConfig = {
       ],
     };
   },
-
 };
 
 module.exports = nextConfig;
