@@ -1,3 +1,10 @@
+## [1.45.2](https://github.com/SocialGouv/recosante/compare/v1.45.1...v1.45.2) (2025-06-30)
+
+
+### Bug Fixes
+
+* buildkit in gh ([#655](https://github.com/SocialGouv/recosante/issues/655)) ([d4c69f0](https://github.com/SocialGouv/recosante/commit/d4c69f0317e1df1a7a806d7bbc11c2aa61de0d89))
+
 ## [1.45.1](https://github.com/SocialGouv/recosante/compare/v1.45.0...v1.45.1) (2025-06-24)
 
 
