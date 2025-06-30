@@ -24,7 +24,7 @@ pg-api-node:
       size: "22Gi"
 
 api:
-  ~needs: [build-api, seed-db]
+  ~needs: [seed-db]
 
 
 api-node:
