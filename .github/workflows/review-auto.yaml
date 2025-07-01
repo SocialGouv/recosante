@@ -162,6 +162,8 @@ jobs:
       - name: Env
         id: env
         uses: socialgouv/kontinuous/.github/actions/env@v1
+        with:
+          subdomain: api,api-node
 
       - name: 📦 Build and push Docker image for frontend
         uses: socialgouv/workflows/actions/buildkit@v1
@@ -179,9 +181,9 @@ jobs:
           buildkit-svc-count: ${{ vars.BUILDKIT_SVC_COUNT }}
           buildkit-daemon-address: ${{ vars.BUILDKIT_DAEMON_ADDRESS }}
           build-args: |
-            GATSBY_API_BASE_URL=https://api-${{ steps.env.outputs.subdomain }}
-            GATSBY_API_NODE_BASE_URL=https://api-node-${{ steps.env.outputs.subdomain }}
-            GATSBY_URL=https://${{ steps.env.outputs.subdomain }}
+            GATSBY_API_BASE_URL=https://${{ steps.env.outputs.subdomain_api }}.ovh.fabrique.social.gouv.fr
+            GATSBY_API_NODE_BASE_URL=https://${{ steps.env.outputs.subdomain_api-node }}.ovh.fabrique.social.gouv.fr
+            GATSBY_URL=https://${{ steps.env.outputs.subdomain }}.ovh.fabrique.social.gouv.fr
             GATSBY_REPOSITORY_URL=https://github.com/socialgouv/recosante
 
   build-frontend-next:
