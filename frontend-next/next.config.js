@@ -30,6 +30,7 @@ const nextConfig = {
         // These rewrites are checked after both pages/public files
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
+        // Exclude /place/ routes from being redirected to Gatsby
 
      
         {
@@ -39,7 +40,7 @@ const nextConfig = {
             {
               type: 'query',
               key: 'slug',
-              value: '(?!not-found|iframe).*',
+              value: '(?!not-found|iframe|place).*',
 
             },
           ],
@@ -51,8 +52,8 @@ const nextConfig = {
             {
               type: 'query',
               key: 'slug',
-              // value is not "not-found" and "iframe".
-              value: '(?!not-found|iframe).*',
+              // value is not "not-found", "iframe", or "place".
+              value: '(?!not-found|iframe|place).*',
             },
           ],
         },
