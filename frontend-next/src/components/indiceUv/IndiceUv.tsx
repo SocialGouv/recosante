@@ -10,18 +10,14 @@ interface IndiceUvProps {
     nom: string;
   };
   date?: string;
-  data?: any; // Changé pour accepter la structure réelle de l'API
+  data?: any;
+  day?: 'j0' | 'j1';
 }
 
 const maxValue = 11;
 
-export default function IndiceUv({ place, date, data }: IndiceUvProps) {
-  const j0Data = data?.j0;
-  const j1Data = data?.j1;
-  
-  // Utiliser les données d'aujourd'hui (j0) par défaut
-  const currentData = j0Data || j1Data;
-  
+export default function IndiceUv({ place, date, data, day = 'j0' }: IndiceUvProps) {
+  const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
   const indicatorData = hasData ? {

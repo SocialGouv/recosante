@@ -9,17 +9,14 @@ interface RaepProps {
     nom: string;
   };
   date?: string;
-  data?: any; // Changé pour accepter la structure réelle de l'API
+  data?: any;
+  day?: 'j0' | 'j1';
 }
 
-export default function Raep({ place, date, data }: RaepProps) {
+export default function Raep({ place, date, data, day = 'j0' }: RaepProps) {
   const isSuspended = true; // TODO: À configurer selon les besoins
 
-  const j0Data = data?.j0;
-  const j1Data = data?.j1;
-  
-  const currentData = j0Data || j1Data;
-  
+  const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
   const indicatorData = hasData ? {

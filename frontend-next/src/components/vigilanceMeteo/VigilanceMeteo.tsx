@@ -12,18 +12,12 @@ interface VigilanceMeteoProps {
     nom: string;
   };
   date?: string;
-  data?: any; // Changé pour accepter la structure réelle de l'API
+  data?: any;
+  day?: 'j0' | 'j1';
 }
 
-export default function VigilanceMeteo({ place, date, data }: VigilanceMeteoProps) {
-  // Extraire les données de l'API
-  const j0Data = data?.j0;
-  const j1Data = data?.j1;
-  
-  // Utiliser les données d'aujourd'hui (j0) par défaut
-  const currentData = j0Data || j1Data;
-  
-  // Vérifier si on a des données
+export default function VigilanceMeteo({ place, date, data, day = 'j0' }: VigilanceMeteoProps) {
+  const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
   // Utiliser les données de l'API si disponibles

@@ -16,9 +16,10 @@ interface IndicatorsProps {
     nom: string;
   };
   date?: string;
+  day?: 'j0' | 'j1';
 }
 
-export default function Indicators({ place, date }: IndicatorsProps) {
+export default function Indicators({ place, date, day = 'j0' }: IndicatorsProps) {
 const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
   
   console.log('Indicators: Utilisation du code commune:', defaultMunicipalityCode);
@@ -79,27 +80,32 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           place={place} 
           date={date} 
           data={indiceAtmo}
+          day={day}
         />
         <Raep 
           place={place} 
           date={date} 
           data={pollens}
+          day={day}
         />
         <IndiceUv 
           place={place} 
           date={date} 
           data={indiceUv}
+          day={day}
         />
         {baignades && (
           <Baignades 
             place={place} 
             data={baignades}
+            day={day}
           />
         )}
         <VigilanceMeteo 
           place={place} 
           date={date} 
           data={vigilanceMeteo}
+          day={day}
         />
         <PotentielRadon place={place} />
       </div>
@@ -109,21 +115,25 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
             place={place} 
             date={date} 
             data={indiceAtmo}
+            day={day}
           />
           <Raep 
             place={place} 
             date={date} 
             data={pollens}
+            day={day}
           />
           <IndiceUv 
             place={place} 
             date={date} 
             data={indiceUv}
+            day={day}
           />
           {baignades && (
             <Baignades 
               place={place} 
               data={baignades}
+              day={day}
             />
           )}
         </div>
@@ -132,6 +142,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
             place={place} 
             date={date} 
             data={vigilanceMeteo}
+            day={day}
           />
           <PotentielRadon place={place} />
         </div>

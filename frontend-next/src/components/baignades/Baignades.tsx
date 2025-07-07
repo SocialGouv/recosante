@@ -9,37 +9,10 @@ interface BaignadesProps {
     nom: string;
   };
   data?: Indicator & {
-    j0?: {
-      summary?: {
-        value: number | null;
-        status: string;
-        recommendations?: string[];
-      };
-      values?: Array<{
-        slug: string;
-        name: string;
-        value: number;
-        link?: string;
-      }>;
-      help_text?: string;
-      diffusion_date?: string;
-    };
-    j1?: {
-      summary?: {
-        value: number | null;
-        status: string;
-        recommendations?: string[];
-      };
-      values?: Array<{
-        slug: string;
-        name: string;
-        value: number;
-        link?: string;
-      }>;
-      help_text?: string;
-      diffusion_date?: string;
-    };
+    j0?: any;
+    j1?: any;
   };
+  day?: 'j0' | 'j1';
 }
 
 interface ChartProps {
@@ -106,7 +79,7 @@ function Chart({ visible, summary, value }: ChartProps) {
   );
 }
 
-export default function Baignades({ place, data }: BaignadesProps) {
+export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
   // États pour les boutons "voir plus/voir moins"
   const [showSeeMoreAdviceButton, setShowSeeMoreAdviceButton] = useState(false);
   const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
@@ -140,7 +113,7 @@ export default function Baignades({ place, data }: BaignadesProps) {
   const j1Data = baignadesData?.j1;
   
   // Utiliser les données d'aujourd'hui (j0) par défaut
-  const currentData = j0Data || j1Data;
+  const currentData = baignadesData?.[day] || baignadesData?.j0 || baignadesData?.j1;
   
   // Vérifier si on a des données
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
@@ -160,17 +133,19 @@ export default function Baignades({ place, data }: BaignadesProps) {
 
   // Fonction pour déterminer la couleur selon la valeur
   const getValueColor = (value: number) => {
-    if (value === 0) return "bg-baignades-0"; // Bon
-    if (value === 1) return "bg-baignades-1"; // Moyen
-    if (value === 2) return "bg-baignades-2"; // Mauvais
+    if (value === 1) return "bg-baignades-0"; // Bon
+    if (value === 2) return "bg-baignades-1"; // Moyen
+    if (value === 3) return "bg-baignades-2"; // Mauvais
+    if (value === 4) return "bg-red-500"; // Très mauvais
     return "bg-gray-300"; // Par défaut
   };
 
   // Fonction pour obtenir le label selon la valeur
   const getValueLabel = (value: number) => {
-    if (value === 0) return "Bon résultat";
-    if (value === 1) return "Résultat moyen";
-    if (value === 2) return "Mauvais résultat";
+    if (value === 1) return "Bon résultat";
+    if (value === 2) return "Résultat moyen";
+    if (value === 3) return "Mauvais résultat";
+    if (value === 4) return "Baignade interdite";
     return "Pas de résultat";
   };
 

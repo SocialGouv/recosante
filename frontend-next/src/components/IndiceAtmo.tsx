@@ -11,7 +11,8 @@ interface IndiceAtmoProps {
     nom: string;
   };
   date?: string;
-  data?: any; 
+  data?: any;
+  day?: 'j0' | 'j1';
 }
 
 // Données mockées pour l'exemple - à remplacer par de vraies données d'API
@@ -43,14 +44,8 @@ const mockData = {
   }
 };
 
-export default function IndiceAtmo({ place, date, data }: IndiceAtmoProps) {
-
-  const j0Data = data?.j0;
-  const j1Data = data?.j1;
-  
-  // Utiliser les données d'aujourd'hui (j0) par défaut
-  const currentData = j0Data || j1Data;
-  
+export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmoProps) {
+  const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
   const indicatorData = hasData ? {

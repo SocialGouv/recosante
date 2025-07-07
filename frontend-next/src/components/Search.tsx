@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useMunicipalitySearch } from '@/hooks/useMunicipalitySearch';
 import { MunicipalityService, Municipality } from '@/services/municipality';
+import { formatPlaceUrl } from '@/utils/formatPlaceUrl';
 import Indicators from './Indicators';
 
 interface SearchProps {
@@ -21,10 +22,6 @@ export default function Search({ handlePlaceSelection, fullScreen }: SearchProps
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null);
   const [showResults, setShowResults] = useState(false);
   const { query, setQuery, results, loading, error } = useMunicipalitySearch();
-
-  const formatPlaceUrl = (place: Place) => {
-    return `/place/${place.code}/${place.nom.toLowerCase().replace(/\s+/g, '-')}/`;
-  };
 
   const handlePlaceSelect = (place: Place) => {
     if (handlePlaceSelection) {

@@ -145,14 +145,6 @@ export function Hero() {
               Les recommandations sont issues de sources fiables et validés par
               le Haut conseil de santé publique et Santé publique France.
             </p>
-            <Link
-              onClick={() => MatomoService.trackClick('go-to-web-version')}
-              href='/web-version'
-              target='_blank'
-              className='border-b text-center text-sm  text-gray-500 lg:text-left '
-            >
-              Accéder à la version web
-            </Link>
           </div>
         </div>
       </Container>
