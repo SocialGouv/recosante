@@ -17,10 +17,10 @@ import {
   getIndiceAtmoForJ1,
   knownMissingMunicipalitiesForIndiceAtmo,
 } from '~/getters/indice_atmo';
-import {
+/*import {
   getPollensForJ1,
   knownMissingMunicipalitiesForPollens,
-} from '~/getters/pollens';
+} from '~/getters/pollens'; */
 import {
   getWeatherAlertForJ1,
   knownMissingMunicipalitiesForWeatherAlert,
@@ -32,7 +32,7 @@ import {
   getIndiceAtmoDotColor,
   getIndiceAtmoStatus,
 } from '~/utils/indice_atmo';
-import { formatPollenNotification } from './pollen-formatter';
+//import { formatPollenNotification } from './pollen-formatter';
 
 dayjs.extend(utc);
 
@@ -170,7 +170,7 @@ export async function sendEveningNotification() {
     /*
     Pollens
     */
-    const pollensJ1 = await getPollensForJ1({
+    /*const pollensJ1 = await getPollensForJ1({
       municipality_insee_code,
       date_UTC_ISO: dayjs().toISOString(),
     });
@@ -202,7 +202,7 @@ export async function sendEveningNotification() {
           body[position ?? 3] = notificationText;
         }
       }
-    }
+    }*/
 
     /*
     Weather Alert

@@ -1,3 +1,24 @@
+## [1.45.3](https://github.com/SocialGouv/recosante/compare/v1.45.2...v1.45.3) (2025-07-01)
+
+
+### Bug Fixes
+
+* **ci:** subdomain typo ([2a164ae](https://github.com/SocialGouv/recosante/commit/2a164ae46dd83e5ef3186ad14fb66f1b55db01aa))
+
+## [1.45.2](https://github.com/SocialGouv/recosante/compare/v1.45.1...v1.45.2) (2025-06-30)
+
+
+### Bug Fixes
+
+* buildkit in gh ([#655](https://github.com/SocialGouv/recosante/issues/655)) ([d4c69f0](https://github.com/SocialGouv/recosante/commit/d4c69f0317e1df1a7a806d7bbc11c2aa61de0d89))
+
+## [1.45.1](https://github.com/SocialGouv/recosante/compare/v1.45.0...v1.45.1) (2025-06-24)
+
+
+### Bug Fixes
+
+* **api:** increase cpu ([1fc6f17](https://github.com/SocialGouv/recosante/commit/1fc6f17d40fdbf2f04f188f241f52891f8ec0222))
+
 # [1.42.0](https://github.com/SocialGouv/recosante/compare/v1.41.0...v1.42.0) (2025-06-16)
 
 

@@ -11,7 +11,7 @@ api:
       nginx.ingress.kubernetes.io/proxy-send-timeout: 1800
       nginx.ingress.kubernetes.io/proxy-body-size: 8m
   ~chart: app
-  ~needs: [build-api, indice]
+  ~needs: [indice]
   imagePackage: api
   host: "{{ tpl .Values.global.apiHost . }}"
   probesPath: /healthz
@@ -42,7 +42,7 @@ api:
 
 api-node:
   ~chart: app
-  ~needs: [build-api-node, pg-api-node]
+  ~needs: [pg-api-node]
   containerPort: 3000
   imagePackage: api-node
   host: "{{ tpl .Values.global.apiNodeHost . }}"
@@ -58,7 +58,6 @@ api-node:
 
 frontend:
   ~chart: app
-  ~needs: [build-frontend]
   imagePackage: frontend
   containerPort: 8080
   probesPath: /healthz/
@@ -99,7 +98,6 @@ frontend:
 
 frontend-next:
   ~chart: app
-  ~needs: [build-frontend-next]
   probesPath: /healthz
   imagePackage: frontend-next
   host: "{{ .Values.global.host }}"
@@ -109,7 +107,7 @@ frontend-next:
 
 indice:
   ~chart: app
-  ~needs: [build-indice, redis]
+  ~needs: [redis]
   imagePackage: indice
   probesPath: /
   containerPort: 8080
@@ -191,7 +189,7 @@ pg-api-node:
 
 cronjobs:
   ~chart: daemon
-  ~needs: [build-api-node, pg-api-node]
+  ~needs: [pg-api-node]
   imagePackage: api-node
   replicas: 1
   entrypoint: ["yarn", "start-cronjobs"]

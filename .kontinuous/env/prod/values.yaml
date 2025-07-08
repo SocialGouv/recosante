@@ -77,10 +77,10 @@ api:
   replicas: 1
   resources:
     requests:
-      cpu: 100m
+      cpu: 200m
       memory: 4Gi
     limits:
-      cpu: 300m
+      cpu: "1"
       memory: 6Gi
 
 api-node:
