@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import Chart from "./indiceAtmo/Chart";
 import SubscribeButton from "./SubscribeButton";
 
@@ -118,14 +118,7 @@ export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmo
               <p className="text-center font-medium text-blue-600">Chargement...</p>
             </div>
           )}
-          {!isLoading && isError && (
-            <p className="text-center">
-              <span className="mb-4 block text-3xl">Oups 🦔</span>
-              Nous ne sommes malheureusement pas en mesure d'afficher l'indice
-              de qualité de l'air pour l'instant. Veuillez réessayer dans
-              quelques instants.
-            </p>
-          )}
+          
             <>
               <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
                 {!indicatorData?.indice_atmo?.advice?.main ? (
