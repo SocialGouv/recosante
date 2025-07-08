@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { type Indicator } from '@/services/indicator';
 
 interface BaignadesProps {
@@ -85,23 +85,6 @@ export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
   const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
   const [showSeeMorePlagesButton, setShowSeeMorePlagesButton] = useState(false);
   const [seeMorePlages, setSeeMorePlages] = useState(false);
-
-  const adviceRef = useRef<HTMLDivElement>(null);
-  
-  const onRefChange = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (node === null) {
-        // DOM node referenced by ref has been unmounted
-      } else {
-        const currentRef = node;
-        if (currentRef?.scrollHeight && currentRef?.clientHeight && 
-            currentRef.scrollHeight > currentRef.clientHeight) {
-          if (!showSeeMoreAdviceButton) setShowSeeMoreAdviceButton(true);
-        }
-      }
-    },
-    [showSeeMoreAdviceButton]
-  );
 
   // Utiliser les données de l'API si disponibles
   const baignadesData = data;
@@ -230,7 +213,6 @@ export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
                       "hyphens-auto text-justify font-light",
                       seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
                     ].join(" ")}
-                    ref={onRefChange}
                   >
                     {currentData.summary?.recommendations?.[0] || currentData.help_text}
                   </div>
