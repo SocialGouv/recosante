@@ -103,6 +103,9 @@ frontend-next:
   probesPath: /healthz
   imagePackage: frontend-next
   host: "{{ .Values.global.host }}"
+  env:
+    - name: NEXT_PUBLIC_API_URL
+      value: "https://{{ tpl .Values.global.apiNodeHost . }}"
 
 indice:
   ~chart: app
@@ -233,3 +236,5 @@ jobs:
         imagePackage: frontend-next
         dockerfile: frontend-next/Dockerfile
         context: "."
+        buildArgs:
+          NEXT_PUBLIC_API_URL: "https://{{ tpl .Values.global.apiNodeHost . }}"
