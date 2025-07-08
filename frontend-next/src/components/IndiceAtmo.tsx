@@ -3,7 +3,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import Chart from "./indiceAtmo/Chart";
 import SubscribeButton from "./SubscribeButton";
-import { type Indicator } from "@/services/indicator";
 
 interface IndiceAtmoProps {
   place?: {
@@ -77,7 +76,7 @@ export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmo
   const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
   const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
 
-  const adviceRef = useRef<HTMLDivElement>(null);
+
   const onRefChange = useCallback(
     (node: HTMLDivElement | null) => {
       if (node) {
@@ -113,13 +112,13 @@ export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmo
           </span>
         </button>
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {!!isLoading && (
+          {isLoading && (
             <div className="flex flex-col items-center justify-center gap-x-4 md:min-h-[12.5rem]">
               <Chart />
               <p className="text-center font-medium text-blue-600">Chargement...</p>
             </div>
           )}
-          {!isLoading && !!isError && (
+          {!isLoading && isError && (
             <p className="text-center">
               <span className="mb-4 block text-3xl">Oups 🦔</span>
               Nous ne sommes malheureusement pas en mesure d'afficher l'indice
@@ -127,7 +126,6 @@ export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmo
               quelques instants.
             </p>
           )}
-          {!isLoading && !isError && (
             <>
               <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
                 {!indicatorData?.indice_atmo?.advice?.main ? (
@@ -199,7 +197,6 @@ export default function IndiceAtmo({ place, date, data, day = 'j0' }: IndiceAtmo
                 ))}
               </ul>
             </>
-          )}
         </div>
         <SubscribeButton place={place} indicator="indice_atmo" />
       </div>

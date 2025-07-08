@@ -27,9 +27,13 @@ router.get(
       next: express.NextFunction,
     ) => {
       console.log('=== ENDPOINT /website CALLED ===');
-      const municipality_insee_code = req.query.municipality_insee_code as string || '67463';
+      const municipality_insee_code =
+        (req.query.municipality_insee_code as string) || '67463';
 
-      console.log('municipality_insee_code', municipality_insee_code);
+      const sanitized_municipality_insee_code =
+        municipality_insee_code.replace(/\n|\r/g, '');
+
+      console.log('Fetching indicators for municipality:', sanitized_municipality_insee_code);
 
       const indicators: Indicator[] = [];
 
