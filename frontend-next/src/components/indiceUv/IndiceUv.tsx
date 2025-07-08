@@ -2,21 +2,15 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Chart from "./Chart";
-import { type Indicator } from '@/services/indicator';
 
 interface IndiceUvProps {
-  place?: {
-    code: string;
-    nom: string;
-  };
-  date?: string;
   data?: any;
   day?: 'j0' | 'j1';
 }
 
 const maxValue = 11;
 
-export default function IndiceUv({ place, date, data, day = 'j0' }: IndiceUvProps) {
+export default function IndiceUv({ data, day = 'j0' }: IndiceUvProps) {
   const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
@@ -57,10 +51,6 @@ export default function IndiceUv({ place, date, data, day = 'j0' }: IndiceUvProp
     }
   }, [showSeeMoreAdvice]);
 
-  // TODO: Remplacer isLoading et isError par les vraies données de l'API
-  const isLoading = false;
-  const isError = false;
-
   const uvLevels = [
     { range: "0 à 2", value: 1, label: "Faible" },
     { range: "3 à 5", value: 4, label: "Modéré" },
@@ -82,85 +72,66 @@ export default function IndiceUv({ place, date, data, day = 'j0' }: IndiceUvProp
         </div>
 
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {!!isLoading && (
-            <div className="flex flex-col items-center justify-center gap-x-4 md:min-h-[15rem]">
-              <Chart />
-              <p className="text-center font-medium text-orange-600">Chargement...</p>
-            </div>
-          )}
-
-          {!isLoading && !!isError && (
-            <p className="text-center">
-              <span className="mb-4 block text-3xl">Arf 🦖</span>
-              Nous ne sommes malheureusement pas en mesure d'afficher l'indice
-              UV pour l'instant. Veuillez réessayer dans quelques instants.
-            </p>
-          )}
-
-          {!isLoading && !isError && (
-            <>
-              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                {!indicatorData?.advice ? (
-                  <p>Les données ne sont pas disponibles pour cette commune.</p>
-                ) : (
-                  <>
-                    <div className="flex flex-col items-center">
-                      <Chart value={indicatorData.value} />
-                      <p className="text-center font-medium text-orange-600">
-                        {indicatorData.label}
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <div
-                        className={[
-                          "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
-                          seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-                        ].join(" ")}
-                        ref={onRefChange}
-                        dangerouslySetInnerHTML={{
-                          __html: indicatorData.advice,
-                        }}
-                      />
-                      {!!showSeeMoreAdvice && (
-                        <button
-                          onClick={() => {
-                            setSeeMoreAdvice(!seeMoreAdvice);
-                          }}
-                          type="button"
-                          className={[
-                            "ml-auto block font-light",
-                            !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
-                          ].join(" ")}
-                        >
-                          {!seeMoreAdvice ? "..." : ""}
-                          <span className="ml-3 text-xs underline">
-                            {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-                          </span>
-                        </button>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
-                {uvLevels.map((level) => (
-                  <li key={level.value} className="flex shrink-0 grow basis-0">
+          <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
+            {!indicatorData?.advice ? (
+              <p>Les données ne sont pas disponibles pour cette commune.</p>
+            ) : (
+              <>
+                <div className="flex flex-col items-center">
+                  <Chart value={indicatorData.value} />
+                  <p className="text-center font-medium text-orange-600">
+                    {indicatorData.label}
+                  </p>
+                </div>
+                <div className="flex flex-col">
+                  <div
+                    className={[
+                      "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
+                      seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
+                    ].join(" ")}
+                    ref={onRefChange}
+                    dangerouslySetInnerHTML={{
+                      __html: indicatorData.advice,
+                    }}
+                  />
+                  {!!showSeeMoreAdvice && (
                     <button
+                      onClick={() => {
+                        setSeeMoreAdvice(!seeMoreAdvice);
+                      }}
                       type="button"
-                      className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
+                      className={[
+                        "ml-auto block font-light",
+                        !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
+                      ].join(" ")}
                     >
-                      <div
-                        className={`h-4 w-4 rounded-sm bg-indiceuv-${level.value} transition-colors`}
-                        aria-hidden
-                      />
-                      {level.range}
+                      {!seeMoreAdvice ? "..." : ""}
+                      <span className="ml-3 text-xs underline">
+                        {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
+                      </span>
                     </button>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
+            {uvLevels.map((level) => (
+              <li key={level.value} className="flex shrink-0 grow basis-0">
+                <button
+                  type="button"
+                  className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
+                >
+                  <div
+                    className={`h-4 w-4 rounded-sm bg-indiceuv-${level.value} transition-colors`}
+                    aria-hidden
+                  />
+                  {level.range}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

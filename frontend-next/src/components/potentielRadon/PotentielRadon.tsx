@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 interface PotentielRadonProps {
-  place?: {
-    code: string;
-    nom: string;
-  };
+  // Props pour compatibilité future
 }
 
 interface ChartProps {
@@ -66,7 +63,7 @@ function Chart({ value = 2, visible = true, onlyValue = false, className = "" }:
   );
 }
 
-export default function PotentielRadon({ place }: PotentielRadonProps) {
+export default function PotentielRadon({}: PotentielRadonProps) {
   // Données mockées pour le potentiel radon (données statiques)
   const mockData = {
     potentiel_radon: {
@@ -92,7 +89,6 @@ export default function PotentielRadon({ place }: PotentielRadonProps) {
   const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
   const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
 
-  const adviceRef = useRef<HTMLDivElement>(null);
   const onRefChange = useCallback(
     (node: HTMLDivElement | null) => {
       if (node === null) {
@@ -108,9 +104,6 @@ export default function PotentielRadon({ place }: PotentielRadonProps) {
     [showSeeMoreAdvice]
   );
 
-  const isLoading = false;
-  const isError = false;
-
   // TODO: Implémenter le ModalContext
   const setModal = (modalName: string) => {
     console.log('Ouvrir modal:', modalName);
@@ -121,11 +114,7 @@ export default function PotentielRadon({ place }: PotentielRadonProps) {
       <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
         <button
           type="button"
-          className={[
-            "flex w-full cursor-pointer items-baseline justify-between bg-blue-600/5 px-2 py-4 text-base font-medium text-blue-600",
-            "after:absolute after:left:0 after:top-0 after:h-full after:w-full after:scale-x-0 after:transform after:bg-white after:opacity-70",
-            isLoading ? "after:animate-pulse" : "",
-          ].join(" ")}
+          className="flex w-full cursor-pointer items-baseline justify-between bg-blue-600/5 px-2 py-4 text-base font-medium text-blue-600"
           onClick={() => setModal("potentiel_radon")}
         >
           <h2 className="m-0 basis-3/4 text-left text-base font-medium text-blue-600">
@@ -139,121 +128,103 @@ export default function PotentielRadon({ place }: PotentielRadonProps) {
           </span>
         </button>
         <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {!!isLoading && (
-            <div className="flex flex-col items-center justify-center gap-x-4">
-              <Chart onlyValue className="-mt-8" />
-              <p className="text-center font-medium text-blue-600">Chargement...</p>
-            </div>
-          )}
-          {!isLoading && !!isError && (
-            <p className="text-center">
-              <span className="mb-4 block text-3xl">Arf 🦖</span>
-              Nous ne sommes malheureusement pas en mesure d'afficher le
-              potentiel radon pour l'instant. Veuillez réessayer dans quelques
-              instants.
-            </p>
-          )}
-          {!isLoading && !isError && (
-            <>
-              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                {!mockData?.potentiel_radon?.advice?.main ? (
-                  <p>Les données ne sont pas disponibles pour cette commune.</p>
-                ) : (
-                  <>
-                    <div className="flex flex-col items-center">
-                      <Chart
-                        value={mockData.potentiel_radon.indice?.value}
-                        visible={!!mockData.potentiel_radon.indice}
-                        className="mx-auto h-12 w-auto"
-                      />
-                      <p className="text-center font-medium text-blue-600">
-                        {mockData.potentiel_radon.indice?.label.replace(
-                          " ",
-                          "\u00A0"
-                        )}
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                      <div
-                        className={[
-                          "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
-                          seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-                        ].join(" ")}
-                        ref={onRefChange}
-                        dangerouslySetInnerHTML={{
-                          __html: mockData.potentiel_radon.advice.main,
-                        }}
-                      />
-                      {!!showSeeMoreAdvice && (
-                        <button
-                          onClick={() => {
-                            setSeeMoreAdvice(!seeMoreAdvice);
-                          }}
-                          type="button"
-                          className={[
-                            "ml-auto block font-light",
-                            !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
-                          ].join(" ")}
-                        >
-                          {!seeMoreAdvice ? "..." : ""}
-                          <span className="ml-3 text-xs underline">
-                            {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-                          </span>
-                        </button>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-              <ul className="mb-0 mt-2 flex w-full justify-between">
-                <li className="flex shrink-0 grow basis-0">
-                  <button
-                    type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
-                    onClick={() => setModal("potentiel_radon")}
-                  >
-                    <Chart
-                      className="mx-auto -mb-2 h-10 w-auto"
-                      value={1}
-                      onlyValue
-                      aria-hidden
-                    />
-                    Faible
-                  </button>
-                </li>
-                <li className="flex shrink-0 grow basis-0">
-                  <button
-                    type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
-                    onClick={() => setModal("potentiel_radon")}
-                  >
-                    <Chart
-                      className="mx-auto -mb-2 h-10 w-auto"
-                      value={2}
-                      onlyValue
-                      aria-hidden
-                    />
-                    Moyen
-                  </button>
-                </li>
-                <li className="flex shrink-0 grow basis-0">
-                  <button
-                    type="button"
-                    className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
-                    onClick={() => setModal("potentiel_radon")}
-                  >
-                    <Chart
-                      className="mx-auto -mb-2 h-10 w-auto"
-                      value={3}
-                      onlyValue
-                      aria-hidden
-                    />
-                    Élevé
-                  </button>
-                </li>
-              </ul>
-            </>
-          )}
+          <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
+            {!mockData?.potentiel_radon?.advice?.main ? (
+              <p>Les données ne sont pas disponibles pour cette commune.</p>
+            ) : (
+              <>
+                <div className="flex flex-col items-center">
+                  <Chart
+                    value={mockData.potentiel_radon.indice?.value}
+                    visible={!!mockData.potentiel_radon.indice}
+                    className="mx-auto h-12 w-auto"
+                  />
+                  <p className="text-center font-medium text-blue-600">
+                    {mockData.potentiel_radon.indice?.label.replace(
+                      " ",
+                      "\u00A0"
+                    )}
+                  </p>
+                </div>
+                <div className="flex flex-col">
+                  <div
+                    className={[
+                      "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
+                      seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
+                    ].join(" ")}
+                    ref={onRefChange}
+                    dangerouslySetInnerHTML={{
+                      __html: mockData.potentiel_radon.advice.main,
+                    }}
+                  />
+                  {!!showSeeMoreAdvice && (
+                    <button
+                      onClick={() => {
+                        setSeeMoreAdvice(!seeMoreAdvice);
+                      }}
+                      type="button"
+                      className={[
+                        "ml-auto block font-light",
+                        !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
+                      ].join(" ")}
+                    >
+                      {!seeMoreAdvice ? "..." : ""}
+                      <span className="ml-3 text-xs underline">
+                        {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+          <ul className="mb-0 mt-2 flex w-full justify-between">
+            <li className="flex shrink-0 grow basis-0">
+              <button
+                type="button"
+                className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                onClick={() => setModal("potentiel_radon")}
+              >
+                <Chart
+                  className="mx-auto -mb-2 h-10 w-auto"
+                  value={1}
+                  onlyValue
+                  aria-hidden
+                />
+                Faible
+              </button>
+            </li>
+            <li className="flex shrink-0 grow basis-0">
+              <button
+                type="button"
+                className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                onClick={() => setModal("potentiel_radon")}
+              >
+                <Chart
+                  className="mx-auto -mb-2 h-10 w-auto"
+                  value={2}
+                  onlyValue
+                  aria-hidden
+                />
+                Moyen
+              </button>
+            </li>
+            <li className="flex shrink-0 grow basis-0">
+              <button
+                type="button"
+                className="relative flex grow cursor-pointer flex-col items-center gap-y-2 underline transition-colors"
+                onClick={() => setModal("potentiel_radon")}
+              >
+                <Chart
+                  className="mx-auto -mb-2 h-10 w-auto"
+                  value={3}
+                  onlyValue
+                  aria-hidden
+                />
+                Élevé
+              </button>
+            </li>
+          </ul>
         </div>
         {/* TODO: Ajouter le SubscribeButton */}
       </div>

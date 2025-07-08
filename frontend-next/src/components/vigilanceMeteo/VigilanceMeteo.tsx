@@ -10,12 +10,11 @@ interface VigilanceMeteoProps {
     code: string;
     nom: string;
   };
-  date?: string;
   data?: any;
   day?: 'j0' | 'j1';
 }
 
-export default function VigilanceMeteo({ place, date, data, day = 'j0' }: VigilanceMeteoProps) {
+export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMeteoProps) {
   const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
   
