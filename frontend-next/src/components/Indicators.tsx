@@ -78,7 +78,6 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
       <div className="flex flex-col gap-y-6 md:hidden">
         <IndiceAtmo 
           place={place} 
-          date={date} 
           data={indiceAtmo}
           day={day}
         />
@@ -89,8 +88,6 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           day={day}
         />
         <IndiceUv 
-          place={place} 
-          date={date} 
           data={indiceUv}
           day={day}
         />
@@ -103,17 +100,15 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
         )}
         <VigilanceMeteo 
           place={place} 
-          date={date} 
           data={vigilanceMeteo}
           day={day}
         />
-        <PotentielRadon place={place} />
+        <PotentielRadon />
       </div>
       <div className="hidden md:flex">
         <div className="flex w-1/2 flex-col gap-y-6 pr-3">
           <IndiceAtmo 
             place={place} 
-            date={date} 
             data={indiceAtmo}
             day={day}
           />
@@ -124,8 +119,6 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
             day={day}
           />
           <IndiceUv 
-            place={place} 
-            date={date} 
             data={indiceUv}
             day={day}
           />
@@ -139,12 +132,10 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
         </div>
         <div className="flex w-1/2 flex-col gap-y-6 pl-3">
           <VigilanceMeteo 
-            place={place} 
-            date={date} 
+            place={place}  
             data={vigilanceMeteo}
             day={day}
           />
-          <PotentielRadon place={place} />
         </div>
       </div>
     </section>
