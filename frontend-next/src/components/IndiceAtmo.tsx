@@ -24,7 +24,7 @@ const getAtmoColor = (value: number) => {
   return '#D9D9EF'; // Par défaut
 };
 
-export default function IndiceAtmo({ place, data, day = 'j0' }: IndiceAtmoProps) {
+export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
   const currentData = data?.[day] || data?.j0 || data?.j1;
   const hasData = currentData && currentData.summary && currentData.summary.value !== null;
 
@@ -54,25 +54,6 @@ export default function IndiceAtmo({ place, data, day = 'j0' }: IndiceAtmoProps)
 
   const maxValue = 6;
 
-  // TODO: Implémenter le ModalContext
-  const setModal = (modalName: string) => {
-    console.log('Ouvrir modal:', modalName);
-  };
-
-  const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
-  const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
-
-  const onRefChange = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (node) {
-        if (node.scrollHeight && node.clientHeight && 
-            node.scrollHeight > node.clientHeight) {
-          if (!showSeeMoreAdvice) setShowSeeMoreAdvice(true);
-        }
-      }
-    },
-    [showSeeMoreAdvice]
-  );
 
   return (
     <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">

@@ -49,15 +49,6 @@ export default function Baignades({ data, day = 'j0' }: BaignadesProps) {
     setShowSeeMorePlagesButton((plages?.length || 0) > minimumPlagesInView);
   }, [plages?.length]);
 
-  // Fonction pour déterminer la couleur selon la valeur
-  const getValueColor = (value: number) => {
-    if (value === 1) return "bg-baignades-0"; // Bon
-    if (value === 2) return "bg-baignades-1"; // Moyen
-    if (value === 3) return "bg-baignades-2"; // Mauvais
-    if (value === 4) return "bg-red-500"; // Très mauvais
-    return "bg-gray-300"; // Par défaut
-  };
-
   // Fonction pour obtenir le label selon la valeur
   const getValueLabel = (value: number) => {
     if (value === 1) return "Bon résultat";

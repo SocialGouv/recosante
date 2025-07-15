@@ -1,8 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback } from "react";
-import SubscribeButton from "../SubscribeButton";
-import { useModalContext } from "../../app/providers/ModalProvider";
+import React from "react";
 
 interface VigilanceMeteoProps {
   place?: {
@@ -53,21 +51,6 @@ export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMet
     about: 'La vigilance météorologique est un dispositif de prévention qui permet d\'informer la population sur les risques météorologiques dans les 24 heures à venir.',
   };
 
-  const { setModal } = useModalContext();
-  const [showSeeMoreAdvice, setShowSeeMoreAdvice] = useState(false);
-  const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
-
-  const adviceRef = useRef<HTMLDivElement | null>(null);
-  const onRefChange = useCallback((node: HTMLDivElement | null) => {
-    if (node === null) {
-      // DOM node referenced by ref has been unmounted
-    } else {
-      adviceRef.current = node;
-      if (node.scrollHeight > node.clientHeight) {
-        if (!showSeeMoreAdvice) setShowSeeMoreAdvice(true);
-      }
-    }
-  }, [showSeeMoreAdvice]);
 
 
   const vigilanceValue = ["Vert", "Jaune", "Orange", "Rouge"].indexOf(
@@ -75,7 +58,6 @@ export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMet
   );
 
   const currentColor = getVigilanceColor(vigilanceValue);
-  const progressPercentage = ((vigilanceValue + 1) / 4) * 100;
   const maxValue = 4;
 
   return (
