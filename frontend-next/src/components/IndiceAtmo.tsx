@@ -37,11 +37,11 @@ export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
       start: currentData.diffusion_date || new Date().toISOString(),
       end: new Date().toISOString(),
     },
-    advice: currentData.help_text || "La qualité de l'air est bonne.",
-    about: currentData.about || `L’indice ATMO est un indicateur de la qualité de l’air ambiant calculé à partir de plusieurs polluants réglementés. Il permet d’informer la population sur le niveau de pollution de l’air.`,
+    advice: currentData.summary.recommendations ? currentData.summary.recommendations.join(' ') : "La qualité de l'air est bonne.",
+    about: currentData.about || "L'indice ATMO est un indicateur de la qualité de l'air ambiant calculé à partir de plusieurs polluants réglementés. Il permet d'informer la population sur le niveau de pollution de l'air.",
   } : {
     slug: 'indice-atmo',
-    label: 'Qualité de l’air',
+    label: 'Qualité de l\'air',
     value: 1,
     unit: 'sur 6',
     validity: {
@@ -49,27 +49,28 @@ export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
       end: new Date().toISOString(),
     },
     advice: "La qualité de l'air est bonne.",
-    about: `L’indice ATMO est un indicateur de la qualité de l’air ambiant calculé à partir de plusieurs polluants réglementés. Il permet d’informer la population sur le niveau de pollution de l’air.`,
+    about: "L'indice ATMO est un indicateur de la qualité de l'air ambiant calculé à partir de plusieurs polluants réglementés. Il permet d'informer la population sur le niveau de pollution de l'air.",
   };
 
   const maxValue = 6;
-
+  const currentColor = getAtmoColor(indicatorData.value);
 
   return (
     <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
-      {/* Titre */}
-      <h2 className="text-lg font-bold uppercase tracking-wide text-blue-600 mb-2">
-        Indice ATMO : {indicatorData.label}
+      {/* Titre avec couleur variable */}
+      <h2 className="text-lg font-bold uppercase tracking-wide mb-2"
+          >
+        INDICE ATMO : {indicatorData.label}
       </h2>
 
       {/* Barre horizontale + valeur */}
       <div className="flex flex-col items-center w-full mb-2">
         <div className="w-full flex items-center gap-2 relative">
           <span className="text-xs text-gray-400">1</span>
-          <div className="relative flex-1 h-3 bg-blue-100 rounded-full">
+          <div className="relative flex-1 h-3 bg-gray-200 rounded-full">
             <div
               className="absolute top-0 left-0 h-3 rounded-full transition-all"
-              style={{ width: `${(indicatorData.value / maxValue) * 100}%`, background: getAtmoColor(indicatorData.value) }}
+              style={{ width: `${(indicatorData.value / maxValue) * 100}%`, background: currentColor }}
             />
             {/* Cercle avec la valeur */}
             <span
@@ -77,7 +78,7 @@ export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
               style={{ left: `calc(${(indicatorData.value / maxValue) * 100}% - 18px)` }}
             >
               <span className="flex items-center justify-center w-9 h-9 rounded-full font-bold text-base shadow-md border-2 border-white"
-                style={{ background: getAtmoColor(indicatorData.value), color: '#fff' }}>
+                style={{ background: currentColor, color: '#fff' }}>
                 {indicatorData.value}
               </span>
             </span>
@@ -94,7 +95,7 @@ export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
 
       {/* Bloc à propos */}
       <div className="bg-gray-50 rounded-md p-3">
-        <h3 className="text-sm font-semibold text-gray-700 mb-1">À propos de l’indice ATMO</h3>
+        <h3 className="text-sm font-semibold text-gray-700 mb-1">À propos de l'indice ATMO</h3>
         <div className="text-sm text-gray-900 whitespace-pre-line">{indicatorData.about}</div>
       </div>
 

@@ -92,8 +92,7 @@ export default function Baignades({ data, day = 'j0' }: BaignadesProps) {
   return (
     <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
       {/* Titre avec couleur variable */}
-      <h2 className="text-lg font-bold uppercase tracking-wide mb-2"
-          style={{ color: currentColor }}>
+      <h2 className="text-lg font-bold uppercase tracking-wide mb-2">
         EAU DE BAIGNADE : {indicatorData.label}
       </h2>
 
