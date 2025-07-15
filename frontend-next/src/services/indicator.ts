@@ -8,7 +8,7 @@ const indicators = [
 
 // Configuration de l'API
 const API_CONFIG = {
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'https://recosante-api-node.fabrique.social.gouv.fr',
   endpoints: {
     indicators: '/indicators/website',
   },
@@ -65,7 +65,6 @@ export namespace IndicatorService {
           'appversion': '1.0.0',
           'appbuild': '1',
         },
-        // Retirer credentials pour éviter les problèmes CORS avec ngrok
         // credentials: 'include',
       });
 
