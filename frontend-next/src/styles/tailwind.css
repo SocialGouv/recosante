@@ -6,3 +6,28 @@
 html {
     font-size: 16px;
   }
+
+/* Couleurs ATMO pour l'indice de qualité de l'air */
+.bg-atmo-1 {
+  background-color: #4FCBAD;
+}
+
+.bg-atmo-2 {
+  background-color: #4BF0E6;
+}
+
+.bg-atmo-3 {
+  background-color: #F0E65F;
+}
+
+.bg-atmo-4 {
+  background-color: #FF5354;
+}
+
+.bg-atmo-5 {
+  background-color: #A83559;
+}
+
+.bg-atmo-6 {
+  background-color: #7D237D;
+}

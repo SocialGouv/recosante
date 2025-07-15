@@ -19,6 +19,110 @@ dayjs.extend(utc);
 const router = express.Router();
 
 router.get(
+  '/website',
+  catchErrors(
+    async (
+      req: express.Request,
+      res: express.Response,
+      next: express.NextFunction,
+    ) => {
+      console.log('=== ENDPOINT /website CALLED ===');
+      const municipality_insee_code =
+        (req.query.municipality_insee_code as string) || '67463';
+
+      const sanitized_municipality_insee_code =
+        municipality_insee_code.replace(/\n|\r/g, '');
+
+      console.log('Fetching indicators for municipality:', sanitized_municipality_insee_code);
+
+      const indicators: Indicator[] = [];
+
+      console.log('Fetching indice_uv...');
+      const indice_uv = await getIndiceUvFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (indice_uv instanceof Error) {
+        console.log('Error indice_uv:', indice_uv);
+        next(indice_uv);
+        return;
+      }
+      if (indice_uv) {
+        console.log('Indice UV found:', indice_uv.slug);
+        indicators.push(indice_uv);
+      }
+
+      console.log('Fetching indice_atmo...');
+      const indice_atmo = await getIndiceAtmoFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (indice_atmo instanceof Error) {
+        console.log('Error indice_atmo:', indice_atmo);
+        next(indice_atmo);
+        return;
+      }
+      if (indice_atmo) {
+        console.log('Indice ATMO found:', indice_atmo.slug);
+        indicators.push(indice_atmo);
+      }
+
+      console.log('Fetching pollens skipped...');
+      /* const pollens = await getPollensFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (pollens instanceof Error) {
+        console.log('Error pollens:', pollens);
+        next(pollens);
+        return;
+      }
+      if (pollens) {
+        console.log('Pollens found:', pollens.slug);
+        indicators.push(pollens);
+      } */
+
+      console.log('Fetching weatherAlert...');
+      const weatherAlert = await getWeatherAlertFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (weatherAlert instanceof Error) {
+        console.log('Error weatherAlert:', weatherAlert);
+        next(weatherAlert);
+        return;
+      }
+
+      if (weatherAlert) {
+        console.log('Weather Alert found:', weatherAlert.slug);
+        indicators.push(weatherAlert);
+      }
+
+      console.log('Fetching bathingWater...');
+      const bathingWater = await getBathingWaterFromMunicipalityAndDate({
+        municipality_insee_code,
+        date_UTC_ISO: dayjs().utc().toISOString(),
+      });
+      if (bathingWater instanceof Error) {
+        console.log('Error bathingWater:', bathingWater);
+        next(bathingWater);
+        return;
+      }
+
+      if (bathingWater) {
+        console.log('Bathing Water found:', bathingWater.slug);
+        indicators.push(bathingWater);
+      }
+
+      console.log('Total indicators found:', indicators.length);
+      console.log('Sending response...');
+
+      res.status(200).send({ ok: true, data: indicators });
+    },
+  ),
+);
+
+router.get(
   '/list',
   withUser,
   catchErrors(async (req: RequestWithUser, res: express.Response) => {

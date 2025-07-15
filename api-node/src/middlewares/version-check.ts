@@ -13,6 +13,13 @@ export default function (
     // authorization,
   } = req.headers;
 
+  console.log('req.headers', req.headers);
+
+  if(appdevice === 'website') {
+    next();
+    return;
+  }
+
   if (!appbuild) {
     res.status(403).send({
       ok: false,
@@ -20,6 +27,7 @@ export default function (
     });
     return;
   }
+
 
   const ANDROID_APP_ID = 'com.recosante.recosante';
   const IOS_APP_ID = '6476136888';
