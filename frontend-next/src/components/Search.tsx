@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useMunicipalitySearch } from '@/hooks/useMunicipalitySearch';
 import { MunicipalityService, Municipality } from '@/services/municipality';
-import { formatPlaceUrl } from '@/utils/formatPlaceUrl';
 import Indicators from './Indicators';
 
 interface SearchProps {
@@ -12,24 +10,12 @@ interface SearchProps {
   fullScreen?: boolean;
 }
 
-interface Place {
-  code: string;
-  nom: string;
-}
 
-export default function Search({ handlePlaceSelection, fullScreen }: SearchProps) {
-  const router = useRouter();
+export default function Search({ fullScreen }: SearchProps) {
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null);
   const [showResults, setShowResults] = useState(false);
   const { query, setQuery, results, loading, error } = useMunicipalitySearch();
 
-  const handlePlaceSelect = (place: Place) => {
-    if (handlePlaceSelection) {
-      handlePlaceSelection(place);
-    } else {
-      router.push(formatPlaceUrl(place));
-    }
-  };
 
   const handleMunicipalitySelect = (municipality: Municipality) => {
     setSelectedMunicipality(municipality);

@@ -65,7 +65,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
             <div className="mt-4 p-4 bg-gray-100 rounded">
               <p className="text-sm text-gray-600 mb-2">Debug info:</p>
               <p className="text-xs">Code commune: {defaultMunicipalityCode}</p>
-              <p className="text-xs">URL API: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/indicators/website</p>
+              <p className="text-xs">URL API: {process.env.NEXT_PUBLIC_API_URL}/api/indicators/website</p>
             </div>
           </div>
         </div>
@@ -75,6 +75,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
 
   return (
     <section className="mx-auto max-w-6xl">
+      {/* Version mobile - une colonne */}
       <div className="flex flex-col gap-y-6 md:hidden">
         <IndiceAtmo 
           place={place} 
@@ -103,23 +104,35 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           data={vigilanceMeteo}
           day={day}
         />
-        <PotentielRadon />
+        {/*<PotentielRadon />*/}
       </div>
-      <div className="hidden md:flex">
-        <div className="flex w-1/2 flex-col gap-y-6 pr-3">
+
+      {/* Version desktop - deux colonnes */}
+      <div className="hidden md:grid md:grid-cols-2 md:gap-6">
+        {/* Colonne gauche */}
+        <div className="flex flex-col gap-y-6">
           <IndiceAtmo 
             place={place} 
             data={indiceAtmo}
             day={day}
           />
+          <IndiceUv 
+            data={indiceUv}
+            day={day}
+          />
+          <VigilanceMeteo 
+            place={place} 
+            data={vigilanceMeteo}
+            day={day}
+          />
+        </div>
+
+        {/* Colonne droite */}
+        <div className="flex flex-col gap-y-6">
           <Raep 
             place={place} 
             date={date} 
             data={pollens}
-            day={day}
-          />
-          <IndiceUv 
-            data={indiceUv}
             day={day}
           />
           {baignades && (
@@ -129,13 +142,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
               day={day}
             />
           )}
-        </div>
-        <div className="flex w-1/2 flex-col gap-y-6 pl-3">
-          <VigilanceMeteo 
-            place={place}  
-            data={vigilanceMeteo}
-            day={day}
-          />
+          {/*<PotentielRadon />*/}
         </div>
       </div>
     </section>

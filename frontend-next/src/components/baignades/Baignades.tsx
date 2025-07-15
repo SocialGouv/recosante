@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { type Indicator } from '@/services/indicator';
 
 interface BaignadesProps {
@@ -15,85 +15,23 @@ interface BaignadesProps {
   day?: 'j0' | 'j1';
 }
 
-interface ChartProps {
-  visible?: boolean;
-  summary?: number[];
-  value?: number;
-}
+// Fonction utilitaire pour mapper les valeurs de baignade aux couleurs
+const getBaignadeColor = (value: number): string => {
+  switch (value) {
+    case 1: return '#4FCBAD'; // Bon - vert
+    case 2: return '#F0E65F'; // Moyen - jaune
+    case 3: return '#FFB400'; // Mauvais - orange
+    case 4: return '#FF5354'; // Très mauvais - rouge
+    default: return '#D9D9EF'; // Par défaut
+  }
+};
 
-function Chart({ visible, summary, value }: ChartProps) {
-  const getStrokeColor = useCallback(
-    (index: number) => {
-      if (!visible) return "stroke-gray-300";
-      if (value !== undefined && value < index) return "stroke-gray-300";
-      if (value !== undefined && value < 2) return `stroke-baignades-${value}`;
-      if (summary && summary[index] > 0) return `stroke-baignades-${index}`;
-      return "stroke-gray-300";
-    },
-    [visible, value, summary]
-  );
-
-  return (
-    <svg
-      className="mx-auto h-12 w-auto overflow-visible"
-      aria-hidden={true}
-      viewBox="0 0 48 48"
-    >
-      <path
-        style={{
-          transition: visible
-            ? "opacity 1200ms 900ms, stroke 400ms 900ms"
-            : undefined,
-        }}
-        className={[
-          "fill-none stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
-          getStrokeColor(2),
-        ].join(" ")}
-        d="M6 12C10.966 12 14.69 6 14.69 6C14.69 6 18.414 12 23.379 12C28.345 12 33.31 6 33.31 6C33.31 6 38.276 12 42 12"
-      />
-      <path
-        style={{
-          transition: visible
-            ? "opacity 1200ms 600ms, stroke 400ms 600ms"
-            : undefined,
-        }}
-        className={[
-          "fill-none stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
-          getStrokeColor(1),
-        ].join(" ")}
-        d="M6 27C10.966 27 14.69 21 14.69 21C14.69 21 18.414 27 23.379 27C28.345 27 33.31 21 33.31 21C33.31 21 38.276 27 42 27"
-      />
-      <path
-        style={{
-          transition: visible
-            ? "opacity 1200ms 300ms, stroke 400ms 300ms"
-            : undefined,
-        }}
-        className={[
-          "fill-none stroke-[3] [stroke-linecap:round] [stroke-linejoin:round]",
-          getStrokeColor(0),
-        ].join(" ")}
-        d="M6 42C10.966 42 14.69 36 14.69 36C14.69 36 18.414 42 23.379 42C28.345 42 33.31 36 33.31 36C33.31 36 38.276 42 42 42"
-      />
-    </svg>
-  );
-}
-
-export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
-  // États pour les boutons "voir plus/voir moins"
-  const [showSeeMoreAdviceButton, setShowSeeMoreAdviceButton] = useState(false);
-  const [seeMoreAdvice, setSeeMoreAdvice] = useState(false);
+export default function Baignades({ data, day = 'j0' }: BaignadesProps) {
+  const [showSeeMorePlages, setSeeMorePlages] = useState(false);
   const [showSeeMorePlagesButton, setShowSeeMorePlagesButton] = useState(false);
-  const [seeMorePlages, setSeeMorePlages] = useState(false);
 
   // Utiliser les données de l'API si disponibles
   const baignadesData = data;
-
-  console.log('baignadesData', baignadesData);
-  
-  // Extraire les données des eaux de baignade
-  const j0Data = baignadesData?.j0;
-  const j1Data = baignadesData?.j1;
   
   // Utiliser les données d'aujourd'hui (j0) par défaut
   const currentData = baignadesData?.[day] || baignadesData?.j0 || baignadesData?.j1;
@@ -110,9 +48,6 @@ export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
   useEffect(() => {
     setShowSeeMorePlagesButton((plages?.length || 0) > minimumPlagesInView);
   }, [plages?.length]);
-
-  const isLoading = !baignadesData;
-  const isError = false; // Pour l'instant, on gère les erreurs différemment
 
   // Fonction pour déterminer la couleur selon la valeur
   const getValueColor = (value: number) => {
@@ -132,177 +67,163 @@ export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
     return "Pas de résultat";
   };
 
+  // Données de l'indicateur principal
+  const indicatorData = hasData ? {
+    slug: 'baignades',
+    label: currentData.summary?.status || 'Qualité des eaux de baignade',
+    value: currentData.summary?.value || 1,
+    unit: 'sur 4',
+    validity: {
+      start: currentData.diffusion_date || new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: currentData.summary?.recommendations?.[0] || currentData.help_text || 'La qualité des eaux de baignade est bonne.',
+    about: currentData.about || 'La qualité des eaux de baignade est évaluée selon des critères microbiologiques. Les résultats permettent d\'informer les baigneurs sur la qualité sanitaire des eaux.',
+  } : {
+    slug: 'baignades',
+    label: isHorsSaison ? 'Hors saison' : 'Pas de données',
+    value: 1,
+    unit: 'sur 4',
+    validity: {
+      start: new Date().toISOString(),
+      end: new Date().toISOString(),
+    },
+    advice: isHorsSaison 
+      ? "La saison de baignade n'a pas encore officiellement débuté dans cette commune."
+      : "Il n'y a pas de sites de baignade en eau de mer ou en eau douce recensés pour cette commune.",
+    about: 'La qualité des eaux de baignade est évaluée selon des critères microbiologiques. Les résultats permettent d\'informer les baigneurs sur la qualité sanitaire des eaux.',
+  };
+
+  const currentColor = getBaignadeColor(indicatorData.value);
+  const maxValue = 4;
+  const progressPercentage = (indicatorData.value / maxValue) * 100;
+
   return (
-    <article className="relative">
-      <div
-        className={[
-          "relative flex w-full flex-col overflow-hidden rounded-t-lg bg-white drop-shadow-xl",
-          isLoading ? "h-full" : "",
-        ].join(" ")}
-      >
-        <button
-          type="button"
-          className={[
-            "flex w-full cursor-pointer items-baseline justify-between bg-blue-600/5 px-2 py-4 text-base font-medium text-blue-600",
-            "after:absolute after:left-0 after:top-0 after:h-full after:w-full after:scale-x-0 after:transform after:bg-white after:opacity-70",
-            isLoading ? "after:animate-pulse" : "",
-          ].join(" ")}
-          onClick={() => {
-            // TODO: Implémenter l'ouverture de la modal
-            console.log("Ouvrir modal baignades");
-          }}
-        >
-          <h2 className="m-0 basis-3/4 text-left text-base font-medium text-blue-600">
-            Qualité des eaux de baignade
-          </h2>
-          <span
-            aria-label="Plus d'informations sur la qualité des eaux de baignade"
-            className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-blue-600 text-xs"
-          >
-            ?
-          </span>
-        </button>
-        <div className="flex grow flex-col items-center justify-center p-3 [&_p]:mb-0">
-          {!!isLoading && (
-            <div className="flex grow flex-col items-center justify-center gap-x-4">
-              <Chart />
-              <p className="text-center font-medium text-blue-600">Chargement...</p>
-            </div>
-          )}
-          {!isLoading && !hasData && !isHorsSaison && (
-            <p className="text-center">
-              <span className="mb-4 block text-3xl">Zut 🦙</span>
-              Nous ne sommes malheureusement pas en mesure d'afficher la qualité
-              des eaux de baignade pour l'instant. Veuillez réessayer dans
-              quelques instants.
-            </p>
-          )}
-          {!isLoading && (isHorsSaison || !hasData) && (
-            <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-              <div className="flex flex-col items-center">
-                <Chart visible={false} />
-                <p className="text-center font-medium text-blue-600">
-                  {isHorsSaison ? "Hors saison" : "Pas de données"}
-                </p>
-              </div>
-              <div className="flex grow flex-col">
-                <p className="hyphens-auto text-justify font-light">
-                  {isHorsSaison 
-                    ? "La saison de baignade n'a pas encore officiellement débuté dans cette commune."
-                    : "Il n'y a pas de sites de baignade en eau de mer ou en eau douce recensés pour cette commune."
-                  }
-                </p>
-              </div>
-            </div>
-          )}
-          {!isLoading && hasData && hasValues && (
-            <>
-              <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-                <div className="flex flex-col items-center">
-                  <Chart
-                    value={currentData.summary?.value || undefined}
-                    visible={true}
-                  />
-                  <p className="text-center font-medium text-blue-600">
-                    {currentData.summary?.status || "Pas de données"}
+    <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
+      {/* Titre avec couleur variable */}
+      <h2 className="text-lg font-bold uppercase tracking-wide mb-2"
+          style={{ color: currentColor }}>
+        EAU DE BAIGNADE : {indicatorData.label}
+      </h2>
+
+      {/* Barre horizontale + valeur */}
+      <div className="flex flex-col items-center w-full mb-2">
+        <div className="w-full flex items-center gap-2 relative">
+          <span className="text-xs text-gray-400">0</span>
+          <div className="relative flex-1 h-3 bg-gray-200 rounded-full">
+            <div
+              className="absolute top-0 left-0 h-3 rounded-full transition-all"
+              style={{ width: `${progressPercentage}%`, background: currentColor }}
+            />
+            {/* Cercle avec la valeur */}
+            <span
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: `calc(${progressPercentage}% - 18px)` }}
+            >
+              <span className="flex items-center justify-center w-9 h-9 rounded-full font-bold text-base shadow-md border-2 border-white"
+                style={{ background: currentColor, color: '#fff' }}>
+                {indicatorData.value}
+              </span>
+            </span>
+          </div>
+          <span className="text-xs text-gray-400">{maxValue}</span>
+        </div>
+      </div>
+
+      {/* Bloc recommandations en bleu */}
+      <div className="bg-blue-50 rounded-md p-3">
+        <h3 className="text-sm font-semibold text-blue-700 mb-1">Recommandations</h3>
+        <div className="text-sm text-blue-900">{indicatorData.advice}</div>
+      </div>
+
+      {/* Sous-indicateurs par site de baignade */}
+      {hasValues && plages && plages.length > 0 && (
+        <div className="space-y-3">
+          {plages
+            ?.filter((_el: any, index: number) => {
+              if (showSeeMorePlages) return true;
+              return index < minimumPlagesInView;
+            })
+            .map((element: any) => {
+              const siteColor = getBaignadeColor(element.value);
+              const siteProgressPercentage = (element.value / maxValue) * 100;
+              
+              return (
+                <div key={element.slug} className="border border-gray-200 rounded-md p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-gray-800">
+                      {element.link ? (
+                        <a
+                          href={element.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline hover:text-blue-600"
+                        >
+                          {element.name}
+                        </a>
+                      ) : (
+                        element.name
+                      )}
+                    </h4>
+                    {element.value === 4 && (
+                      <div className="flex items-center gap-1 text-red-600">
+                        <span className="text-xs">🚫</span>
+                        <span className="text-xs font-medium">Baignade interdite</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Barre de progression pour le site */}
+                  <div className="flex items-center gap-2 relative">
+                    <span className="text-xs text-gray-400">0</span>
+                    <div className="relative flex-1 h-2 bg-gray-200 rounded-full">
+                      <div
+                        className="absolute top-0 left-0 h-2 rounded-full transition-all"
+                        style={{ width: `${siteProgressPercentage}%`, background: siteColor }}
+                      />
+                      {/* Cercle avec la valeur pour le site */}
+                      <span
+                        className="absolute top-1/2 -translate-y-1/2"
+                        style={{ left: `calc(${siteProgressPercentage}% - 8px)` }}
+                      >
+                        <span className="flex items-center justify-center w-4 h-4 rounded-full text-xs font-bold shadow-sm border border-white"
+                          style={{ background: siteColor, color: '#fff' }}>
+                          {element.value}
+                        </span>
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-400">{maxValue}</span>
+                  </div>
+                  
+                  <p className="mt-1 text-xs text-gray-600">
+                    {getValueLabel(element.value)}
                   </p>
                 </div>
-                <div className="flex grow flex-col">
-                  <div
-                    className={[
-                      "hyphens-auto text-justify font-light",
-                      seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-                    ].join(" ")}
-                  >
-                    {currentData.summary?.recommendations?.[0] || currentData.help_text}
-                  </div>
-                  {!!showSeeMoreAdviceButton && (
-                    <button
-                      onClick={() => {
-                        setSeeMoreAdvice(!seeMoreAdvice);
-                      }}
-                      type="button"
-                      className={[
-                        "ml-auto block font-light",
-                        !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
-                      ].join(" ")}
-                    >
-                      {!seeMoreAdvice ? "..." : ""}
-                      <span className="ml-3 text-xs underline">
-                        {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-                      </span>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              <ul className="mb-0 mt-2 w-full flex-col justify-between xl:mt-6">
-                {plages
-                  ?.filter((_el: any, index: number) => {
-                    if (seeMorePlages) return true;
-                    return index < minimumPlagesInView;
-                  })
-                  .map((element: any) => {
-                    return (
-                      <li
-                        key={element.slug}
-                        className="mb-2 flex shrink-0 grow basis-0 flex-col"
-                      >
-                        <div className="relative flex w-full items-center justify-between gap-x-2">
-                          <div className="relative">
-                            {element.link ? (
-                              <a
-                                href={element.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="underline"
-                              >
-                                {element.name}
-                              </a>
-                            ) : (
-                              <p className="m-0">{element.name}</p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-x-3 pb-1">
-                          <div
-                            aria-hidden="true"
-                            className={[
-                              "h-4 w-4 shrink-0 rounded-sm transition-colors",
-                              getValueColor(element.value),
-                            ].join(" ")}
-                          />
-                          <p className="mb-0 text-start text-xs">
-                            {getValueLabel(element.value)}
-                          </p>
-                        </div>
-                      </li>
-                    );
-                  })}
-              </ul>
-              {!!showSeeMorePlagesButton && (
-                <button
-                  onClick={() => {
-                    setSeeMorePlages(!seeMorePlages);
-                  }}
-                  type="button"
-                  className={[
-                    "mx-auto mt-2 rounded-full px-6 py-2 text-xs font-light",
-                    seeMorePlages ? "underline" : "bg-blue-600 text-white",
-                  ].join(" ")}
-                >
-                  {!seeMorePlages
-                    ? `Voir ${(plages?.length || 0) - minimumPlagesInView} site${
-                        ((plages?.length || 0) - minimumPlagesInView) > 1 ? "s" : ""
-                      } de plus`
-                    : "Voir moins"}
-                </button>
-              )}
-            </>
+              );
+            })}
+          
+          {/* Bouton "Voir plus" pour les sites */}
+          {showSeeMorePlagesButton && (
+            <button
+              onClick={() => setSeeMorePlages(!showSeeMorePlages)}
+              className="w-full text-center text-sm text-blue-600 hover:text-blue-800 underline"
+            >
+              {!showSeeMorePlages
+                ? `Voir plus d'indicateurs +`
+                : "Voir moins"}
+            </button>
           )}
         </div>
-        {/* TODO: Ajouter le SubscribeButton */}
+      )}
+
+      {/* Bloc à propos en gris */}
+      <div className="bg-gray-50 rounded-md p-3">
+        <h3 className="text-sm font-semibold text-gray-700 mb-1">À propos de la qualité des eaux de baignade</h3>
+        <div className="text-sm text-gray-900 whitespace-pre-line">{indicatorData.about}</div>
       </div>
+
+
+      {/* Validité et source */}
       {currentData?.diffusion_date && (
         <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
           Données du {new Date(currentData.diffusion_date).toLocaleDateString("fr", {
@@ -315,6 +236,7 @@ export default function Baignades({ place, data, day = 'j0' }: BaignadesProps) {
             href="https://baignades.sante.gouv.fr"
             target="_blank"
             rel="noopener noreferrer"
+            className="underline"
           >
             Ministère de la Santé et de la Prévention
           </a>

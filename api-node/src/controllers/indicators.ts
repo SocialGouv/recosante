@@ -67,8 +67,8 @@ router.get(
         indicators.push(indice_atmo);
       }
 
-      console.log('Fetching pollens...');
-      const pollens = await getPollensFromMunicipalityAndDate({
+      console.log('Fetching pollens skipped...');
+      /* const pollens = await getPollensFromMunicipalityAndDate({
         municipality_insee_code,
         date_UTC_ISO: dayjs().utc().toISOString(),
       });
@@ -80,7 +80,7 @@ router.get(
       if (pollens) {
         console.log('Pollens found:', pollens.slug);
         indicators.push(pollens);
-      }
+      } */
 
       console.log('Fetching weatherAlert...');
       const weatherAlert = await getWeatherAlertFromMunicipalityAndDate({

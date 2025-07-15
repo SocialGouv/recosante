@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Metadata } from 'next';
 import { MunicipalityService, Municipality } from '@/services/municipality';
 import Indicators from '@/components/Indicators';
 import { useIframe, useIframeMessage } from '@/hooks/useIframe';

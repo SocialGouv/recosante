@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useCallback } from "react";
-import Chart from "./Chart";
 import SubscribeButton from "../SubscribeButton";
 import { useModalContext } from "../../app/providers/ModalProvider";
 
@@ -13,6 +12,17 @@ interface VigilanceMeteoProps {
   data?: any;
   day?: 'j0' | 'j1';
 }
+
+// Fonction utilitaire pour mapper les valeurs de vigilance aux couleurs
+const getVigilanceColor = (value: number): string => {
+  switch (value) {
+    case 0: return '#10B981'; // Vert
+    case 1: return '#F59E0B'; // Jaune
+    case 2: return '#F97316'; // Orange
+    case 3: return '#EF4444'; // Rouge
+    default: return '#10B981'; // Vert par défaut
+  }
+};
 
 export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMeteoProps) {
   const currentData = data?.[day] || data?.j0 || data?.j1;
@@ -29,16 +39,18 @@ export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMet
       end: new Date().toISOString(),
     },
     advice: currentData.help_text || 'Pas de vigilance particulière. Conditions météorologiques normales.',
+    about: currentData.about || 'La vigilance météorologique est un dispositif de prévention qui permet d\'informer la population sur les risques météorologiques dans les 24 heures à venir.',
   } : {
     slug: 'alerte-meteo',
-    label: 'Vigilance météo',
-    value: 1,
+    label: 'Aucun risque',
+    value: 0,
     unit: 'sur 4',
     validity: {
       start: new Date().toISOString(),
       end: new Date().toISOString(),
     },
     advice: 'Pas de vigilance particulière. Conditions météorologiques normales.',
+    about: 'La vigilance météorologique est un dispositif de prévention qui permet d\'informer la population sur les risques météorologiques dans les 24 heures à venir.',
   };
 
   const { setModal } = useModalContext();
@@ -57,129 +69,67 @@ export default function VigilanceMeteo({ place, data, day = 'j0' }: VigilanceMet
     }
   }, [showSeeMoreAdvice]);
 
-  const vigilanceLevels = [
-    { value: 0, label: "Aucune", color: "Vert" },
-    { value: 1, label: "Attentif", color: "Jaune" },
-    { value: 2, label: "Très vigilant", color: "Orange" },
-    { value: 3, label: "Absolue", color: "Rouge" }
-  ];
 
   const vigilanceValue = ["Vert", "Jaune", "Orange", "Rouge"].indexOf(
     indicatorData?.value.toString()
   );
 
+  const currentColor = getVigilanceColor(vigilanceValue);
+  const progressPercentage = ((vigilanceValue + 1) / 4) * 100;
+  const maxValue = 4;
+
   return (
-    <article className="relative">
-      <div className="relative w-full overflow-hidden rounded-t-lg bg-white drop-shadow-xl">
-        <button
-          type="button"
-          className="flex w-full cursor-pointer items-baseline justify-between bg-green-600/5 px-2 py-4 text-base font-medium text-green-600"
-          onClick={() => setModal("vigilancemeteo")}
-        >
-          <h2 className="m-0 basis-3/4 text-left text-base font-medium text-green-600">
-            Vigilance météo
-          </h2>
-          <span
-            aria-label="Plus d'informations sur la vigilance météorologique"
-            className="inline-flex h-4 w-4 items-center justify-center rounded-full border-2 border-green-600 text-xs"
-          >
-            ?
-          </span>
-        </button>
+    <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
+      {/* Titre avec couleur variable */}
+      <h2 className="text-lg font-bold uppercase tracking-wide mb-2"
+          style={{ color: currentColor }}>
+        Vigilance météo : {indicatorData.label}
+      </h2>
 
-        <div className="flex flex-col items-center justify-center p-3 [&_p]:mb-0">
-          <div className="flex w-full flex-col items-center justify-center gap-x-4 gap-y-2 xs:flex-row xs:items-start">
-            {!indicatorData?.advice ? (
-              <p>Les données ne sont pas disponibles pour cette commune.</p>
-            ) : (
-              <>
-                <div className="flex flex-col items-center">
-                  <Chart
-                    value={vigilanceValue}
-                    visible={!!indicatorData?.value}
-                  />
-                  <p className="text-center font-medium text-green-600">
-                    {indicatorData.label}
-                  </p>
-                </div>
-                <div className="flex flex-col">
-                  <div
-                    className={[
-                      "hyphens-auto text-justify font-light [&_li]:list-inside [&_li]:list-disc",
-                      seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-                    ].join(" ")}
-                    ref={onRefChange}
-                    dangerouslySetInnerHTML={{
-                      __html: indicatorData.advice,
-                    }}
-                  />
-                  {!!showSeeMoreAdvice && (
-                    <button
-                      onClick={() => {
-                        setSeeMoreAdvice(!seeMoreAdvice);
-                      }}
-                      type="button"
-                      className={[
-                        "ml-auto block font-light",
-                        !seeMoreAdvice ? "-mt-6 bg-white py-px" : "",
-                      ].join(" ")}
-                    >
-                      {!seeMoreAdvice ? "..." : ""}
-                      <span className="ml-3 text-xs underline">
-                        {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-                      </span>
-                    </button>
-                  )}
-                </div>
-              </>
-            )}
+      {/* Barre horizontale + valeur */}
+      <div className="flex flex-col items-center w-full mb-2">
+        <div className="w-full flex items-center gap-2 relative">
+          <span className="text-xs text-gray-400">1</span>
+          <div className="relative flex-1 h-3 bg-gray-200 rounded-full">
+            <div
+              className="absolute top-0 left-0 h-3 rounded-full transition-all"
+              style={{ width: `${(indicatorData.value + 1) / maxValue * 100}%`, background: currentColor }}
+            />
+            {/* Cercle avec la valeur */}
+            <span
+              className="absolute top-1/2 -translate-y-1/2"
+              style={{ left: `calc(${(indicatorData.value + 1) / maxValue * 100}% - 18px)` }}
+            >
+              <span className="flex items-center justify-center w-9 h-9 rounded-full font-bold text-base shadow-md border-2 border-white"
+                style={{ background: currentColor, color: '#fff' }}>
+                {indicatorData.value + 1}
+              </span>
+            </span>
           </div>
-
-          <ul className="mx-auto mb-0 mt-2 flex flex-col justify-between xs:mx-0 xs:w-full xs:flex-row">
-            {vigilanceLevels.map((level) => (
-              <li key={level.value} className="flex shrink-0 grow basis-0">
-                <button
-                  type="button"
-                  className="relative flex grow cursor-pointer items-center gap-x-4 gap-y-2 underline transition-colors xs:flex-col xs:gap-x-0"
-                  onClick={() => setModal("vigilancemeteo")}
-                >
-                  <div
-                    className={[
-                      "h-4 w-4 rounded-sm transition-colors",
-                      level.value === 0 
-                        ? "border-2 border-vigilancemeteo-0 bg-green-600/10" 
-                        : level.value === 1
-                        ? "bg-vigilancemeteo-1"  // Jaune - Attentif
-                        : level.value === 2
-                        ? "bg-vigilancemeteo-2"  // Orange - Très vigilant
-                        : "bg-vigilancemeteo-3",  // Rouge - Absolue
-                    ].join(" ")}
-                    aria-hidden
-                  />
-                  {level.label}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <span className="text-xs text-gray-400">{maxValue}</span>
         </div>
-
-        <SubscribeButton place={place} indicator="vigilance_meteo" />
       </div>
 
-      {!!indicatorData?.validity?.start && (
-        <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
-          Prévision pour le{" "}
-          {new Date(indicatorData.validity.start).toLocaleDateString(
-            "fr",
-            {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            }
-          )}{" "}
-          dans votre région.
-        </p>
-      )}
+      {/* Bloc recommandations en bleu */}
+      <div className="bg-blue-50 rounded-md p-3">
+        <h3 className="text-sm font-semibold text-blue-700 mb-1">Recommandations</h3>
+        <div className="text-sm text-blue-900" dangerouslySetInnerHTML={{ __html: indicatorData.advice }} />
+      </div>
+
+      {/* Bloc à propos en gris */}
+      <div className="bg-gray-50 rounded-md p-3">
+        <h3 className="text-sm font-semibold text-gray-700 mb-1">À propos de la vigilance météo</h3>
+        <div className="text-sm text-gray-900 whitespace-pre-line">{indicatorData.about}</div>
+      </div>
+
+      {/* Validité et source */}
+      <p className="mb-0 text-xs font-light text-neutral-700 xl:mt-2">
+        Prévision pour le {new Date(indicatorData.validity.start).toLocaleDateString("fr", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })} dans votre région.
+      </p>
     </article>
   );
 } 
