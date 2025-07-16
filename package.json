@@ -7,10 +7,7 @@
   "repository": "git@github.com:SocialGouv/recosante.git",
   "workspaces": [
     "api-node",
-    "api",
-    "frontend",
     "frontend-next",
-    "libs/*",
     "mail"
   ],
   "scripts": {

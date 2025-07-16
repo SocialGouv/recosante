@@ -1,6 +1,0 @@
-.dockerignore
-.env.example
-.venv
-Dockerfile
-MANIFEST.in
-README.md
