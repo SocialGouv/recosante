@@ -27,6 +27,7 @@
     "@semantic-release/git": "^10.0.1",
     "@socialgouv/releaserc": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
     "eslint-config-standard-with-typescript": "^43.0.0",
     "eslint-plugin-import": "^2.29.1",
@@ -34,6 +35,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "husky": "^8.0.0",
+    "prettier": "^3.1.1",
     "prettier-plugin-prisma": "^5.0.0",
     "semantic-release": "^21.0.2",
     "typescript": "^5.3.3"
