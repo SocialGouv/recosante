@@ -78,7 +78,7 @@ Pour communiquer sur le niveau de risque d’une exposition au soleil, l’Organ
   return (
     <article className="relative bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
       {/* Titre */}
-      <h2 className="text-lg font-bold uppercase tracking-wide text-orange-600 mb-2">
+      <h2 className="text-lg font-bold uppercase tracking-wide mb-2">
         Indice UV : {indicatorData.label}
       </h2>
 
@@ -106,28 +106,9 @@ Pour communiquer sur le niveau de risque d’une exposition au soleil, l’Organ
         </div>
       </div>
 
-      {/* Bloc recommandations */}
-      <div className="bg-orange-50 rounded p-3 mb-2">
-        <h3 className="text-sm font-semibold mb-2 text-orange-700 tracking-wide">Recommandations</h3>
-        <div
-          className={[
-            "hyphens-auto text-justify font-light text-sm",
-            seeMoreAdvice ? "line-clamp-none" : "line-clamp-3",
-          ].join(" ")}
-          ref={onRefChange}
-          dangerouslySetInnerHTML={{
-            __html: indicatorData.advice,
-          }}
-        />
-        {!!showSeeMoreAdvice && (
-          <button
-            onClick={() => setSeeMoreAdvice(!seeMoreAdvice)}
-            type="button"
-            className="ml-auto block font-light text-xs underline mt-1"
-          >
-            {!seeMoreAdvice ? "Voir plus" : "Voir moins"}
-          </button>
-        )}
+      <div className="bg-blue-50 rounded-md p-3">
+        <h3 className="text-sm font-semibold text-blue-700 mb-1">Recommandations</h3>
+        <div className="text-sm text-blue-900" dangerouslySetInnerHTML={{ __html: indicatorData.advice }} />
       </div>
 
       {/* Bloc à propos */}

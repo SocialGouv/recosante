@@ -76,7 +76,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
   return (
     <section className="mx-auto max-w-6xl">
       {/* Version mobile - une colonne */}
-      <div className="flex flex-col gap-y-6 md:hidden">
+      <div className="lg:hidden space-y-6">
         <IndiceAtmo 
           place={place} 
           data={indiceAtmo}
@@ -104,31 +104,25 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           data={vigilanceMeteo}
           day={day}
         />
-        {/*<PotentielRadon />*/}
       </div>
 
       {/* Version desktop - deux colonnes */}
-      <div className="hidden md:grid md:grid-cols-2 md:gap-6">
+      <div 
+        className="hidden lg:block"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '1.5rem',
+          width: '100%'
+        }}
+      >
         {/* Colonne gauche */}
-        <div className="flex flex-col gap-y-6">
+        <div className="space-y-6">
           <IndiceAtmo 
             place={place} 
             data={indiceAtmo}
             day={day}
           />
-          <IndiceUv 
-            data={indiceUv}
-            day={day}
-          />
-          <VigilanceMeteo 
-            place={place} 
-            data={vigilanceMeteo}
-            day={day}
-          />
-        </div>
-
-        {/* Colonne droite */}
-        <div className="flex flex-col gap-y-6">
           <Raep 
             place={place} 
             date={date} 
@@ -142,7 +136,19 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
               day={day}
             />
           )}
-          {/*<PotentielRadon />*/}
+        </div>
+
+        {/* Colonne droite */}
+        <div className="space-y-6">
+          <IndiceUv 
+            data={indiceUv}
+            day={day}
+          />
+          <VigilanceMeteo 
+            place={place} 
+            data={vigilanceMeteo}
+            day={day}
+          />
         </div>
       </div>
     </section>
