@@ -25,19 +25,6 @@ services:
     volumes:
       - pgdatatest:/var/lib/postgresql/data
 
-  flower:
-    environment:
-      CELERY_BROKER_URL: "redis://redis:6379"
-      CELERY_REDBEAT_REDIS_URL: "redis://redis:6379"
-      CELERY_RESULT_BACKEND: "redis://redis:6379"
-      CELERY_TIMEZONE: "Europe/Paris"
-      ENVIRONMENT: dev
-      FLOWER_BASIC_AUTH: admin:admin
-      TZ: "Europe/Paris"
-    image: mher/flower:1.2
-    ports:
-      - 5555:5555
-    restart: always
 
   pgadmin:
     environment:
@@ -56,30 +43,7 @@ services:
     healthcheck:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
 
-  api:
-    image: recosante-api
-    build:
-      context: .
-      dockerfile: api/Dockerfile
-    ports:
-      - 8080:8080
-    env_file:
-      - api/.env.docker
 
-  frontend:
-    image: recosante-frontend
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    env_file:
-      - frontend/.env.docker
-
-  indice_pollution:
-    image: recosante-indice_pollution
-    build:
-      context: libs/indice_pollution
-    env_file:
-      - libs/indice_pollution/.env.docker
 
 volumes:
   pgdata:

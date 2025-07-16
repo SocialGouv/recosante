@@ -3,43 +3,6 @@ global:
   apiNodeHost: "api-node-{{ .Values.global.host }}"
   pgApiNodeSecretName: "pg-api-node-app"
 
-api:
-  ingress:
-    annotations:
-      nginx.ingress.kubernetes.io/proxy-connect-timeout: 30
-      nginx.ingress.kubernetes.io/proxy-read-timeout: 1800
-      nginx.ingress.kubernetes.io/proxy-send-timeout: 1800
-      nginx.ingress.kubernetes.io/proxy-body-size: 8m
-  ~chart: app
-  ~needs: [indice]
-  imagePackage: api
-  host: "{{ tpl .Values.global.apiHost . }}"
-  probesPath: /healthz
-  containerPort: 8080
-  resources:
-    requests:
-      cpu: 0.1
-      memory: 128Mi
-    limits:
-      cpu: 2
-      memory: 4Gi
-  envFrom:
-    - secretRef:
-        name: "pg-app"
-    - secretRef:
-        name: api-sealed-secret
-    - configMapRef:
-        name: api-configmap
-    - configMapRef:
-        name: celery-configmap
-  env:
-    - name: SQLALCHEMY_DATABASE_URI
-      value: "$(DATABASE_URL)"
-    - name: ROOT_URL
-      value: "https://{{ tpl .Values.global.apiHost . }}"
-    - name: FRONTEND_URL
-      value: "https://{{ .Values.global.host }}"
-
 api-node:
   ~chart: app
   ~needs: [pg-api-node]
@@ -56,100 +19,13 @@ api-node:
     oblik.socialgouv.io/min-request-cpu: 300m
     oblik.socialgouv.io/min-limit-cpu: 300m
 
-frontend:
-  ~chart: app
-  imagePackage: frontend
-  containerPort: 8080
-  probesPath: /healthz/
-  livenessProbe:
-    failureThreshold: 15
-    httpGet:
-      path: /healthz/
-      port: http
-      scheme: HTTP
-    initialDelaySeconds: 30  # Délai avant la première vérification après le démarrage du pod
-    periodSeconds: 10         # Fréquence des vérifications
-    successThreshold: 1
-    timeoutSeconds: 10         # Temps maximum pour que l'endpoint réponde
-  ingress:
-    enabled: false
-  annotations:
-    oblik.socialgouv.io/min-request-cpu: 500m
-    oblik.socialgouv.io/min-limit-cpu: 500m
-    oblik.socialgouv.io/min-request-memory: 1Gi
-    oblik.socialgouv.io/min-limit-memory: 1Gi
-  startupProbe:
-    httpGet:
-      path: /healthz/
-      port: http
-      scheme: HTTP
-    initialDelaySeconds: 60
-    failureThreshold: 5
-    periodSeconds: 10
-  env:
-    - name: GATSBY_API_BASE_URL
-      value: "https://{{ tpl .Values.global.apiHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
-    - name: GATSBY_API_NODE_BASE_URL
-      value: "https://{{ tpl .Values.global.apiNodeHost . }}" # TODO for some reason, without tpl the value inside apiHost is not evaluated
-    - name: GATSBY_URL
-      value: "https://{{ .Values.global.host }}"
-    - name: GATSBY_REPOSITORY_URL
-      value: https://github.com/socialgouv/recosante
-
 frontend-next:
   ~chart: app
   probesPath: /healthz
   imagePackage: frontend-next
   host: "{{ .Values.global.host }}"
 
-indice:
-  ~chart: app
-  ~needs: [redis]
-  imagePackage: indice
-  probesPath: /
-  containerPort: 8080
-  resources:
-    requests:
-      cpu: 0.1
-      memory: 128Mi
-    limits:
-      cpu: 2
-      memory: 4Gi
-  startupProbe:
-    httpGet:
-      path: /
-      port: http
-      scheme: HTTP
-    initialDelaySeconds: 30
-    failureThreshold: 500 # for very long migrations
-    periodSeconds: 10
-  ingress:
-    enabled: false
-  envFrom:
-    - secretRef:
-        name: "pg-app"
-    - secretRef:
-        name: indice-sealed-secret
-    - configMapRef:
-        name: celery-configmap
-  env:
-    - name: SQLALCHEMY_DATABASE_URI
-      value: "$(DATABASE_URL)"
-    - name: FS_BUCKET_URL
-      valueFrom:
-        secretKeyRef:
-          name: ftp-clever-sealed-secret
-          key: REMOTE_SERVER
-    - name: FS_BUCKET_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: ftp-clever-sealed-secret
-          key: USERNAME
-    - name: FS_BUCKET_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: ftp-clever-sealed-secret
-          key: PASSWORD
+
 
 redis:
   ~chart: redis
@@ -158,28 +34,7 @@ redis:
     enabled: false
   ~forceRestart: false
 
-flower:
-  ~needs: [redis]
-  ~chart: app
-  image: mher/flower:1.2
-  containerPort: 5555
-  probesPath: /healthcheck
-  securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    runAsNonRoot: true
-  ingress:
-    enabled: true
-  envFrom:
-    - secretRef:
-        name: flower-sealed-secret
-    - configMapRef:
-        name: celery-configmap
-  env:
-    - name: FLOWER_PORT # mandatory, see https://github.com/mher/flower/issues/738
-      value: "5555"
-    - name: FLOWER_PERSISTENT
-      value: "True"
+
 
 pg-api-node:
   ~chart: pg
