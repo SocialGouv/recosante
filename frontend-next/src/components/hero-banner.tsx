@@ -14,6 +14,8 @@ import { GoogleStoreLink } from './GoogleStoreLink';
 import { MatomoService } from '@/services/matomo';
 import qrCode from '@/images/qr-code.svg';
 import Link from 'next/link';
+import Logo from './Logo';
+import { GouvLogo } from '@/images/logos/gouv';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
@@ -86,7 +88,50 @@ function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
 export function Hero() {
   return (
     <div className='overflow-hidden py-4 sm:py-2 lg:pb-32 xl:pb-36 '>
-      <Container>
+      <Container>   
+      <div
+              aria-label='Home'
+              className='flex items-center w-full justify-between w-full'
+            >
+              <div className='flex items-center space-x-6 justify-between  md:w-fit w-full'>
+                <a
+             
+                  href='https://recosante.beta.gouv.fr'
+                  target='_blank'
+                >
+                  <GouvLogo className='h-14 md:h-32 w-auto -ml-2 md:-ml-4 ' />
+                </a>
+
+                <a
+                  
+                  href='https://recosante.beta.gouv.fr'
+                  target='_blank'
+                >
+                  <Logo className='h-6  md:h-16 -mr-12 -mt-4 md:mr-0 md:mt-0' />
+                </a>
+              </div> 
+        </div>
+      <div className='relative z-10 flex md:flex-row flex-col-reverse items-start w-full justify-between mt-4 md:mt-8'>
+              <h1 className='md:text-5xl w-full text-md  md:mt-4 -mt-2  text-dark font-app'>
+                Suivez <span className='text-app-primary'>les pollens</span>,
+                <br />
+                <span className='text-app-primary'>
+                  la qualité de l'air
+                </span> et{' '}
+                <span className='text-app-primary'>la qualité de l'eau</span>{' '}
+                <br />
+                en temps réel dans votre ville.
+              </h1>
+            </div>
+           
+            <p className='mt-2 md:mt-4 text-xs md:text-xl text-gray-700'>
+              Une application gratuite pour protéger votre santé et celle de
+              votre famille.
+            </p>
+            <br />
+            <br />
+            
+           
         <div className='lg:grid lg:grid-cols-12 lg:gap-x-8 lg:gap-y-12'>
           <div className='relative z-10   lg:col-span-7 lg:max-w-none  xl:col-span-6'>
             <div className='mb-12  flex mx-auto items-center space-y-2 md:space-y-0 justify-center lg:justify-start md:space-x-2 md:flex-row flex-col '>

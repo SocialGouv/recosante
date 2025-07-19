@@ -1,4 +1,5 @@
 import { CallToAction } from '@/components/CallToAction';
+//import { Hero } from '@/components/download-page/hero-banner';
 import { Hero } from '@/components/hero-banner';
 import { PrimaryFeatures } from '@/components/primary-features';
 import { Notification } from '@/components/notifications';
@@ -7,6 +8,7 @@ import BlogPreview from '@/components/blog-preview';
 import Search from '@/components/Search';
 import { Metadata } from 'next';
 import { MetadataService } from '@/services/metadatas';
+import { Container } from '@/components/Container';
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

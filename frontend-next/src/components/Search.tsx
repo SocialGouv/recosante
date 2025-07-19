@@ -1,21 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMunicipalitySearch } from '@/hooks/useMunicipalitySearch';
 import { MunicipalityService, Municipality } from '@/services/municipality';
 import Indicators from './Indicators';
+import { useSearchParams } from 'next/navigation';
 
 interface SearchProps {
   handlePlaceSelection?: (place: any) => void;
   fullScreen?: boolean;
 }
 
-
 export default function Search({ fullScreen }: SearchProps) {
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null);
   const [showResults, setShowResults] = useState(false);
   const { query, setQuery, results, loading, error } = useMunicipalitySearch();
+  const searchParams = useSearchParams();
 
+  // Lire les paramètres d'URL au chargement
+  useEffect(() => {
+    const code = searchParams.get('code');
+    const nom = searchParams.get('nom');
+    
+    if (code && nom) {
+      // Sélectionner automatiquement la commune depuis les paramètres d'URL
+      const municipality: Municipality = {
+        code,
+        nom: decodeURIComponent(nom),
+        codeDepartement: code.substring(0, 2),
+        codeRegion: '', // Sera rempli par le service si nécessaire
+        population: 0,
+        codesPostaux: []
+      };
+      
+      setSelectedMunicipality(municipality);
+      setQuery(municipality.nom);
+    }
+  }, [searchParams, setQuery]);
 
   const handleMunicipalitySelect = (municipality: Municipality) => {
     setSelectedMunicipality(municipality);

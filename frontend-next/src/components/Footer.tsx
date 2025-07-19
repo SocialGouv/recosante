@@ -1,5 +1,5 @@
 import { Container } from '@/components/Container';
-import { Logo } from '@/components/Logo';
+import Logo from '@/components/Logo';
 
 import { NavLinks } from '@/components/NavLinks';
 import { GouvLogo } from '@/images/logos/gouv';

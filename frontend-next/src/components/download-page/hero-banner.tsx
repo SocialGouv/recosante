@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { AppStoreLink } from '../AppStoreLink';
 import { GoogleStoreLink } from '../GoogleStoreLink';
 import { MatomoService } from '@/services/matomo';
-import { Logo } from '../Logo';
+import Logo from '../Logo';
 
 function BackgroundIllustration(props: React.ComponentPropsWithoutRef<'div'>) {
   let id = useId();
