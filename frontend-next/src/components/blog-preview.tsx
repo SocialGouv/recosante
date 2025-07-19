@@ -75,7 +75,7 @@ export default function BlogPreview() {
           Découvrez nos derniers articles et actualités.
         </p>
         <div className='mx-auto mt-16 grid items-start max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3'>
-          {posts.map((post) => (
+          {posts.slice(0, 3).map((post) => (
             <article
               key={post.id}
               className='flex flex-col items-start justify-between'

@@ -4,6 +4,7 @@ import { marianneFont } from '@/assets/fonts';
 import { Matomo } from '@/components/matomo';
 import { CookieBanner } from '@/components/cookie-banner/cookie-banner';
 import { Suspense } from 'react';
+import StyledComponentsRegistry from '@/lib/registry';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -46,10 +47,12 @@ export default function RootLayout({
       </head>
       <Matomo />
       <body className='flex h-full flex-col font-app font-medium'>
-        <Suspense>
-          <CookieBanner />
-        </Suspense>
-        <div className='flex min-h-full flex-col'>{children}</div>
+        <StyledComponentsRegistry>
+          <Suspense>
+            <CookieBanner />
+          </Suspense>
+          <div className='flex min-h-full flex-col'>{children}</div>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

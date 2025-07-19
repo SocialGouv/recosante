@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { CirclesBackground } from '@/components/CirclesBackground';
-import { Logo } from '@/components/Logo';
+import Logo from '@/components/Logo';
 
 export function AuthLayout({
   title,

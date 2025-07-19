@@ -5,6 +5,9 @@
 const nextConfig = {
   output: 'standalone',
   trailingSlash: true,
+  compiler: {
+    styledComponents: true,
+  },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },

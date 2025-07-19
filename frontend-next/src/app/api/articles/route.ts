@@ -1,9 +1,17 @@
 import { NextResponse } from 'next/server';
 import { getAllArticles, getLatestArticles } from '@/utils/articles';
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { searchParams }: { searchParams: URLSearchParams }
+) {
   try {
-    const { searchParams } = new URL(request.url);
+   
+    if (!searchParams) {
+      const articles = getAllArticles();
+      return NextResponse.json({ articles });
+    }
+
     const limit = searchParams.get('limit');
     const category = searchParams.get('category');
 
