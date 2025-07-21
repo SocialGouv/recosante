@@ -22,7 +22,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.26.0",
     "beepbeep": "^1.3.0",
-    "browser-sync": "^2.29.3",
+    "browser-sync": "^3.0.0",
     "gulp": "^4.0.2",
     "gulp-awspublish": "^7.1.0",
     "gulp-cli": "^2.3.0",
