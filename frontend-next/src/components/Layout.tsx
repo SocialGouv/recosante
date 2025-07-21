@@ -1,5 +1,5 @@
 import { Footer } from '@/components/Footer';
-import { Header } from '@/components/Header';
+import Header from '@/components/Header';
 import { Banner } from './banner';
 
 export function Layout({ children }: { children: React.ReactNode }) {

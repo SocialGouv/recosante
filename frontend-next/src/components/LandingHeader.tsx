@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@/components/Container';
-import { Logo } from '@/components/Logo';
+import Logo from '@/components/Logo';
 import { GouvLogo } from '@/images/logos/gouv';
 import Link from 'next/link';
 
