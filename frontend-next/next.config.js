@@ -3,7 +3,7 @@
 const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
 
 // Import de la configuration partagée
-const { santeFrRedirects } = require('./redirects-config');
+const { santeFrRedirects } = require('./redirects-config.js');
 
 const nextConfig = {
   output: 'standalone',

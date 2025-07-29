@@ -63,7 +63,7 @@ export namespace IndicatorService {
           'Content-Type': 'application/json',
           'appdevice': 'website',
           'appversion': '1.0.0',
-          'appbuild': '1',
+          'appbuild': '100',
         },
         // credentials: 'include',
       });
