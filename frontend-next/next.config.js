@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 
- const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+
+// Import de la configuration partagée
+const { santeFrRedirects } = require('./redirects-config.js');
 
 const nextConfig = {
   output: 'standalone',
@@ -10,6 +13,15 @@ const nextConfig = {
   },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  },
+
+  // Redirections 301 vers sante.fr
+  async redirects() {
+    return santeFrRedirects.map(redirect => ({
+      source: `/articles/${redirect.localSlug}/`,
+      destination: redirect.santeFrUrl,
+      permanent: true,
+    }));
   },
 
   rewrites: async () => {
