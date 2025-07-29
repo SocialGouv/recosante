@@ -6,7 +6,6 @@ import Raep from './raep/Raep';
 import VigilanceMeteo from './vigilanceMeteo/VigilanceMeteo';
 import IndiceUv from './indiceUv/IndiceUv';
 import Baignades from './baignades/Baignades';
-import PotentielRadon from './potentielRadon/PotentielRadon';
 import { useIndicators } from '@/hooks/useIndicators';
 import { IndicatorService } from '@/services/indicator';
 
@@ -73,7 +72,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
     );
   }
 
-  return (
+    return (
     <section className="mx-auto max-w-6xl">
       {/* Version mobile - une colonne */}
       <div className="lg:hidden space-y-6">
@@ -108,9 +107,8 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
 
       {/* Version desktop - deux colonnes */}
       <div 
-        className="hidden lg:block"
+        className="hidden lg:grid"
         style={{
-          display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '1.5rem',
           width: '100%'

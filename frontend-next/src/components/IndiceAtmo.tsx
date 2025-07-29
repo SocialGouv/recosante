@@ -1,6 +1,7 @@
 'use client';
 
 import React from "react";
+import SafeHtml from './SafeHtml';
 
 interface IndiceAtmoProps {
   place?: {
@@ -118,7 +119,10 @@ export default function IndiceAtmo({ data, day = 'j0' }: IndiceAtmoProps) {
       {/* Bloc recommandations */}
       <div className="bg-blue-50 rounded-md p-3">
         <h3 className="text-sm font-semibold text-blue-700 mb-1">Recommandations</h3>
-        <div className="text-sm text-blue-900" dangerouslySetInnerHTML={{ __html: indicatorData.advice }} />
+        <SafeHtml
+          html={indicatorData.advice}
+          className="text-sm text-blue-900"
+        />
       </div>
 
       {/* Sous-indicateurs (polluants) - style identique à Baignades */}

@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Chart from "./Chart";
+import SafeHtml from "../SafeHtml";
 
 interface IndiceUvProps {
   data?: any;
@@ -108,7 +109,10 @@ Pour communiquer sur le niveau de risque d’une exposition au soleil, l’Organ
 
       <div className="bg-blue-50 rounded-md p-3">
         <h3 className="text-sm font-semibold text-blue-700 mb-1">Recommandations</h3>
-        <div className="text-sm text-blue-900" dangerouslySetInnerHTML={{ __html: indicatorData.advice }} />
+        <SafeHtml
+          html={indicatorData.advice}
+          className="text-sm text-blue-900"
+        />
       </div>
 
       {/* Bloc à propos */}

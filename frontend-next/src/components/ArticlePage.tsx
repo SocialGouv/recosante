@@ -9,7 +9,7 @@ interface ArticlePageProps {
 }
 
 export default function ArticlePage({ slug }: ArticlePageProps) {
-  const { hasRedirect, redirectUrl, isLoading } = useSanteFrRedirect(slug);
+  const { hasRedirect, redirectUrl } = useSanteFrRedirect(slug);
   const article = getArticleBySlug(slug);
 
   // Si l'article a une redirection vers sante.fr, afficher le composant de redirection
