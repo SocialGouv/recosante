@@ -14,311 +14,259 @@ const nextConfig = {
 
   // Redirections 301 vers sante.fr
   async redirects() {
-    return [
+    const santeFrRedirects = [
       // Rayons UV
       {
-        source: '/articles/les-rayons-uv-quels-effets-sur-la-sante-et-celle-de-vos-enfants/',
-        destination: 'https://www.sante.fr/les-rayons-uv-quels-effets-sur-la-sante-et-celle-de-vos-enfants',
-        permanent: true,
+        localSlug: 'les-rayons-uv-quels-effets-sur-la-sante-et-celle-de-vos-enfants',
+        santeFrUrl: 'https://www.sante.fr/les-rayons-uv-quels-effets-sur-la-sante-et-celle-de-vos-enfants'
       },
       {
-        source: '/articles/les-rayons-uv-quels-effets-sur-la-sante/',
-        destination: 'https://www.sante.fr/les-rayons-uv-quels-effets-sur-la-sante',
-        permanent: true,
+        localSlug: 'les-rayons-uv-quels-effets-sur-la-sante',
+        santeFrUrl: 'https://www.sante.fr/les-rayons-uv-quels-effets-sur-la-sante'
       },
       {
-        source: '/articles/comment-choisir-et-utiliser-un-produit-de-protection-solaire/',
-        destination: 'https://www.sante.fr/comment-choisir-et-utiliser-un-produit-de-protection-solaire',
-        permanent: true,
+        localSlug: 'comment-choisir-et-utiliser-un-produit-de-protection-solaire',
+        santeFrUrl: 'https://www.sante.fr/comment-choisir-et-utiliser-un-produit-de-protection-solaire'
       },
       {
-        source: '/articles/rayons-uv-lies-au-soleil-quels-risques-pour-les-yeux/',
-        destination: 'https://www.sante.fr/rayons-uv-lies-au-soleil-quels-risques-pour-les-yeux',
-        permanent: true,
+        localSlug: 'rayons-uv-lies-au-soleil-quels-risques-pour-les-yeux',
+        santeFrUrl: 'https://www.sante.fr/rayons-uv-lies-au-soleil-quels-risques-pour-les-yeux'
       },
 
       // Covid 19
       {
-        source: '/articles/covid-19-quels-gestes-adopter-pour-proteger-sa-sante-et-son-environnement/',
-        destination: 'https://www.sante.fr/covid-19-quels-gestes-adopter-pour-proteger-sa-sante-et-son-environnement',
-        permanent: true,
+        localSlug: 'covid-19-quels-gestes-adopter-pour-proteger-sa-sante-et-son-environnement',
+        santeFrUrl: 'https://www.sante.fr/covid-19-quels-gestes-adopter-pour-proteger-sa-sante-et-son-environnement'
       },
 
       // Santé
       {
-        source: '/articles/comment-se-proteger-du-moustique-tigre/',
-        destination: 'https://www.sante.fr/comment-se-proteger-du-moustique-tigre',
-        permanent: true,
+        localSlug: 'comment-se-proteger-du-moustique-tigre',
+        santeFrUrl: 'https://www.sante.fr/comment-se-proteger-du-moustique-tigre'
       },
       {
-        source: '/articles/comment-reduire-l-exposition-aux-ondes-de-son-telephone-portable/',
-        destination: 'https://www.sante.fr/comment-reduire-lexposition-aux-ondes-de-son-telephone-portable',
-        permanent: true,
+        localSlug: 'comment-reduire-l-exposition-aux-ondes-de-son-telephone-portable',
+        santeFrUrl: 'https://www.sante.fr/comment-reduire-lexposition-aux-ondes-de-son-telephone-portable'
       },
       {
-        source: '/articles/comment-eviter-les-morsures-de-tiques/',
-        destination: 'https://www.sante.fr/comment-eviter-les-morsures-de-tiques',
-        permanent: true,
+        localSlug: 'comment-eviter-les-morsures-de-tiques',
+        santeFrUrl: 'https://www.sante.fr/comment-eviter-les-morsures-de-tiques'
       },
       {
-        source: '/articles/comment-limiter-les-effets-du-bruit-sur-la-sante/',
-        destination: 'https://www.sante.fr/comment-limiter-les-effets-du-bruit-sur-la-sante',
-        permanent: true,
+        localSlug: 'comment-limiter-les-effets-du-bruit-sur-la-sante',
+        santeFrUrl: 'https://www.sante.fr/comment-limiter-les-effets-du-bruit-sur-la-sante'
       },
       {
-        source: '/articles/quels-sont-les-effets-de-la-lumiere-bleue-sur-la-sante/',
-        destination: 'https://www.sante.fr/quels-sont-les-effets-de-la-lumiere-bleue-sur-la-sante',
-        permanent: true,
+        localSlug: 'quels-sont-les-effets-de-la-lumiere-bleue-sur-la-sante',
+        santeFrUrl: 'https://www.sante.fr/quels-sont-les-effets-de-la-lumiere-bleue-sur-la-sante'
       },
       {
-        source: '/articles/cueillette-de-champignons-comment-prevenir-les-intoxications/',
-        destination: 'https://www.sante.fr/cueillette-de-champignons-comment-prevenir-les-intoxications',
-        permanent: true,
+        localSlug: 'cueillette-de-champignons-comment-prevenir-les-intoxications',
+        santeFrUrl: 'https://www.sante.fr/cueillette-de-champignons-comment-prevenir-les-intoxications'
       },
       {
-        source: '/articles/comment-lutter-contre-les-punaises-de-lit/',
-        destination: 'https://www.sante.fr/comment-lutter-contre-les-punaises-de-lit',
-        permanent: true,
+        localSlug: 'comment-lutter-contre-les-punaises-de-lit',
+        santeFrUrl: 'https://www.sante.fr/comment-lutter-contre-les-punaises-de-lit'
       },
       {
-        source: '/articles/comment-reduire-l-exposition-aux-perturbateurs-endocriniens/',
-        destination: 'https://www.sante.fr/comment-reduire-lexposition-aux-perturbateurs-endocriniens',
-        permanent: true,
+        localSlug: 'comment-reduire-l-exposition-aux-perturbateurs-endocriniens',
+        santeFrUrl: 'https://www.sante.fr/comment-reduire-lexposition-aux-perturbateurs-endocriniens'
       },
 
       // Allergies au pollen
       {
-        source: '/articles/comment-reconnaitre-une-allergie-aux-pollens/',
-        destination: 'https://www.sante.fr/comment-reconnaitre-une-allergie-aux-pollens',
-        permanent: true,
+        localSlug: 'comment-reconnaitre-une-allergie-aux-pollens',
+        santeFrUrl: 'https://www.sante.fr/comment-reconnaitre-une-allergie-aux-pollens'
       },
       {
-        source: '/articles/comment-reduire-les-effets-des-pollens-sur-votre-sante/',
-        destination: 'https://www.sante.fr/comment-reduire-les-effets-des-pollens-sur-votre-sante',
-        permanent: true,
+        localSlug: 'comment-reduire-les-effets-des-pollens-sur-votre-sante',
+        santeFrUrl: 'https://www.sante.fr/comment-reduire-les-effets-des-pollens-sur-votre-sante'
       },
       {
-        source: '/articles/a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air/',
-        destination: 'https://www.sante.fr/quelle-periode-de-lannee-y-t-il-le-plus-de-pollen-dans-lair',
-        permanent: true,
+        localSlug: 'a-quelle-periode-de-l-annee-y-a-t-il-le-plus-de-pollen-dans-l-air',
+        santeFrUrl: 'https://www.sante.fr/quelle-periode-de-lannee-y-t-il-le-plus-de-pollen-dans-lair'
       },
       {
-        source: '/articles/pourquoi-faut-il-lutter-contre-l-ambroisie/',
-        destination: 'https://www.sante.fr/pourquoi-faut-il-lutter-contre-lambroisie',
-        permanent: true,
+        localSlug: 'pourquoi-faut-il-lutter-contre-l-ambroisie',
+        santeFrUrl: 'https://www.sante.fr/pourquoi-faut-il-lutter-contre-lambroisie'
       },
 
       // Pollution
       {
-        source: '/articles/pollution-de-l-air-et-sante-quels-liens/',
-        destination: 'https://www.sante.fr/pollution-de-lair-et-sante-quels-liens',
-        permanent: true,
+        localSlug: 'pollution-de-l-air-et-sante-quels-liens',
+        santeFrUrl: 'https://www.sante.fr/pollution-de-lair-et-sante-quels-liens'
       },
       {
-        source: '/articles/comment-agit-la-france-sur-la-pollution-atmospherique/',
-        destination: 'https://www.sante.fr/comment-agit-la-france-sur-la-pollution-atmospherique',
-        permanent: true,
+        localSlug: 'comment-agit-la-france-sur-la-pollution-atmospherique',
+        santeFrUrl: 'https://www.sante.fr/comment-agit-la-france-sur-la-pollution-atmospherique'
       },
       {
-        source: '/articles/quel-est-le-role-des-transports-dans-la-pollution-atmospherique/',
-        destination: 'https://www.sante.fr/quel-est-le-role-des-transports-dans-la-pollution-atmospherique',
-        permanent: true,
+        localSlug: 'quel-est-le-role-des-transports-dans-la-pollution-atmospherique',
+        santeFrUrl: 'https://www.sante.fr/quel-est-le-role-des-transports-dans-la-pollution-atmospherique'
       },
       {
-        source: '/articles/pollution-de-l-air-en-voiture-comment-la-limiter/',
-        destination: 'https://www.sante.fr/pollution-de-lair-en-voiture-comment-la-limiter',
-        permanent: true,
+        localSlug: 'pollution-de-l-air-en-voiture-comment-la-limiter',
+        santeFrUrl: 'https://www.sante.fr/pollution-de-lair-en-voiture-comment-la-limiter'
       },
       {
-        source: '/articles/comment-la-meteo-influence-t-elle-la-qualite-de-l-air/',
-        destination: 'https://www.sante.fr/comment-la-meteo-influence-t-elle-la-qualite-de-lair',
-        permanent: true,
+        localSlug: 'comment-la-meteo-influence-t-elle-la-qualite-de-l-air',
+        santeFrUrl: 'https://www.sante.fr/comment-la-meteo-influence-t-elle-la-qualite-de-lair'
       },
       {
-        source: '/articles/pollution-des-sols-liee-a-l-activite-humaine-quels-effets-sur-la-sante/',
-        destination: 'https://www.sante.fr/pollution-des-sols-liee-lactivite-humaine-quels-effets-sur-la-sante',
-        permanent: true,
+        localSlug: 'pollution-des-sols-liee-a-l-activite-humaine-quels-effets-sur-la-sante',
+        santeFrUrl: 'https://www.sante.fr/pollution-des-sols-liee-lactivite-humaine-quels-effets-sur-la-sante'
       },
       {
-        source: '/articles/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air/',
-        destination: 'https://www.sante.fr/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-lair',
-        permanent: true,
+        localSlug: 'comment-adapter-sa-pratique-sportive-selon-la-qualite-de-l-air',
+        santeFrUrl: 'https://www.sante.fr/comment-adapter-sa-pratique-sportive-selon-la-qualite-de-lair'
       },
       {
-        source: '/articles/a-velo-comment-reduire-son-exposition-a-la-pollution/',
-        destination: 'https://www.sante.fr/velo-comment-reduire-son-exposition-la-pollution',
-        permanent: true,
+        localSlug: 'a-velo-comment-reduire-son-exposition-a-la-pollution',
+        santeFrUrl: 'https://www.sante.fr/velo-comment-reduire-son-exposition-la-pollution'
       },
       {
-        source: '/articles/les-microcapteurs-de-qualite-de-l-air-ambiant-sont-ils-fiables/',
-        destination: 'https://www.sante.fr/les-microcapteurs-de-qualite-de-lair-ambiant-sont-ils-fiable',
-        permanent: true,
+        localSlug: 'les-microcapteurs-de-qualite-de-l-air-ambiant-sont-ils-fiables',
+        santeFrUrl: 'https://www.sante.fr/les-microcapteurs-de-qualite-de-lair-ambiant-sont-ils-fiable'
       },
 
       // Phénomènes météorologiques
       {
-        source: '/articles/quels-gestes-adopter-en-periode-de-grand-froid/',
-        destination: 'https://www.sante.fr/quels-gestes-adopter-en-periode-de-grand-froid',
-        permanent: true,
+        localSlug: 'quels-gestes-adopter-en-periode-de-grand-froid',
+        santeFrUrl: 'https://www.sante.fr/quels-gestes-adopter-en-periode-de-grand-froid'
       },
       {
-        source: '/articles/quels-reflexes-a-prendre-pour-proteger-son-enfant-du-grand-froid/',
-        destination: 'https://www.sante.fr/quels-reflexes-prendre-pour-proteger-son-enfant-du-grand-froid',
-        permanent: true,
+        localSlug: 'quels-reflexes-a-prendre-pour-proteger-son-enfant-du-grand-froid',
+        santeFrUrl: 'https://www.sante.fr/quels-reflexes-prendre-pour-proteger-son-enfant-du-grand-froid'
       },
       {
-        source: '/articles/qu-est-ce-que-la-vigilance-meteorologique/',
-        destination: 'https://www.sante.fr/quest-ce-que-la-vigilance-meteorologique',
-        permanent: true,
+        localSlug: 'qu-est-ce-que-la-vigilance-meteorologique',
+        santeFrUrl: 'https://www.sante.fr/quest-ce-que-la-vigilance-meteorologique'
       },
       {
-        source: '/articles/inondations-quels-sont-les-bons-reflexes/',
-        destination: 'https://www.sante.fr/inondations-quels-sont-les-bons-reflexes',
-        permanent: true,
+        localSlug: 'inondations-quels-sont-les-bons-reflexes',
+        santeFrUrl: 'https://www.sante.fr/inondations-quels-sont-les-bons-reflexes'
       },
       {
-        source: '/articles/quels-comportements-adopter-en-cas-de-secheresse/',
-        destination: 'https://www.sante.fr/quels-comportements-adopter-en-cas-de-secheresse',
-        permanent: true,
+        localSlug: 'quels-comportements-adopter-en-cas-de-secheresse',
+        santeFrUrl: 'https://www.sante.fr/quels-comportements-adopter-en-cas-de-secheresse'
       },
       {
-        source: '/articles/que-faire-en-cas-de-vigilance-meteo-neige-et-verglas/',
-        destination: 'https://www.sante.fr/que-faire-en-cas-de-vigilance-meteo-neige-et-verglas',
-        permanent: true,
+        localSlug: 'que-faire-en-cas-de-vigilance-meteo-neige-et-verglas',
+        santeFrUrl: 'https://www.sante.fr/que-faire-en-cas-de-vigilance-meteo-neige-et-verglas'
       },
       {
-        source: '/articles/quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche/',
-        destination: 'https://www.sante.fr/quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche',
-        permanent: true,
+        localSlug: 'quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche',
+        santeFrUrl: 'https://www.sante.fr/quels-gestes-adopter-en-cas-de-vigilance-meteo-avalanche'
       },
       {
-        source: '/articles/comment-se-proteger-en-cas-de-vague-de-chaleur/',
-        destination: 'https://www.sante.fr/comment-se-proteger-en-cas-de-vague-de-chaleur',
-        permanent: true,
+        localSlug: 'comment-se-proteger-en-cas-de-vague-de-chaleur',
+        santeFrUrl: 'https://www.sante.fr/comment-se-proteger-en-cas-de-vague-de-chaleur'
       },
       {
-        source: '/articles/comment-proteger-votre-sante-et-celle-de-vos-enfants-en-cas-de-fortes-chaleurs/',
-        destination: 'https://www.sante.fr/comment-proteger-votre-sante-et-celle-de-vos-enfants-en-cas-de-fortes-chaleurs',
-        permanent: true,
+        localSlug: 'comment-proteger-votre-sante-et-celle-de-vos-enfants-en-cas-de-fortes-chaleurs',
+        santeFrUrl: 'https://www.sante.fr/comment-proteger-votre-sante-et-celle-de-vos-enfants-en-cas-de-fortes-chaleurs'
       },
 
       // À la maison
       {
-        source: '/articles/l-air-interieur-des-logements-est-il-pollue/',
-        destination: 'https://www.sante.fr/lair-interieur-des-logements-est-il-pollue',
-        permanent: true,
+        localSlug: 'l-air-interieur-des-logements-est-il-pollue',
+        santeFrUrl: 'https://www.sante.fr/lair-interieur-des-logements-est-il-pollue'
       },
       {
-        source: '/articles/comment-aerer-son-logement-pour-ameliorer-l-air-interieur/',
-        destination: 'https://www.sante.fr/comment-aerer-son-logement-pour-ameliorer-lair-interieur',
-        permanent: true,
+        localSlug: 'comment-aerer-son-logement-pour-ameliorer-l-air-interieur',
+        santeFrUrl: 'https://www.sante.fr/comment-aerer-son-logement-pour-ameliorer-lair-interieur'
       },
       {
-        source: '/articles/comment-ameliorer-la-qualite-de-l-air-chez-soi-grace-a-la-ventilation/',
-        destination: 'https://www.sante.fr/comment-ameliorer-la-qualite-de-lair-chez-soi-grace-la-ventilation',
-        permanent: true,
+        localSlug: 'comment-ameliorer-la-qualite-de-l-air-chez-soi-grace-a-la-ventilation',
+        santeFrUrl: 'https://www.sante.fr/comment-ameliorer-la-qualite-de-lair-chez-soi-grace-la-ventilation'
       },
       {
-        source: '/articles/comment-chauffer-son-interieur-en-toute-securite/',
-        destination: 'https://www.sante.fr/comment-chauffer-son-interieur-en-toute-securite',
-        permanent: true,
+        localSlug: 'comment-chauffer-son-interieur-en-toute-securite',
+        santeFrUrl: 'https://www.sante.fr/comment-chauffer-son-interieur-en-toute-securite'
       },
       {
-        source: '/articles/que-faire-en-presence-de-radon-dans-son-logement/',
-        destination: 'https://www.sante.fr/que-faire-en-presence-de-radon-dans-son-logement',
-        permanent: true,
+        localSlug: 'que-faire-en-presence-de-radon-dans-son-logement',
+        santeFrUrl: 'https://www.sante.fr/que-faire-en-presence-de-radon-dans-son-logement'
       },
       {
-        source: '/articles/chauffage-au-bois-comment-bien-l-utiliser/',
-        destination: 'https://www.sante.fr/chauffage-au-bois-comment-bien-lutiliser',
-        permanent: true,
+        localSlug: 'chauffage-au-bois-comment-bien-l-utiliser',
+        santeFrUrl: 'https://www.sante.fr/chauffage-au-bois-comment-bien-lutiliser'
       },
       {
-        source: '/articles/les-produits-d-entretien-polluent-ils-l-air-interieur/',
-        destination: 'https://www.sante.fr/les-produits-dentretien-polluent-ils-lair-interieur',
-        permanent: true,
+        localSlug: 'les-produits-d-entretien-polluent-ils-l-air-interieur',
+        santeFrUrl: 'https://www.sante.fr/les-produits-dentretien-polluent-ils-lair-interieur'
       },
       {
-        source: '/articles/comment-proteger-son-enfant-des-produits-chimiques-a-la-maison/',
-        destination: 'https://www.sante.fr/comment-proteger-son-enfant-des-produits-chimiques-la-maison',
-        permanent: true,
+        localSlug: 'comment-proteger-son-enfant-des-produits-chimiques-a-la-maison',
+        santeFrUrl: 'https://www.sante.fr/comment-proteger-son-enfant-des-produits-chimiques-la-maison'
       },
       {
-        source: '/articles/comment-jardiner-sans-polluer/',
-        destination: 'https://www.sante.fr/comment-jardiner-sans-polluer',
-        permanent: true,
+        localSlug: 'comment-jardiner-sans-polluer',
+        santeFrUrl: 'https://www.sante.fr/comment-jardiner-sans-polluer'
       },
       {
-        source: '/articles/comment-ameliorer-l-air-de-son-logement-quand-on-est-futurs-ou-nouveaux-parents/',
-        destination: 'https://www.sante.fr/comment-ameliorer-lair-de-son-logement-quand-est-futurs-ou-nouveaux-parents',
-        permanent: true,
+        localSlug: 'comment-ameliorer-l-air-de-son-logement-quand-on-est-futurs-ou-nouveaux-parents',
+        santeFrUrl: 'https://www.sante.fr/comment-ameliorer-lair-de-son-logement-quand-est-futurs-ou-nouveaux-parents'
       },
       {
-        source: '/articles/comment-limiter-l-humidite-dans-son-logement/',
-        destination: 'https://www.sante.fr/comment-limiter-lhumidite-dans-son-logement',
-        permanent: true,
+        localSlug: 'comment-limiter-l-humidite-dans-son-logement',
+        santeFrUrl: 'https://www.sante.fr/comment-limiter-lhumidite-dans-son-logement'
       },
       {
-        source: '/articles/comment-reduire-l-exposition-aux-polluants-pendant-les-travaux/',
-        destination: 'https://www.sante.fr/comment-reduire-lexposition-aux-polluants-pendant-les-travaux',
-        permanent: true,
+        localSlug: 'comment-reduire-l-exposition-aux-polluants-pendant-les-travaux',
+        santeFrUrl: 'https://www.sante.fr/comment-reduire-lexposition-aux-polluants-pendant-les-travaux'
       },
       {
-        source: '/articles/cuisiner-en-protegeant-sa-sante-quels-gestes-adopter/',
-        destination: 'https://www.sante.fr/cuisiner-en-protegeant-sa-sante-quels-gestes-adopter',
-        permanent: true,
+        localSlug: 'cuisiner-en-protegeant-sa-sante-quels-gestes-adopter',
+        santeFrUrl: 'https://www.sante.fr/cuisiner-en-protegeant-sa-sante-quels-gestes-adopter'
       },
       {
-        source: '/articles/comment-utiliser-l-eau-de-pluie/',
-        destination: 'https://www.sante.fr/comment-utiliser-leau-de-pluie',
-        permanent: true,
+        localSlug: 'comment-utiliser-l-eau-de-pluie',
+        santeFrUrl: 'https://www.sante.fr/comment-utiliser-leau-de-pluie'
       },
       {
-        source: '/articles/comment-prevenir-l-exposition-au-plomb-dans-son-logement/',
-        destination: 'https://www.sante.fr/comment-prevenir-lexposition-au-plomb-dans-son-logement',
-        permanent: true,
+        localSlug: 'comment-prevenir-l-exposition-au-plomb-dans-son-logement',
+        santeFrUrl: 'https://www.sante.fr/comment-prevenir-lexposition-au-plomb-dans-son-logement'
       },
       {
-        source: '/articles/les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur/',
-        destination: 'https://www.sante.fr/les-plantes-ameliorent-elles-la-qualite-de-lair-interieur',
-        permanent: true,
+        localSlug: 'les-plantes-ameliorent-elles-la-qualite-de-l-air-interieur',
+        santeFrUrl: 'https://www.sante.fr/les-plantes-ameliorent-elles-la-qualite-de-lair-interieur'
       },
       {
-        source: '/articles/comment-limiter-la-presence-d-acariens-dans-son-logement/',
-        destination: 'https://www.sante.fr/comment-limiter-la-presence-dacariens-dans-son-logement',
-        permanent: true,
+        localSlug: 'comment-limiter-la-presence-d-acariens-dans-son-logement',
+        santeFrUrl: 'https://www.sante.fr/comment-limiter-la-presence-dacariens-dans-son-logement'
       },
       {
-        source: '/articles/comment-eviter-l-exposition-a-l-amiante/',
-        destination: 'https://www.sante.fr/comment-eviter-lexposition-lamiante',
-        permanent: true,
+        localSlug: 'comment-eviter-l-exposition-a-l-amiante',
+        santeFrUrl: 'https://www.sante.fr/comment-eviter-lexposition-lamiante'
       },
       {
-        source: '/articles/les-purificateurs-d-air-ameliorent-ils-la-qualite-de-l-air-interieur-chez-soi/',
-        destination: 'https://www.sante.fr/les-purificateurs-dair-ameliorent-ils-la-qualite-de-lair-interieur-chez-soi',
-        permanent: true,
+        localSlug: 'les-purificateurs-d-air-ameliorent-ils-la-qualite-de-l-air-interieur-chez-soi',
+        santeFrUrl: 'https://www.sante.fr/les-purificateurs-dair-ameliorent-ils-la-qualite-de-lair-interieur-chez-soi'
       },
       {
-        source: '/articles/les-bougies-et-l-encens-degradent-ils-la-qualite-de-l-air-interieur/',
-        destination: 'https://www.sante.fr/les-bougies-et-lencens-degradent-ils-la-qualite-de-lair-interieur',
-        permanent: true,
+        localSlug: 'les-bougies-et-l-encens-degradent-ils-la-qualite-de-l-air-interieur',
+        santeFrUrl: 'https://www.sante.fr/les-bougies-et-lencens-degradent-ils-la-qualite-de-lair-interieur'
       },
       {
-        source: '/articles/comment-eviter-une-intoxication-au-monoxyde-de-carbone/',
-        destination: 'https://www.sante.fr/comment-eviter-une-intoxication-au-monoxyde-de-carbone',
-        permanent: true,
+        localSlug: 'comment-eviter-une-intoxication-au-monoxyde-de-carbone',
+        santeFrUrl: 'https://www.sante.fr/comment-eviter-une-intoxication-au-monoxyde-de-carbone'
       },
       {
-        source: '/articles/que-signifient-les-pictogrammes-de-danger-sur-les-produits-chimiques/',
-        destination: 'https://www.sante.fr/que-signifient-les-pictogrammes-de-danger-sur-les-produits-chimiques',
-        permanent: true,
+        localSlug: 'que-signifient-les-pictogrammes-de-danger-sur-les-produits-chimiques',
+        santeFrUrl: 'https://www.sante.fr/que-signifient-les-pictogrammes-de-danger-sur-les-produits-chimiques'
       },
       {
-        source: '/articles/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-a-la-maison/',
-        destination: 'https://www.sante.fr/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-la-maison',
-        permanent: true,
-      },
+        localSlug: 'quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-a-la-maison',
+        santeFrUrl: 'https://www.sante.fr/quels-gestes-adopter-pour-profiter-du-sapin-de-noel-en-toute-securite-la-maison'
+      }
     ];
+    
+    return santeFrRedirects.map(redirect => ({
+      source: `/articles/${redirect.localSlug}/`,
+      destination: redirect.santeFrUrl,
+      permanent: true,
+    }));
   },
 
   rewrites: async () => {
