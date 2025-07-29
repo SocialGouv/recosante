@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import { getRedirectUrl, hasRedirect } from './santeFrRedirects';
 
 const articlesDirectory = path.join(process.cwd(), 'src/content/articles');
 
@@ -16,6 +17,7 @@ export interface Article {
   content: string;
   slug: string;
   excerpt?: string;
+  redirectToSanteFr?: string;
 }
 
 export function getAllArticles(): Article[] {
@@ -42,12 +44,16 @@ export function getAllArticles(): Article[] {
         .substring(0, 150)
         .trim() + '...';
 
+      // Vérifier s'il y a une redirection vers le client
+      const redirectToSanteFr = getRedirectUrl(id);
+
       // Combiner les données avec l'id
       return {
         id,
         slug,
         excerpt,
         content: contentWithoutFrontmatter,
+        redirectToSanteFr,
         ...(matterResult.data as {
           title: string;
           order: number;
@@ -82,12 +88,16 @@ export function getArticleBySlug(slug: string): Article | null {
       .substring(0, 150)
       .trim() + '...';
 
+    // Vérifier s'il y a une redirection vers sante.fr
+    const redirectToSanteFr = getRedirectUrl(slug);
+
     // Combiner les données avec l'id
     return {
       id: slug,
       slug,
       excerpt,
       content: contentHtml,
+      redirectToSanteFr,
       ...(matterResult.data as {
         title: string;
         order: number;
@@ -109,4 +119,19 @@ export function getArticlesByCategory(category: string): Article[] {
 export function getLatestArticles(limit: number = 3): Article[] {
   const allArticles = getAllArticles();
   return allArticles.slice(0, limit);
+}
+
+// Fonctions utilitaires pour les redirections vers sante.fr
+export function getArticlesWithRedirects(): Article[] {
+  const allArticles = getAllArticles();
+  return allArticles.filter(article => article.redirectToSanteFr);
+}
+
+export function getArticlesWithoutRedirects(): Article[] {
+  const allArticles = getAllArticles();
+  return allArticles.filter(article => !article.redirectToSanteFr);
+}
+
+export function hasRedirectToSanteFr(slug: string): boolean {
+  return hasRedirect(slug);
 } 

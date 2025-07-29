@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Article } from '@/utils/articles';
+import { hasRedirect } from '@/utils/santeFrRedirects';
 import Header from '@/components/Header';
 
 export default function ArticlesPage() {
@@ -90,73 +91,83 @@ export default function ArticlesPage() {
 
         {/* Grille d'articles */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredArticles.map((article) => (
-            <article key={article.slug} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              {/* Image de l'article */}
-              <div className="relative h-48 bg-gray-200">
-                {article.image && (
-                  <Image
-                    src={article.image}
-                    alt={article.title}
-                    fill
-                    className="object-cover"
-                  />
-                )}
-              </div>
-              
-              {/* Contenu de l'article */}
-              <div className="p-6">
-                {/* Catégorie */}
-                {article.category && (
-                  <div className="mb-3">
-                    <div className='flex items-center gap-x-4 text-xs'>
-                  <span className='relative z-10 rounded-full bg-app-primary px-3 py-1.5 font-medium text-white '>
-                    {article.category}
-                  </span>
+          {filteredArticles.map((article) => {
+            const hasRedirectToSanteFr = hasRedirect(article.slug);
+
+            return (
+              <article key={article.slug} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                {/* Image de l'article */}
+                <div className="relative h-48 bg-gray-200">
+                  {article.image && (
+                    <Image
+                      src={article.image}
+                      alt={article.title}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                 
                 </div>
-                  </div>
-                )}
                 
-                {/* Titre */}
-                <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
-                  {article.title}
-                </h2>
-                
-                {/* Extrait */}
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {article.excerpt}
-                </p>
-                
-                {/* Actions */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                   
-                    
-                    {/* Icône Partager */}
-                    <button className="text-gray-400 hover:text-main transition-colors">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                      </svg>
-                    </button>
-                    
-                    {/* Icône Télécharger */}
-                   
-                  </div>
+                {/* Contenu de l'article */}
+                <div className="p-6">
+                  {/* Catégorie */}
+                  {article.category && (
+                    <div className="mb-3">
+                      <div className='flex items-center gap-x-4 text-xs'>
+                        <span className='relative z-10 rounded-full bg-app-primary px-3 py-1.5 font-medium text-white '>
+                          {article.category}
+                        </span>
+                        {hasRedirectToSanteFr && (
+                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                            → sante.fr
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                   
-                  {/* Lien "Lire plus" */}
-                  <Link
-                    href={`/articles/${article.slug}`}
-                    className="inline-flex items-center text-main hover:text-main/80 font-medium transition-colors"
-                  >
-                    Lire plus
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
+                  {/* Titre */}
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                    {article.title}
+                  </h2>
+                  
+                  {/* Extrait */}
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    {article.excerpt}
+                  </p>
+                  
+                  {/* Actions */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                     
+                      
+                      {/* Icône Partager */}
+                      <button className="text-gray-400 hover:text-main transition-colors">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                        </svg>
+                      </button>
+                      
+                      {/* Icône Télécharger */}
+                     
+                    </div>
+                    
+                    {/* Lien "Lire plus" - les redirections 301 sont gérées automatiquement */}
+                    <Link
+                      href={`/articles/${article.slug}`}
+                      className="inline-flex items-center text-main hover:text-main/80 font-medium transition-colors"
+                    >
+                      Lire plus
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
         
         {/* Message si aucun article trouvé */}
