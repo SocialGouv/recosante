@@ -3,37 +3,6 @@ global:
   apiHost: "api.recosante.beta.gouv.fr"
   apiNodeHost: "recosante-api-node.fabrique.social.gouv.fr"
 
-pg:
-  ~chart: pg
-  backup:
-    name: ovh # backup on a new folder
-  cnpg-cluster:
-    recovery:
-      enabled: true
-      ~tpl~database: "{{ .Values.global.pgDatabase }}"
-      ~tpl~owner: "{{ .Values.global.pgUser }}"
-      secretName: "pg-db"
-      barmanObjectStore:
-        ~tpl~destinationPath: "s3://recosante-prod-backups/recosante"
-        s3Credentials:
-          accessKeyId:
-            ~tpl~name: "recosante-prod-backups-access-key"
-            key: bucket_access_key
-          secretAccessKey:
-            ~tpl~name: "recosante-prod-backups-access-key"
-            key: bucket_secret_key
-          region:
-            ~tpl~name: "recosante-prod-backups-access-key"
-            key: bucket_region
-    persistence:
-      size: "50Gi"
-    resources:
-      requests:
-        cpu: 500m
-        memory: 3Gi
-      limits:
-        cpu: 1
-        memory: 3Gi
 
 pg-api-node:
   cnpg-cluster:
@@ -47,16 +16,6 @@ pg-api-node:
         cpu: 1500m
         memory: 3Gi
 
-flower:
-  replicas: 1
-  host: "flower-recosante.fabrique.social.gouv.fr"
-  resources:
-    requests:
-      cpu: 100m
-      memory: 768Mi
-    limits:
-      cpu: 300m
-      memory: 1Gi
       
 redis:
   strategyType: Recreate # mandatory because volume is RWO
@@ -73,15 +32,6 @@ redis:
       cpu: 300m
       memory: 256Mi
       
-api:
-  replicas: 1
-  resources:
-    requests:
-      cpu: 200m
-      memory: 4Gi
-    limits:
-      cpu: "1"
-      memory: 6Gi
 
 api-node:
   resources:
@@ -92,14 +42,6 @@ api-node:
       cpu: 300m
       memory: 1Gi
 
-frontend:
-  resources:
-    requests:
-      cpu: 300m
-      memory: 1280Mi
-    limits:
-      cpu: 400m
-      memory: 1536Mi
 
 frontend-next:
   certSecretName: frontend-beta
@@ -110,13 +52,3 @@ frontend-next:
     limits:
       cpu: 200m
       memory: 786Mi
-      
-indice:
-  replicas: 1
-  resources:
-    requests:
-      cpu: 300m
-      memory: 2Gi
-    limits:
-      cpu: 700m
-      memory: 2Gi

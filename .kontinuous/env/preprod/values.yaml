@@ -1,20 +1,3 @@
-pg:
-  ~chart: pg
-  backup:
-    name: 2023-02-27-14-34 # backup on a new folder
-  cnpg-cluster:
-    persistence:
-      size: "40Gi"
-    annotations:
-      oblik.socialgouv.io/min-request-cpu: "1"
-      
-      oblik.socialgouv.io/memory-request-from-cpu-enabled: "true"
-      oblik.socialgouv.io/memory-request-from-cpu-algo: "ratio"
-      oblik.socialgouv.io/memory-request-from-cpu-value: "3"
-
-      oblik.socialgouv.io/limit-cpu-calculator-algo: ratio
-      oblik.socialgouv.io/limit-cpu-calculator-value: "2"
-
 pg-api-node:
   ~chart: pg
   backup:
@@ -22,9 +5,6 @@ pg-api-node:
   cnpg-cluster:
     persistence:
       size: "22Gi"
-
-api:
-  ~needs: [seed-db]
 
 
 api-node:
@@ -36,34 +16,3 @@ cronjobs:
   env:
     - name: ENVIRONMENT
       value: "preproduction"
-
-
-jobs:
-  runs:
-    seed-db:
-      ~needs: [pg]
-      retry: 3
-      checkout: true
-      image: ghcr.io/socialgouv/docker/psql:7.0.0
-      envFrom:
-        - secretRef:
-            name: "pg-app"
-      run: |
-        if [[ $(psql -c "\dt public.alembic_version") ]]
-        then
-            echo "Data already loaded"
-        else
-            echo "Init database"
-            psql -b < /workspace/seeds.sql
-        fi
-
-    launch-celery-tasks:
-      # launch all celery tasks immediately in dev to start refreshing data
-      # and not wait for the hourly cron
-      ~needs: [indice]
-      checkout: false
-      kubernetes: true
-      image: bitnami/kubectl
-      run: |
-        indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
-        kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py

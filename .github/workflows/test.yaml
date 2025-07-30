@@ -68,9 +68,6 @@ jobs:
       - name: Install Dependencies
         run: |
           yarn --immutable
-          cd api
-          pip install poetry
-          poetry install
 
       - name: Reconfigure Locales
         run: |

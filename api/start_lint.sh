@@ -1,2 +1,0 @@
-.venv/bin/pylint --rcfile='../.pylintrc' --fail-under=10.0 --reports=no --output-format=colorized 'ecosante';
-.venv/bin/pylint --rcfile='../.pylintrc' --fail-under=10.0 --reports=no --output-format=colorized 'tests';
