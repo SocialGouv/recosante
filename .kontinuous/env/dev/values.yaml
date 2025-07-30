@@ -1,20 +1,3 @@
-pg:
-  ~chart: pg
-  cnpg-cluster:
-    annotations:
-      oblik.socialgouv.io/min-request-cpu: 500m
-      oblik.socialgouv.io/min-limit-cpu: "1"
-      oblik.socialgouv.io/min-request-memory: 2Gi
-
-api:
-  ~needs: [seed-db]
-
-indice:
-  ~needs: [api]
-  annotations:
-    oblik.socialgouv.io/min-limit-cpu: "3"
-    oblik.socialgouv.io/min-limit-memory: 3Gi 
-
 api-node:
   env:
     - name: ENVIRONMENT
@@ -33,34 +16,7 @@ cronjobs:
 
 jobs:
   runs:
-    seed-db:
-      ~needs: [pg]
-      retry: 3
-      checkout: true
-      image: ghcr.io/socialgouv/docker/psql:7.0.0
-      envFrom:
-        - secretRef:
-            name: "pg-app"
-      run: |
-        if [[ $(psql -c "\dt public.alembic_version") ]]
-        then
-            echo "Data already loaded"
-        else
-            echo "Init database"
-            psql -b < /workspace/seeds.sql
-        fi
-
-    launch-celery-tasks:
-      # launch all celery tasks immediately in dev to start refreshing data
-      # and not wait for the hourly cron
-      ~needs: [indice]
-      checkout: false
-      kubernetes: true
-      image: bitnami/kubectl
-      run: |
-        indice_pod=$(kubectl get pods -o name -n {{ .Values.global.namespace }}  | grep pod/indice)
-        kubectl exec $indice_pod -n {{ .Values.global.namespace }} -- .venv/bin/python call_all_tasks.py
-        
+    
     run-unit-tests:
       ~needs: [api-node]
       checkout: true
@@ -74,7 +30,7 @@ jobs:
         yarn test:unit
         
     run-integration-tests:
-      ~needs: [pg-api-node,api-node, pg, run-unit-tests]
+      ~needs: [pg-api-node,api-node,run-unit-tests]
       checkout: true
       image: node:19-bullseye
       memoryLimit: 2Gi
