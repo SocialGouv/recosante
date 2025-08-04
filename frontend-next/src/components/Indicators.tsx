@@ -8,6 +8,7 @@ import IndiceUv from './indiceUv/IndiceUv';
 import Baignades from './baignades/Baignades';
 import PotentielRadon from './potentielRadon/PotentielRadon';
 import { useIndicators } from '@/hooks/useIndicators';
+import { useFavorites } from '@/hooks/useFavorites';
 import { IndicatorService } from '@/services/indicator';
 
 interface IndicatorsProps {
@@ -28,6 +29,8 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
     municipalityCode: defaultMunicipalityCode,
   });
 
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+
   // Récupérer les indicateurs spécifiques
   const indiceAtmo = IndicatorService.getIndicatorBySlug(indicators, 'indice_atmospheric');
   const indiceUv = IndicatorService.getIndicatorBySlug(indicators, 'indice_uv');
@@ -36,6 +39,30 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
   const baignades = IndicatorService.getIndicatorBySlug(indicators, 'bathing_water');
 
   console.log('Indicators: Données récupérées:', { indicators, indiceAtmo, indiceUv, pollens, vigilanceMeteo, baignades });
+
+  // Fonction pour trier les indicateurs (favoris en premier)
+  const sortIndicators = (indicators: any[]) => {
+    return indicators.sort((a, b) => {
+      const aIsFavorite = isFavorite(a.slug);
+      const bIsFavorite = isFavorite(b.slug);
+      
+      if (aIsFavorite && !bIsFavorite) return -1;
+      if (!aIsFavorite && bIsFavorite) return 1;
+      return 0;
+    });
+  };
+
+  // Préparer les indicateurs avec leurs données et les trier
+  const allIndicators = [
+    { component: IndiceAtmo, data: indiceAtmo, slug: 'indice_atmospheric', props: { place, day } },
+    { component: Raep, data: pollens, slug: 'pollen_allergy', props: { place, date, day } },
+    { component: IndiceUv, data: indiceUv, slug: 'indice_uv', props: { day } },
+    { component: Baignades, data: baignades, slug: 'bathing_water', props: { place, day } },
+    { component: VigilanceMeteo, data: vigilanceMeteo, slug: 'weather_alert', props: { place, day } },
+  ].filter(indicator => indicator.data); // Filtrer les indicateurs sans données
+
+  // Trier les indicateurs (favoris en premier)
+  const sortedIndicators = sortIndicators(allIndicators);
 
   if (loading) {
     return (
@@ -73,37 +100,49 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
     );
   }
 
+  // Composant wrapper pour ajouter l'étoile de favori
+  const IndicatorWithFavorite = ({ indicator }: { indicator: any }) => {
+    const Component = indicator.component;
+    const isFav = isFavorite(indicator.slug);
+    
+    return (
+      <div className="relative">
+        <div className="absolute top-2 right-2 z-10">
+          <button
+            onClick={() => toggleFavorite(indicator.slug)}
+            className="transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1 bg-white/80 backdrop-blur-sm"
+            aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+          >
+            <svg
+              className={`w-5 h-5 transition-all duration-200 ${
+                isFav 
+                  ? 'text-yellow-500 fill-current' 
+                  : 'text-gray-400 hover:text-yellow-400'
+              }`}
+              viewBox="0 0 24 24"
+              fill={isFav ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+            </svg>
+          </button>
+        </div>
+        
+        <Component {...indicator.props} data={indicator.data} />
+      </div>
+    );
+  };
+
   return (
     <section className="mx-auto max-w-6xl">
       {/* Version mobile - une colonne */}
       <div className="lg:hidden space-y-6">
-        <IndiceAtmo 
-          place={place} 
-          data={indiceAtmo}
-          day={day}
-        />
-        <Raep 
-          place={place} 
-          date={date} 
-          data={pollens}
-          day={day}
-        />
-        <IndiceUv 
-          data={indiceUv}
-          day={day}
-        />
-        {baignades && (
-          <Baignades 
-            place={place} 
-            data={baignades}
-            day={day}
-          />
-        )}
-        <VigilanceMeteo 
-          place={place} 
-          data={vigilanceMeteo}
-          day={day}
-        />
+        {sortedIndicators.map((indicator, index) => (
+          <IndicatorWithFavorite key={`${indicator.slug}-${index}`} indicator={indicator} />
+        ))}
       </div>
 
       {/* Version desktop - deux colonnes */}
@@ -118,37 +157,20 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
       >
         {/* Colonne gauche */}
         <div className="space-y-6">
-          <IndiceAtmo 
-            place={place} 
-            data={indiceAtmo}
-            day={day}
-          />
-          <Raep 
-            place={place} 
-            date={date} 
-            data={pollens}
-            day={day}
-          />
-          {baignades && (
-            <Baignades 
-              place={place} 
-              data={baignades}
-              day={day}
-            />
-          )}
+          {sortedIndicators
+            .filter((_, index) => index % 2 === 0)
+            .map((indicator, index) => (
+              <IndicatorWithFavorite key={`left-${indicator.slug}-${index}`} indicator={indicator} />
+            ))}
         </div>
 
         {/* Colonne droite */}
         <div className="space-y-6">
-          <IndiceUv 
-            data={indiceUv}
-            day={day}
-          />
-          <VigilanceMeteo 
-            place={place} 
-            data={vigilanceMeteo}
-            day={day}
-          />
+          {sortedIndicators
+            .filter((_, index) => index % 2 === 1)
+            .map((indicator, index) => (
+              <IndicatorWithFavorite key={`right-${indicator.slug}-${index}`} indicator={indicator} />
+            ))}
         </div>
       </div>
     </section>
