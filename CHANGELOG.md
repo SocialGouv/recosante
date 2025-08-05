@@ -1,3 +1,10 @@
+# [1.48.0](https://github.com/SocialGouv/recosante/compare/v1.47.0...v1.48.0) (2025-08-05)
+
+
+### Features
+
+* ajout des fonctionnalités de favoris pour les villes et les ind… ([#666](https://github.com/SocialGouv/recosante/issues/666)) ([b29faf5](https://github.com/SocialGouv/recosante/commit/b29faf52ab2ebf9f7a61c7e039c8c4a07f910fba))
+
 ## [1.45.3](https://github.com/SocialGouv/recosante/compare/v1.45.2...v1.45.3) (2025-07-01)
 
 
