@@ -10,6 +10,7 @@ import PotentielRadon from './potentielRadon/PotentielRadon';
 import { useIndicators } from '@/hooks/useIndicators';
 import { useFavorites } from '@/hooks/useFavorites';
 import { IndicatorService } from '@/services/indicator';
+import StarIcon from './StarIcon';
 
 interface IndicatorsProps {
   place?: {
@@ -19,6 +20,44 @@ interface IndicatorsProps {
   date?: string;
   day?: 'j0' | 'j1';
 }
+
+const IndicatorWithFavorite = React.memo(({ 
+  indicator, 
+  isFavorite, 
+  toggleFavorite 
+}: { 
+  indicator: any;
+  isFavorite: (slug: string) => boolean;
+  toggleFavorite: (slug: string) => void;
+}) => {
+  const Component = indicator.component;
+  const isFav = isFavorite(indicator.slug);
+  
+  return (
+    <div className="relative">
+      <div className="absolute top-2 right-2 z-10">
+        <button
+          onClick={() => toggleFavorite(indicator.slug)}
+          className="transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1 bg-white/80 backdrop-blur-sm"
+          aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+        >
+          <StarIcon 
+            isFilled={isFav}
+            size="md"
+            className={isFav 
+              ? 'text-yellow-500 fill-current' 
+              : 'text-gray-400 hover:text-yellow-400'
+            }
+          />
+        </button>
+      </div>
+      
+      <Component {...indicator.props} data={indicator.data} />
+    </div>
+  );
+});
+
+IndicatorWithFavorite.displayName = 'IndicatorWithFavorite';
 
 export default function Indicators({ place, date, day = 'j0' }: IndicatorsProps) {
 const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
@@ -41,7 +80,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
   console.log('Indicators: Données récupérées:', { indicators, indiceAtmo, indiceUv, pollens, vigilanceMeteo, baignades });
 
   // Fonction pour trier les indicateurs (favoris en premier)
-  const sortIndicators = (indicators: any[]) => {
+  const sortIndicators = React.useCallback((indicators: any[]) => {
     return indicators.sort((a, b) => {
       const aIsFavorite = isFavorite(a.slug);
       const bIsFavorite = isFavorite(b.slug);
@@ -50,7 +89,7 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
       if (!aIsFavorite && bIsFavorite) return 1;
       return 0;
     });
-  };
+  }, [isFavorite]);
 
   // Préparer les indicateurs avec leurs données et les trier
   const allIndicators = [
@@ -100,48 +139,17 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
     );
   }
 
-  // Composant wrapper pour ajouter l'étoile de favori
-  const IndicatorWithFavorite = ({ indicator }: { indicator: any }) => {
-    const Component = indicator.component;
-    const isFav = isFavorite(indicator.slug);
-    
-    return (
-      <div className="relative">
-        <div className="absolute top-2 right-2 z-10">
-          <button
-            onClick={() => toggleFavorite(indicator.slug)}
-            className="transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1 bg-white/80 backdrop-blur-sm"
-            aria-label={isFav ? 'Retirer des favoris' : 'Ajouter aux favoris'}
-          >
-            <svg
-              className={`w-5 h-5 transition-all duration-200 ${
-                isFav 
-                  ? 'text-yellow-500 fill-current' 
-                  : 'text-gray-400 hover:text-yellow-400'
-              }`}
-              viewBox="0 0 24 24"
-              fill={isFav ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-            </svg>
-          </button>
-        </div>
-        
-        <Component {...indicator.props} data={indicator.data} />
-      </div>
-    );
-  };
-
   return (
     <section className="mx-auto max-w-6xl">
       {/* Version mobile - une colonne */}
       <div className="lg:hidden space-y-6">
         {sortedIndicators.map((indicator, index) => (
-          <IndicatorWithFavorite key={`${indicator.slug}-${index}`} indicator={indicator} />
+          <IndicatorWithFavorite 
+            key={`${indicator.slug}-${index}`} 
+            indicator={indicator}
+            isFavorite={isFavorite}
+            toggleFavorite={toggleFavorite}
+          />
         ))}
       </div>
 
@@ -160,7 +168,12 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           {sortedIndicators
             .filter((_, index) => index % 2 === 0)
             .map((indicator, index) => (
-              <IndicatorWithFavorite key={`left-${indicator.slug}-${index}`} indicator={indicator} />
+              <IndicatorWithFavorite 
+                key={`left-${indicator.slug}-${index}`} 
+                indicator={indicator}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+              />
             ))}
         </div>
 
@@ -169,7 +182,12 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
           {sortedIndicators
             .filter((_, index) => index % 2 === 1)
             .map((indicator, index) => (
-              <IndicatorWithFavorite key={`right-${indicator.slug}-${index}`} indicator={indicator} />
+              <IndicatorWithFavorite 
+                key={`right-${indicator.slug}-${index}`} 
+                indicator={indicator}
+                isFavorite={isFavorite}
+                toggleFavorite={toggleFavorite}
+              />
             ))}
         </div>
       </div>

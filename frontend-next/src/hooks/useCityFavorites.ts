@@ -12,8 +12,10 @@ export interface CityFavorite {
 export function useCityFavorites() {
   const [favorites, setFavorites] = useState<CityFavorite[]>([]);
 
-  // Charger les villes favorites depuis localStorage au montage
   useEffect(() => {
+  
+    if (typeof window === 'undefined') return;
+    
     try {
       const stored = localStorage.getItem(CITY_FAVORITES_STORAGE_KEY);
       if (stored) {
@@ -24,7 +26,6 @@ export function useCityFavorites() {
     }
   }, []);
 
-  // Sauvegarder les villes favorites dans localStorage
   const saveFavorites = (newFavorites: CityFavorite[]) => {
     try {
       localStorage.setItem(CITY_FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites));
@@ -34,14 +35,12 @@ export function useCityFavorites() {
     }
   };
 
-  // Ajouter une ville aux favoris
   const addFavorite = (city: CityFavorite) => {
     if (!favorites.find(fav => fav.codeInsee === city.codeInsee)) {
       saveFavorites([...favorites, city]);
     }
   };
 
-  // Retirer une ville des favoris
   const removeFavorite = (codeInsee: string) => {
     saveFavorites(favorites.filter(fav => fav.codeInsee !== codeInsee));
   };
@@ -56,7 +55,6 @@ export function useCityFavorites() {
     }
   };
 
-  // Vérifier si une ville est en favori
   const isFavorite = (codeInsee: string) => {
     return favorites.some(fav => fav.codeInsee === codeInsee);
   };

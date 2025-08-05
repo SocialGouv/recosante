@@ -5,8 +5,10 @@ const FAVORITES_STORAGE_KEY = 'recosante_favorites';
 export function useFavorites() {
   const [favorites, setFavorites] = useState<string[]>([]);
 
-  // Charger les favoris depuis localStorage au montage
   useEffect(() => {
+  
+    if (typeof window === 'undefined') return;
+    
     try {
       const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
       if (stored) {
@@ -17,7 +19,6 @@ export function useFavorites() {
     }
   }, []);
 
-  // Sauvegarder les favoris dans localStorage
   const saveFavorites = (newFavorites: string[]) => {
     try {
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(newFavorites));
@@ -27,19 +28,16 @@ export function useFavorites() {
     }
   };
 
-  // Ajouter un indicateur aux favoris
   const addFavorite = (slug: string) => {
     if (!favorites.includes(slug)) {
       saveFavorites([...favorites, slug]);
     }
   };
 
-  // Retirer un indicateur des favoris
   const removeFavorite = (slug: string) => {
     saveFavorites(favorites.filter(fav => fav !== slug));
   };
 
-  // Basculer le statut favori d'un indicateur
   const toggleFavorite = (slug: string) => {
     if (favorites.includes(slug)) {
       removeFavorite(slug);
@@ -48,7 +46,6 @@ export function useFavorites() {
     }
   };
 
-  // Vérifier si un indicateur est en favori
   const isFavorite = (slug: string) => {
     return favorites.includes(slug);
   };

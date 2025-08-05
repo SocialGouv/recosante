@@ -6,6 +6,7 @@ import { useCityFavorites } from '@/hooks/useCityFavorites';
 import { MunicipalityService, Municipality } from '@/services/municipality';
 import Indicators from './Indicators';
 import FavoritesInfo from './FavoritesInfo';
+import StarIcon from './StarIcon';
 import { useSearchParams } from 'next/navigation';
 
 interface SearchProps {
@@ -17,7 +18,7 @@ export default function Search({ fullScreen }: SearchProps) {
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null);
   const [showResults, setShowResults] = useState(false);
   const { query, setQuery, results, loading, error } = useMunicipalitySearch();
-  const { favorites: cityFavorites, toggleFavorite: toggleCityFavorite, isFavorite: isCityFavorite } = useCityFavorites();
+  const { toggleFavorite: toggleCityFavorite, isFavorite: isCityFavorite } = useCityFavorites();
   const searchParams = useSearchParams();
 
   // Lire les paramètres d'URL au chargement
@@ -111,21 +112,14 @@ export default function Search({ fullScreen }: SearchProps) {
                 className="transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1"
                 aria-label={isCityFavorite(selectedMunicipality.code) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
               >
-                <svg
-                  className={`w-5 h-5 transition-all duration-200 ${
-                    isCityFavorite(selectedMunicipality.code)
-                      ? 'text-yellow-500 fill-current' 
-                      : 'text-gray-400 hover:text-yellow-400'
-                  }`}
-                  viewBox="0 0 24 24"
-                  fill={isCityFavorite(selectedMunicipality.code) ? 'currentColor' : 'none'}
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                </svg>
+                <StarIcon 
+                  isFilled={isCityFavorite(selectedMunicipality.code)}
+                  size="md"
+                  className={isCityFavorite(selectedMunicipality.code)
+                    ? 'text-yellow-500 fill-current' 
+                    : 'text-gray-400 hover:text-yellow-400'
+                  }
+                />
               </button>
             </div>
           </div>
@@ -365,9 +359,7 @@ function CityFavorites({ onCitySelect }: { onCitySelect: (codeInsee: string, nam
                     className="text-yellow-500 hover:text-yellow-700 transition-colors"
                     aria-label={`Retirer ${city.name} des favoris`}
                   >
-                    <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
-                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
+                    <StarIcon isFilled={true} size="sm" className="fill-current" />
                   </button>
                 </div>
               </li>
@@ -409,15 +401,11 @@ function CityFavorites({ onCitySelect }: { onCitySelect: (codeInsee: string, nam
                     }`}
                     aria-label={isFav ? `Retirer ${city.name} des favoris` : `Ajouter ${city.name} aux favoris`}
                   >
-                    <svg 
-                      className={`w-3 h-3 ${isFav ? 'fill-current' : 'stroke-current fill-none'}`} 
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
+                    <StarIcon 
+                      isFilled={isFav} 
+                      size="sm" 
+                      className={isFav ? 'fill-current' : 'stroke-current fill-none'}
+                    />
                   </button>
                 </div>
               </li>

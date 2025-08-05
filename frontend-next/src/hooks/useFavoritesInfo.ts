@@ -6,6 +6,9 @@ export function useFavoritesInfo() {
   const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
+    
+    if (typeof window === 'undefined') return;
+    
     try {
       const hasShownInfo = localStorage.getItem(FAVORITES_INFO_STORAGE_KEY);
       if (!hasShownInfo) {
