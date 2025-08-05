@@ -21,8 +21,11 @@ export default function FavoriteStar({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    if (e.key === 'Enter') {
       e.preventDefault();
+      onToggle();
+    } else if (e.key === ' ') {
+      e.preventDefault(); // Prevent page scroll
       onToggle();
     }
   };
