@@ -92,7 +92,14 @@ const defaultMunicipalityCode = place?.code || '75056'; // Paris par défaut
   }, [isFavorite]);
 
   // Préparer les indicateurs avec leurs données et les trier
-  const allIndicators = [
+  interface IndicatorConfig {
+    component: React.ComponentType<any>;
+    data: any;
+    slug: string;
+    props: Record<string, any>;
+  }
+
+  const allIndicators: IndicatorConfig[] = [
     { component: IndiceAtmo, data: indiceAtmo, slug: 'indice_atmospheric', props: { place, day } },
     { component: Raep, data: pollens, slug: 'pollen_allergy', props: { place, date, day } },
     { component: IndiceUv, data: indiceUv, slug: 'indice_uv', props: { day } },
