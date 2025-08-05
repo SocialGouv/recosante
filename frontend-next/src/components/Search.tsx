@@ -2,8 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useMunicipalitySearch } from '@/hooks/useMunicipalitySearch';
+import { useCityFavorites } from '@/hooks/useCityFavorites';
 import { MunicipalityService, Municipality } from '@/services/municipality';
 import Indicators from './Indicators';
+import FavoritesInfo from './FavoritesInfo';
+import StarIcon from './StarIcon';
 import { useSearchParams } from 'next/navigation';
 
 interface SearchProps {
@@ -15,6 +18,7 @@ export default function Search({ fullScreen }: SearchProps) {
   const [selectedMunicipality, setSelectedMunicipality] = useState<Municipality | null>(null);
   const [showResults, setShowResults] = useState(false);
   const { query, setQuery, results, loading, error } = useMunicipalitySearch();
+  const { toggleFavorite: toggleCityFavorite, isFavorite: isCityFavorite } = useCityFavorites();
   const searchParams = useSearchParams();
 
   // Lire les paramètres d'URL au chargement
@@ -93,10 +97,34 @@ export default function Search({ fullScreen }: SearchProps) {
             </svg>
             Retour à la recherche
           </button>
-          <h2 className="text-2xl font-bold text-gray-900">
-            Indicateurs pour {MunicipalityService.formatMunicipalityDisplay(selectedMunicipality)}
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Indicateurs pour {MunicipalityService.formatMunicipalityDisplay(selectedMunicipality)}
+              </h2>
+              <button
+                onClick={() => toggleCityFavorite({
+                  codeInsee: selectedMunicipality.code,
+                  name: selectedMunicipality.nom,
+                  codeDepartement: selectedMunicipality.codeDepartement,
+                  codeRegion: selectedMunicipality.codeRegion
+                })}
+                className="transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1"
+                aria-label={isCityFavorite(selectedMunicipality.code) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+              >
+                <StarIcon 
+                  isFilled={isCityFavorite(selectedMunicipality.code)}
+                  size="md"
+                  className={isCityFavorite(selectedMunicipality.code)
+                    ? 'text-yellow-500 fill-current' 
+                    : 'text-gray-400 hover:text-yellow-400'
+                  }
+                />
+              </button>
+            </div>
+          </div>
         </div>
+        <FavoritesInfo />
         <Indicators 
           place={{
             code: selectedMunicipality.code,
@@ -131,7 +159,7 @@ export default function Search({ fullScreen }: SearchProps) {
             error={error}
           />
         </div>
-        <SuggestionsButtons onSuggestionClick={handleSuggestionClick} />
+        <CityFavorites onCitySelect={handleSuggestionClick} />
       </section>
     </div>
   );
@@ -280,43 +308,111 @@ function SearchInput({
   );
 }
 
-function SuggestionsButtons({ onSuggestionClick }: { onSuggestionClick: (codeInsee: string, name: string) => void }) {
-  const suggestions = [
-    { name: "Paris", codeInsee: "75056" },
-    { name: "Marseille", codeInsee: "13055" },
-    { name: "Lyon", codeInsee: "69123" },
-    { name: "Toulouse", codeInsee: "31555" },
-    { name: "Nice", codeInsee: "06088" },
-    { name: "Nantes", codeInsee: "44109" },
-    { name: "Montpellier", codeInsee: "34172" },
-    { name: "Strasbourg", codeInsee: "67482" },
+function CityFavorites({ onCitySelect }: { onCitySelect: (codeInsee: string, name: string) => void }) {
+  const { favorites: cityFavorites, toggleFavorite: toggleCityFavorite, isFavorite: isCityFavorite } = useCityFavorites();
+
+  // Villes par défaut pour ajouter aux favoris
+  const defaultCities = [
+    { name: "Paris", codeInsee: "75056", codeDepartement: "75", codeRegion: "11" },
+    { name: "Marseille", codeInsee: "13055", codeDepartement: "13", codeRegion: "93" },
+    { name: "Lyon", codeInsee: "69123", codeDepartement: "69", codeRegion: "84" },
+    { name: "Toulouse", codeInsee: "31555", codeDepartement: "31", codeRegion: "76" },
+    { name: "Nice", codeInsee: "06088", codeDepartement: "06", codeRegion: "93" },
+    { name: "Nantes", codeInsee: "44109", codeDepartement: "44", codeRegion: "52" },
+    { name: "Montpellier", codeInsee: "34172", codeDepartement: "34", codeRegion: "76" },
+    { name: "Strasbourg", codeInsee: "67482", codeDepartement: "67", codeRegion: "44" },
   ];
 
   return (
     <div className="overflow-hidden xl:pb-40">
-      <ul className="m-0 mx-auto flex gap-3 overflow-x-scroll pb-4 sm:max-w-sm sm:flex-wrap sm:justify-center sm:overflow-auto xl:mx-0 xl:max-w-2xl xl:justify-start xl:pb-0 [&_li]:list-none">
-        {suggestions.map((suggestion, index) => {
-          return (
-            <li
-              key={suggestion.codeInsee}
-              className={`inline-flex w-auto rounded-full border-2 border-blue-500 ${
-                index === 0 ? "ml-6 sm:ml-0" : ""
-              } ${
-                index === suggestions.length - 1 ? "mr-6 sm:mr-0" : ""
-              }`}
-            >
-              <button
-                className="px-4 py-1 text-xs xl:text-base text-blue-500 hover:text-blue-600 bg-transparent border-none cursor-pointer"
-                onClick={() => {
-                  onSuggestionClick(suggestion.codeInsee, suggestion.name);
-                }}
+      <div className="mb-4 ml-6 xl:ml-0">
+        <h3 className="text-sm font-medium text-gray-700 mb-2">Villes favorites</h3>
+        {cityFavorites.length === 0 && (
+          <p className="text-xs text-gray-500 mb-3">
+            Cliquez sur les étoiles pour ajouter des villes à vos favoris
+          </p>
+        )}
+      </div>
+      
+      {/* Villes favorites */}
+      {cityFavorites.length > 0 && (
+        <div className="mb-4">
+          <ul className="m-0 mx-auto flex gap-3 overflow-x-scroll pb-4 sm:max-w-sm sm:flex-wrap sm:justify-center sm:overflow-auto xl:mx-0 xl:max-w-2xl xl:justify-start xl:pb-0 [&_li]:list-none">
+            {cityFavorites.map((city, index) => (
+              <li
+                key={city.codeInsee}
+                className={`inline-flex w-auto rounded-full border-2 border-yellow-500 ${
+                  index === 0 ? "ml-6 sm:ml-0" : ""
+                } ${
+                  index === cityFavorites.length - 1 ? "mr-6 sm:mr-0" : ""
+                }`}
               >
-                {suggestion.name}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                <div className="flex items-center gap-2 px-4 py-1">
+                  <button
+                    className="text-xs xl:text-base text-yellow-600 hover:text-yellow-800 bg-transparent border-none cursor-pointer"
+                    onClick={() => onCitySelect(city.codeInsee, city.name)}
+                  >
+                    {city.name}
+                  </button>
+                  <button
+                    onClick={() => toggleCityFavorite(city)}
+                    className="text-yellow-500 hover:text-yellow-700 transition-colors"
+                    aria-label={`Retirer ${city.name} des favoris`}
+                  >
+                    <StarIcon isFilled={true} size="sm" className="fill-current" />
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Villes disponibles */}
+      <div>
+        <h4 className="text-xs font-medium text-gray-600 mb-2 ml-6 xl:ml-0">Ajouter des villes</h4>
+        <ul className="m-0 mx-auto flex gap-3 overflow-x-scroll pb-4 sm:max-w-sm sm:flex-wrap sm:justify-center sm:overflow-auto xl:mx-0 xl:max-w-2xl xl:justify-start xl:pb-0 [&_li]:list-none">
+          {defaultCities.map((city, index) => {
+            const isFav = isCityFavorite(city.codeInsee);
+            return (
+              <li
+                key={city.codeInsee}
+                className={`inline-flex w-auto rounded-full border-2 ${
+                  isFav ? 'border-yellow-500' : 'border-blue-500'
+                } ${
+                  index === 0 ? "ml-6 sm:ml-0" : ""
+                } ${
+                  index === defaultCities.length - 1 ? "mr-6 sm:mr-0" : ""
+                }`}
+              >
+                <div className="flex items-center gap-2 px-4 py-1">
+                  <button
+                    className={`text-xs xl:text-base bg-transparent border-none cursor-pointer ${
+                      isFav ? 'text-yellow-600 hover:text-yellow-800' : 'text-blue-500 hover:text-blue-600'
+                    }`}
+                    onClick={() => onCitySelect(city.codeInsee, city.name)}
+                  >
+                    {city.name}
+                  </button>
+                  <button
+                    onClick={() => toggleCityFavorite(city)}
+                    className={`transition-colors ${
+                      isFav ? 'text-yellow-500 hover:text-yellow-700' : 'text-gray-400 hover:text-yellow-400'
+                    }`}
+                    aria-label={isFav ? `Retirer ${city.name} des favoris` : `Ajouter ${city.name} aux favoris`}
+                  >
+                    <StarIcon 
+                      isFilled={isFav} 
+                      size="sm" 
+                      className={isFav ? 'fill-current' : 'stroke-current fill-none'}
+                    />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 } 
