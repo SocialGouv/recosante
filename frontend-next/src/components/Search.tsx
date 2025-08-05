@@ -325,7 +325,7 @@ function CityFavorites({ onCitySelect }: { onCitySelect: (codeInsee: string, nam
 
   return (
     <div className="overflow-hidden xl:pb-40">
-      <div className="mb-4">
+      <div className="mb-4 ml-6 xl:ml-0">
         <h3 className="text-sm font-medium text-gray-700 mb-2">Villes favorites</h3>
         {cityFavorites.length === 0 && (
           <p className="text-xs text-gray-500 mb-3">
@@ -370,7 +370,7 @@ function CityFavorites({ onCitySelect }: { onCitySelect: (codeInsee: string, nam
 
       {/* Villes disponibles */}
       <div>
-        <h4 className="text-xs font-medium text-gray-600 mb-2">Ajouter des villes</h4>
+        <h4 className="text-xs font-medium text-gray-600 mb-2 ml-6 xl:ml-0">Ajouter des villes</h4>
         <ul className="m-0 mx-auto flex gap-3 overflow-x-scroll pb-4 sm:max-w-sm sm:flex-wrap sm:justify-center sm:overflow-auto xl:mx-0 xl:max-w-2xl xl:justify-start xl:pb-0 [&_li]:list-none">
           {defaultCities.map((city, index) => {
             const isFav = isCityFavorite(city.codeInsee);
