@@ -1,4 +1,4 @@
-import { UserService } from '../../user.service';
+import { upsertByMatomoId, updateUser, bodyHasProperty, extractUpdateData } from '../../user.service';
 import prisma from '../../../prisma';
 
 // Mock Prisma
@@ -20,7 +20,7 @@ describe('UserService', () => {
       const mockUser = { id: '1', matomo_id: '1234567890123456' };
       (prisma.user.upsert as jest.Mock).mockResolvedValue(mockUser);
 
-      const result = await UserService.upsertByMatomoId('1234567890123456');
+      const result = await upsertByMatomoId('1234567890123456');
 
       expect(result).toEqual(mockUser);
       expect(prisma.user.upsert).toHaveBeenCalledWith({
@@ -55,7 +55,7 @@ describe('UserService', () => {
       (prisma.user.upsert as jest.Mock).mockResolvedValue(mockUpdatedUser);
       (prisma.user.findMany as jest.Mock).mockResolvedValue([]);
 
-      const result = await UserService.updateUser(mockMatomoId, updateData, mockHeaders);
+      const result = await updateUser(mockMatomoId, updateData, mockHeaders);
 
       expect(result).toEqual(mockUpdatedUser);
       expect(prisma.user.upsert).toHaveBeenCalledWith({
@@ -85,7 +85,7 @@ describe('UserService', () => {
       (prisma.user.upsert as jest.Mock).mockResolvedValue(mockUpdatedUser);
       (prisma.user.findMany as jest.Mock).mockResolvedValue(oldUsers);
 
-      await UserService.updateUser(mockMatomoId, updateData, mockHeaders);
+      await updateUser(mockMatomoId, updateData, mockHeaders);
 
       expect(prisma.user.updateMany).toHaveBeenCalledWith({
         where: { id: { in: ['2', '3'] } },
@@ -102,21 +102,21 @@ describe('UserService', () => {
     it('should return true when property exists', () => {
       const body = { test: 'value', nested: { key: 'value' } };
       
-      expect(UserService.bodyHasProperty(body, 'test')).toBe(true);
-      expect(UserService.bodyHasProperty(body, 'nested')).toBe(true);
+      expect(bodyHasProperty(body, 'test')).toBe(true);
+      expect(bodyHasProperty(body, 'nested')).toBe(true);
     });
 
     it('should return false when property does not exist', () => {
       const body = { test: 'value' };
       
-      expect(UserService.bodyHasProperty(body, 'missing')).toBe(false);
-      expect(UserService.bodyHasProperty(body, '')).toBe(false);
+      expect(bodyHasProperty(body, 'missing')).toBe(false);
+      expect(bodyHasProperty(body, '')).toBe(false);
     });
 
     it('should handle edge cases', () => {
-      expect(UserService.bodyHasProperty({}, 'test')).toBe(false);
-      expect(UserService.bodyHasProperty(null as any, 'test')).toBe(false);
-      expect(UserService.bodyHasProperty(undefined as any, 'test')).toBe(false);
+      expect(bodyHasProperty({}, 'test')).toBe(false);
+      expect(bodyHasProperty(null as any, 'test')).toBe(false);
+      expect(bodyHasProperty(undefined as any, 'test')).toBe(false);
     });
   });
 
@@ -129,7 +129,7 @@ describe('UserService', () => {
         invalid_field: 'should_be_ignored',
       };
 
-      const result = UserService.extractUpdateData(body);
+      const result = extractUpdateData(body);
 
       expect(result).toEqual({
         municipality_insee_code: '75056',
@@ -146,7 +146,7 @@ describe('UserService', () => {
         },
       };
 
-      const result = UserService.extractUpdateData(body);
+      const result = extractUpdateData(body);
 
       expect(result.coordinates).toEqual({
         lat: 48.8566,
@@ -155,7 +155,7 @@ describe('UserService', () => {
     });
 
     it('should return empty object for empty body', () => {
-      const result = UserService.extractUpdateData({});
+      const result = extractUpdateData({});
       expect(result).toEqual({});
     });
 
@@ -166,7 +166,7 @@ describe('UserService', () => {
         notifications_preference: null,
       };
 
-      const result = UserService.extractUpdateData(body);
+      const result = extractUpdateData(body);
 
       expect(result).toEqual({
         municipality_insee_code: '75056',

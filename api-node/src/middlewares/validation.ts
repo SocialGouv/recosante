@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 import { catchErrors } from './errors';
 import type { Request, Response, NextFunction } from 'express';
 import type { CustomError } from '~/types/error';

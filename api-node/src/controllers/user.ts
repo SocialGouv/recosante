@@ -2,7 +2,7 @@ import express from 'express';
 import { catchErrors } from '../middlewares/errors';
 import { validateBody } from '../middlewares/validation';
 import { createUserSchema, updateUserSchema } from '../schemas/user.schema';
-import { UserService } from '../services/user.service';
+import { upsertByMatomoId, updateUser, extractUpdateData } from '../services/user.service';
 import { withUser } from '~/middlewares/auth.js';
 import type { RequestWithUser } from '~/types/request';
 
@@ -17,9 +17,9 @@ router.post(
   validateBody(createUserSchema),
   catchErrors(async (req, res) => {
     const { matomo_id } = req.body;
-    
-    await UserService.upsertByMatomoId(matomo_id);
-    
+
+    await upsertByMatomoId(matomo_id);
+
     res.status(200).send({ ok: true });
   })
 );
@@ -34,8 +34,8 @@ router.put(
   validateBody(updateUserSchema),
   catchErrors(async (req: RequestWithUser, res) => {
     // Extraire les données de mise à jour
-    const updateData = UserService.extractUpdateData(req.body);
-    
+    const updateData = extractUpdateData(req.body);
+
     // Extraire les headers d'application
     const headers = {
       appversion: req.headers.appversion as string,
@@ -44,7 +44,7 @@ router.put(
     };
 
     // Mettre à jour l'utilisateur
-    const updatedUser = await UserService.updateUser(
+    const updatedUser = await updateUser(
       req.user.matomo_id,
       updateData,
       headers
