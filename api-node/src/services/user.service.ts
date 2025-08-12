@@ -68,17 +68,21 @@ export async function updateUser(
   updateData: UserUpdateData,
   headers: Record<string, string | undefined>
 ): Promise<any> {
-  const userUpdate: any = {
-    appversion: headers.appversion,
-    appbuild: headers.appbuild,
-    appdevice: headers.appdevice,
-  };
+  // Start with user data, excluding undefined and null values
+  const userUpdate: any = { ...updateData };
 
-  Object.entries(updateData).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      userUpdate[key] = value;
+  // Remove undefined and null values
+  Object.keys(userUpdate).forEach(key => {
+    if (userUpdate[key] === undefined || userUpdate[key] === null) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete userUpdate[key];
     }
   });
+
+  // Add system metadata - always override user data
+  userUpdate.appversion = headers.appversion;
+  userUpdate.appbuild = headers.appbuild;
+  userUpdate.appdevice = headers.appdevice;
 
   const updatedUser = await prisma.user.upsert({
     where: { matomo_id: matomoId },
@@ -100,7 +104,7 @@ export async function updateUser(
  * Check if a property exists in the request body
  */
 export function bodyHasProperty(body: any, property: string): boolean {
-  if (!body || typeof body !== 'object') return false;
+  if (!body || typeof body !== 'object' || body === null) return false;
   return Object.prototype.hasOwnProperty.call(body, property);
 }
 

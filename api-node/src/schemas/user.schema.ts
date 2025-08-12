@@ -14,8 +14,8 @@ export const updateUserSchema = z.object({
   favorite_indicator: z.string().optional(),
   coordinates: z
     .object({
-      lat: z.number().min(-90).max(90, 'Latitude doit être entre -90 et 90'),
-      lon: z.number().min(-180).max(180, 'Longitude doit être entre -180 et 180'),
+      lat: z.number().min(-90, 'Latitude doit être entre -90 et 90').max(90, 'Latitude doit être entre -90 et 90'),
+      lon: z.number().min(-180, 'Longitude doit être entre -180 et 180').max(180, 'Longitude doit être entre -180 et 180'),
     })
     .optional(),
   notifications_preference: z.array(z.string()).optional(),
