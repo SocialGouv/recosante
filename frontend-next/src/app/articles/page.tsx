@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Article } from '@/utils/articles';
+import { hasRedirectToSanteFr } from '@/utils/santeFrRedirects';
 import Header from '@/components/Header';
 
 export default function ArticlesPage() {
@@ -101,7 +102,7 @@ export default function ArticlesPage() {
                     fill
                     className="object-cover"
                   />
-                )}
+                )} 
               </div>
               
               {/* Contenu de l'article */}
@@ -126,6 +127,15 @@ export default function ArticlesPage() {
                 <p className="text-gray-600 mb-4 line-clamp-3">
                   {article.excerpt}
                 </p>
+                
+                {/* Indicateur de redirection */}
+                {hasRedirectToSanteFr(article.slug) && (
+                  <div className="mb-4">
+                    <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                      → sante.fr
+                    </span>
+                  </div>
+                )}
                 
                 {/* Actions */}
                 <div className="flex items-center justify-between">

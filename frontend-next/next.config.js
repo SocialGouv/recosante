@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
- const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+const PATH = process.env.NEXT_PUBLIC_GATSBY_INTERN_URL || 'http://frontend';
+const { santeFrRedirects } = require('./redirects-config.js');
 
 const nextConfig = {
   output: 'standalone',
@@ -12,7 +13,15 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 
-  rewrites: async () => {
+  async redirects() {
+    return santeFrRedirects.map(redirect => ({
+      source: `/articles/${redirect.localSlug}/`,
+      destination: redirect.santeFrUrl,
+      permanent: true,
+    }));
+  },
+
+  async rewrites() {
     return {
       beforeFiles: [
         {

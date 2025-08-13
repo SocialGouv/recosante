@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
+import SafeHtml from '@/components/SafeHtml';
 
 interface ArticlePageProps {
   params: {
@@ -71,9 +72,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           </h1>
 
           {/* Contenu */}
-          <div 
+          <SafeHtml
+            html={article.content}
             className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: article.content }}
           />
 
           {/* Bon geste */}
