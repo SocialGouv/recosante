@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/node';
 import type express from 'express';
 import prisma from '~/prisma';
-import { capture } from '~/third-parties/sentry';
 import type { RequestWithUser } from '~/types/request';
 
 export async function withUser(
@@ -20,9 +19,6 @@ export async function withUser(
     },
   });
   if (!user) {
-    capture('Unexpected user not found so we create a new one', {
-      extra: { matomo_id },
-    });
     user = await prisma.user.upsert({
       where: {
         matomo_id,

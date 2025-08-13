@@ -9,10 +9,11 @@ import { PollensAPIDataIdsEnum } from '~/types/api/pollens';
 import { capture } from '~/third-parties/sentry';
 import { ATMODATA_PASSWORD, ATMODATA_USERNAME } from '~/config';
 import { logStep } from './utils';
+import { DEFAULT_FETCH_RETRY_CONFIG, API_CONFIG } from '~/config/api';
 
-const fetch = fetchRetry(global.fetch);
+const fetch = fetchRetry(global.fetch, DEFAULT_FETCH_RETRY_CONFIG);
 
-export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
+export async function fetchAtmoJWTToken(maxRetries = API_CONFIG.ATMO.AUTH.MAX_RETRIES): Promise<string> {
   let retryCount = 0;
   let lastError: Error = new Error('Erreur inconnue lors de l\'authentification');
 
@@ -20,7 +21,7 @@ export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
     try {
       console.log(`[POLLENS] Tentative de connexion à l'API Atmo (tentative ${retryCount + 1}/${maxRetries})`);
       
-      const response = await fetch('https://admindata.atmo-france.org/api/login', {
+      const response = await fetch(`${API_CONFIG.ATMO.BASE_URL}${API_CONFIG.ATMO.ENDPOINTS.LOGIN}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,8 +30,7 @@ export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
           username: ATMODATA_USERNAME,
           password: ATMODATA_PASSWORD,
         }),
-        retries: 5, 
-        retryDelay: (attempt) => Math.pow(2, attempt) * 1000, // Backoff exponentiel: 2s, 4s, 8s...
+        retries: 0,
       });
 
       if (!response.ok) {
@@ -39,7 +39,6 @@ export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
 
       const loginRes = await response.json();
       
-    
       if (!loginRes || typeof loginRes.token !== 'string' || !loginRes.token.trim()) {
         throw new Error('Token manquant ou invalide dans la réponse API');
       }
@@ -55,10 +54,10 @@ export async function fetchAtmoJWTToken(maxRetries = 5): Promise<string> {
       
       retryCount++;
       
-      const waitTime = Math.pow(2, retryCount) * 1500;
-      console.error(`[POLLENS] Échec d'authentification (tentative ${retryCount}/${maxRetries}): ${lastError.message}`);
-      
       if (retryCount < maxRetries) {
+        // Délai fixe plus court pour éviter l'accumulation
+        const waitTime = Math.min(API_CONFIG.ATMO.AUTH.RETRY_DELAY * retryCount, API_CONFIG.RETRY.MAX_DELAY);
+        console.error(`[POLLENS] Échec d'authentification (tentative ${retryCount}/${maxRetries}): ${lastError.message}`);
         console.log(`[POLLENS] Nouvelle tentative dans ${waitTime/1000} secondes...`);
         await new Promise(resolve => setTimeout(resolve, waitTime));
       }
@@ -111,8 +110,9 @@ export async function fetchPollensDataFromAtmoAPI(
       headers: {
         Authorization: `Bearer ${atmoJWTToken}`,
       },
-      retries: 3,
-      retryDelay: (attempt) => Math.pow(2, attempt) * 1000,
+      retries: API_CONFIG.RETRY.MAX_ATTEMPTS - 1, 
+      retryDelay: (attempt) => Math.min(1000 * Math.pow(2, attempt), 3000), // Max 3s
+      retryOn: [...API_CONFIG.RETRY_ON_STATUS_CODES],
     });
     
     if (!response.ok) {

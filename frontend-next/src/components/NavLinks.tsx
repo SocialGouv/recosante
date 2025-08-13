@@ -10,15 +10,13 @@ export function NavLinks() {
   let timeoutRef = useRef<number | null>(null);
 
   return [
-    ['Mentions légales', '/mentions-legales/'],
-    ['Données personnelles', '/donnees-personnelles/'],
-    ['Partenaires', '/partenaires/'],
+    ['Mentions légales', 'https://www.sante.fr/mentions-legales'],
+    ['Données personnelles', 'https://www.sante.fr/politique-de-confidentialite'],
+    ['Partenaires', 'https://www.sante.fr/credits'],
     ['Articles', '/articles/'],
-    ['Gestion des cookies', '/cookies/'],
-    ['Statistiques', '/stats/'],
-    ['Contactez-nous', 'mailto:contact@recosante.beta.gouv.fr'],
+    ['Gestion des cookies', 'https://www.sante.fr/politique-de-confidentialite'],
     ['', ''],
-    ['Accessibilité : partiellement conforme', '/accessibilite'],
+    ['Accessibilité : partiellement conforme', 'https://www.sante.fr/declaration-de-conformite'],
   ].map(([label, href], index) => {
     if (!label) {
       return <span key={index} className='text-xs' />;
