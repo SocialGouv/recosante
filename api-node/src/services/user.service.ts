@@ -60,6 +60,8 @@ async function cleanupOldPushTokens(
   }
 }
 
+// Validation is now handled by Zod schema
+
 /**
  * Update user with provided data and handle push token cleanup
  */
@@ -68,36 +70,54 @@ export async function updateUser(
   updateData: UserUpdateData,
   headers: Record<string, string | undefined>
 ): Promise<any> {
-  // Start with user data, excluding undefined and null values
-  const userUpdate: any = { ...updateData };
+  try {
+    // Start with user data (already validated by Zod schema)
+    const userUpdate: any = { ...updateData };
 
-  // Remove undefined and null values
-  Object.keys(userUpdate).forEach(key => {
-    if (userUpdate[key] === undefined || userUpdate[key] === null) {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete userUpdate[key];
+    // Remove undefined and null values
+    Object.keys(userUpdate).forEach(key => {
+      if (userUpdate[key] === undefined || userUpdate[key] === null) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete userUpdate[key];
+      }
+    });
+
+    // The `User` model doesn't have a `coordinates` column.
+    // Keep it for potential future processing but NEVER send it to Prisma.
+    if (userUpdate.coordinates) {
+      delete userUpdate.coordinates;
     }
-  });
 
-  // Add system metadata - always override user data
-  userUpdate.appversion = headers.appversion;
-  userUpdate.appbuild = headers.appbuild;
-  userUpdate.appdevice = headers.appdevice;
+    // Add system metadata - always override user data
+    userUpdate.appversion = headers.appversion;
+    userUpdate.appbuild = headers.appbuild;
+    userUpdate.appdevice = headers.appdevice;
 
-  const updatedUser = await prisma.user.upsert({
-    where: { matomo_id: matomoId },
-    update: userUpdate,
-    create: {
-      matomo_id: matomoId,
-      ...userUpdate,
-    },
-  });
+    const updatedUser = await prisma.user.upsert({
+      where: { matomo_id: matomoId },
+      update: userUpdate,
+      create: {
+        matomo_id: matomoId,
+        ...userUpdate,
+      },
+    });
 
-  if (updatedUser.push_notif_token) {
-    await cleanupOldPushTokens(updatedUser.id, updatedUser.push_notif_token);
+    if (updatedUser.push_notif_token) {
+      await cleanupOldPushTokens(updatedUser.id, updatedUser.push_notif_token);
+    }
+
+    return updatedUser;
+  } catch (error) {
+    // Log the error for debugging
+    console.error('Error updating user:', {
+      matomoId,
+      updateData,
+      error: error instanceof Error ? error.message : String(error)
+    });
+
+    // Re-throw the error to be handled by the controller
+    throw error;
   }
-
-  return updatedUser;
 }
 
 /**

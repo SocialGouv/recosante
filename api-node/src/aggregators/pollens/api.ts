@@ -119,7 +119,18 @@ export async function fetchPollensDataFromAtmoAPI(
       throw new Error(`Réponse API non valide: ${response.status} ${response.statusText}`);
     }
     
-    const pollensRes: PollensAPIResponse = await response.json();
+    // Vérifier que la réponse contient du contenu avant de la parser
+    const responseText = await response.text();
+    if (!responseText || responseText.trim() === '') {
+      throw new Error('Réponse API vide - aucune donnée reçue');
+    }
+    
+    let pollensRes: PollensAPIResponse;
+    try {
+      pollensRes = JSON.parse(responseText);
+    } catch (parseError) {
+      throw new Error(`Erreur de parsing JSON: ${parseError instanceof Error ? parseError.message : 'Format invalide'} - Contenu reçu: ${responseText.substring(0, 200)}...`);
+    }
     
     if (!pollensRes || !Array.isArray(pollensRes.features)) {
       throw new Error('Format de réponse invalide: features manquants ou non dans un format tableau');
