@@ -1,8 +1,8 @@
 import type { RequestWithMatomoEvent } from '~/types/request';
-import { 
-  handleStoreReviewEvent, 
-  handleAppOpenEvent, 
-  handleFirstTimeLaunchEvent 
+import {
+  handleStoreReviewEvent,
+  handleAppOpenEvent,
+  handleFirstTimeLaunchEvent,
 } from '~/getters/eventHandlers';
 
 export interface EventResult {
@@ -11,8 +11,8 @@ export interface EventResult {
   message?: string;
 }
 
-export class EventService {
-  static async processEvent(req: RequestWithMatomoEvent): Promise<EventResult> {
+export const EventService = {
+  async processEvent(req: RequestWithMatomoEvent): Promise<EventResult> {
     const { event, userId } = req.body;
 
     // Si pas d'userId, on retourne directement
@@ -21,7 +21,10 @@ export class EventService {
     }
 
     // Gestion des différents types d'événements
-    if (event.category === 'STORE_REVIEW' && event.action === 'TRIGGERED_FROM_SETTINGS') {
+    if (
+      event.category === 'STORE_REVIEW' &&
+      event.action === 'TRIGGERED_FROM_SETTINGS'
+    ) {
       return await handleStoreReviewEvent(userId);
     }
 
@@ -35,5 +38,5 @@ export class EventService {
 
     // Événement non géré
     return { success: true };
-  }
-}
+  },
+};

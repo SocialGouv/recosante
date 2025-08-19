@@ -1,61 +1,30 @@
 import express from 'express';
-import prisma from '~/prisma';
 import { catchErrors } from '../middlewares/errors';
 import type { RequestWithMatomoEvent } from '~/types/request';
-import { canAskReviewForUser } from '~/utils/user';
-import { WebhookService } from '~/utils/webhook';
+import { EventService } from '~/services/eventService';
+
 const router = express.Router();
 
 router.post(
   '/',
   catchErrors(async (req: RequestWithMatomoEvent, res: express.Response) => {
-    const event = req.body.event;
-    if (!req.body.userId) {
-      res.status(200).send({ ok: true });
-      return;
-    }
+    const result = await EventService.processEvent(req);
 
-    if (
-      event.category === 'STORE_REVIEW' &&
-      event.action === 'TRIGGERED_FROM_SETTINGS'
-    ) {
-      await prisma.user.update({
-        where: {
-          matomo_id: req.body.userId,
-        },
-        data: {
-          asked_for_review: { increment: 1 }, // TODO FIXME: `asked_for_review` should be rename to `triggered_manually_from_app`
-          asked_for_review_latest_at: new Date(),
-        },
-      });
-    }
-    if (event.category === 'APP' && event.action === 'APP_OPEN') {
-      const user = await prisma.user.findUnique({
-        where: {
-          matomo_id: req.body.userId,
-        },
-      });
-      if (!canAskReviewForUser(user)) {
-        res.status(200).send({ ok: true });
-        return;
+    if (result.success) {
+      const response: any = { ok: true };
+
+      // Ajouter askForReview si présent (pour APP_OPEN)
+      if (result.askForReview !== undefined) {
+        response.askForReview = result.askForReview;
       }
-      await prisma.user.update({
-        where: {
-          matomo_id: req.body.userId,
-        },
-        data: {
-          asked_for_review_latest_at: new Date(),
-        },
-      });
-      res.status(200).send({ ok: true, askForReview: true });
-      return;
-    }
 
-    if (event.category === 'APP' && event.action === 'FIRST_TIME_LAUNCH') {
-      WebhookService.sendToMattermost(req);
+      res.status(200).send(response);
+    } else {
+      // En cas d'échec, on log l'erreur mais on retourne quand même un succès
+      // car ces erreurs sont considérées comme non critiques
+      console.error('[EVENT] Event processing failed:', result.message);
+      res.status(200).send({ ok: true });
     }
-
-    res.status(200).send({ ok: true });
   }),
 );
 

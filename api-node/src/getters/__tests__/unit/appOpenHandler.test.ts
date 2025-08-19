@@ -14,8 +14,8 @@ jest.mock('~/utils/user', () => ({
   canAskReviewForUser: jest.fn(),
 }));
 
-const mockPrisma = require('~/prisma');
-const mockUserUtils = require('~/utils/user');
+const mockPrisma = jest.mocked(require('~/prisma'));
+const mockUserUtils = jest.mocked(require('~/utils/user'));
 
 describe('appOpenHandler', () => {
   const mockReq = {
@@ -26,7 +26,7 @@ describe('appOpenHandler', () => {
         action: 'APP_OPEN',
       },
     },
-  } as RequestWithMatomoEvent;
+  } as unknown as RequestWithMatomoEvent;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -34,10 +34,13 @@ describe('appOpenHandler', () => {
 
   describe('handleAppOpenEvent', () => {
     it('should return askForReview: false when user cannot ask for review', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({ id: 1, matomo_id: 'test-user-id' });
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 1,
+        matomo_id: 'test-user-id',
+      });
       mockUserUtils.canAskReviewForUser.mockReturnValue(false);
 
-      const result = await handleAppOpenEvent('test-user-id', mockReq);
+      const result = await handleAppOpenEvent('test-user-id');
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(false);
@@ -45,11 +48,14 @@ describe('appOpenHandler', () => {
     });
 
     it('should successfully update user and return askForReview: true', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({ id: 1, matomo_id: 'test-user-id' });
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 1,
+        matomo_id: 'test-user-id',
+      });
       mockUserUtils.canAskReviewForUser.mockReturnValue(true);
       mockPrisma.user.update.mockResolvedValue({ id: 1 });
 
-      const result = await handleAppOpenEvent('test-user-id', mockReq);
+      const result = await handleAppOpenEvent('test-user-id');
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(true);
@@ -65,7 +71,7 @@ describe('appOpenHandler', () => {
       mockPrisma.user.findUnique.mockResolvedValue(null);
       mockUserUtils.canAskReviewForUser.mockReturnValue(false);
 
-      const result = await handleAppOpenEvent('test-user-id', mockReq);
+      const result = await handleAppOpenEvent('test-user-id');
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(false);
@@ -73,15 +79,20 @@ describe('appOpenHandler', () => {
     });
 
     it('should handle database update errors gracefully', async () => {
-      mockPrisma.user.findUnique.mockResolvedValue({ id: 1, matomo_id: 'test-user-id' });
+      mockPrisma.user.findUnique.mockResolvedValue({
+        id: 1,
+        matomo_id: 'test-user-id',
+      });
       mockUserUtils.canAskReviewForUser.mockReturnValue(true);
       mockPrisma.user.update.mockRejectedValue(new Error('Update failed'));
 
-      const result = await handleAppOpenEvent('test-user-id', mockReq);
+      const result = await handleAppOpenEvent('test-user-id');
 
       expect(result.success).toBe(false);
       expect(result.askForReview).toBe(false);
-      expect(result.message).toContain('User test-user-id not found for APP_OPEN event');
+      expect(result.message).toContain(
+        'User test-user-id not found for APP_OPEN event',
+      );
     });
   });
 });

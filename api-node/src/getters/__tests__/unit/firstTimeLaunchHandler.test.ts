@@ -8,7 +8,7 @@ jest.mock('~/utils/webhook', () => ({
   },
 }));
 
-const mockWebhookService = require('~/utils/webhook');
+const mockWebhookService = jest.mocked(require('~/utils/webhook'));
 
 describe('firstTimeLaunchHandler', () => {
   const mockReq = {
@@ -19,7 +19,7 @@ describe('firstTimeLaunchHandler', () => {
         action: 'FIRST_TIME_LAUNCH',
       },
     },
-  } as RequestWithMatomoEvent;
+  } as unknown as RequestWithMatomoEvent;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -27,23 +27,33 @@ describe('firstTimeLaunchHandler', () => {
 
   describe('handleFirstTimeLaunchEvent', () => {
     it('should successfully send webhook to Mattermost', async () => {
-      mockWebhookService.WebhookService.sendToMattermost.mockResolvedValue(undefined);
+      mockWebhookService.WebhookService.sendToMattermost.mockResolvedValue(
+        undefined,
+      );
 
       const result = await handleFirstTimeLaunchEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockWebhookService.WebhookService.sendToMattermost).toHaveBeenCalledWith(mockReq);
+      expect(
+        mockWebhookService.WebhookService.sendToMattermost,
+      ).toHaveBeenCalledWith(mockReq);
     });
 
     it('should handle webhook errors gracefully', async () => {
       const mockError = new Error('Webhook failed');
-      mockWebhookService.WebhookService.sendToMattermost.mockRejectedValue(mockError);
+      mockWebhookService.WebhookService.sendToMattermost.mockRejectedValue(
+        mockError,
+      );
 
       const result = await handleFirstTimeLaunchEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(false);
-      expect(result.message).toContain('Error sending first time launch webhook for user test-user-id');
-      expect(mockWebhookService.WebhookService.sendToMattermost).toHaveBeenCalledWith(mockReq);
+      expect(result.message).toContain(
+        'Error sending first time launch webhook for user test-user-id',
+      );
+      expect(
+        mockWebhookService.WebhookService.sendToMattermost,
+      ).toHaveBeenCalledWith(mockReq);
     });
   });
 });

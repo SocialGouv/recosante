@@ -31,18 +31,21 @@ function catchErrors<T extends express.Request>(fn: MiddlewareFn<T>) {
           url: req.url,
           method: req.method,
           body: req.body,
-          headers: req.headers
+          headers: req.headers,
         });
       }
 
       // Log des erreurs de validation Prisma
-      if (error instanceof Error && error.message.includes('PrismaClientValidationError')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('PrismaClientValidationError')
+      ) {
         console.error('Prisma validation error:', {
           message: error.message,
           url: req.url,
           method: req.method,
           body: req.body,
-          stack: error.stack
+          stack: error.stack,
         });
       }
 

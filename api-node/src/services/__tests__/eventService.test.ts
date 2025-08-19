@@ -34,25 +34,36 @@ describe('EventService', () => {
       const result = await EventService.processEvent(mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockStoreReviewHandler.handleStoreReviewEvent).not.toHaveBeenCalled();
+      expect(
+        mockStoreReviewHandler.handleStoreReviewEvent,
+      ).not.toHaveBeenCalled();
       expect(mockAppOpenHandler.handleAppOpenEvent).not.toHaveBeenCalled();
-      expect(mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent).not.toHaveBeenCalled();
+      expect(
+        mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent,
+      ).not.toHaveBeenCalled();
     });
 
     it('should handle STORE_REVIEW event correctly', async () => {
       const mockReq = {
         body: {
           userId: 'test-user-id',
-          event: { category: 'STORE_REVIEW', action: 'TRIGGERED_FROM_SETTINGS' },
+          event: {
+            category: 'STORE_REVIEW',
+            action: 'TRIGGERED_FROM_SETTINGS',
+          },
         },
       } as RequestWithMatomoEvent;
 
-      mockStoreReviewHandler.handleStoreReviewEvent.mockResolvedValue({ success: true });
+      mockStoreReviewHandler.handleStoreReviewEvent.mockResolvedValue({
+        success: true,
+      });
 
       const result = await EventService.processEvent(mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockStoreReviewHandler.handleStoreReviewEvent).toHaveBeenCalledWith('test-user-id', mockReq);
+      expect(
+        mockStoreReviewHandler.handleStoreReviewEvent,
+      ).toHaveBeenCalledWith('test-user-id', mockReq);
     });
 
     it('should handle APP_OPEN event correctly', async () => {
@@ -63,15 +74,18 @@ describe('EventService', () => {
         },
       } as RequestWithMatomoEvent;
 
-      mockAppOpenHandler.handleAppOpenEvent.mockResolvedValue({ 
-        success: true, 
-        askForReview: true 
+      mockAppOpenHandler.handleAppOpenEvent.mockResolvedValue({
+        success: true,
+        askForReview: true,
       });
 
       const result = await EventService.processEvent(mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockAppOpenHandler.handleAppOpenEvent).toHaveBeenCalledWith('test-user-id', mockReq);
+      expect(mockAppOpenHandler.handleAppOpenEvent).toHaveBeenCalledWith(
+        'test-user-id',
+        mockReq,
+      );
     });
 
     it('should handle FIRST_TIME_LAUNCH event correctly', async () => {
@@ -82,12 +96,16 @@ describe('EventService', () => {
         },
       } as RequestWithMatomoEvent;
 
-      mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent.mockResolvedValue({ success: true });
+      mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent.mockResolvedValue({
+        success: true,
+      });
 
       const result = await EventService.processEvent(mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent).toHaveBeenCalledWith('test-user-id', mockReq);
+      expect(
+        mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent,
+      ).toHaveBeenCalledWith('test-user-id', mockReq);
     });
 
     it('should return success for unknown events', async () => {
@@ -101,22 +119,29 @@ describe('EventService', () => {
       const result = await EventService.processEvent(mockReq);
 
       expect(result.success).toBe(true);
-      expect(mockStoreReviewHandler.handleStoreReviewEvent).not.toHaveBeenCalled();
+      expect(
+        mockStoreReviewHandler.handleStoreReviewEvent,
+      ).not.toHaveBeenCalled();
       expect(mockAppOpenHandler.handleAppOpenEvent).not.toHaveBeenCalled();
-      expect(mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent).not.toHaveBeenCalled();
+      expect(
+        mockFirstTimeLaunchHandler.handleFirstTimeLaunchEvent,
+      ).not.toHaveBeenCalled();
     });
 
     it('should handle handler errors gracefully', async () => {
       const mockReq = {
         body: {
           userId: 'test-user-id',
-          event: { category: 'STORE_REVIEW', action: 'TRIGGERED_FROM_SETTINGS' },
+          event: {
+            category: 'STORE_REVIEW',
+            action: 'TRIGGERED_FROM_SETTINGS',
+          },
         },
       } as RequestWithMatomoEvent;
 
-      mockStoreReviewHandler.handleStoreReviewEvent.mockResolvedValue({ 
-        success: false, 
-        message: 'Handler failed' 
+      mockStoreReviewHandler.handleStoreReviewEvent.mockResolvedValue({
+        success: false,
+        message: 'Handler failed',
       });
 
       const result = await EventService.processEvent(mockReq);

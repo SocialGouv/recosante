@@ -8,7 +8,7 @@ export interface FirstTimeLaunchResult {
 
 export async function handleFirstTimeLaunchEvent(
   userId: string,
-  req: RequestWithMatomoEvent
+  req: RequestWithMatomoEvent,
 ): Promise<FirstTimeLaunchResult> {
   try {
     const result = WebhookService.sendToMattermost(req);
@@ -17,10 +17,13 @@ export async function handleFirstTimeLaunchEvent(
     }
     return { success: true };
   } catch (error) {
-    console.error(`[EVENT] Error sending first time launch webhook for user ${userId}:`, error);
-    return { 
-      success: false, 
-      message: `Error sending first time launch webhook for user ${userId}` 
+    console.error(
+      `[EVENT] Error sending first time launch webhook for user ${userId}:`,
+      error,
+    );
+    return {
+      success: false,
+      message: `Error sending first time launch webhook for user ${userId}`,
     };
   }
 }

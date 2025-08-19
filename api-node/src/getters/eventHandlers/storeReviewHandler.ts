@@ -1,5 +1,4 @@
 import prisma from '~/prisma';
-import type { RequestWithMatomoEvent } from '~/types/request';
 
 export interface StoreReviewResult {
   success: boolean;
@@ -7,7 +6,7 @@ export interface StoreReviewResult {
 }
 
 export async function handleStoreReviewEvent(
-    userId: string
+  userId: string,
 ): Promise<StoreReviewResult> {
   try {
     await prisma.user.update({
@@ -23,10 +22,12 @@ export async function handleStoreReviewEvent(
     return { success: true };
   } catch (error) {
     // L'utilisateur n'existe plus, c'est un cas normal
-    console.log(`[EVENT] User ${userId} not found for STORE_REVIEW event - skipping update`);
-    return { 
-      success: false, 
-      message: `User ${userId} not found for STORE_REVIEW event - skipping update` 
+    console.log(
+      `[EVENT] User ${userId} not found for STORE_REVIEW event - skipping update`,
+    );
+    return {
+      success: false,
+      message: `User ${userId} not found for STORE_REVIEW event - skipping update`,
     };
   }
 }
