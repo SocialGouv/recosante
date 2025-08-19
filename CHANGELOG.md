@@ -1,3 +1,10 @@
+## [1.48.2](https://github.com/SocialGouv/recosante/compare/v1.48.1...v1.48.2) (2025-08-19)
+
+
+### Bug Fixes
+
+* ajout de pages manquantes et amélioration de la gestion des erreurs ([#668](https://github.com/SocialGouv/recosante/issues/668)) ([e8720d2](https://github.com/SocialGouv/recosante/commit/e8720d295405370d0338c84349dbd1029daf854a))
+
 ## [1.48.1](https://github.com/SocialGouv/recosante/compare/v1.48.0...v1.48.1) (2025-08-13)
 
 
