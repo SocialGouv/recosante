@@ -69,7 +69,7 @@ describe('User Schemas', () => {
         municipality_zip_code: '75001',
         udi: 'udi_code',
         push_notif_token: 'token123',
-        favorite_indicator: 'indice_atmo',
+        favorite_indicator: 'indice_atmospheric',
         notifications_preference: ['morning', 'evening'],
       };
       
