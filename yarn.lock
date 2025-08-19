@@ -2560,24 +2560,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:5.6.0":
-  version: 5.6.0
-  resolution: "@prisma/client@npm:5.6.0"
-  dependencies:
-    "@prisma/engines-version": "npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee"
+"@prisma/client@npm:5.22.0":
+  version: 5.22.0
+  resolution: "@prisma/client@npm:5.22.0"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10c0/21f5840833dbd88cf60d6d3585faab192481a8caf16a6ee2cba8ec8720d8995bc0eee13d66e3bbe31b6f3809c832fd95cf2d2993aaa2dc1ca354e37685852aef
-  languageName: node
-  linkType: hard
-
-"@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee":
-  version: 5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee
-  resolution: "@prisma/engines-version@npm:5.6.0-32.e95e739751f42d8ca026f6b910f5a2dc5adeaeee"
-  checksum: 10c0/06a0e9126213cb881ef15e6d13b2ba29be1d31c65aca6bf070b5182ce82a04de3b93b721549a27be3ddb551e003aa94fa0ca61b78736d5bd3579b9114ba96b49
+  checksum: 10c0/ad111b931f184249794f811637456eb38dcfd0d7047e5a1f64804e5256f462fa3ee7c7a552fc8fa181e8daacc2b958af7426cb57bf0dc66605c3ef7c4aef4afb
   languageName: node
   linkType: hard
 
@@ -4937,7 +4928,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api_node@workspace:api-node"
   dependencies:
-    "@prisma/client": "npm:5.6.0"
+    "@prisma/client": "npm:5.22.0"
     "@sentry/node": "npm:^7.84.0"
     "@sentry/tracing": "npm:^7.84.0"
     "@types/cors": "npm:^2.8.17"
@@ -11321,14 +11312,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"foundation-emails@npm:2.3.1":
-  version: 2.3.1
-  resolution: "foundation-emails@npm:2.3.1"
-  checksum: 10c0/fb1543c3e3de792bc02971af618524702b6a0bcfe94e962dea87522a636ca3d89ece11277315fd2cddbea1afb2cc11121ec19013a5532fe1bfb55a0a6540feae
-  languageName: node
-  linkType: hard
-
-"foundation-emails@npm:^2.2.0":
+"foundation-emails@npm:2.4.0, foundation-emails@npm:^2.2.0":
   version: 2.4.0
   resolution: "foundation-emails@npm:2.4.0"
   checksum: 10c0/aeca04f4610d03795bbadd1d31f64439e959b297a10ef245906861d486c21aa1915a27e2b25f665ac2a46397fc1efe19d14d7dccb9a91db28f268c06254baef5
@@ -11439,7 +11423,7 @@ __metadata:
     gray-matter: "npm:^4.0.3"
     husky: "npm:^9.0.10"
     next: "npm:^14.2.25"
-    next-themes: "npm:^0.2.1"
+    next-themes: "npm:^0.4.0"
     postcss: "npm:^8.4.35"
     prettier: "npm:^3.1.1"
     prettier-plugin-tailwindcss: "npm:^0.5.11"
@@ -17653,14 +17637,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-themes@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "next-themes@npm:0.2.1"
+"next-themes@npm:^0.4.0":
+  version: 0.4.6
+  resolution: "next-themes@npm:0.4.6"
   peerDependencies:
-    next: "*"
-    react: "*"
-    react-dom: "*"
-  checksum: 10c0/979dec0a2de049ce7d1b5da835e7f7dc3b7ec83ba9e464348f497a52a6a6e5b5c395c97f071f66a63f50f22cce89fb6d19061ec7e75643b0eab215b21794bde7
+    react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
+  checksum: 10c0/83590c11d359ce7e4ced14f6ea9dd7a691d5ce6843fe2dc520fc27e29ae1c535118478d03e7f172609c41b1ef1b8da6b8dd2d2acd6cd79cac1abbdbd5b99f2c4
   languageName: node
   linkType: hard
 
@@ -20488,7 +20471,7 @@ __metadata:
     babel-register: "npm:^6.26.0"
     beepbeep: "npm:^1.3.0"
     browser-sync: "npm:^2.29.3"
-    foundation-emails: "npm:2.3.1"
+    foundation-emails: "npm:2.4.0"
     gulp: "npm:^4.0.2"
     gulp-awspublish: "npm:^7.1.0"
     gulp-cli: "npm:^2.3.0"
