@@ -19,6 +19,15 @@ export const updateUserSchema = z.object({
     'bathing_water',
     'drinking_water'
   ]).nullable().optional(),
+  // Alias pour compatibilité avec l'ancien nom de champ
+  favorite_indicators: z.enum([
+    'indice_atmospheric',
+    'indice_uv',
+    'pollen_allergy',
+    'weather_alert',
+    'bathing_water',
+    'drinking_water'
+  ]).nullable().optional(),
   coordinates: z
     .object({
       lat: z.number().min(-90, 'Latitude doit être entre -90 et 90').max(90, 'Latitude doit être entre -90 et 90'),

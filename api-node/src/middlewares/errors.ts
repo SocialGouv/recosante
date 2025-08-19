@@ -15,11 +15,13 @@ type MiddlewareFn<T extends express.Request> = (
   next: express.NextFunction,
 ) => Promise<void> | void;
 
-export const catchErrors = <T extends express.Request>(fn: MiddlewareFn<T>) => {
-  return async (req: T, res: express.Response, next: express.NextFunction) => {
-    try {
-      await fn(req, res, next);
-    } catch (error) {
+function catchErrors<T extends express.Request>(fn: MiddlewareFn<T>) {
+  return (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    Promise.resolve(fn(req as T, res, next)).catch((error) => {
       // Log détaillé des erreurs Prisma
       if (error && typeof error === 'object' && 'code' in error) {
         console.error('Database error:', {
@@ -45,9 +47,9 @@ export const catchErrors = <T extends express.Request>(fn: MiddlewareFn<T>) => {
       }
 
       next(error);
-    }
+    });
   };
-};
+}
 
 /*
   Not Found Error Handler
@@ -103,4 +105,4 @@ const sendError = (
   });
 };
 
-export { notFound, sendError };
+export { catchErrors, notFound, sendError };

@@ -32,10 +32,11 @@ router.post(
 
       const { indicatorId, isRelevant } = req.body;
 
-      await prisma.indicatorFeedback.create({
+      await prisma.feedbackIndicator.create({
         data: {
-          indicatorId,
-          isRelevant,
+          indicator: indicatorId as string, 
+          helpful: isRelevant,
+          matomo_user_id: 'unknown', 
         },
       });
 
