@@ -5,7 +5,7 @@ import { GouvLogo } from '@/images/logos/gouv';
 
 export function Footer() {
   return (
-    <footer className='relative border-t-2 border-main bg-background pt-8'>
+    <footer className='relative border-t-2 border-main bg-background pt-8 mt-16'>
       <Container>
         <div className='mx-auto mb-8 flex max-w-6xl flex-col items-start justify-between px-4 py-0 xl:flex-row xl:items-center xl:gap-x-6'>
           <p className='my-8 max-w-2xl text-center xl:mt-0'>

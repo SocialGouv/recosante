@@ -3,13 +3,18 @@ import Link from 'next/link';
 
 export default function Links() {
   return (
-    <div style={{ borderTop: '1px solid #e5e7eb' }}>
+    <div style={{ 
+      borderTop: '1px solid #e5e7eb',
+      paddingTop: '2rem',
+      paddingBottom: '2rem',
+      marginTop: '1rem'
+    }}>
       <ul style={{ 
         display: 'flex', 
         flexWrap: 'wrap', 
         maxWidth: '75em', 
         margin: '0 auto', 
-        padding: '1rem 0.5rem', 
+        padding: '1.5rem 1rem', 
         listStyleType: 'none' 
       }}>
         <li style={{ 
@@ -99,7 +104,8 @@ export default function Links() {
         </li>
         <li style={{ 
           marginRight: '1rem', 
-          paddingRight: '1px solid #d1d5db' 
+          paddingRight: '1rem',
+          borderRight: '1px solid #d1d5db' 
         }}>
           <Link 
             href="/stats"
