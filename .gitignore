@@ -30,4 +30,5 @@ celerybeat-schedule.db
 frontend/public
 # all .env files
 .env*
+coverage
 
