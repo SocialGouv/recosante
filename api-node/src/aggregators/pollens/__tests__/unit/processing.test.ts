@@ -1,7 +1,4 @@
-import {
-  AlertStatusEnum,
-  DataAvailabilityEnum,
-} from '@prisma/client';
+import { AlertStatusEnum, DataAvailabilityEnum } from '@prisma/client';
 // Importation séparée du type Municipality
 import type { Municipality } from '@prisma/client';
 import {
@@ -12,16 +9,19 @@ import {
 } from '../../processing';
 import { validatePollensDataRow } from '../../validation';
 import { capture } from '~/third-parties/sentry';
-import type { PollensAPIProperties, PollensByCodeZone } from '~/types/api/pollens';
+import type {
+  PollensAPIProperties,
+  PollensByCodeZone,
+} from '~/types/api/pollens';
 
 // Helper pour les tests ajoutant les champs manquants requis
 function createTestData(mockData: any[]) {
-  return mockData.map(item => ({
+  return mockData.map((item) => ({
     ...item,
     properties: {
       ...item.properties,
       pollen_resp: item.properties.pollen_resp || 'AUCUN',
-    }
+    },
   })) as { type: string; geometry: null; properties: PollensAPIProperties }[];
 }
 
@@ -262,7 +262,9 @@ describe('Fonctions de traitement des données de pollens', () => {
 
       expect(paris?.data_availability).toBe(DataAvailabilityEnum.AVAILABLE);
       expect(lyon?.data_availability).toBe(DataAvailabilityEnum.AVAILABLE);
-      expect(marseille?.data_availability).toBe(DataAvailabilityEnum.NOT_AVAILABLE);
+      expect(marseille?.data_availability).toBe(
+        DataAvailabilityEnum.NOT_AVAILABLE,
+      );
     });
 
     it('Utilisation des données de la commune parente si disponibles', () => {
@@ -291,32 +293,34 @@ describe('Fonctions de traitement des données de pollens', () => {
       expect(result.missingData).toBe(0);
 
       const communeAvecParent = result.pollensRows[0];
-      expect(communeAvecParent.data_availability).toBe(DataAvailabilityEnum.AVAILABLE);
+      expect(communeAvecParent.data_availability).toBe(
+        DataAvailabilityEnum.AVAILABLE,
+      );
       expect(communeAvecParent.municipality_insee_code).toBe('75100');
       expect(communeAvecParent.total).toBe(3); // Code de Paris
     });
   });
 
   describe('createUnavailablePollenRow', () => {
-    it('Création correcte d\'un objet pour données non disponibles', () => {
+    it("Création correcte d'un objet pour données non disponibles", () => {
       const mockMunicipality: Municipality = {
-          COM: '13055',
-          COMPARENT: null,
-          DEP: '13',
-          REG: '93',
-          EPCI: 'EPCI13',
-          NCC: 'MARSEILLE',
-          TYPECOM: '',
-          CTCD: null,
-          ARR: null,
-          CAN: null,
-          LIBEPCI: null,
-          TNCC: null,
-          NCCENR: null,
-          LIBELLE: null,
-          bathing_water_sites: 0,
-          created_at: new Date(),
-          updated_at: new Date(),
+        COM: '13055',
+        COMPARENT: null,
+        DEP: '13',
+        REG: '93',
+        EPCI: 'EPCI13',
+        NCC: 'MARSEILLE',
+        TYPECOM: '',
+        CTCD: null,
+        ARR: null,
+        CAN: null,
+        LIBEPCI: null,
+        TNCC: null,
+        NCCENR: null,
+        LIBELLE: null,
+        bathing_water_sites: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
       };
 
       const diffusionDate = new Date('2023-06-01');
@@ -338,26 +342,26 @@ describe('Fonctions de traitement des données de pollens', () => {
   });
 
   describe('createAvailablePollenRow', () => {
-    it('Création correcte d\'un objet pour données disponibles SANS alerte', () => {
+    it("Création correcte d'un objet pour données disponibles SANS alerte", () => {
       const mockMunicipality: Municipality = {
-          COM: '75056',
-          COMPARENT: null,
-          DEP: '75',
-          REG: '11',
-          EPCI: 'EPCI75',
-          NCC: 'PARIS',
-          TYPECOM: '',
-          CTCD: null,
-          ARR: null,
-          CAN: null,
-          LIBEPCI: null,
-          TNCC: null,
-          NCCENR: null,
-          LIBELLE: null,
-          bathing_water_sites: 0,
-          created_at:  new Date(),
-          updated_at: new Date()
-      }
+        COM: '75056',
+        COMPARENT: null,
+        DEP: '75',
+        REG: '11',
+        EPCI: 'EPCI75',
+        NCC: 'PARIS',
+        TYPECOM: '',
+        CTCD: null,
+        ARR: null,
+        CAN: null,
+        LIBEPCI: null,
+        TNCC: null,
+        NCCENR: null,
+        LIBELLE: null,
+        bathing_water_sites: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
 
       const mockPollenData: PollensByCodeZone = {
         aasqa: 'ATMO',
@@ -394,7 +398,7 @@ describe('Fonctions de traitement des données de pollens', () => {
       expect(result.total).toBe(3);
     });
 
-    it('Création correcte d\'un objet pour données disponibles AVEC alerte', () => {
+    it("Création correcte d'un objet pour données disponibles AVEC alerte", () => {
       const mockMunicipality: Municipality = {
         COM: '75056',
         COMPARENT: null,
@@ -444,7 +448,9 @@ describe('Fonctions de traitement des données de pollens', () => {
 
       expect(result.municipality_insee_code).toBe('75056');
       expect(result.data_availability).toBe(DataAvailabilityEnum.AVAILABLE);
-      expect(result.alert_status).toBe(AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET);
+      expect(result.alert_status).toBe(
+        AlertStatusEnum.ALERT_NOTIFICATION_NOT_SENT_YET,
+      );
       expect(result.total).toBe(5);
       expect(result.graminees).toBe(4);
       expect(result.cypres).toBe(5);
