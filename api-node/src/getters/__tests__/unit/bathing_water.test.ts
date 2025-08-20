@@ -1,8 +1,23 @@
-import { DataAvailabilityEnum, AlertStatusEnum, IndicatorsSlugEnum, type BathingWater, BathgWaterIdCarteEnum } from '@prisma/client';
+import {
+  DataAvailabilityEnum,
+  AlertStatusEnum,
+  IndicatorsSlugEnum,
+  type BathingWater,
+  BathgWaterIdCarteEnum,
+} from '@prisma/client';
 import prisma from '~/prisma';
-import { getBathingWaterFromMunicipalityAndDate, getBathingWaters } from '../../bathing_water';
-import { BathingWaterNumberValueEnum, BathingWaterStatusEnum } from '~/types/api/bathing_water';
-import { getBathingWaterSiteValueDerivedFromBathingWaterRow, getBathingWaterSummaryValue } from '~/utils/bathing_water/bathing_water';
+import {
+  getBathingWaterFromMunicipalityAndDate,
+  getBathingWaters,
+} from '../../bathing_water';
+import {
+  BathingWaterNumberValueEnum,
+  BathingWaterStatusEnum,
+} from '~/types/api/bathing_water';
+import {
+  getBathingWaterSiteValueDerivedFromBathingWaterRow,
+  getBathingWaterSummaryValue,
+} from '~/utils/bathing_water/bathing_water';
 
 // Mock des dépendances
 jest.mock('~/prisma', () => ({
@@ -20,16 +35,18 @@ jest.mock('~/prisma', () => ({
 
 jest.mock('~/utils/bathing_water/bathing_water', () => ({
   buildBathingWaterUrl: jest.fn().mockReturnValue('https://example.com'),
-  getBathingWaterLatestResultDate: jest.fn().mockReturnValue('2023-07-15T00:00:00.000Z'),
+  getBathingWaterLatestResultDate: jest
+    .fn()
+    .mockReturnValue('2023-07-15T00:00:00.000Z'),
   getBathingWaterSiteValueDerivedFromBathingWaterRow: jest.fn(),
   getBathingWaterSummaryValue: jest.fn(),
 }));
 
 describe('Fonctions de traitement des eaux de baignade', () => {
   const createMockBathingWater = (id: string, name: string): BathingWater => ({
-    id: id,
+    id,
     id_site: id,
-    name: name,
+    name,
     municipality_insee_code: '75056',
     validity_start: new Date('2023-07-15'),
     validity_end: new Date('2023-07-22'),
@@ -56,7 +73,9 @@ describe('Fonctions de traitement des eaux de baignade', () => {
   describe('getBathingWaters', () => {
     it('devrait retourner les données de baignade pour une municipalité', async () => {
       const expectedBathingWater = createMockBathingWater('site1', 'Plage 1');
-      (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([expectedBathingWater]);
+      (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([
+        expectedBathingWater,
+      ]);
 
       const result = await getBathingWaters({
         municipality_insee_code: '75056',
@@ -67,13 +86,18 @@ describe('Fonctions de traitement des eaux de baignade', () => {
     });
 
     it('devrait retourner les données de la municipalité parente si disponibles', async () => {
-      const expectedParentBathingWater = createMockBathingWater('parent_site', 'Plage Parent');
+      const expectedParentBathingWater = createMockBathingWater(
+        'parent_site',
+        'Plage Parent',
+      );
       (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([]);
       (prisma.municipality.findUnique as jest.Mock).mockResolvedValueOnce({
         COM: '75000',
         COMPARENT: '75056',
       });
-      (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([expectedParentBathingWater]);
+      (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([
+        expectedParentBathingWater,
+      ]);
 
       const result = await getBathingWaters({
         municipality_insee_code: '75000',
@@ -86,9 +110,11 @@ describe('Fonctions de traitement des eaux de baignade', () => {
 
   describe('getBathingWaterFromMunicipalityAndDate', () => {
     beforeEach(() => {
-      (prisma.recommandation.findMany as jest.Mock).mockResolvedValue([{
-        recommandation_content: 'Recommandation test',
-      }]);
+      (prisma.recommandation.findMany as jest.Mock).mockResolvedValue([
+        {
+          recommandation_content: 'Recommandation test',
+        },
+      ]);
     });
 
     it('devrait retourner null si pas de sites de baignade', async () => {
@@ -108,8 +134,9 @@ describe('Fonctions de traitement des eaux de baignade', () => {
     it('devrait indiquer NO_DATA pour les sites hors saison', async () => {
       const mockBathingWaters = [createMockBathingWater('site1', 'Plage 1')];
       (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce(mockBathingWaters);
-      (getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock)
-        .mockReturnValue(BathingWaterNumberValueEnum.OFF_SEASON);
+      (
+        getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock
+      ).mockReturnValue(BathingWaterNumberValueEnum.OFF_SEASON);
       (getBathingWaterSummaryValue as jest.Mock).mockReturnValue({
         value: BathingWaterNumberValueEnum.OFF_SEASON,
         status: BathingWaterStatusEnum.NO_DATA,
@@ -127,8 +154,9 @@ describe('Fonctions de traitement des eaux de baignade', () => {
     it('devrait indiquer NO_DATA pour les sites interdits', async () => {
       const mockBathingWaters = [createMockBathingWater('site1', 'Plage 1')];
       (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce(mockBathingWaters);
-      (getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock)
-        .mockReturnValue(BathingWaterNumberValueEnum.PROHIBITION);
+      (
+        getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock
+      ).mockReturnValue(BathingWaterNumberValueEnum.PROHIBITION);
       (getBathingWaterSummaryValue as jest.Mock).mockReturnValue({
         value: BathingWaterNumberValueEnum.PROHIBITION,
         status: BathingWaterStatusEnum.NO_DATA,
@@ -145,8 +173,9 @@ describe('Fonctions de traitement des eaux de baignade', () => {
     it('devrait indiquer NO_DATA pour les sites non classés', async () => {
       const mockBathingWaters = [createMockBathingWater('site1', 'Plage 1')];
       (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce(mockBathingWaters);
-      (getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock)
-        .mockReturnValue(BathingWaterNumberValueEnum.UNRANKED_SITE);
+      (
+        getBathingWaterSiteValueDerivedFromBathingWaterRow as jest.Mock
+      ).mockReturnValue(BathingWaterNumberValueEnum.UNRANKED_SITE);
       (getBathingWaterSummaryValue as jest.Mock).mockReturnValue({
         value: BathingWaterNumberValueEnum.UNRANKED_SITE,
         status: BathingWaterStatusEnum.NO_DATA,
@@ -171,12 +200,22 @@ describe('Fonctions de traitement des eaux de baignade', () => {
         .mockReturnValueOnce(BathingWaterNumberValueEnum.PROHIBITION)
         .mockReturnValueOnce(BathingWaterNumberValueEnum.GOOD);
       (getBathingWaterSummaryValue as jest.Mock)
-        .mockReturnValueOnce({ value: BathingWaterNumberValueEnum.GOOD, status: BathingWaterStatusEnum.NO_DATA })
-        .mockReturnValueOnce({ value: BathingWaterNumberValueEnum.PROHIBITION, status: BathingWaterStatusEnum.NO_DATA });
-      
+        .mockReturnValueOnce({
+          value: BathingWaterNumberValueEnum.GOOD,
+          status: BathingWaterStatusEnum.NO_DATA,
+        })
+        .mockReturnValueOnce({
+          value: BathingWaterNumberValueEnum.PROHIBITION,
+          status: BathingWaterStatusEnum.NO_DATA,
+        });
+
       (prisma.recommandation.findMany as jest.Mock)
-        .mockResolvedValueOnce([{ recommandation_content: 'Recommandation pour site interdit' }])
-        .mockResolvedValueOnce([{ recommandation_content: 'Recommandation pour site normal' }]);
+        .mockResolvedValueOnce([
+          { recommandation_content: 'Recommandation pour site interdit' },
+        ])
+        .mockResolvedValueOnce([
+          { recommandation_content: 'Recommandation pour site normal' },
+        ]);
 
       const result = await getBathingWaterFromMunicipalityAndDate({
         municipality_insee_code: '75056',
@@ -189,7 +228,7 @@ describe('Fonctions de traitement des eaux de baignade', () => {
 
       expect(result.j0.summary.recommendations).toEqual([
         'Recommandation pour site interdit',
-        'Recommandation pour site normal'
+        'Recommandation pour site normal',
       ]);
     });
 
@@ -202,4 +241,4 @@ describe('Fonctions de traitement des eaux de baignade', () => {
       ).rejects.toThrow();
     });
   });
-}); 
+});

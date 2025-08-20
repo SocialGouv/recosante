@@ -5,7 +5,7 @@ describe('User Schemas', () => {
     it('should validate valid matomo_id', () => {
       const validData = { matomo_id: '1234567890123456' };
       const result = createUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toEqual(validData);
@@ -15,7 +15,7 @@ describe('User Schemas', () => {
     it('should reject matomo_id that is too short', () => {
       const invalidData = { matomo_id: '123' };
       const result = createUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toContain('16 caractères');
@@ -25,7 +25,7 @@ describe('User Schemas', () => {
     it('should reject matomo_id that is too long', () => {
       const invalidData = { matomo_id: '12345678901234567' };
       const result = createUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.issues[0].message).toContain('16 caractères');
@@ -35,17 +35,17 @@ describe('User Schemas', () => {
     it('should reject missing matomo_id', () => {
       const invalidData = {};
       const result = createUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
     });
 
     it('should reject additional fields', () => {
-      const invalidData = { 
+      const invalidData = {
         matomo_id: '1234567890123456',
-        extra_field: 'should_be_rejected'
+        extra_field: 'should_be_rejected',
       };
       const result = createUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
     });
   });
@@ -54,7 +54,7 @@ describe('User Schemas', () => {
     it('should validate empty object (all fields optional)', () => {
       const validData = {};
       const result = updateUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toEqual({});
@@ -72,9 +72,9 @@ describe('User Schemas', () => {
         favorite_indicator: 'indice_atmospheric',
         notifications_preference: ['morning', 'evening'],
       };
-      
+
       const result = updateUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toEqual(validData);
@@ -88,9 +88,9 @@ describe('User Schemas', () => {
           lon: 2.3522,
         },
       };
-      
+
       const result = updateUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.coordinates).toEqual(validData.coordinates);
@@ -104,12 +104,14 @@ describe('User Schemas', () => {
           lon: 2.3522,
         },
       };
-      
+
       const result = updateUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain('Latitude doit être entre -90 et 90');
+        expect(result.error.issues[0].message).toContain(
+          'Latitude doit être entre -90 et 90',
+        );
       }
     });
 
@@ -120,12 +122,14 @@ describe('User Schemas', () => {
           lon: 181, // Invalid: > 180
         },
       };
-      
+
       const result = updateUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain('Longitude doit être entre -180 et 180');
+        expect(result.error.issues[0].message).toContain(
+          'Longitude doit être entre -180 et 180',
+        );
       }
     });
 
@@ -133,12 +137,16 @@ describe('User Schemas', () => {
       const validData = {
         notifications_preference: ['morning', 'evening', 'alert'],
       };
-      
+
       const result = updateUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.notifications_preference).toEqual(['morning', 'evening', 'alert']);
+        expect(result.data.notifications_preference).toEqual([
+          'morning',
+          'evening',
+          'alert',
+        ]);
       }
     });
 
@@ -146,9 +154,9 @@ describe('User Schemas', () => {
       const invalidData = {
         notifications_preference: ['morning', 123, 'alert'], // 123 is not a string
       };
-      
+
       const result = updateUserSchema.safeParse(invalidData);
-      
+
       expect(result.success).toBe(false);
     });
 
@@ -157,9 +165,9 @@ describe('User Schemas', () => {
         municipality_name: 'Paris',
         // Only one field provided
       };
-      
+
       const result = updateUserSchema.safeParse(validData);
-      
+
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data).toEqual(validData);

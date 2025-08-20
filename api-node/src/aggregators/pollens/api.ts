@@ -122,7 +122,8 @@ export async function fetchPollensDataFromAtmoAPI(
     // Vérifier que la réponse contient du contenu avant de la parser
     const responseText = await response.text();
     if (!responseText || responseText.trim() === '') {
-      throw new Error('Réponse API vide - aucune donnée reçue');
+      console.log(`[POLLENS] Pas de données pollens disponibles pour ${indiceForDate.format('YYYY-MM-DD')} - réponse API vide`);
+      return [];
     }
     
     let pollensRes: PollensAPIResponse;

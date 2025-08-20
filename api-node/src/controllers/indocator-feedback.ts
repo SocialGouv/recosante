@@ -16,7 +16,14 @@ router.post(
     ) => {
       try {
         z.object({
-          indicatorId: z.string(),
+          indicatorId: z.enum([
+            'indice_atmospheric',
+            'indice_uv',
+            'pollen_allergy',
+            'weather_alert',
+            'bathing_water',
+            'drinking_water'
+          ]),
           isRelevant: z.boolean(),
         }).parse(req.body);
       } catch (zodError) {
@@ -32,10 +39,11 @@ router.post(
 
       const { indicatorId, isRelevant } = req.body;
 
-      await prisma.indicatorFeedback.create({
+      await prisma.feedbackIndicator.create({
         data: {
-          indicatorId,
-          isRelevant,
+          indicator: indicatorId,
+          helpful: isRelevant,
+          matomo_user_id: 'unknown', 
         },
       });
 

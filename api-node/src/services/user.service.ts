@@ -71,8 +71,14 @@ export async function updateUser(
   headers: Record<string, string | undefined>
 ): Promise<any> {
   try {
-    // Start with user data (already validated by Zod schema)
-    const userUpdate: any = { ...updateData };
+      // Start with user data (already validated by Zod schema)
+  const userUpdate: any = { ...updateData };
+  
+  // Handle both singular and plural field names for backward compatibility
+  if (userUpdate.favorite_indicators && !userUpdate.favorite_indicator) {
+    userUpdate.favorite_indicator = userUpdate.favorite_indicators;
+    delete userUpdate.favorite_indicators;
+  }
 
     // Remove undefined and null values
     Object.keys(userUpdate).forEach(key => {
@@ -108,14 +114,13 @@ export async function updateUser(
 
     return updatedUser;
   } catch (error) {
-    // Log the error for debugging
+
     console.error('Error updating user:', {
       matomoId,
       updateData,
       error: error instanceof Error ? error.message : String(error)
     });
 
-    // Re-throw the error to be handled by the controller
     throw error;
   }
 }

@@ -43,11 +43,9 @@ notificationRouter.post(
       });
 
       if (!notification) {
-        const customError = new Error(
-          `Notification with expo_id ${req.body.id} not found`,
-        ) as CustomError;
-        customError.status = 404;
-        next(customError);
+
+        console.log(`Notification with expo_id ${req.body.id} not found - continuing with 200 response`);
+        res.status(200).send({ ok: true, message: 'Notification not found but request processed' });
         return;
       }
 

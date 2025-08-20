@@ -15,11 +15,13 @@ type MiddlewareFn<T extends express.Request> = (
   next: express.NextFunction,
 ) => Promise<void> | void;
 
-export const catchErrors = <T extends express.Request>(fn: MiddlewareFn<T>) => {
-  return async (req: T, res: express.Response, next: express.NextFunction) => {
-    try {
-      await fn(req, res, next);
-    } catch (error) {
+function catchErrors<T extends express.Request>(fn: MiddlewareFn<T>) {
+  return (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    Promise.resolve(fn(req as T, res, next)).catch((error) => {
       // Log détaillé des erreurs Prisma
       if (error && typeof error === 'object' && 'code' in error) {
         console.error('Database error:', {
@@ -29,25 +31,28 @@ export const catchErrors = <T extends express.Request>(fn: MiddlewareFn<T>) => {
           url: req.url,
           method: req.method,
           body: req.body,
-          headers: req.headers
+          headers: req.headers,
         });
       }
 
       // Log des erreurs de validation Prisma
-      if (error instanceof Error && error.message.includes('PrismaClientValidationError')) {
+      if (
+        error instanceof Error &&
+        error.message.includes('PrismaClientValidationError')
+      ) {
         console.error('Prisma validation error:', {
           message: error.message,
           url: req.url,
           method: req.method,
           body: req.body,
-          stack: error.stack
+          stack: error.stack,
         });
       }
 
       next(error);
-    }
+    });
   };
-};
+}
 
 /*
   Not Found Error Handler
@@ -103,4 +108,4 @@ const sendError = (
   });
 };
 
-export { notFound, sendError };
+export { catchErrors, notFound, sendError };
