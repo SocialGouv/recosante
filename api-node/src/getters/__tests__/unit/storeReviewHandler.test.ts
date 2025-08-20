@@ -1,5 +1,4 @@
 import { handleStoreReviewEvent } from '../../eventHandlers/storeReviewHandler';
-import type { RequestWithMatomoEvent } from '~/types/request';
 
 // Mock Prisma
 jest.mock('~/prisma', () => ({
@@ -11,16 +10,6 @@ jest.mock('~/prisma', () => ({
 const mockPrisma = jest.mocked(require('~/prisma'));
 
 describe('storeReviewHandler', () => {
-  const mockReq = {
-    body: {
-      userId: 'test-user-id',
-      event: {
-        category: 'STORE_REVIEW',
-        action: 'TRIGGERED_FROM_SETTINGS',
-      },
-    },
-  } as unknown as RequestWithMatomoEvent;
-
   beforeEach(() => {
     jest.clearAllMocks();
   });

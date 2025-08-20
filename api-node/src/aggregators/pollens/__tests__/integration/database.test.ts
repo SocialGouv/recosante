@@ -26,7 +26,7 @@ describe('Test pollen aggregation database functions', () => {
   let testDiffusionDate: Date;
   let testPollenRow: PollenRow;
   let testMunicipality: any;
-  let createdRecordIds: string[] = [];
+  const createdRecordIds: string[] = [];
 
   beforeAll(async () => {
     await prisma.$connect();

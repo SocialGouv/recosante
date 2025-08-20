@@ -1,5 +1,4 @@
 import { handleAppOpenEvent } from '../../eventHandlers/appOpenHandler';
-import type { RequestWithMatomoEvent } from '~/types/request';
 
 // Mock Prisma
 jest.mock('~/prisma', () => ({
@@ -18,16 +17,6 @@ const mockPrisma = jest.mocked(require('~/prisma'));
 const mockUserUtils = jest.mocked(require('~/utils/user'));
 
 describe('appOpenHandler', () => {
-  const mockReq = {
-    body: {
-      userId: 'test-user-id',
-      event: {
-        category: 'APP',
-        action: 'APP_OPEN',
-      },
-    },
-  } as unknown as RequestWithMatomoEvent;
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
