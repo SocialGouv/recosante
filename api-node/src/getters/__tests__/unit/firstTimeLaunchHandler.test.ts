@@ -8,7 +8,9 @@ jest.mock('~/utils/webhook', () => ({
   },
 }));
 
-const mockWebhookService = jest.mocked(require('~/utils/webhook'));
+// Import du mock typé
+import * as webhookService from '~/utils/webhook';
+const mockWebhookService = webhookService as any;
 
 describe('firstTimeLaunchHandler', () => {
   const mockReq = {

@@ -13,8 +13,11 @@ jest.mock('~/utils/user', () => ({
   canAskReviewForUser: jest.fn(),
 }));
 
-const mockPrisma = jest.mocked(require('~/prisma'));
-const mockUserUtils = jest.mocked(require('~/utils/user'));
+// Import des mocks typés
+import prisma from '~/prisma';
+import * as userUtils from '~/utils/user';
+const mockPrisma = prisma as any;
+const mockUserUtils = userUtils as any;
 
 describe('appOpenHandler', () => {
   beforeEach(() => {

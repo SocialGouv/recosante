@@ -8,7 +8,9 @@ jest.mock('~/getters/eventHandlers', () => ({
   handleFirstTimeLaunchEvent: jest.fn(),
 }));
 
-const mockHandlers = jest.mocked(require('~/getters/eventHandlers'));
+// Import du mock typé
+import * as eventHandlers from '~/getters/eventHandlers';
+const mockHandlers = eventHandlers as any;
 
 describe('EventService', () => {
   beforeEach(() => {

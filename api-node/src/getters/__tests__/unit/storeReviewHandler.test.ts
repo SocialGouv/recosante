@@ -7,7 +7,9 @@ jest.mock('~/prisma', () => ({
   },
 }));
 
-const mockPrisma = jest.mocked(require('~/prisma'));
+// Import du mock typé
+import prisma from '~/prisma';
+const mockPrisma = prisma as any;
 
 describe('storeReviewHandler', () => {
   beforeEach(() => {
