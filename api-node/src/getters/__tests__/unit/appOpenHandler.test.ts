@@ -1,4 +1,5 @@
 import { handleAppOpenEvent } from '../../eventHandlers/appOpenHandler';
+import type { RequestWithMatomoEvent } from '~/types/request';
 
 // Mock Prisma
 jest.mock('~/prisma', () => ({
@@ -20,6 +21,16 @@ const mockPrisma = prisma as any;
 const mockUserUtils = userUtils as any;
 
 describe('appOpenHandler', () => {
+  const mockReq = {
+    body: {
+      userId: 'test-user-id',
+      event: {
+        category: 'APP',
+        action: 'APP_OPEN',
+      },
+    },
+  } as unknown as RequestWithMatomoEvent;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -32,7 +43,7 @@ describe('appOpenHandler', () => {
       });
       mockUserUtils.canAskReviewForUser.mockReturnValue(false);
 
-      const result = await handleAppOpenEvent('test-user-id');
+      const result = await handleAppOpenEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(false);
@@ -47,7 +58,7 @@ describe('appOpenHandler', () => {
       mockUserUtils.canAskReviewForUser.mockReturnValue(true);
       mockPrisma.user.update.mockResolvedValue({ id: 1 });
 
-      const result = await handleAppOpenEvent('test-user-id');
+      const result = await handleAppOpenEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(true);
@@ -63,7 +74,7 @@ describe('appOpenHandler', () => {
       mockPrisma.user.findUnique.mockResolvedValue(null);
       mockUserUtils.canAskReviewForUser.mockReturnValue(false);
 
-      const result = await handleAppOpenEvent('test-user-id');
+      const result = await handleAppOpenEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(true);
       expect(result.askForReview).toBe(false);
@@ -78,7 +89,7 @@ describe('appOpenHandler', () => {
       mockUserUtils.canAskReviewForUser.mockReturnValue(true);
       mockPrisma.user.update.mockRejectedValue(new Error('Update failed'));
 
-      const result = await handleAppOpenEvent('test-user-id');
+      const result = await handleAppOpenEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(false);
       expect(result.askForReview).toBe(false);

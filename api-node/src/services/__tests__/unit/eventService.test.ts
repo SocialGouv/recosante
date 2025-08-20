@@ -51,6 +51,7 @@ describe('EventService', () => {
       expect(result.success).toBe(true);
       expect(mockHandlers.handleStoreReviewEvent).toHaveBeenCalledWith(
         'test-user-id',
+        mockReq,
       );
     });
 
@@ -72,6 +73,7 @@ describe('EventService', () => {
       expect(result.success).toBe(true);
       expect(mockHandlers.handleAppOpenEvent).toHaveBeenCalledWith(
         'test-user-id',
+        mockReq,
       );
     });
 

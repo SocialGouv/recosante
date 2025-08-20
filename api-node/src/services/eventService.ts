@@ -25,11 +25,11 @@ export const EventService = {
       event.category === 'STORE_REVIEW' &&
       event.action === 'TRIGGERED_FROM_SETTINGS'
     ) {
-      return await handleStoreReviewEvent(userId);
+      return await handleStoreReviewEvent(userId, req);
     }
 
     if (event.category === 'APP' && event.action === 'APP_OPEN') {
-      return await handleAppOpenEvent(userId);
+      return await handleAppOpenEvent(userId, req);
     }
 
     if (event.category === 'APP' && event.action === 'FIRST_TIME_LAUNCH') {

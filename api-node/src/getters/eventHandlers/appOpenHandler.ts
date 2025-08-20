@@ -1,5 +1,6 @@
 import prisma from '~/prisma';
 import { canAskReviewForUser } from '~/utils/user';
+import type { RequestWithMatomoEvent } from '~/types/request';
 
 export interface AppOpenResult {
   success: boolean;
@@ -8,7 +9,8 @@ export interface AppOpenResult {
 }
 
 export async function handleAppOpenEvent(
-  userId: string
+  userId: string,
+  req: RequestWithMatomoEvent,
 ): Promise<AppOpenResult> {
   try {
     const user = await prisma.user.findUnique({
@@ -17,7 +19,7 @@ export async function handleAppOpenEvent(
       },
     });
 
-    if (!canAskReviewForUser(user)) {
+    if (!(await canAskReviewForUser(user))) {
       return { success: true, askForReview: false };
     }
 
@@ -32,11 +34,17 @@ export async function handleAppOpenEvent(
 
     return { success: true, askForReview: true };
   } catch (error) {
-    console.log(`[EVENT] User ${userId} not found for APP_OPEN event - skipping update`);
-    return { 
-      success: false, 
+    const sanitizedUserId =
+      typeof userId === 'string'
+        ? userId.replace(/[\r\n]/g, '')
+        : String(userId);
+    console.log(
+      `[EVENT] User ${sanitizedUserId} not found for APP_OPEN event - skipping update`,
+    );
+    return {
+      success: false,
       askForReview: false,
-      message: `User ${userId} not found for APP_OPEN event - skipping update` 
+      message: `User ${sanitizedUserId} not found for APP_OPEN event - skipping update`,
     };
   }
 }

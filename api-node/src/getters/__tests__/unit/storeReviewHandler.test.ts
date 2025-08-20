@@ -1,4 +1,5 @@
 import { handleStoreReviewEvent } from '../../eventHandlers/storeReviewHandler';
+import type { RequestWithMatomoEvent } from '~/types/request';
 
 // Mock Prisma
 jest.mock('~/prisma', () => ({
@@ -12,6 +13,16 @@ import prisma from '~/prisma';
 const mockPrisma = prisma as any;
 
 describe('storeReviewHandler', () => {
+  const mockReq = {
+    body: {
+      userId: 'test-user-id',
+      event: {
+        category: 'STORE_REVIEW',
+        action: 'TRIGGERED_FROM_SETTINGS',
+      },
+    },
+  } as unknown as RequestWithMatomoEvent;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -20,7 +31,7 @@ describe('storeReviewHandler', () => {
     it('should successfully update user review data', async () => {
       mockPrisma.user.update.mockResolvedValue({ id: 1 });
 
-      const result = await handleStoreReviewEvent('test-user-id');
+      const result = await handleStoreReviewEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(true);
       expect(mockPrisma.user.update).toHaveBeenCalledWith({
@@ -36,7 +47,7 @@ describe('storeReviewHandler', () => {
       const error = new Error('User not found');
       mockPrisma.user.update.mockRejectedValue(error);
 
-      const result = await handleStoreReviewEvent('test-user-id');
+      const result = await handleStoreReviewEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(false);
       expect(result.message).toContain(
@@ -49,7 +60,7 @@ describe('storeReviewHandler', () => {
       const error = new Error('Database connection failed');
       mockPrisma.user.update.mockRejectedValue(error);
 
-      const result = await handleStoreReviewEvent('test-user-id');
+      const result = await handleStoreReviewEvent('test-user-id', mockReq);
 
       expect(result.success).toBe(false);
       expect(result.message).toContain(

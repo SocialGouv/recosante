@@ -11,19 +11,21 @@ export async function handleFirstTimeLaunchEvent(
   req: RequestWithMatomoEvent,
 ): Promise<FirstTimeLaunchResult> {
   try {
-    const result = WebhookService.sendToMattermost(req);
-    if (result && typeof result.then === 'function') {
-      await result;
-    }
+    await WebhookService.sendToMattermost(req);
     return { success: true };
   } catch (error) {
+    const safeUserId =
+      typeof userId === 'string'
+        ? userId.replace(/[\r\n]/g, '')
+        : String(userId);
     console.error(
-      `[EVENT] Error sending first time launch webhook for user ${userId}:`,
+      '[EVENT] Error sending first time launch webhook for user %s:',
+      safeUserId,
       error,
     );
     return {
       success: false,
-      message: `Error sending first time launch webhook for user ${userId}`,
+      message: `Error sending first time launch webhook for user ${safeUserId}`,
     };
   }
 }
