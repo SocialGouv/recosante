@@ -33,6 +33,6 @@ Exemple : un indice UV de 10 correspond à une puissance pondérée de 0,25 watt
 ![Échelle des indices UV: 1-2/vert/faible - 3-5/orange/modéré - 6-7/corail/fort - 8-10/rouge/très fort - 11+/violet/extrême](https://www.tendances-saisonnieres-et-solaires.fr/wp-content/uploads/2022/01/indice-uv.jpeg)
 
 
-_Source des informations : Meteo France_
+_Source des informations : Météo France_
 
 [En savoir plus](https://meteofrance.com/comprendre-la-meteo/atmosphere/les-ultraviolets)
