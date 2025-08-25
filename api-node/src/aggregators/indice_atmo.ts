@@ -92,8 +92,17 @@ export async function getAtmoIndicator() {
         retries: 3,
         retryDelay: 1000,
       },
-    ).then(async (response) => await response.json());
-    const atmoJWTToken: string = loginRes.token;
+    );
+
+    if (!loginRes.ok) {
+      capture(`HTTP ${loginRes.status} from Atmo login API`, {
+        extra: { functionCall: 'getAtmoIndicator' },
+      });
+      return;
+    }
+
+    const loginData = await loginRes.json();
+    const atmoJWTToken: string = loginData.token;
     logStep('Step 1: Fetched Atmo JWT Token');
 
     /*
@@ -166,19 +175,61 @@ export async function getAtmoIndicatorForDate(
     const query = JSON.stringify(rawQuery);
     const url = `https://admindata.atmo-france.org/api/data/${indiceDataId}/${query}?withGeom=false`;
 
-    const indicesRes: IndiceAtmoAPIResponse = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${atmoJWTToken}`,
       },
-    })
-      .then(async (response) => await response.json())
-      .catch((error) => {
-        capture(error, {
-          extra: { functionCall: 'getAtmoIndicator', url, query },
-        });
-        return null;
+    });
+
+    if (!response.ok) {
+      capture(`HTTP ${response.status} from Atmo API`, {
+        extra: {
+          functionCall: 'getAtmoIndicator',
+          url,
+          query,
+          status: response.status,
+        },
       });
+      return;
+    }
+
+    // Vérifier que la réponse contient du contenu avant de la parser
+    const responseText = await response.text();
+    if (!responseText || responseText.trim() === '') {
+      logStep(
+        `No Atmo data available for ${indiceForDate.format(
+          'YYYY-MM-DD',
+        )} - empty response`,
+      );
+      return;
+    }
+
+    let indicesRes: IndiceAtmoAPIResponse;
+    try {
+      indicesRes = JSON.parse(responseText);
+    } catch (parseError) {
+      capture(`Failed to parse Atmo API response`, {
+        extra: {
+          functionCall: 'getAtmoIndicator',
+          url,
+          query,
+          responseText: responseText.substring(0, 200), // Limiter la taille pour Sentry
+          parseError,
+        },
+      });
+      return;
+    }
+
+    if (!indicesRes || !indicesRes.features) {
+      logStep(
+        `Invalid Atmo API response structure for ${indiceForDate.format(
+          'YYYY-MM-DD',
+        )}`,
+      );
+      return;
+    }
+
     logStep(
       `Step A: Fetched Atmo data for ${indiceForDate.format(
         'YYYY-MM-DD dddd',

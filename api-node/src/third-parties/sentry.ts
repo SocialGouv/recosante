@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import { ENVIRONMENT } from '../config.js';
+import { ENVIRONMENT } from '../config';
 
 const sentryEnabled = ENVIRONMENT !== 'development' && ENVIRONMENT !== 'test';
 
