@@ -72,10 +72,8 @@ export async function updateUser(
   headers: Record<string, string | undefined>,
 ): Promise<any> {
   try {
-    // Start with user data (already validated by Zod schema)
     const userUpdate: any = { ...updateData };
 
-    // Handle both singular and plural field names for backward compatibility
     if (userUpdate.favorite_indicators && !userUpdate.favorite_indicator) {
       // Si favorite_indicators est un tableau, prendre le premier élément
       if (Array.isArray(userUpdate.favorite_indicators)) {
