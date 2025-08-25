@@ -8,6 +8,7 @@ export interface UserUpdateData {
   granularity?: string;
   push_notif_token?: string;
   favorite_indicator?: string;
+  favorite_indicators?: string | string[]; // Support both single value and array for backward compatibility
   coordinates?: {
     lat: number;
     lon: number;
@@ -35,7 +36,7 @@ export async function upsertByMatomoId(matomoId: string): Promise<any> {
  */
 async function cleanupOldPushTokens(
   currentUserId: string,
-  pushToken: string
+  pushToken: string,
 ): Promise<void> {
   if (!pushToken || pushToken.length === 0) return;
 
@@ -68,20 +69,25 @@ async function cleanupOldPushTokens(
 export async function updateUser(
   matomoId: string,
   updateData: UserUpdateData,
-  headers: Record<string, string | undefined>
+  headers: Record<string, string | undefined>,
 ): Promise<any> {
   try {
-      // Start with user data (already validated by Zod schema)
-  const userUpdate: any = { ...updateData };
-  
-  // Handle both singular and plural field names for backward compatibility
-  if (userUpdate.favorite_indicators && !userUpdate.favorite_indicator) {
-    userUpdate.favorite_indicator = userUpdate.favorite_indicators;
-    delete userUpdate.favorite_indicators;
-  }
+    // Start with user data (already validated by Zod schema)
+    const userUpdate: any = { ...updateData };
+
+    // Handle both singular and plural field names for backward compatibility
+    if (userUpdate.favorite_indicators && !userUpdate.favorite_indicator) {
+      // Si favorite_indicators est un tableau, prendre le premier élément
+      if (Array.isArray(userUpdate.favorite_indicators)) {
+        userUpdate.favorite_indicator = userUpdate.favorite_indicators[0];
+      } else {
+        userUpdate.favorite_indicator = userUpdate.favorite_indicators;
+      }
+      delete userUpdate.favorite_indicators;
+    }
 
     // Remove undefined and null values
-    Object.keys(userUpdate).forEach(key => {
+    Object.keys(userUpdate).forEach((key) => {
       if (userUpdate[key] === undefined || userUpdate[key] === null) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete userUpdate[key];
@@ -114,11 +120,10 @@ export async function updateUser(
 
     return updatedUser;
   } catch (error) {
-
     console.error('Error updating user:', {
       matomoId,
       updateData,
-      error: error instanceof Error ? error.message : String(error)
+      error: error instanceof Error ? error.message : String(error),
     });
 
     throw error;
@@ -150,11 +155,15 @@ export function extractUpdateData(body: any): UserUpdateData {
     'notifications_preference',
   ];
 
-      fields.forEach((field) => {
-      if (bodyHasProperty(body, field) && body[field] !== undefined && body[field] !== null) {
-        (updateData as any)[field] = body[field];
-      }
-    });
+  fields.forEach((field) => {
+    if (
+      bodyHasProperty(body, field) &&
+      body[field] !== undefined &&
+      body[field] !== null
+    ) {
+      (updateData as any)[field] = body[field];
+    }
+  });
 
   if (bodyHasProperty(body, 'coordinates')) {
     updateData.coordinates = body.coordinates;
