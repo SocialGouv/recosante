@@ -14,7 +14,7 @@ const nextConfig = {
   },
 
   async redirects() {
-    return santeFrRedirects.map(redirect => ({
+    return santeFrRedirects.map((redirect) => ({
       source: `/articles/${redirect.localSlug}/`,
       destination: redirect.santeFrUrl,
       permanent: true,
@@ -25,26 +25,23 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-        source: '/',
-        has: [
-          {
-            "type": "query",
-            "key": "iframe",
-            "value": "1"
-          }
-        ],
-        destination:
-          `/iframe`,
-      },
-    ],
+          source: '/',
+          has: [
+            {
+              type: 'query',
+              key: 'iframe',
+              value: '1',
+            },
+          ],
+          destination: `/iframe`,
+        },
+      ],
       fallback: [
-        
         // These rewrites are checked after both pages/public files
         // and dynamic routes are checked (so no conflicts with [city]/[indicator] etc.)
         // Catch-all to gatsby (js scripts, json data, etc.)
         // Exclude /place/ routes from being redirected to Gatsby
 
-     
         {
           source: '/:slug*/',
           destination: `${PATH}/:slug*/`,
@@ -53,7 +50,6 @@ const nextConfig = {
               type: 'query',
               key: 'slug',
               value: '(?!not-found|iframe|place).*',
-
             },
           ],
         },
@@ -70,7 +66,7 @@ const nextConfig = {
           ],
         },
         // This rewrite explicitly avoids rewriting for the "not-found" slug
-       
+
         {
           source: '/not-found/',
           destination: '/not-found/',
@@ -81,3 +77,40 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
+
+// Injected content via Sentry wizard below
+
+const { withSentryConfig } = require('@sentry/nextjs');
+
+module.exports = withSentryConfig(module.exports, {
+  // For all available options, see:
+  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
+
+  org: 'incubateur',
+  project: 'recosante-web',
+  sentryUrl: 'https://sentry2.fabrique.social.gouv.fr/',
+
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
+
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // This can increase your server load as well as your hosting bill.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // side errors will fail.
+  tunnelRoute: '/monitoring',
+
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+
+  // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
+  // See the following for more information:
+  // https://docs.sentry.io/product/crons/
+  // https://vercel.com/docs/cron-jobs
+  automaticVercelMonitors: true,
+});
