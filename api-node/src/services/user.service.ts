@@ -150,6 +150,7 @@ export function extractUpdateData(body: any): UserUpdateData {
     'granularity',
     'push_notif_token',
     'favorite_indicator',
+    'favorite_indicators', 
     'notifications_preference',
   ];
 
