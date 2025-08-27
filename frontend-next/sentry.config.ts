@@ -20,9 +20,9 @@ const getEnvironmentConfig = () => {
     return {
       ...commonConfig,
       enabled: true,
-      tracesSampleRate: 0.1, // 10% en production
-      replaysSessionSampleRate: 0.01, // 1% des sessions
-      replaysOnErrorSampleRate: 1.0, // 100% des erreurs
+      tracesSampleRate: 0.1, 
+      replaysSessionSampleRate: 0.01, 
+      replaysOnErrorSampleRate: 1.0, 
       beforeSend: (event: any) => event, // Envoyer tous les événements
     };
   }
@@ -30,7 +30,7 @@ const getEnvironmentConfig = () => {
   if (isDevelopment || isTest) {
     return {
       ...commonConfig,
-      enabled: false, // Désactivé en dev/test
+      enabled: false, 
       tracesSampleRate: 0,
       replaysSessionSampleRate: 0,
       replaysOnErrorSampleRate: 0,
