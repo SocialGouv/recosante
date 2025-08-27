@@ -41,12 +41,10 @@ export function useSentryWithConsent() {
       });
 
       isInitialized.current = true;
-      console.log('🔍 Sentry activé avec consentement des cookies');
     } else if (!isAnalyticsAccepted() && isInitialized.current) {
-      // Désactiver Sentry si le consentement est révoqué
-      Sentry.close();
+      // Note: Sentry cannot be dynamically disabled once initialized
+      // The beforeSend filter will prevent data transmission
       isInitialized.current = false;
-      console.log('🔍 Sentry désactivé - consentement des cookies révoqué');
     }
   }, [isAnalyticsAccepted, isLoaded]);
 
@@ -54,18 +52,14 @@ export function useSentryWithConsent() {
   const captureError = (error: Error, context?: any) => {
     if (isAnalyticsAccepted()) {
       Sentry.captureException(error, context);
-    } else {
-      console.log('🔍 [COOKIES] Erreur non capturée - consentement refusé:', error);
-    }
+    } 
   };
 
   // Fonction pour capturer des messages de manière conditionnelle
   const captureMessage = (message: string, level: Sentry.SeverityLevel = 'info') => {
     if (isAnalyticsAccepted()) {
       Sentry.captureMessage(message, level);
-    } else {
-      console.log(`🔍 [COOKIES] Message ${level} non capturé - consentement refusé:`, message);
-    }
+    } 
   };
 
   // Fonction pour définir le contexte utilisateur de manière conditionnelle
@@ -82,26 +76,7 @@ export function useSentryWithConsent() {
     }
   };
 
-  // Fonction pour démarrer une transaction de manière conditionnelle
-  const startTransaction = (options: any) => {
-    if (isAnalyticsAccepted()) {
-      // Utiliser getCurrentHub pour créer une transaction
-      try {
-        const hub = (Sentry as any).getCurrentHub?.();
-        if (hub?.startTransaction) {
-          return hub.startTransaction(options);
-        }
-      } catch (error) {
-        console.warn('Impossible de démarrer une transaction Sentry:', error);
-      }
-    }
-    // Retourner un objet mock si Sentry n'est pas activé
-    return {
-      finish: () => {},
-      setTag: () => {},
-      setData: () => {},
-    } as any;
-  };
+
 
   return {
     isEnabled: isAnalyticsAccepted(),
@@ -110,6 +85,5 @@ export function useSentryWithConsent() {
     captureMessage,
     setUser,
     setContext,
-    startTransaction,
   };
 }

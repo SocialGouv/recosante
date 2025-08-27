@@ -22,7 +22,7 @@ const favoriteIndicatorSchema = z.union([
     'weather_alert',
     'bathing_water',
     'drinking_water'
-  ])).transform(arr => arr?.[0] || null),
+  ])).transform(arr => arr.length > 0 ? arr[0] : null),
   // Valeur null/undefined
   z.null(),
   z.undefined()
