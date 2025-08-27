@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import userRouter from '../user';
-import { withUser } from '~/middlewares/auth';
+import * as userService from '~/services/user.service';
 
 // Mock du middleware d'authentification
 jest.mock('~/middlewares/auth', () => ({
@@ -13,17 +13,21 @@ jest.mock('~/middlewares/auth', () => ({
 
 // Mock du service utilisateur
 jest.mock('~/services/user.service', () => ({
-  upsertByMatomoId: jest.fn().mockResolvedValue({ id: '1', matomo_id: '1234567890123456' }),
-  updateUser: jest.fn().mockResolvedValue({ 
-    id: '1', 
+  upsertByMatomoId: jest
+    .fn()
+    .mockResolvedValue({ id: '1', matomo_id: '1234567890123456' }),
+  updateUser: jest.fn().mockResolvedValue({
+    id: '1',
     matomo_id: '1234567890123456',
-    favorite_indicator: 'pollen_allergy'
+    favorite_indicator: 'pollen_allergy',
   }),
   extractUpdateData: jest.fn().mockImplementation((body) => {
     // Simuler la logique d'extraction
     const updateData: any = {};
-    if (body.favorite_indicator) updateData.favorite_indicator = body.favorite_indicator;
-    if (body.favorite_indicators) updateData.favorite_indicators = body.favorite_indicators;
+    if (body.favorite_indicator)
+      updateData.favorite_indicator = body.favorite_indicator;
+    if (body.favorite_indicators)
+      updateData.favorite_indicators = body.favorite_indicators;
     return updateData;
   }),
 }));
@@ -35,9 +39,9 @@ jest.mock('~/middlewares/validation', () => ({
       schema.parse(req.body);
       next();
     } catch (error) {
-      res.status(400).json({ 
-        error: 'Validation failed', 
-        details: error instanceof Error ? error.message : 'Unknown error' 
+      res.status(400).json({
+        error: 'Validation failed',
+        details: error instanceof Error ? error.message : 'Unknown error',
       });
     }
   }),
@@ -83,13 +87,13 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicator: 'pollen_allergy' })
         .expect(200);
 
-      expect(response.body).toEqual({ 
-        ok: true, 
-        data: { 
-          id: '1', 
+      expect(response.body).toEqual({
+        ok: true,
+        data: {
+          id: '1',
           matomo_id: '1234567890123456',
-          favorite_indicator: 'pollen_allergy'
-        } 
+          favorite_indicator: 'pollen_allergy',
+        },
       });
     });
 
@@ -102,13 +106,13 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicators: 'weather_alert' })
         .expect(200);
 
-      expect(response.body).toEqual({ 
-        ok: true, 
-        data: { 
-          id: '1', 
+      expect(response.body).toEqual({
+        ok: true,
+        data: {
+          id: '1',
           matomo_id: '1234567890123456',
-          favorite_indicator: 'pollen_allergy'
-        } 
+          favorite_indicator: 'pollen_allergy',
+        },
       });
     });
 
@@ -121,13 +125,13 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicators: ['pollen_allergy'] })
         .expect(200);
 
-      expect(response.body).toEqual({ 
-        ok: true, 
-        data: { 
-          id: '1', 
+      expect(response.body).toEqual({
+        ok: true,
+        data: {
+          id: '1',
           matomo_id: '1234567890123456',
-          favorite_indicator: 'pollen_allergy'
-        } 
+          favorite_indicator: 'pollen_allergy',
+        },
       });
     });
 
@@ -140,13 +144,13 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicators: ['pollen_allergy', 'weather_alert'] })
         .expect(200);
 
-      expect(response.body).toEqual({ 
-        ok: true, 
-        data: { 
-          id: '1', 
+      expect(response.body).toEqual({
+        ok: true,
+        data: {
+          id: '1',
           matomo_id: '1234567890123456',
-          favorite_indicator: 'pollen_allergy'
-        } 
+          favorite_indicator: 'pollen_allergy',
+        },
       });
     });
 
@@ -159,13 +163,13 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicators: [] })
         .expect(200);
 
-      expect(response.body).toEqual({ 
-        ok: true, 
-        data: { 
-          id: '1', 
+      expect(response.body).toEqual({
+        ok: true,
+        data: {
+          id: '1',
           matomo_id: '1234567890123456',
-          favorite_indicator: 'pollen_allergy'
-        } 
+          favorite_indicator: 'pollen_allergy',
+        },
       });
     });
 
@@ -194,8 +198,6 @@ describe('User Controller Integration Tests', () => {
     });
 
     it('should include app headers in update data', async () => {
-      const { updateUser } = require('~/services/user.service');
-      
       await request(app)
         .put('/user')
         .set('appversion', '2.0.0')
@@ -204,16 +206,16 @@ describe('User Controller Integration Tests', () => {
         .send({ favorite_indicator: 'pollen_allergy' })
         .expect(200);
 
-      expect(updateUser).toHaveBeenCalledWith(
+      expect(userService.updateUser).toHaveBeenCalledWith(
         '1234567890123456',
         expect.objectContaining({
-          favorite_indicator: 'pollen_allergy'
+          favorite_indicator: 'pollen_allergy',
         }),
         {
           appversion: '2.0.0',
           appbuild: '456',
-          appdevice: 'android'
-        }
+          appdevice: 'android',
+        },
       );
     });
   });
