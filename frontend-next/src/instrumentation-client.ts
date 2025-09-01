@@ -4,6 +4,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 
+// Configuration Sentry de base - sera activée/désactivée selon le consentement des cookies
 Sentry.init({
   dsn: 'https://59bb180e87e0a82a731432c8df6db4a3@sentry2.fabrique.social.gouv.fr/43',
 
@@ -32,10 +33,28 @@ Sentry.init({
   // Filter out development and test environments
   beforeSend(event) {
     // Don't send events in development or test
-    if (process.env.NODE_ENV === 'production') {
-      return event;
+    if (process.env.NODE_ENV !== 'production') {
+      return null;
     }
-    return null;
+
+    // Vérifier le consentement des cookies avant l'envoi
+    const cookieConsent = sessionStorage.getItem('cookieConsent');
+    if (cookieConsent) {
+      try {
+        const consent = JSON.parse(cookieConsent);
+        if (!consent.analytics) {
+          return null; // Bloquer l'envoi si les cookies d'analyse ne sont pas acceptés
+        }
+      } catch (error) {
+        console.warn('Erreur lors de la vérification du consentement des cookies:', error);
+        return null; // Bloquer en cas d'erreur
+      }
+    } else {
+      // Pas de consentement = pas d'envoi
+      return null;
+    }
+
+    return event;
   },
 
   // Only enable in production
