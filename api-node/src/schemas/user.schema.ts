@@ -4,8 +4,13 @@ export const createUserSchema = z.object({
   matomo_id: z.string().length(16, 'matomo_id doit faire exactement 16 caractères'),
 }).strict();
 
-const favoriteIndicatorSchema = z.union([
-  
+const favoriteIndicatorSchema = z.preprocess(
+  (val) => {
+    if (Array.isArray(val)) {
+      return val.length > 0 ? val[0] : null;
+    }
+    return val;
+  },
   z.enum([
     'indice_atmospheric',
     'indice_uv',
@@ -13,20 +18,8 @@ const favoriteIndicatorSchema = z.union([
     'weather_alert',
     'bathing_water',
     'drinking_water'
-  ]),
-  // Tableau d'indicateurs (on prend le premier)
-  z.array(z.enum([
-    'indice_atmospheric',
-    'indice_uv',
-    'pollen_allergy',
-    'weather_alert',
-    'bathing_water',
-    'drinking_water'
-  ])).transform(arr => arr.length > 0 ? arr[0] : null),
-  // Valeur null/undefined
-  z.null(),
-  z.undefined()
-]).nullable().optional();
+  ]).nullable().optional()
+);
 
 export const updateUserSchema = z.object({
   granularity: z.enum(['street', 'city']).nullable().optional(),

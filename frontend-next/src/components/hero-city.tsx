@@ -7,7 +7,6 @@ import { Container } from '@/components/Container';
 import { PhoneFrame } from '@/components/PhoneFrame';
 import atmoLogo from '@/images/logos/atmo.png';
 import meteoLogo from '@/images/logos/meteo.png';
-import rnsaLogo from '@/images/logos/rnsa.png';
 import irsnLogo from '@/images/logos/irsn.png';
 import { AppStoreLink } from './AppStoreLink';
 import { GoogleStoreLink } from './GoogleStoreLink';
@@ -128,7 +127,6 @@ export function HeroCity() {
               {[
                 ['meteoLogo', meteoLogo],
                 ['atmoLogo', atmoLogo],
-                ['rnsaLogo', rnsaLogo],
                 ['irsnLogo', irsnLogo],
               ].map(([name, logo]) => (
                 <li key={name as string} className=' flex justify-center'>
