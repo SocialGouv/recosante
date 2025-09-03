@@ -4,6 +4,12 @@ export const createUserSchema = z.object({
   matomo_id: z.string().length(16, 'matomo_id doit faire exactement 16 caractères'),
 }).strict();
 
+/**
+ * Schema that accepts:
+ * - Direct enum values
+ * - Arrays of enum values (takes first element, null if empty)
+ * - null/undefined values
+ */
 const favoriteIndicatorSchema = z.preprocess(
   (val) => {
     if (Array.isArray(val)) {
