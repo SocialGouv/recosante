@@ -1,3 +1,10 @@
+## [1.48.7](https://github.com/SocialGouv/recosante/compare/v1.48.6...v1.48.7) (2025-09-03)
+
+
+### Bug Fixes
+
+* Refactorisation des schémas utilisateur : amélioration du traite… ([#674](https://github.com/SocialGouv/recosante/issues/674)) ([fdf8748](https://github.com/SocialGouv/recosante/commit/fdf8748e605c947f3e01f4c0d795ffe773a4392d))
+
 ## [1.48.2](https://github.com/SocialGouv/recosante/compare/v1.48.1...v1.48.2) (2025-08-19)
 
 
