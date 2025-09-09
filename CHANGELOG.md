@@ -1,3 +1,10 @@
+# [1.49.0](https://github.com/SocialGouv/recosante/compare/v1.48.7...v1.49.0) (2025-09-09)
+
+
+### Features
+
+* Migration des recommandations de Google Sheets vers un fichier … ([#675](https://github.com/SocialGouv/recosante/issues/675)) ([230e5c6](https://github.com/SocialGouv/recosante/commit/230e5c67928b107d1fedc51de7fc2410543bb65b))
+
 ## [1.48.7](https://github.com/SocialGouv/recosante/compare/v1.48.6...v1.48.7) (2025-09-03)
 
 
