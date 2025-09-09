@@ -1,6 +1,6 @@
 import { setupCronJob } from './utils';
 import { capture } from '~/third-parties/sentry';
-import { getRecommandationsFromGoogleSheet } from '~/utils/recommandations';
+import { getRecommandationsFromLocalFile } from '~/utils/recommandations';
 
 /*
 *
@@ -23,9 +23,9 @@ export async function initRecommandations() {
     .then(
       async () =>
         await setupCronJob({
-          name: 'Recommandations from Google Sheet',
-          cronTime: '35 10,13,15,18 * * *', // Every day at 10:35, 13:35, 15:35, 18:35
-          job: getRecommandationsFromGoogleSheet,
+          name: 'Recommandations from Local File',
+          cronTime: '0 20 * * *', // Tous les jours à 20h00
+          job: getRecommandationsFromLocalFile,
           runOnInit: true,
         }),
     )
