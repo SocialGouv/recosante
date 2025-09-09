@@ -53,7 +53,10 @@ export class LocalRecommandationService {
   }
 
   private get data(): LocalRecommandationData {
-    return LocalRecommandationService.data!;
+    if (!LocalRecommandationService.data) {
+      throw new Error('Data not initialized. This should not happen.');
+    }
+    return LocalRecommandationService.data;
   }
 
   async loadRecommandations(): Promise<ParsedRecommandation[]> {
