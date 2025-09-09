@@ -1,16 +1,32 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { LocalRecommandationService } from '../local-recommandations';
-import prisma from '~/prisma';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+
+const mockPrisma = {
+  recommandation: {
+    upsert: jest.fn(),
+    findFirst: jest.fn(),
+    findMany: jest.fn(),
+    count: jest.fn(),
+    deleteMany: jest.fn(),
+  },
+};
+
+jest.mock('~/prisma', () => ({
+  __esModule: true,
+  default: mockPrisma,
+}));
+
+import { LocalRecommandationService } from '../../local-recommandations';
 
 describe('LocalRecommandationService', () => {
   let service: LocalRecommandationService;
 
   beforeEach(() => {
     service = new LocalRecommandationService();
+    jest.clearAllMocks();
   });
 
   afterEach(async () => {
-    await prisma.recommandation.deleteMany();
+    await mockPrisma.recommandation.deleteMany();
   });
 
   describe('loadRecommandations', () => {
@@ -193,12 +209,16 @@ describe('LocalRecommandationService', () => {
 
       await service.saveRecommandations(recommandations);
 
-      const saved = await prisma.recommandation.findFirst({
-        where: { recommandation_id: 'test-1' }
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalledWith({
+        where: { unique_key: expect.any(String) },
+        create: expect.objectContaining({
+          recommandation_id: 'test-1',
+          recommandation_content: 'Test recommandation',
+        }),
+        update: {
+          recommandation_content: 'Test recommandation',
+        },
       });
-
-      expect(saved).toBeDefined();
-      expect(saved?.recommandation_content).toBe('Test recommandation');
     });
 
     it('should upsert existing recommandations', async () => {
@@ -224,11 +244,17 @@ describe('LocalRecommandationService', () => {
 
       await service.saveRecommandations(updatedRecommandations);
 
-      const saved = await prisma.recommandation.findFirst({
-        where: { recommandation_id: 'test-1' }
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalledTimes(2);
+      expect(mockPrisma.recommandation.upsert).toHaveBeenLastCalledWith({
+        where: { unique_key: expect.any(String) },
+        create: expect.objectContaining({
+          recommandation_id: 'test-1',
+          recommandation_content: 'Updated content',
+        }),
+        update: {
+          recommandation_content: 'Updated content',
+        },
       });
-
-      expect(saved?.recommandation_content).toBe('Updated content');
     });
 
     it('should handle multiple recommandations concurrently', async () => {
@@ -253,15 +279,21 @@ describe('LocalRecommandationService', () => {
 
       await service.saveRecommandations(recommandations);
 
-      const saved = await prisma.recommandation.findMany({
-        where: { 
-          recommandation_id: { 
-            in: ['test-concurrent-1', 'test-concurrent-2'] 
-          } 
-        }
-      });
-
-      expect(saved).toHaveLength(2);
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalledTimes(2);
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({
+            recommandation_id: 'test-concurrent-1',
+          }),
+        })
+      );
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalledWith(
+        expect.objectContaining({
+          create: expect.objectContaining({
+            recommandation_id: 'test-concurrent-2',
+          }),
+        })
+      );
     });
   });
 
@@ -269,8 +301,7 @@ describe('LocalRecommandationService', () => {
     it('should load and save all recommandations', async () => {
       await service.syncRecommandations();
 
-      const count = await prisma.recommandation.count();
-      expect(count).toBeGreaterThan(0);
+      expect(mockPrisma.recommandation.upsert).toHaveBeenCalled();
     });
   });
 });

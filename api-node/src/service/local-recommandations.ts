@@ -18,11 +18,42 @@ type ParsedRecommandation = {
   recommandation_id: string;
 };
 
+const VALID_INDICATORS: IndicatorsSlugEnum[] = [
+  'indice_atmospheric',
+  'indice_uv',
+  'pollen_allergy',
+  'weather_alert',
+  'bathing_water',
+  'drinking_water'
+];
+
+const VALID_SEASONS: SeasonEnum[] = [
+  'Printemps',
+  'Ete',
+  'Automne',
+  'Hiver',
+  'Toute'
+];
+
 export class LocalRecommandationService {
-  private data: LocalRecommandationData;
+  private static data: LocalRecommandationData | null = null;
+  
+  private static readonly COLUMN_INDICES = {
+    INDICATOR: 1,
+    TYPE_WEATHER_ALERT: 3,
+    INDICATOR_VALUES: 5,
+    SEASONS: 6,
+    RECOMMENDATIONS_START: 12
+  } as const;
 
   constructor() {
-    this.data = recommandationData as LocalRecommandationData;
+    if (!LocalRecommandationService.data) {
+      LocalRecommandationService.data = recommandationData as LocalRecommandationData;
+    }
+  }
+
+  private get data(): LocalRecommandationData {
+    return LocalRecommandationService.data!;
   }
 
   async loadRecommandations(): Promise<ParsedRecommandation[]> {
@@ -49,19 +80,20 @@ export class LocalRecommandationService {
   }
 
   parseRecommandationRow(row: string[], rowIndex: number): ParsedRecommandation[] {
-    const indicator = row[1] as IndicatorsSlugEnum;
-    if (!indicator) return [];
+    const indicatorValue = row[LocalRecommandationService.COLUMN_INDICES.INDICATOR];
+    if (!indicatorValue || !this.isValidIndicator(indicatorValue)) {
+      return [];
+    }
+    const indicator = indicatorValue as IndicatorsSlugEnum;
 
-    const indicatorValues = row[5] 
-      ? row[5].split(',').map(val => val.trim()).filter(val => val !== '')
+    const indicatorValues = row[LocalRecommandationService.COLUMN_INDICES.INDICATOR_VALUES] 
+      ? row[LocalRecommandationService.COLUMN_INDICES.INDICATOR_VALUES].split(',').map(val => val.trim()).filter(val => val !== '')
       : [];
     
     if (indicatorValues.length === 0) return [];
 
-    const typeWeatherAlert = row[3] || 'N/A';
-    const seasons = (row[6] || 'Toute')
-      .split(',')
-      .map(season => season.trim()) as SeasonEnum[];
+    const typeWeatherAlert = row[LocalRecommandationService.COLUMN_INDICES.TYPE_WEATHER_ALERT] || 'N/A';
+    const seasons = this.parseSeasons(row[LocalRecommandationService.COLUMN_INDICES.SEASONS] || 'Toute');
 
     const recommandationContents = this.extractRecommandationContents(row);
     const recommandations: ParsedRecommandation[] = [];
@@ -93,7 +125,7 @@ export class LocalRecommandationService {
   private extractRecommandationContents(row: string[]): string[] {
     const contents: string[] = [];
     
-    for (let i = 12; i < row.length; i++) {
+    for (let i = LocalRecommandationService.COLUMN_INDICES.RECOMMENDATIONS_START; i < row.length; i++) {
       const content = row[i]?.trim();
       if (content && content !== '-') {
         contents.push(content);
@@ -103,12 +135,25 @@ export class LocalRecommandationService {
     return contents;
   }
 
+  private isValidIndicator(value: string): value is IndicatorsSlugEnum {
+    return VALID_INDICATORS.includes(value as IndicatorsSlugEnum);
+  }
+
+  private parseSeasons(seasonsString: string): SeasonEnum[] {
+    const seasons = seasonsString
+      .split(',')
+      .map(season => season.trim())
+      .filter(season => VALID_SEASONS.includes(season as SeasonEnum));
+    
+    return seasons.length > 0 ? seasons as SeasonEnum[] : ['Toute'];
+  }
+
   async saveRecommandations(recommandations: ParsedRecommandation[]): Promise<void> {
-    for (const rec of recommandations) {
+    const operations = recommandations.map(async (rec) => {
       const uniqueKey = this.generateUniqueKey(rec);
       
       try {
-        await prisma.recommandation.upsert({
+        return await prisma.recommandation.upsert({
           where: { unique_key: uniqueKey },
           create: {
             unique_key: uniqueKey,
@@ -130,7 +175,15 @@ export class LocalRecommandationService {
             uniqueKey 
           } 
         });
+        throw error;
       }
+    });
+    
+    const results = await Promise.allSettled(operations);
+    
+    const failures = results.filter(result => result.status === 'rejected');
+    if (failures.length > 0) {
+      console.warn(`${failures.length} recommandations failed to save out of ${recommandations.length}`);
     }
   }
 
