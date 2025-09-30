@@ -43,5 +43,5 @@
   "engines": {
     "npm": "please-use-yarn"
   },
-  "packageManager": "yarn@4.1.0"
+  "packageManager": "yarn@4.10.3"
 }
