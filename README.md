@@ -6,63 +6,332 @@ Accessible sur https://recosante.beta.gouv.fr/
 
 Ce dépôt est un monorepo créé pour faciliter le déploiement sur l'infrastructure de la [Fabrique numérique des ministères sociaux](https://fabrique.social.gouv.fr).
 
-Les sous-dossiers ont été repris du travail effectué par l'équipe dédiée de beta.gouv.fr, à partir des dépôts suivant :
+Les sous-dossiers ont été repris du travail effectué par l'équipe dédiée de beta.gouv.fr, à partir des dépôts suivants :
 
 - https://github.com/betagouv/recosante : frontend
-- https://github.com/betagouv/recosante-api : data, envoi des emails
+- https://github.com/betagouv/recosante-api : API Node.js, data, envoi des emails
 - https://github.com/betagouv/recosante-mail : templates email
-- https://github.com/betagouv/indice_pollution : import des indices et utilisation via l’API
+
+L'application mobile est développée dans un dépôt séparé :
+- https://github.com/SocialGouv/recosante-expo-app : application mobile React Native
 
 ## Brève description
 
 Recosanté est composé de trois services :
 
-- Une API d’exposition des indicateurs qui est dans ce dépot, techniquement il s’agit d’une API écrite en python avec le framework Flask.
+- Une API d'exposition des indicateurs qui est dans ce dépot, techniquement il s'agit d'une API écrite en Node.js avec Express.
   Cette API sert aussi à gérer les abonnements au service.
 
-- Un service qui envoie les newsletters, techniquement c’est un worker celery qui est passe toutes les heures pour voir s’il doit envoyer des mails ou bien des notifications web.
 
-- Un service qui sauvegarde les différents indices (indice ATMO, épisodes de pollution, Risque d'allergie lié à l'exposition aux pollens (RAEP), vigilance météo, indice UV). Le code de ce service se trouve [ici](./libs/indice_pollution).
+- Un service qui sauvegarde les différents indices (indice ATMO, épisodes de pollution, Risque d'allergie lié à l'exposition aux pollens (RAEP), vigilance météo, indice UV). Le code de ce service se trouve dans le dossier `api-node/src/aggregators`.
 
-Les données sont stockées dans une base de données postgresql, dans le schéma public pour les données d’abonnements, et dans le schéma `indice_schema` pour les données de prévisions des différents indices renvoyés.
+Les données sont stockées dans une base de données PostgreSQL, dans le schéma public pour les données d'abonnements et les données de prévisions des différents indices renvoyés.
 
 ## Structure et projets
 
-### indice_pollution
+### api-node
 
-Ce projet utilise [`celery`](https://docs.celeryq.dev/en/stable/index.html) pour interroger différentes API (AirParif, indice ATMO régionaux, ...) et alimenter sa propre base de données (shema `indice_schema`) toutes les heures.
+Ce projet utilise Node.js avec Express etcontient une API qui sert la data nécessaire au site web. Il comporte un schema propre lui permettant de stocker les utilisateurs. Il utilise Prisma comme ORM pour interroger la base de données PostgreSQL.
 
-Il s'exporte de plus comme une librairie utilisable par nimporte quel projet.
-
-Plus d'information dans le [`README.md`](./libs/indice_pollution/README.md) du projet.
-
-### api
-
-Ce projet utilise également [`celery`](https://docs.celeryq.dev/en/stable/index.html) pour générer des envois de mails aux utilisateurs ayant souscrit à la newsletter via Brevo (ex sendInBlue). Il contient une API [`flask`](https://flask.palletsprojects.com/en/2.3.x/) qui sert la data nécessaire au site web. Il comporte un schema propre lui permettant de stocker les utilisateurs, newsletters et incriptions. Il utilise enfin la librarie `indice_pollution` pour interroger le schema `indice_schema`.
-
-Plus d'information dans le [`README.md`](./api/README.md) du projet.
+Plus d'information dans le [`README.md`](./api-node/README.md) du projet.
 
 ### frontend
 
-Ce projet est le site recosanté. Il utilise [Gatsby](https://www.gatsbyjs.com/).
+Ce projet est le site recosanté. Il utilise [Next.JS](https://nextjs.org).
 
 Plus d'information dans le [`README.md`](./frontend/README.md) du projet.
 
-### mail
+### Application mobile
 
-Ce projet contient les templates mails utilisés par Brevo (ex sendInBlue).
+L'application mobile Recosanté est développée en React Native avec Expo et consomme l'API Node.js. Elle est hébergée dans un dépôt séparé : [recosante-expo-app](https://github.com/SocialGouv/recosante-expo-app).
 
-Plus d'information dans le [`README.md`](./mail/README.md) du projet.
+Plus d'information dans le [`README.md`](https://github.com/SocialGouv/recosante-expo-app/blob/main/README.md) du projet mobile.
+
 
 ### Stack technique
 
 Notre stack technique est principalement composée de :
 
-- front-end : React, Gatsby.
-- back-end : Python, Flask, Celery / Redis, PostgreSQL.
-- hébergement et autres services : Docker, Kubernetes, Brevo (ex Sendinblue).
+- front-end : React, Next.js.
+- mobile : React Native, Expo.
+- back-end : Node.js, Express, Prisma, PostgreSQL.
+- hébergement et autres services : Docker, Kubernetes.
 
-### Schéma simplifié d'architecture
+## Architecture Node.js - Clean Architecture
+
+L'API Node.js suit les principes de la **Clean Architecture** avec une séparation claire des responsabilités et des couches bien définies.
+
+### 🏗️ Structure des couches
+
+```
+src/
+├── controllers/          # Couche Interface (HTTP)
+├── services/            # Couche Application (Logique métier)
+├── aggregators/         # Couche Infrastructure (Récupération données externes)
+├── getters/             # Couche Infrastructure (Accès aux données)
+├── cronjobs/            # Couche Infrastructure (Tâches planifiées)
+├── middlewares/         # Couche Interface (Validation, Auth, etc.)
+├── schemas/             # Couche Interface (Validation Zod)
+├── types/               # Couche Domain (Types TypeScript)
+└── utils/               # Couche Infrastructure (Utilitaires)
+```
+
+### 🔧 Composants principaux
+
+#### **Controllers** (Interface Layer)
+- **Responsabilité** : Gestion des requêtes HTTP et orchestration
+- **Principe** : Couche la plus externe, ne contient que la logique de routage
+- **Exemple** : `user.ts`, `indicators.ts`, `notification.ts`
+- **Pattern** : Validation → Service → Réponse
+
+```typescript
+// Exemple de contrôleur
+export async function updateUser(req: Request, res: Response) {
+  const validatedData = await validateBody(updateUserSchema)(req);
+  const result = await UserService.updateUser(matomoId, validatedData, req.headers);
+  res.json(result);
+}
+```
+
+#### **Services** (Application Layer)
+- **Responsabilité** : Logique métier et orchestration des cas d'usage
+- **Principe** : Indépendant de l'infrastructure, testable en isolation
+- **Exemple** : `user.service.ts`, `eventService.ts`
+- **Pattern** : Use Cases, Business Rules
+
+```typescript
+// Exemple de service
+export async function updateUser(matomoId: string, updateData: UserUpdateData): Promise<User> {
+  // Logique métier : normalisation des données
+  const normalizedData = normalizeUserData(updateData);
+  
+  // Orchestration : appel aux repositories
+  const user = await prisma.user.upsert({
+    where: { matomo_id: matomoId },
+    update: normalizedData,
+    create: { matomo_id: matomoId, ...normalizedData }
+  });
+  
+  return user;
+}
+```
+
+#### **Aggregators** (Infrastructure Layer)
+- **Responsabilité** : Récupération et agrégation des données externes
+- **Principe** : Isolation des APIs externes, gestion des erreurs
+- **Exemple** : `indice_atmo.ts`, `pollens/`, `weather_alert.ts`
+- **Pattern** : Adapter Pattern, Retry Logic
+
+```typescript
+// Exemple d'aggregator
+export async function getAtmoIndicator(): Promise<void> {
+  try {
+    // Récupération des données externes
+    const externalData = await fetchAtmoData();
+    
+    // Transformation et validation
+    const processedData = transformAtmoData(externalData);
+    
+    // Persistance
+    await prisma.indiceAtmospheric.createMany({
+      data: processedData,
+      skipDuplicates: true
+    });
+  } catch (error) {
+    capture(error, { extra: { functionCall: 'getAtmoIndicator' } });
+    throw error;
+  }
+}
+```
+
+#### **Getters** (Infrastructure Layer)
+- **Responsabilité** : Accès aux données pour l'API
+- **Principe** : Interface uniforme pour la récupération des données
+- **Exemple** : `indice_atmo.ts`, `pollens.ts`, `weather_alert.ts`
+- **Pattern** : Repository Pattern, Data Access Layer
+
+```typescript
+// Exemple de getter
+export async function getIndiceAtmoFromMunicipalityAndDate({
+  municipality_insee_code,
+  date_UTC_ISO
+}: GetIndiceAtmoParams): Promise<Indicator> {
+  // Validation des paramètres
+  validateParams({ municipality_insee_code, date_UTC_ISO });
+  
+  // Récupération des données
+  const data = await prisma.indiceAtmospheric.findFirst({
+    where: {
+      municipality_insee_code,
+      validity_start: { lte: new Date(date_UTC_ISO) },
+      validity_end: { gte: new Date(date_UTC_ISO) }
+    }
+  });
+  
+  // Transformation en format API
+  return transformToIndicatorFormat(data);
+}
+```
+
+#### **Cronjobs** (Infrastructure Layer)
+- **Responsabilité** : Exécution des tâches planifiées
+- **Principe** : Orchestration des aggregators, gestion des erreurs
+- **Exemple** : `aggregators.ts`, `notifications.ts`, `cleaning.ts`
+- **Pattern** : Scheduler Pattern, Error Recovery
+
+```typescript
+// Exemple de cronjob
+export async function initAggregators() {
+  const aggregators = [
+    () => getAtmoIndicator(),
+    () => getIndiceUVIndicator(),
+    () => getWeatherAlert(),
+    () => getBathingWaterIndicator(),
+    () => getPollensIndicator(pollensLoggerUtils, pollensApiService)
+  ];
+  
+  for (const aggregator of aggregators) {
+    try {
+      await aggregator();
+    } catch (error) {
+      capture(error, { extra: { functionCall: 'initAggregators' } });
+      // Continue avec les autres aggregators
+    }
+  }
+}
+```
+
+### 🧪 Architecture des tests
+
+#### **Tests unitaires** (`__tests__/unit/`)
+- **Objectif** : Tester les composants en isolation
+- **Couverture** : Services, Utils, Schemas, Event Handlers
+- **Pattern** : Mock des dépendances externes
+- **Configuration** : `jest.unit.config.cjs`
+
+```typescript
+// Exemple de test unitaire
+describe('UserService', () => {
+  it('should normalize favorite indicators array', async () => {
+    const mockPrisma = {
+      user: {
+        upsert: jest.fn().mockResolvedValue(mockUser)
+      }
+    };
+    
+    const result = await UserService.updateUser('test-id', {
+      favorite_indicators: ['pollen_allergy', 'weather_alert']
+    });
+    
+    expect(result.favorite_indicator).toBe('pollen_allergy');
+  });
+});
+```
+
+#### **Tests d'intégration** (`__tests__/integration/`)
+- **Objectif** : Tester les interactions entre composants
+- **Couverture** : Controllers, Base de données, APIs externes
+- **Pattern** : Base de données de test, Mocks partiels
+- **Configuration** : `jest.integration.config.cjs`
+
+```typescript
+// Exemple de test d'intégration
+describe('User Controller Integration', () => {
+  beforeEach(async () => {
+    await prisma.user.deleteMany();
+  });
+  
+  it('should create user and return correct response', async () => {
+    const response = await request(app)
+      .post('/user')
+      .send({ matomo_id: 'test-123' });
+    
+    expect(response.status).toBe(200);
+    expect(response.body.matomo_id).toBe('test-123');
+  });
+});
+```
+
+### 🔄 Flux de données
+
+#### **Requête API** (Read)
+```
+Client → Controller → Service → Getter → Database → Response
+```
+
+#### **Tâche planifiée** (Write)
+```
+Cronjob → Aggregator → External API → Transform → Database
+```
+
+#### **Gestion d'événements**
+```
+Event → EventHandler → Service → Database → Notification
+```
+
+### 🛡️ Principes appliqués
+
+#### **Dependency Inversion**
+- Les services ne dépendent pas directement de Prisma
+- Injection de dépendances via interfaces
+- Tests facilités par le mocking
+
+#### **Single Responsibility**
+- Chaque composant a une responsabilité unique
+- Controllers : HTTP, Services : Logique métier, Aggregators : Données externes
+
+#### **Open/Closed Principle**
+- Extension via nouveaux aggregators sans modification du code existant
+- Ajout de nouveaux indicateurs sans impact sur l'architecture
+
+#### **Interface Segregation**
+- Interfaces spécifiques par type de données
+- Schemas Zod pour la validation
+- Types TypeScript stricts
+
+### 📊 Métriques et monitoring
+
+#### **Logging structuré**
+```typescript
+console.log(`[INDICE ATMO] Duration: ${Date.now() - now}ms`.padEnd(40), step);
+```
+
+#### **Error Tracking**
+```typescript
+capture(error, {
+  extra: { 
+    functionCall: 'getAtmoIndicator',
+    architectureLevel: "aggregator"
+  }
+});
+```
+
+#### **Performance Monitoring**
+- Mesure des durées d'exécution
+- Alertes sur les seuils de performance
+- Métriques de couverture de tests
+
+### 🚀 Avantages de cette architecture
+
+#### **Maintenabilité**
+- Code modulaire et testable
+- Séparation claire des responsabilités
+- Documentation intégrée
+
+#### **Évolutivité**
+- Ajout facile de nouveaux indicateurs
+- Extension des fonctionnalités sans impact
+- Architecture prête pour la montée en charge
+
+#### **Robustesse**
+- Gestion d'erreur centralisée
+- Retry logic et circuit breakers
+- Monitoring et alertes
+
+#### **Testabilité**
+- Tests unitaires et d'intégration
+- Mocks et stubs facilités
+- Couverture de code élevée
 
 ```mermaid
 flowchart TD
@@ -79,39 +348,26 @@ flowchart TD
     subgraph Azure
         subgraph Kubernetes
             frontend[Service FrontEnd]
-            flower["Service Flower (Celery UI)"]
-            redis[Sevice Redis]
-            subgraph serviceAPI[Service API]
-                api[API]
-                celeryAPI[Celery]
-                indiceLib[Librairie Indice pollution]
-            end
-
-            subgraph serviceIndice[Service Indice pollution]
-                indice[Indice pollution]
-                celeryIndice[Celery]
+            subgraph serviceAPI[Service API Node.js]
+                api[API Express]
+                cronjobs[Cronjobs Node.js]
+                aggregators[Aggregators]
             end
         end
 
         subgraph PostgreSQL
             apiSchema[API Schema]
-            indiceSchema[Indice Schema]
         end
     end
 
     user-->|consulte|frontend
     user-->|no auth|api
-    user-->|basic-auth|flower
-    flower-->redis
-    celeryAPI-->redis
-    celeryIndice-->redis
     frontend<-->|data|serviceAPI
     serviceAPI<-->|data|apiSchema
-    brevo<-->|sync + gestion mails|celeryAPI
-    celeryIndice-->|synchro toutes les heures|indiceSchema
-    apis-->|data|celeryIndice
-    indiceSchema-->|requêtes|indiceLib
-    indiceLib-->|requêtes|api
+    brevo<-->|sync + gestion mails|cronjobs
+    cronjobs-->|synchro toutes les heures|aggregators
+    apis-->|data|aggregators
+    aggregators-->|requêtes|apiSchema
 ```
 
 ## Récolte des données pour les indicateurs
@@ -119,7 +375,7 @@ flowchart TD
 ### Baignades
 
 1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
-2. de ce code INSEE on requête notre base de données (table indice_schema/commune) qui contient 35096 communes, afin de récupérer le code du département (01, 02, 03...)
+2. de ce code INSEE on requête notre base de données (table Municipality) qui contient 35096 communes, afin de récupérer le code du département (01, 02, 03...)
 3. de ce code département on récupère aussi un `idCarte` (`fra`, `reu`, `may`, `guy`, `mar`...)
 4. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/siteList.do?idCarte={0}&insee_com={1}&code_dept={2}&f=json` avec les paramètres récupérés précédemment afin de récupérer la liste des sites de baignades concernés
 5. on crée un code département `dptddass` (le code département en 3 chiffres, précédés de 0 si nécessaire)
@@ -127,68 +383,386 @@ flowchart TD
 7. on calcule l'année concernée, différente selon les hémisphères
 8. on exécute une requête non authentifiée vers `https://baignades.sante.gouv.fr/baignades/consultSite.do?dptddass={0}&site={1}&annee={2}` qui renvoie un html
 9. on parse ce html afin de retrouver les informations que l'on souhaite: Début de la saison, Fin de la saison, Interdictions le cas échéant, Observations, Échantillons, Rang.
-10. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/baignades.py#L65) l'ensemble des informations disponibles
+10. on renvoie au frontend l'ensemble des informations disponibles
 
 ### Potentiel Radon
 
 Le Potentiel Radon n'est pas une donnée dynamique
 
 1. [le frontend](frontend/src/hooks/useBaignades.js) utilise le code INSEE de la commune pour requêter le backend
-2. de ce code INSEE on requête notre base de données (table indice_schema/potentiel_radon) qui contient 35002 communes, afin de récupérer le potentiel (entre 1 et 3)
-3. on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L89)
+2. de ce code INSEE on requête notre base de données (table des communes) qui contient 35002 communes, afin de récupérer le potentiel (entre 1 et 3)
+3. on renvoie au frontend
 
 ### Indice UV ✅
 
 1. chaque matin à 7h un fichier `YYYYMMDD.csv` contenant les indices UV de la journée est déposé par une tierce partie sur un bucket Clever Cloud. Ce fichier est structuré de cette manière pour quelques 36608 communes: `Code insee`, `Commune`, `Date`, `UV_J0`, `UV_J1`, `UV_J2`, `UV_J3`.
-2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#148) est exécuté toute les heures pour se connecter via FTP au bucket et [récupérer les indices UV](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/indice_uv.py#L30).
-3. toutes les données sont enregistrées en base de données dans la table `indice_schema/indice_uv` (19 millions de lignes fin août 2023)
-4. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L130)
+2. un cron job est exécuté toutes les heures pour se connecter via FTP au bucket et récupérer les indices UV.
+3. toutes les données sont enregistrées en base de données dans la table `IndiceUv` (19 millions de lignes fin août 2023)
+4. ainsi pour chaque requête du frontend, on requête notre base de données et on renvoie au frontend
 
 ### RAEP (Risque d'allergie lié à l'exposition aux pollens) ✅
 
-1. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#143) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/raep.py#L81) non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données pour chaque département de France métropolitaine
+1. un cron job est exécuté toutes les heures pour faire une requête non authentifiée vers `https://www.pollens.fr/docs/ecosante.csv` qui renvoie un csv avec toutes les données pour chaque département de France métropolitaine
 2. ces données sont valables pour une semaine, de mercredi à mercredi.
-3. on parse ce CSV et on alimente notre base de données dans la table `indice_schema/raep`
+3. on parse ce CSV et on alimente notre base de données dans la table `PollenAllergyRisk`
 4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
-5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#L120)
+5. ainsi pour chaque requête du frontend, on requête notre base de données et on renvoie au frontend
 
 ### Vigilance météo ✅
 
-2. un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#145) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/history/models/vigilance_meteo.py#L77) authentifiée vers `https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours` qui renvoie un JSON avec touts les données à la date d'aujourd'hui et demain
-3. ce json est parsé et on alimente notre base de données dans la table `indice_schema/vigilance_meteo`, avec des données par département
-4. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
-5. ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#106)
+1. un cron job est exécuté toutes les heures pour faire une requête authentifiée vers `https://public-api.meteofrance.fr/public/DPVigilance/v1/cartevigilance/encours` qui renvoie un JSON avec toutes les données à la date d'aujourd'hui et demain
+2. ce json est parsé et on alimente notre base de données dans la table `WeatherAlert`, avec des données par département
+3. le frontend fait une requête avec le code INSEE de la commune, et le backend trouve le code département associé
+4. ainsi pour chaque requête du frontend, on requête notre base de données et on renvoie au frontend
 
-### Indices ATMO 
+### Eau potable (Drinking Water) 🚰
 
-Cette partie est la plus délicate :) puisqu'elle nécessite de récupérer des données de beaucoup de sources différentes, par région
+L'indicateur de qualité de l'eau potable est actuellement **désactivé** dans l'API mais reste fonctionnel. Il utilise l'API Hub'eau pour récupérer les données de conformité de l'eau du robinet.
 
-1. Un [cron job](https://github.com/SocialGouv/recosante/blob/master/libs/indice_pollution/indice_pollution/__init__.py#138) est exécuté toute les heures pour [faire une requête](https://github.com/SocialGouv/recosante/blob/b2c828cedb065b57c7d151377418b9dcf348edb0/libs/indice_pollution/indice_pollution/regions/__init__.py#L172) vers une API ou un site sur lequel on peut scrapper les données et les récupérer en format JSON. Si les données sont récupérées par une API alors les formats sont généralement identiques (format normalisé) même si les données peuvent être récupérées sur différents sites selon les régions.
-2. Pour chaque code insee(zone_id), on associe les données `no2`, `so2`, `o3`, `pm10`, `pm25`, `valeur`, `date_ech` (date de la journée prédite) et `date_diff`(date lorsque la prédiction a été effectuée) pour ensuite alimenter la base de données `indice_schema/IndiceATMO`, en mettant à jour les données existantes s'il y en a.
+#### Fonctionnement
+
+1. **Récupération des données** : L'aggregator `drinking_water.ts` interroge l'API Hub'eau pour chaque UDI (Unité de Distribution) présente en base de données
+2. **Validation** : Vérification de la conformité chimique et bactériologique des prélèvements
+3. **Stockage** : Les données sont stockées dans la table `DrinkingWater` avec les résultats des tests
+4. **Exposition** : Le getter `drinking_water.ts` transforme les données en format API standardisé
+
+#### Architecture
+
+```typescript
+// Aggregator : Récupération des données externes
+export async function getDrinkingWaterIndicator(): Promise<void> {
+  const udis = await prisma.udis.findMany({ select: { code_udi: true } });
+  
+  for (const udi of udis) {
+    const result = await fetchDrinkingWaterData(udi);
+    // Stockage en base de données
+  }
+}
+
+// Getter : Exposition des données
+export async function getDrinkingWaterFromUdi({
+  udi,
+  municipality_insee_code,
+  date_UTC_ISO
+}: GetDrinkingWaterParams): Promise<Indicator> {
+  const drinkingWaterResult = await fetchDrinkingWaterDataCascade(udi);
+  const drinkingWater = drinkingWaterResult.data;
+  
+  // Transformation en format API
+  return transformToIndicatorFormat(drinkingWater);
+}
+```
+
+#### Cas d'usage gérés
+
+- **UDI unique** : Retourne les données de conformité de l'eau
+- **UDI multiple** : Message explicatif demandant une adresse précise
+- **Données manquantes** : Indicateur vide avec message d'information
+- **Pas de tests** : Statut "NOT_TESTED" avec recommandations
+
+#### Réactivation de l'indicateur
+
+L'indicateur est désactivé par une condition sur la version de l'application (`appbuild < 62`). Pour le réactiver :
+
+##### 1. **Réactiver dans la liste des indicateurs**
+```typescript
+// Dans src/controllers/indicators.ts ligne 129
+if (Number(req.user.appbuild) < 62) {
+  res.status(200).send({
+    ok: true,
+    data: indicatorsList.filter(
+      (list) => list.slug !== IndicatorsSlugEnum.drinking_water,
+    ),
+  });
+} else {
+  res.status(200).send({ ok: true, data: indicatorsList });
+}
+```
+
+**Solution** : Supprimer le filtre ou ajuster la condition :
+```typescript
+// Option 1 : Toujours inclure drinking_water
+res.status(200).send({ ok: true, data: indicatorsList });
+
+// Option 2 : Ajuster la version minimum
+if (Number(req.user.appbuild) < 50) { // Au lieu de 62
+```
+
+##### 2. **Réactiver dans les données des indicateurs**
+```typescript
+// Dans src/controllers/indicators.ts ligne 218-229
+// if (Number(req.user.appbuild) > 62) {
+//   const drinkingWater = await getDrinkingWaterFromUdi({
+//     udi: req.user.udi,
+//     municipality_insee_code,
+//     date_UTC_ISO: dayjs().utc().toISOString(),
+//   });
+//   if (drinkingWater instanceof Error) {
+//     next(drinkingWater);
+//     return;
+//   }
+//   if (drinkingWater) indicators.push(drinkingWater);
+// }
+```
+
+**Solution** : Décommenter le code :
+```typescript
+const drinkingWater = await getDrinkingWaterFromUdi({
+  udi: req.user.udi,
+  municipality_insee_code,
+  date_UTC_ISO: dayjs().utc().toISOString(),
+});
+if (drinkingWater instanceof Error) {
+  next(drinkingWater);
+  return;
+}
+if (drinkingWater) indicators.push(drinkingWater);
+```
+
+##### 3. **Vérifier les dépendances**
+
+- **UDI en base** : S'assurer que les UDI sont bien renseignées dans la table `udis`
+- **Aggregator actif** : Vérifier que `getDrinkingWaterIndicator()` est appelé dans les cronjobs
+- **API Hub'eau** : Tester la connectivité avec l'API externe
+
+##### 4. **Tests de réactivation**
+
+```bash
+# Test de l'endpoint liste
+curl -H "Authorization: Bearer <token>" \
+  "https://api.recosante.beta.gouv.fr/indicators/list"
+
+# Test de l'endpoint données
+curl -H "Authorization: Bearer <token>" \
+  "https://api.recosante.beta.gouv.fr/indicators"
+```
+
+#### Configuration requise
+
+- **UDI utilisateur** : L'utilisateur doit avoir un code UDI renseigné
+- **Données Hub'eau** : Les données doivent être disponibles pour l'UDI
+- **Version app** : Ajuster la condition `appbuild` selon les besoins
+
+#### Monitoring
+
+- **Logs** : `[DRINKING_WATER] Duration: Xms` pour le suivi des performances
+- **Sentry** : Capture des erreurs avec contexte `functionCall: 'getDrinkingWaterIndicator'`
+- **Métriques** : Nombre de lignes insérées, données manquantes, UDI traitées 
+
+### Pollens (Risque d'allergie aux pollens) 🌸
+
+L'indicateur de risque d'allergie aux pollens est actuellement **désactivé temporairement** à la demande de la DNS (Direction du Numérique des ministères sociaux) jusqu'à nouvel ordre. Il reste fonctionnel et peut être réactivé facilement.
+
+#### Fonctionnement
+
+1. **Récupération des données** : L'aggregator `pollens/` interroge l'API Atmo pour récupérer les données de risque allergique par département
+2. **Transformation** : Les données sont organisées par code INSEE et transformées en format standardisé
+3. **Stockage** : Les données sont stockées dans la table `PollenAllergyRisk` avec les niveaux de risque par type de pollen
+4. **Exposition** : Le getter `pollens.ts` transforme les données en format API avec recommandations personnalisées
+
+#### Architecture
+
+```typescript
+// Aggregator : Récupération des données externes
+export async function getPollensIndicatorForDate(
+  atmoJWTToken: string,
+  indiceForDate: dayjs.Dayjs
+): Promise<void> {
+  // Récupération des données depuis l'API Atmo
+  const data = await apiService.fetchPollensDataFromAtmoAPI(atmoJWTToken, indiceForDate);
+  
+  // Organisation par code INSEE
+  const pollensByInseeCode = processingService.organizePollensDataByInseeCode(data);
+  
+  // Création des lignes à insérer
+  const { pollensRows } = processingService.createPollensRowsForMunicipalities(
+    municipalities, pollensByInseeCode, diffusionDate, validityEnd
+  );
+  
+  // Persistance en base
+  await databaseService.insertPollensData(pollensRows);
+}
+
+// Getter : Exposition des données
+export async function getPollensFromMunicipalityAndDate({
+  municipality_insee_code,
+  date_UTC_ISO
+}: GetPollensParams): Promise<Indicator> {
+  // Récupération des données J0 et J1
+  const pollensJ0 = await getPollensForJ0({ municipality_insee_code, date_UTC_ISO });
+  const pollensJ1 = await getPollensForJ1({ municipality_insee_code, date_UTC_ISO });
+  
+  // Récupération des recommandations personnalisées
+  const recommandationsJ0 = await prisma.recommandation.findMany({
+    where: {
+      indicator: IndicatorsSlugEnum.pollen_allergy,
+      indicator_value: pollensJ0.total ?? 0
+    }
+  });
+  
+  // Transformation en format API
+  return transformToIndicatorFormat(pollensJ0, pollensJ1, recommandationsJ0);
+}
+```
+
+#### Cas d'usage gérés
+
+- **Données disponibles** : Retourne le niveau de risque global et par type de pollen
+- **Données manquantes** : Indicateur vide avec message d'information
+- **Communes sans données** : Fallback vers la commune parente (COMPARENT)
+- **Recommandations** : Conseils personnalisés selon le niveau de risque
+
+#### Types de pollens surveillés
+
+- **Arbres** : Cyprès, Noisetier, Aulne, Peuplier, Saule, Frêne, Charme, Bouleau, Platane, Chêne, Olivier, Tilleul, Châtaignier
+- **Herbes** : Rumex, Graminées, Plantain, Urticacées, Armoises, Ambroisies
+- **Niveau global** : Score total de risque allergique
+
+#### Réactivation de l'indicateur
+
+L'indicateur est désactivé par commentaire dans le code avec la mention "temporairement désactivé à la demande du commanditaire". Pour le réactiver :
+
+##### 1. **Réactiver dans les données des indicateurs**
+```typescript
+// Dans src/controllers/indicators.ts ligne 184-194
+// TODO: temporairement desactivé à la demande du commanditaire
+
+//      const pollens = await getPollensFromMunicipalityAndDate({
+//        municipality_insee_code,
+//        date_UTC_ISO: dayjs().utc().toISOString(),
+//      });
+//      if (pollens instanceof Error) {
+//        next(pollens);
+//        return;
+//      }
+//      if (pollens) indicators.push(pollens);
+```
+
+**Solution** : Décommenter le code :
+```typescript
+const pollens = await getPollensFromMunicipalityAndDate({
+  municipality_insee_code,
+  date_UTC_ISO: dayjs().utc().toISOString(),
+});
+if (pollens instanceof Error) {
+  next(pollens);
+  return;
+}
+if (pollens) indicators.push(pollens);
+```
+
+##### 2. **Réactiver dans l'endpoint website**
+```typescript
+// Dans src/controllers/indicators.ts ligne 71-83
+/* const pollens = await getPollensFromMunicipalityAndDate({
+  municipality_insee_code,
+  date_UTC_ISO: dayjs().utc().toISOString(),
+});
+if (pollens instanceof Error) {
+  console.log('Error pollens:', pollens);
+  next(pollens);
+  return;
+}
+if (pollens) {
+  console.log('Pollens found:', pollens.slug);
+  indicators.push(pollens);
+} */
+```
+
+**Solution** : Décommenter le code :
+```typescript
+const pollens = await getPollensFromMunicipalityAndDate({
+  municipality_insee_code,
+  date_UTC_ISO: dayjs().utc().toISOString(),
+});
+if (pollens instanceof Error) {
+  console.log('Error pollens:', pollens);
+  next(pollens);
+  return;
+}
+if (pollens) {
+  console.log('Pollens found:', pollens.slug);
+  indicators.push(pollens);
+}
+```
+
+##### 3. **Vérifier les dépendances**
+
+- **Aggregator actif** : Vérifier que `getPollensIndicator()` est appelé dans les cronjobs
+- **API Atmo** : Tester la connectivité avec l'API externe
+- **Token JWT** : S'assurer que le token d'authentification Atmo est valide
+- **Données en base** : Vérifier que les données sont bien présentes dans `PollenAllergyRisk`
+
+##### 4. **Tests de réactivation**
+
+```bash
+# Test de l'endpoint website
+curl "https://api.recosante.beta.gouv.fr/indicators/website?municipality_insee_code=75001"
+
+# Test de l'endpoint utilisateur
+curl -H "Authorization: Bearer <token>" \
+  "https://api.recosante.beta.gouv.fr/indicators"
+```
+
+#### Configuration requise
+
+- **Token Atmo** : Authentification JWT pour l'API Atmo
+- **Données départementales** : Les données sont récupérées par département
+- **Mapping INSEE** : Correspondance entre codes INSEE et départements
+- **Recommandations** : Table `Recommandation` avec les conseils par niveau de risque
+
+#### Gestion des communes sans données
+
+L'indicateur gère automatiquement les communes sans données en utilisant le champ `COMPARENT` :
+
+```typescript
+// Fallback vers la commune parente
+if (municipality?.COMPARENT && municipality.COMPARENT !== municipality_insee_code) {
+  return await getPollensForJ0({
+    municipality_insee_code: municipality.COMPARENT,
+    date_UTC_ISO,
+  });
+}
+```
+
+#### Communes connues sans données
+
+Une liste de communes est maintenue pour éviter les alertes Sentry répétées :
+- Corse (2A, 2B)
+- Outre-mer (971, 972, 973, 974, 976, 988)
+- Communes spécifiques sans données pollens
+
+#### Monitoring
+
+- **Logs** : `[POLLENS] Duration: Xms` pour le suivi des performances
+- **Sentry** : Capture des erreurs avec contexte `functionCall: 'getPollensIndicatorForDate'`
+- **Métriques** : Nombre de lignes insérées, données manquantes, départements traités
+- **Alertes** : Nouveaux codes INSEE sans données (sauf liste connue)
+
+### Indices ATMO
+
+1. Un cron job est exécuté toutes les heures pour faire une requête vers une API ou un site sur lequel on peut scrapper les données et les récupérer en format JSON. Si les données sont récupérées par une API alors les formats sont généralement identiques (format normalisé) même si les données peuvent être récupérées sur différents sites selon les régions.
+2. Pour chaque code insee(zone_id), on associe les données `no2`, `so2`, `o3`, `pm10`, `pm25`, `valeur`, `date_ech` (date de la journée prédite) et `date_diff`(date lorsque la prédiction a été effectuée) pour ensuite alimenter la base de données dans la table `IndiceAtmospheric`, en mettant à jour les données existantes s'il y en a.
 3. Le frontend fait une requête avec le code INSEE de la commune, et le backend trouve la zone associée dans la base de données.
-4. Ainsi pour chaque requête du frontend, on requête notre base de données et on [renvoie au frontend](https://github.com/SocialGouv/recosante/blob/master/api/ecosante/api/blueprint.py#85)
+4. Ainsi pour chaque requête du frontend, on requête notre base de données et on renvoie au frontend
 
 Pour chaque région, voici le détail concernant la récupération des données avec l'API ou le scrapping :
 
-#### Auvergne-Rhône-Alpes
+#### Auvergne-Rhône-Alpes ✅
 
 Scrapping (mais en réalité simple requête API) : Requête authentifiée vers `https://api.atmo-aura.fr/api/v1/communes/{insee}/indices/atmo?api_token={api_key}&date_debut_echeance={date_}` qui renvoie un JSON avec toutes les données à partir de la date du jour.
 
-#### Bourgogne-Franche-Comté (ne fonctionne pas) 🚨
+#### Bourgogne-Franche-Comté ✅
 
 Requête API non authentifiée vers `https://atmo-bfc.iad-informatique.com/geoserver/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
 
-#### Bretagne  (ne fonctionne pas) 🚨
+#### Bretagne ✅
 
 Requête API non authentifiée vers `https://data.airbreizh.asso.fr/geoserver/ind_bretagne/ows` qui renvoie un JSON avec toutes les données (chaque code insee avec son code no2, so2, o3, pm10, pm25) à partir de la date du jour.
 
 
 
-#### Centre-Val de Loire 
-Dans le code il semble que ce soit : https://www.ligair.fr/ville/city?q=01400 (où le code postal est envoyé en params via 'q'.
-https://github.com/SocialGouv/recosante/blob/46e5d33a5475ff091eb286f6f86413e7a13e13e6/libs/indice_pollution/indice_pollution/regions/Centre-Val%20de%20Loire.py#L72
-Mais je ne reçois que des tableaux vides ensuite.
-Si requête vers https://www.ligair.fr/ville/city : On reçoit un objet de type key:number, value:nom_de_ville.
+#### Centre-Val de Loire ✅
 
 Requête API non authentifiée vers `https://geo.api.gouv.fr/communes/{insee}` pour récupérer le code postal de la ville, puis requête vers `http://www.ligair.fr/ville/city` pour récupérer le nom de la ville dans le bon format pour ensuite scrapper `http://www.ligair.fr/commune/{ville_bon_format}` pour récupérer les polluants responsables des dégradations de la qualité de l'air.
 
@@ -257,7 +831,7 @@ Requête API non authentifiée vers `https://opendata.atmo-na.org/geoserver/alrt
 }
 ```
 
-#### Occitanie
+#### Occitanie ✅
 
 Requête API non authentifiée vers `https://geo.api.gouv.fr/communes/{insee}` pour récupérer le nom de la ville dans son bon format pour ensuite scrapper `https://www.atmo-occitanie.org/{ville_bon_format}`.
 
@@ -283,11 +857,6 @@ Le projet est basé sur les outils suivant
 # Environnements conteneurisés
 docker
 docker-compose
-
-# Projets python
-python
-pip
-poetry
 
 # Projets JavaScript
 node
@@ -367,36 +936,14 @@ Afin d'exécuter le lint, merci de vous référer au `README.md` de chaque proje
 yarn lint
 ```
 
-Le projet utilise [pylint](https://github.com/pylint-dev/pylint). Pour autoformatter votre code avec `vsCode`, nous vous conseillons les extensions suivantes
+Le projet utilise [Prettier](https://prettier.io/) pour le formatage du code JavaScript/TypeScript et [ESLint](https://eslint.org/) pour le linting. Pour autoformatter votre code avec `vsCode`, nous vous conseillons les extensions suivantes :
 
-- [Pylint](https://github.com/microsoft/vscode-pylint)
-- [Pylance](https://github.com/microsoft/pylance-release)
-- [isort](https://github.com/microsoft/vscode-isort)
-- [autopep8](https://github.com/microsoft/vscode-autopep8)
+- [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
 `Nota Bene`
 
-Lorsque vous développez sur la librairie `indice_pollution` ou sur l'`api`, vous devez utiliser leur virtual environnement respectifs. Cela peut être fait sous vscode en utilisant la commande `command + shift + p`, puis `Python: Select Interpreter` et choisir celui que vous souhaitez dans la liste afin que les dépendances soient résolues correctement.
-
-Il faut que les `.venv` des projets soient installés avec `poetry` pour que `vsCode` les détecte. Merci de vous référer aux `README.md` de chaque projet.
-
-`pylint` va vérifier l'ordre des imports. Pour les formatter automatiquement, nous vous conseillons d'utiliser `isort`. Cependant, il y a une limitation d'`isort` considérant les répertoires locaux comme des libraries. Vous pouvez lui spécifier de la configuration via vos settings `vsCode` (`settings.json` racine ou workspace).
-
-```json
-{
-  "isort.args": ["--known-local-folder", "ecosante", "--known-local-folder", "tests"]
-}
-```
-
-Pour l'`api`
-
-```json
-{
-  "isort.args": ["--known-local-folder", "indice_pollution"]
-}
-```
-
-Pour la librairie `indice_pollution`
+Lorsque vous développez sur le projet `api-node`, assurez-vous d'avoir installé les dépendances avec `yarn install` pour que `vsCode` puisse résoudre correctement les modules.
 
 ## Contribution et deploiement continu
 
