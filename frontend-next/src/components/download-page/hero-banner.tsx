@@ -129,22 +129,25 @@ export function Hero() {
                 </div>
               </div>
             </div>
-            <div className='relative z-10 flex md:flex-row flex-col-reverse items-start w-full justify-between mt-4 md:mt-8'>
-              <h1 className='md:text-5xl w-full text-md  md:mt-4 -mt-2  text-dark font-app'>
-                Suivez <span className='text-app-primary'>les pollens</span>,
-                <br />
-                <span className='text-app-primary'>
-                  la qualité de l'air
-                </span> et{' '}
-                <span className='text-app-primary'>la qualité de l'eau</span>{' '}
-                <br />
-                en temps réel dans votre ville.
+            <div className='relative z-10 mt-4 md:mt-8'>
+              <h1 className='md:text-3xl w-full text-xl md:mt-4 -mt-2 text-dark font-bold'>
+                Fermeture du service Recosanté
               </h1>
+              <div className='mt-4 md:mt-6 text-sm md:text-base text-gray-700 space-y-4 max-w-3xl'>
+                <p>
+                  Recosanté est un service public numérique conçu dans une démarche d'expérimentation, avec pour objectif de proposer aux citoyens une information fiable, utile et compréhensible, dans le respect des principes du service public.
+                </p>
+                <p>
+                  À l'issue de cette phase d'expérimentation, l'évaluation du service montre que celui-ci n'a pas atteint un niveau d'usage et de valeur suffisant pour justifier sa poursuite.
+                </p>
+                <p>
+                  Dans ce contexte, et dans une démarche de responsabilité et de bonne gestion, la décision a été prise de mettre fin à l'expérimentation du service Recosanté, dont la poursuite ne se justifie pas au regard de nos exigences de qualité et d'utilité pour les citoyens.
+                </p>
+                <p className='font-semibold'>
+                  L'arrêt du service Recosanté sera effectif à compter du 5 mars 2026.
+                </p>
+              </div>
             </div>
-            <p className='mt-2 md:mt-4 text-xs md:text-xl text-gray-700'>
-              Une application gratuite pour protéger votre santé et celle de
-              votre famille.
-            </p>
             <div className=' flex items-center justify-center md:hidden mt-4'>
               <div className='flex  justify-center mx-auto items-start  w-full '>
                 <p className='text-xs text-app-primary '>
