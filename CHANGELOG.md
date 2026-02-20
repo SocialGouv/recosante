@@ -1,3 +1,10 @@
+# [1.50.0](https://github.com/SocialGouv/recosante/compare/v1.49.0...v1.50.0) (2026-02-20)
+
+
+### Features
+
+* end of service banner ([#678](https://github.com/SocialGouv/recosante/issues/678)) ([ef99018](https://github.com/SocialGouv/recosante/commit/ef99018aa5a461b5a131ea4dbaf91a25b5592575))
+
 # [1.49.0](https://github.com/SocialGouv/recosante/compare/v1.48.7...v1.49.0) (2025-09-09)
 
 
