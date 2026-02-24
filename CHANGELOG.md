@@ -1,3 +1,10 @@
+## [1.50.1](https://github.com/SocialGouv/recosante/compare/v1.50.0...v1.50.1) (2026-02-24)
+
+
+### Bug Fixes
+
+* bump version ([84ceeb8](https://github.com/SocialGouv/recosante/commit/84ceeb8f4e2ba6caaaf9e683ba1b0cdf68566b54))
+
 # [1.50.0](https://github.com/SocialGouv/recosante/compare/v1.49.0...v1.50.0) (2026-02-20)
 
 
