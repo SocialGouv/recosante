@@ -134,7 +134,10 @@ router.get(
         ),
       });
     } else {
-      res.status(200).send({ ok: true, data: indicatorsList });
+      res.status(200).send({ ok: true, data: indicatorsList,           sendInApp: [
+            'Fermeture du service Recosanté',
+            "Recosanté est un service public numérique conçu dans une démarche d'expérimentation, avec pour objectif de proposer aux citoyens une information fiable, utile et compréhensible, dans le respect des principes du service public.\n\nÀ l'issue de cette phase d'expérimentation, l'évaluation du service montre que celui-ci n'a pas atteint un niveau d'usage et de valeur suffisant pour justifier sa poursuite.\n\nDans ce contexte, et dans une démarche de responsabilité et de bonne gestion, la décision a été prise de mettre fin à l'expérimentation du service Recosanté, dont la poursuite ne se justifie pas au regard de nos exigences de qualité et d'utilité pour les citoyens.\n\nL'arrêt du service Recosanté sera effectif à compter du 5 mars 2026.",
+          ], });
     }
   }),
 );
